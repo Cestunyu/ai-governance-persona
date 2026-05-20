@@ -1,0 +1,740 @@
+{
+  "metadata": {
+    "title": "AI Social Thought Spectrum",
+    "last_updated": "2026-05-14",
+    "status": "first-pass seed dataset",
+    "risk_axis": {
+      "-2": "shutdown, pause, or hard doomer",
+      "-1": "safety-first, alignment-first, or strong governance",
+      "0": "normal-technology, social-harm, or hype-skeptical",
+      "1": "build-oriented, deployment-friendly optimism",
+      "2": "accelerationist or singularitarian optimism"
+    },
+    "humanism_axis": {
+      "2": "democratic, justice-oriented, or explicitly human-centered",
+      "1": "human-compatible, human-survival, or human-preference centered",
+      "0": "technically neutral or mixed",
+      "-1": "computation-centered or anti-hand-coded-human-knowledge",
+      "-2": "anti-humanist, posthuman, or technocapital-autonomy frame"
+    },
+    "influence_score": {
+      "5": "field-defining or institution-shaping",
+      "4": "major movement, policy, academic, or public-discourse influence",
+      "3": "important niche, memetic, or genealogical influence",
+      "2": "useful secondary influence",
+      "1": "background only"
+    }
+  },
+  "thinkers": [
+    {
+      "id": "eliezer-yudkowsky",
+      "name": "Eliezer Yudkowsky",
+      "cluster": "Rationalist AI x-risk / MIRI",
+      "stance_summary": "Advanced AI is likely to kill humanity unless alignment is solved before deployment.",
+      "spectrum_position": {
+        "risk_axis": -2,
+        "humanism_axis": 1,
+        "notes": "Hard doomer; human-protective but not primarily democratic or justice-theoretic."
+      },
+      "representative_works": [
+        {
+          "title": "Artificial Intelligence as a Positive and Negative Factor in Global Risk",
+          "year": 2008,
+          "type": "chapter / essay",
+          "url": "https://www.yudkowsky.net/wp-content/uploads/2020/09/AIPosNegFactor.pdf",
+          "priority": "highest",
+          "why": "Canonical early rationalist statement of AI as existential risk."
+        },
+        {
+          "title": "AGI Ruin: A List of Lethalities",
+          "year": 2022,
+          "type": "essay",
+          "url": "https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities",
+          "priority": "highest",
+          "why": "Most compact hard-doomer public argument."
+        },
+        {
+          "title": "Pausing AI Developments Isn't Enough. We Need to Shut It All Down",
+          "year": 2023,
+          "type": "public essay",
+          "url": "https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/",
+          "priority": "high",
+          "why": "Mainstream public-policy version of the shutdown argument."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["movement formation", "AI alignment field-building", "public discourse"],
+        "confidence": "high"
+      },
+      "collection_priority": "highest"
+    },
+    {
+      "id": "nick-bostrom",
+      "name": "Nick Bostrom",
+      "cluster": "Superintelligence / philosophical x-risk",
+      "stance_summary": "Superintelligent agents may pursue convergent instrumental goals that threaten human control.",
+      "spectrum_position": {
+        "risk_axis": -2,
+        "humanism_axis": 1,
+        "notes": "Human-survival oriented philosophical x-risk frame."
+      },
+      "representative_works": [
+        {
+          "title": "Ethical Issues in Advanced Artificial Intelligence",
+          "year": 2003,
+          "type": "essay",
+          "url": "https://nickbostrom.com/ethics/ai",
+          "priority": "high",
+          "why": "Early philosophical framing of advanced AI ethics and risk."
+        },
+        {
+          "title": "The Superintelligent Will: Motivation and Instrumental Rationality in Advanced Artificial Agents",
+          "year": 2012,
+          "type": "academic paper",
+          "url": "https://nickbostrom.com/superintelligentwill.pdf",
+          "priority": "highest",
+          "why": "Primary source for instrumental convergence."
+        },
+        {
+          "title": "Superintelligence: Paths, Dangers, Strategies",
+          "year": 2014,
+          "type": "book",
+          "url": "https://global.oup.com/academic/product/superintelligence-9780199678112",
+          "priority": "highest",
+          "why": "Book-length field-defining x-risk argument."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["academic citations", "policy discourse", "movement formation"],
+        "confidence": "high"
+      },
+      "collection_priority": "highest"
+    },
+    {
+      "id": "stuart-russell",
+      "name": "Stuart Russell",
+      "cluster": "Beneficial AI / human-compatible AI",
+      "stance_summary": "AI systems should be designed around uncertainty about human preferences and provable benefit to humans.",
+      "spectrum_position": {
+        "risk_axis": -1,
+        "humanism_axis": 2,
+        "notes": "Strongly safety-oriented and explicitly human-compatible."
+      },
+      "representative_works": [
+        {
+          "title": "Human Compatible: Artificial Intelligence and the Problem of Control",
+          "year": 2019,
+          "type": "book",
+          "url": "https://www.penguinrandomhouse.com/books/566677/human-compatible-by-stuart-russell/",
+          "priority": "highest",
+          "why": "Main public statement of the control-problem and beneficial-AI frame."
+        },
+        {
+          "title": "Provably Beneficial Artificial Intelligence",
+          "year": 2016,
+          "type": "lecture / paper frame",
+          "url": "https://people.eecs.berkeley.edu/~russell/research/future/q-and-a.html",
+          "priority": "medium",
+          "why": "Useful entry into the technical version of human-compatible AI."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["academic authority", "textbook influence", "institution-building", "policy discourse"],
+        "confidence": "high"
+      },
+      "collection_priority": "high"
+    },
+    {
+      "id": "paul-christiano",
+      "name": "Paul Christiano",
+      "cluster": "Scalable alignment / technical safety",
+      "stance_summary": "Advanced AI failure may arise through gradual delegation, misalignment, and scalable oversight failures.",
+      "spectrum_position": {
+        "risk_axis": -1,
+        "humanism_axis": 1,
+        "notes": "Technical alignment position; less rhetorically apocalyptic than hard-doomer writing."
+      },
+      "representative_works": [
+        {
+          "title": "What Failure Looks Like",
+          "year": 2019,
+          "type": "essay",
+          "url": "https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like",
+          "priority": "highest",
+          "why": "Canonical gradualist failure-mode text."
+        },
+        {
+          "title": "AI Safety via Debate",
+          "year": 2018,
+          "type": "paper",
+          "url": "https://arxiv.org/abs/1805.00899",
+          "priority": "high",
+          "why": "Representative scalable oversight proposal."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["technical alignment", "OpenAI safety lineage", "field-building"],
+        "confidence": "medium"
+      },
+      "collection_priority": "high"
+    },
+    {
+      "id": "ajeya-cotra",
+      "name": "Ajeya Cotra",
+      "cluster": "AI timelines / Open Philanthropy",
+      "stance_summary": "Transformative AI timelines can be forecast using compute requirements and biological anchors.",
+      "spectrum_position": {
+        "risk_axis": -1,
+        "humanism_axis": 1,
+        "notes": "Not a full social theory of AI; important because timelines structure safety urgency."
+      },
+      "representative_works": [
+        {
+          "title": "Forecasting Transformative AI with Biological Anchors",
+          "year": 2020,
+          "type": "report",
+          "url": "https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines",
+          "priority": "high",
+          "why": "Influential compute-based AI timelines report."
+        },
+        {
+          "title": "Forecasting Transformative AI: The Biological Anchors Method in a Nutshell",
+          "year": 2021,
+          "type": "summary essay",
+          "url": "https://www.cold-takes.com/forecasting-transformative-ai-the-biological-anchors-method-in-a-nutshell/",
+          "priority": "medium",
+          "why": "Accessible summary of the timeline method."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["AI safety timelines", "grantmaking", "EA and policy discourse"],
+        "confidence": "medium"
+      },
+      "collection_priority": "high"
+    },
+    {
+      "id": "dario-amodei-anthropic",
+      "name": "Dario Amodei / Anthropic",
+      "cluster": "Frontier-lab safety optimism",
+      "stance_summary": "AI could bring enormous benefits, but frontier scaling requires explicit safety, evals, and deployment thresholds.",
+      "spectrum_position": {
+        "risk_axis": -0.5,
+        "humanism_axis": 1,
+        "notes": "Combines safety urgency with continued frontier-model development."
+      },
+      "representative_works": [
+        {
+          "title": "Core Views on AI Safety",
+          "year": 2023,
+          "type": "company essay",
+          "url": "https://www.anthropic.com/news/core-views-on-ai-safety",
+          "priority": "high",
+          "why": "Company-level view of risk, alignment, and responsible scaling."
+        },
+        {
+          "title": "Anthropic's Responsible Scaling Policy",
+          "year": 2023,
+          "type": "policy document",
+          "url": "https://www.anthropic.com/news/anthropics-responsible-scaling-policy",
+          "priority": "high",
+          "why": "Important institutionalization of eval-triggered safety governance."
+        },
+        {
+          "title": "Machines of Loving Grace",
+          "year": 2024,
+          "type": "essay",
+          "url": "https://www.darioamodei.com/machines-of-loving-grace",
+          "priority": "highest",
+          "why": "Most explicit high-upside, safety-aware frontier-lab optimism essay."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["frontier lab policy", "public discourse", "industry practice"],
+        "confidence": "high"
+      },
+      "collection_priority": "highest"
+    },
+    {
+      "id": "dan-hendrycks-cais",
+      "name": "Dan Hendrycks / Center for AI Safety",
+      "cluster": "Public AI x-risk and ML safety",
+      "stance_summary": "AI should be treated as a societal-scale risk comparable to other major global hazards.",
+      "spectrum_position": {
+        "risk_axis": -1.5,
+        "humanism_axis": 1,
+        "notes": "Bridges benchmark-oriented ML safety and public extinction-risk messaging."
+      },
+      "representative_works": [
+        {
+          "title": "Unsolved Problems in ML Safety",
+          "year": 2021,
+          "type": "paper",
+          "url": "https://arxiv.org/abs/2109.13916",
+          "priority": "high",
+          "why": "Technical safety agenda source."
+        },
+        {
+          "title": "Statement on AI Risk",
+          "year": 2023,
+          "type": "public statement",
+          "url": "https://www.safe.ai/work/statement-on-ai-risk",
+          "priority": "high",
+          "why": "Canonical compact public extinction-risk statement."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["public discourse", "policy agenda-setting", "ML safety benchmarks"],
+        "confidence": "medium"
+      },
+      "collection_priority": "medium"
+    },
+    {
+      "id": "bender-gebru-mitchell-mcmillan-major",
+      "name": "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major",
+      "cluster": "Critical AI / stochastic parrots",
+      "stance_summary": "Large language models carry social, environmental, labor, data, and representational harms that are obscured by scale-centered narratives.",
+      "spectrum_position": {
+        "risk_axis": 0,
+        "humanism_axis": 2,
+        "notes": "Present-harm critical AI position, distinct from AGI x-risk safety."
+      },
+      "representative_works": [
+        {
+          "title": "On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?",
+          "year": 2021,
+          "type": "conference paper",
+          "url": "https://dl.acm.org/doi/10.1145/3442188.3445922",
+          "priority": "highest",
+          "why": "Canonical critical-AI critique of large language models."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["academic citations", "public controversy", "AI ethics field-building", "policy discourse"],
+        "confidence": "high"
+      },
+      "collection_priority": "highest"
+    },
+    {
+      "id": "kate-crawford",
+      "name": "Kate Crawford",
+      "cluster": "AI political economy / extraction",
+      "stance_summary": "AI is a material, labor, data, and power infrastructure rather than a disembodied intelligence.",
+      "spectrum_position": {
+        "risk_axis": 0,
+        "humanism_axis": 2,
+        "notes": "Critical political economy of AI; focused on institutions and extraction."
+      },
+      "representative_works": [
+        {
+          "title": "Atlas of AI",
+          "year": 2021,
+          "type": "book",
+          "url": "https://yalebooks.yale.edu/book/9780300264630/atlas-of-ai/",
+          "priority": "high",
+          "why": "Book-length material and political-economy critique."
+        },
+        {
+          "title": "Excavating AI",
+          "year": 2019,
+          "type": "essay / project",
+          "url": "https://excavating.ai/",
+          "priority": "medium",
+          "why": "Concrete genealogy of image datasets, classification, and power."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["academic discourse", "public discourse", "AI ethics"],
+        "confidence": "medium"
+      },
+      "collection_priority": "high"
+    },
+    {
+      "id": "ruha-benjamin",
+      "name": "Ruha Benjamin",
+      "cluster": "Race, automation, and technology critique",
+      "stance_summary": "Automated systems can reproduce and intensify racial hierarchy while presenting themselves as neutral or objective.",
+      "spectrum_position": {
+        "risk_axis": 0,
+        "humanism_axis": 2,
+        "notes": "Broader technology-and-race frame that should anchor the justice side of the map."
+      },
+      "representative_works": [
+        {
+          "title": "Race After Technology",
+          "year": 2019,
+          "type": "book",
+          "url": "https://www.ruhabenjamin.com/race-after-technology",
+          "priority": "medium",
+          "why": "Important justice-oriented technology critique relevant to AI governance."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["academic discourse", "public discourse", "critical technology studies"],
+        "confidence": "medium"
+      },
+      "collection_priority": "medium"
+    },
+    {
+      "id": "narayanan-kapoor",
+      "name": "Arvind Narayanan and Sayash Kapoor",
+      "cluster": "AI hype skepticism / normal technology",
+      "stance_summary": "AI is powerful but often oversold; evaluation should distinguish real capability from snake oil and from magical AGI narratives.",
+      "spectrum_position": {
+        "risk_axis": 0,
+        "humanism_axis": 1.5,
+        "notes": "Hype-skeptical, evidence-first, and often skeptical of x-risk exceptionalism."
+      },
+      "representative_works": [
+        {
+          "title": "AI Snake Oil",
+          "year": 2024,
+          "type": "book",
+          "url": "https://www.aisnakeoil.com/",
+          "priority": "high",
+          "why": "Accessible normal-technology and anti-hype frame."
+        },
+        {
+          "title": "AI as Normal Technology",
+          "year": 2025,
+          "type": "essay / paper",
+          "url": "https://knightcolumbia.org/content/ai-as-normal-technology",
+          "priority": "high",
+          "why": "Concise counterweight to both utopian and catastrophic exceptionalism."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["public discourse", "policy discourse", "academic credibility"],
+        "confidence": "medium"
+      },
+      "collection_priority": "high"
+    },
+    {
+      "id": "gary-marcus-melanie-mitchell",
+      "name": "Gary Marcus / Melanie Mitchell",
+      "cluster": "Deep learning skepticism",
+      "stance_summary": "Current deep learning is impressive but brittle, and may not be sufficient for robust general intelligence.",
+      "spectrum_position": {
+        "risk_axis": 0,
+        "humanism_axis": 0.5,
+        "notes": "Capability-skeptical rather than primarily political."
+      },
+      "representative_works": [
+        {
+          "title": "Deep Learning: A Critical Appraisal",
+          "year": 2018,
+          "type": "paper",
+          "url": "https://arxiv.org/abs/1801.00631",
+          "priority": "medium",
+          "why": "Canonical skeptical critique of deep learning generality."
+        },
+        {
+          "title": "Why AI Is Harder Than We Think",
+          "year": 2021,
+          "type": "paper",
+          "url": "https://arxiv.org/abs/2104.12871",
+          "priority": "medium",
+          "why": "Readable critique of repeated overclaims in AI."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["public discourse", "technical critique", "AI skepticism"],
+        "confidence": "medium"
+      },
+      "collection_priority": "medium"
+    },
+    {
+      "id": "rich-sutton",
+      "name": "Rich Sutton",
+      "cluster": "Bitter Lesson / computation-centered AI",
+      "stance_summary": "General methods that leverage search, learning, and computation ultimately beat attempts to encode human domain knowledge.",
+      "spectrum_position": {
+        "risk_axis": 1,
+        "humanism_axis": -1,
+        "notes": "Not an AI policy position; anti-anthropocentric in technical epistemology."
+      },
+      "representative_works": [
+        {
+          "title": "The Bitter Lesson",
+          "year": 2019,
+          "type": "essay",
+          "url": "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+          "priority": "highest",
+          "why": "Canonical statement of the scaling/general-methods lesson."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["field paradigm", "lab culture", "technical AI discourse"],
+        "confidence": "high"
+      },
+      "collection_priority": "highest"
+    },
+    {
+      "id": "yann-lecun",
+      "name": "Yann LeCun",
+      "cluster": "Open-source / architecture optimism / anti-doom",
+      "stance_summary": "Advanced AI needs new architectures and world models; near-term doomer narratives are overstated.",
+      "spectrum_position": {
+        "risk_axis": 1,
+        "humanism_axis": 0,
+        "notes": "Build-oriented technical optimism, but not simply e/acc."
+      },
+      "representative_works": [
+        {
+          "title": "A Path Towards Autonomous Machine Intelligence",
+          "year": 2022,
+          "type": "position paper",
+          "url": "https://openreview.net/forum?id=BZ5a1r-kVsf",
+          "priority": "high",
+          "why": "Representative architecture-centered view of future AI."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["technical authority", "industry leadership", "public discourse"],
+        "confidence": "high"
+      },
+      "collection_priority": "high"
+    },
+    {
+      "id": "andrew-ng",
+      "name": "Andrew Ng",
+      "cluster": "Pragmatic AI optimism",
+      "stance_summary": "AI is a general-purpose technology like electricity, and should be deployed broadly to create value.",
+      "spectrum_position": {
+        "risk_axis": 1,
+        "humanism_axis": 1,
+        "notes": "Deployment-focused optimism and economic/productivity framing."
+      },
+      "representative_works": [
+        {
+          "title": "AI is the New Electricity",
+          "year": 2017,
+          "type": "public talk / essay theme",
+          "url": "https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity",
+          "priority": "medium",
+          "why": "Canonical pragmatic business and productivity frame."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["education", "industry adoption", "public discourse"],
+        "confidence": "medium"
+      },
+      "collection_priority": "medium"
+    },
+    {
+      "id": "sam-altman-openai",
+      "name": "Sam Altman / OpenAI",
+      "cluster": "Managed AGI optimism",
+      "stance_summary": "AGI can produce broad abundance if developed with safety, governance, and benefit-sharing institutions.",
+      "spectrum_position": {
+        "risk_axis": 1,
+        "humanism_axis": 1,
+        "notes": "Frontier-lab abundance frame with explicit institutional safety language."
+      },
+      "representative_works": [
+        {
+          "title": "OpenAI Charter",
+          "year": 2018,
+          "type": "institutional charter",
+          "url": "https://openai.com/charter/",
+          "priority": "high",
+          "why": "Core institutional statement about AGI and benefit-sharing."
+        },
+        {
+          "title": "Planning for AGI and Beyond",
+          "year": 2023,
+          "type": "company essay",
+          "url": "https://openai.com/blog/planning-for-agi-and-beyond",
+          "priority": "high",
+          "why": "Public OpenAI view on AGI development, safety, and governance."
+        },
+        {
+          "title": "The Intelligence Age",
+          "year": 2024,
+          "type": "essay",
+          "url": "https://ia.samaltman.com/",
+          "priority": "high",
+          "why": "Concise abundance-oriented AGI optimism."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["frontier lab", "capital allocation", "public discourse", "policy discourse"],
+        "confidence": "high"
+      },
+      "collection_priority": "high"
+    },
+    {
+      "id": "ray-kurzweil",
+      "name": "Ray Kurzweil",
+      "cluster": "Singularity / transhumanist optimism",
+      "stance_summary": "Technological progress, especially AI and computing, points toward a singularity and human-machine merger.",
+      "spectrum_position": {
+        "risk_axis": 2,
+        "humanism_axis": -0.5,
+        "notes": "Optimistic and partly posthuman, but not Land-style anti-humanism."
+      },
+      "representative_works": [
+        {
+          "title": "The Singularity Is Near",
+          "year": 2005,
+          "type": "book",
+          "url": "https://www.penguinrandomhouse.com/books/288771/the-singularity-is-near-by-ray-kurzweil/",
+          "priority": "high",
+          "why": "Canonical modern singularitarian optimism."
+        },
+        {
+          "title": "The Singularity Is Nearer",
+          "year": 2024,
+          "type": "book",
+          "url": "https://www.penguinrandomhouse.com/books/669467/the-singularity-is-nearer-by-ray-kurzweil/",
+          "priority": "medium",
+          "why": "Updated public singularity thesis."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 5,
+        "basis": ["public discourse", "transhumanist movement", "technology culture"],
+        "confidence": "high"
+      },
+      "collection_priority": "medium"
+    },
+    {
+      "id": "marc-andreessen",
+      "name": "Marc Andreessen",
+      "cluster": "Techno-optimism / anti-pause politics",
+      "stance_summary": "AI should be developed aggressively because it can expand abundance, solve problems, and empower people.",
+      "spectrum_position": {
+        "risk_axis": 2,
+        "humanism_axis": 0.5,
+        "notes": "Techno-optimist and anti-regulatory, but framed as pro-human abundance."
+      },
+      "representative_works": [
+        {
+          "title": "Why AI Will Save the World",
+          "year": 2023,
+          "type": "essay",
+          "url": "https://a16z.com/ai-will-save-the-world/",
+          "priority": "highest",
+          "why": "Canonical contemporary pro-AI anti-doomer essay."
+        },
+        {
+          "title": "The Techno-Optimist Manifesto",
+          "year": 2023,
+          "type": "manifesto",
+          "url": "https://a16z.com/the-techno-optimist-manifesto/",
+          "priority": "high",
+          "why": "Broader ideology behind the AI optimism argument."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["venture capital", "public discourse", "political ideology", "tech culture"],
+        "confidence": "medium"
+      },
+      "collection_priority": "high"
+    },
+    {
+      "id": "effective-accelerationism",
+      "name": "e/acc / effective accelerationism",
+      "cluster": "Accelerationist AI politics",
+      "stance_summary": "Technological acceleration is treated as morally urgent and regulation is often treated as the larger danger.",
+      "spectrum_position": {
+        "risk_axis": 2,
+        "humanism_axis": -1.5,
+        "notes": "Memetic and political more than academic; varies by author."
+      },
+      "representative_works": [
+        {
+          "title": "Effective Accelerationism",
+          "year": 2022,
+          "type": "manifesto / movement text",
+          "url": "https://effectiveacceleration.tech/",
+          "priority": "medium",
+          "why": "Movement source for contemporary e/acc framing."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 3,
+        "basis": ["memetic influence", "tech culture", "anti-regulation politics"],
+        "confidence": "low"
+      },
+      "collection_priority": "medium"
+    },
+    {
+      "id": "nick-land",
+      "name": "Nick Land",
+      "cluster": "Accelerationism / Dark Enlightenment",
+      "stance_summary": "Capital, technology, and intelligence are imagined as autonomous runaway processes that exceed humanist control.",
+      "spectrum_position": {
+        "risk_axis": 2,
+        "humanism_axis": -2,
+        "notes": "Important as accelerationist genealogy and anti-humanist edge; not mainstream AI technical policy."
+      },
+      "representative_works": [
+        {
+          "title": "Meltdown",
+          "year": 1994,
+          "type": "essay",
+          "url": "https://www.ccru.net/swarm1/1_melt.htm",
+          "priority": "high",
+          "why": "Canonical cybernetic/accelerationist anti-humanist text."
+        },
+        {
+          "title": "The Dark Enlightenment",
+          "year": 2012,
+          "type": "essay series",
+          "url": "https://www.thedarkenlightenment.com/the-dark-enlightenment-by-nick-land/",
+          "priority": "high",
+          "why": "Key reactionary-political branch of Land's later thought; include with caution."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["genealogical influence", "political subculture", "accelerationist thought"],
+        "confidence": "medium"
+      },
+      "collection_priority": "high"
+    }
+  ],
+  "movement_documents": [
+    {
+      "id": "pause-giant-ai-experiments",
+      "title": "Pause Giant AI Experiments: An Open Letter",
+      "year": 2023,
+      "cluster": "AI pause / governance",
+      "url": "https://futureoflife.org/open-letter/pause-giant-ai-experiments/",
+      "why": "Movement document for the pause position."
+    },
+    {
+      "id": "statement-on-ai-risk",
+      "title": "Statement on AI Risk",
+      "year": 2023,
+      "cluster": "AI extinction-risk public messaging",
+      "url": "https://www.safe.ai/work/statement-on-ai-risk",
+      "why": "Compact consensus-style public x-risk statement."
+    },
+    {
+      "id": "bletchley-declaration",
+      "title": "The Bletchley Declaration",
+      "year": 2023,
+      "cluster": "AI safety governance",
+      "url": "https://www.gov.uk/government/publications/ai-safety-summit-2023-the-bletchley-declaration/the-bletchley-declaration-by-countries-attending-the-ai-safety-summit-1-2-november-2023",
+      "why": "Government-level institutionalization of frontier-AI safety discourse."
+    }
+  ]
+}

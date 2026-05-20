@@ -1,0 +1,1841 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 思想光谱：二维意识形态地图</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --surface: #ffffff;
+      --surface-2: #f9fafb;
+      --ink: #151922;
+      --muted: #5d6678;
+      --soft: #eef1f6;
+      --line: #d9dee8;
+      --line-strong: #aeb7c8;
+      --teal: #0f766e;
+      --red: #b42318;
+      --purple: #7c3aed;
+      --blue: #0369a1;
+      --green: #15803d;
+      --orange: #c2410c;
+      --brown: #7f1d1d;
+      --charcoal: #20242f;
+      --shadow: 0 14px 36px rgba(20, 31, 52, 0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    a {
+      color: #1d4ed8;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(217, 222, 232, 0.9);
+      background: rgba(246, 247, 251, 0.93);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 10px 20px;
+    }
+
+    .brand {
+      font-size: 13px;
+      font-weight: 760;
+      letter-spacing: 0;
+      color: var(--charcoal);
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .nav a:hover {
+      background: #e9edf5;
+    }
+
+    .wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 22px 20px 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.28fr) minmax(300px, 0.72fr);
+      gap: 22px;
+      align-items: stretch;
+      margin-top: 6px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .section,
+    .chart-shell,
+    .detail-panel,
+    .profile,
+    .work-row {
+      background: var(--surface);
+      border: 1px solid #e1e6ef;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 28px 30px;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 820;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 980px;
+      font-size: clamp(30px, 4.8vw, 58px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 18px 0 0;
+      max-width: 880px;
+      color: #303744;
+      font-size: 17px;
+      line-height: 1.72;
+    }
+
+    .claim-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .claim {
+      min-height: 112px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--surface-2);
+    }
+
+    .claim b {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      color: #1f2937;
+    }
+
+    .claim span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .hero-side {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: #e1e6ef;
+      border-bottom: 1px solid #e1e6ef;
+    }
+
+    .stat {
+      min-height: 92px;
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 27px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .map-note {
+      padding: 18px;
+    }
+
+    .map-note h2,
+    .section h2,
+    .chart-title h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .map-note p,
+    .section p {
+      margin: 10px 0 0;
+      color: #3d4655;
+      font-size: 14px;
+      line-height: 1.68;
+    }
+
+    .section {
+      margin-top: 20px;
+      padding: 24px;
+    }
+
+    .section-head {
+      max-width: 900px;
+      margin-bottom: 18px;
+    }
+
+    .axis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .axis-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface-2);
+    }
+
+    .axis-box h3 {
+      margin: 0;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+      font-size: 16px;
+    }
+
+    .scale {
+      display: grid;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .scale-row {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 10px 12px;
+      background: var(--surface-2);
+    }
+
+    .scale-row code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      border-radius: 6px;
+      color: #111827;
+      background: #e9edf5;
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .scale-row span {
+      color: #3d4655;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .example {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .example h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .example p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    .distribution {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .summary-item {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      margin-top: 4px;
+      border-radius: 999px;
+    }
+
+    .summary-item b {
+      display: block;
+      font-size: 13px;
+    }
+
+    .summary-item span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .quadrant {
+      min-height: 150px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .quadrant h3 {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .quadrant p {
+      margin-top: 7px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .quadrant ul {
+      margin: 9px 0 0;
+      padding-left: 18px;
+      color: #3d4655;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .interactive {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 16px;
+      margin-top: 20px;
+      align-items: stretch;
+    }
+
+    .chart-shell {
+      overflow: hidden;
+    }
+
+    .chart-title {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid #e8ecf3;
+    }
+
+    .chart-title p {
+      margin: 8px 0 0;
+      max-width: 980px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.52;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .filter,
+    .search {
+      min-height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      color: #344054;
+      font-size: 12px;
+    }
+
+    .filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      cursor: pointer;
+      font-weight: 650;
+    }
+
+    .filter.active {
+      border-color: #0f766e;
+      background: #e3f3ef;
+      color: #115e59;
+    }
+
+    .search {
+      flex: 1 1 220px;
+      padding: 6px 10px;
+      outline: none;
+    }
+
+    .plot-wrap {
+      position: relative;
+      min-height: 560px;
+      padding: 8px 10px 16px;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 560px;
+    }
+
+    .axis-line {
+      stroke: #8c96a8;
+      stroke-width: 1.4;
+    }
+
+    .grid-line {
+      stroke: #e4e8f0;
+      stroke-width: 1;
+    }
+
+    .axis-label {
+      fill: #344054;
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .axis-small {
+      fill: #667085;
+      font-size: 11px;
+    }
+
+    .point {
+      cursor: pointer;
+      stroke: #ffffff;
+      stroke-width: 2;
+      filter: drop-shadow(0 2px 2px rgba(15, 23, 42, 0.22));
+      transition: opacity 140ms ease, transform 140ms ease;
+    }
+
+    .point.dimmed,
+    .point-label.dimmed {
+      opacity: 0.18;
+    }
+
+    .point.active {
+      stroke: #111827;
+      stroke-width: 2.6;
+    }
+
+    .point-label {
+      fill: #1f2937;
+      font-size: 11px;
+      paint-order: stroke;
+      stroke: rgba(255, 255, 255, 0.95);
+      stroke-width: 4px;
+      stroke-linejoin: round;
+      pointer-events: none;
+    }
+
+    .detail-panel {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .detail-head {
+      padding: 18px;
+      border-bottom: 1px solid #e8ecf3;
+    }
+
+    .detail-head h2 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.25;
+    }
+
+    .cluster {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .scores {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .score {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface-2);
+    }
+
+    .score b {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .score span {
+      display: block;
+      margin-top: 4px;
+      font-size: 18px;
+      font-weight: 820;
+    }
+
+    .detail-body {
+      overflow: auto;
+      padding: 16px 18px 18px;
+    }
+
+    .section-title {
+      margin: 18px 0 8px;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 820;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .section-title:first-child {
+      margin-top: 0;
+    }
+
+    .detail-body p {
+      margin: 0;
+      color: #3d4655;
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .mini-work {
+      margin: 0 0 10px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fbfcfe;
+    }
+
+    .mini-work a {
+      display: block;
+      font-size: 13px;
+      font-weight: 760;
+      line-height: 1.35;
+    }
+
+    .mini-work span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .pill-list span {
+      padding: 4px 7px;
+      border-radius: 5px;
+      background: #e9edf5;
+      color: #344054;
+      font-size: 12px;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .profile {
+      padding: 18px;
+      scroll-margin-top: 72px;
+    }
+
+    .profile-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      border-bottom: 1px solid #e8ecf3;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+
+    .profile h3 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.25;
+    }
+
+    .profile .meta {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .coord {
+      flex: 0 0 auto;
+      min-width: 92px;
+      padding: 8px;
+      border-radius: 7px;
+      background: #eef1f6;
+      text-align: right;
+      color: #253044;
+      font-size: 12px;
+      font-weight: 760;
+      line-height: 1.45;
+    }
+
+    .profile dl {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+    }
+
+    .profile dt {
+      margin: 0;
+      color: #2f3948;
+      font-size: 12px;
+      font-weight: 820;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .profile dd {
+      margin: 5px 0 0;
+      color: #3d4655;
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    .profile ol,
+    .profile ul {
+      margin: 6px 0 0;
+      padding-left: 20px;
+      color: #3d4655;
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    .profile li + li {
+      margin-top: 4px;
+    }
+
+    .works-table {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .work-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.85fr) minmax(0, 1.2fr) 84px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 14px;
+      box-shadow: none;
+    }
+
+    .work-row b {
+      display: block;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .work-row span,
+    .work-row p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .footnote {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .interactive,
+      .distribution,
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-panel {
+        min-height: 520px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner,
+      .wrap {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero-main,
+      .section {
+        padding: 18px;
+      }
+
+      .claim-strip,
+      .axis-grid,
+      .example-grid,
+      .matrix,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .work-row {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-head {
+        display: block;
+      }
+
+      .coord {
+        margin-top: 10px;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">AI Social Thought Spectrum</div>
+      <nav class="nav" aria-label="Page sections">
+        <a href="#why-2d">为什么二维</a>
+        <a href="#distribution">分布</a>
+        <a href="#map">交互地图</a>
+        <a href="#profiles">人物思想</a>
+        <a href="#works">代表作</a>
+        <a href="#reading">阅读路线</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-main">
+        <p class="kicker">AI 意识形态地图</p>
+        <h1 id="page-title">AI 思想光谱不是一条线，而是一张二维地图</h1>
+        <p class="lead">
+          这个项目用一个二维坐标系介绍围绕先进 AI 的主要人物、流派和代表文本。横轴问的是：
+          面对 AI，我们应该暂停、治理、正常部署、积极建设，还是加速？纵轴问的是：
+          AI 应该服从人类社会目标，还是应当让计算、资本、技术演化或后人类未来超出人类中心主义？
+        </p>
+        <div class="claim-strip">
+          <div class="claim">
+            <b>不是 doomer 到 optimist 的单轴</b>
+            <span>Yudkowsky、Bender、Narayanan 都“警惕 AI”，但他们警惕的是完全不同的对象：灭绝风险、社会权力、 hype 与误用。</span>
+          </div>
+          <div class="claim">
+            <b>不是支持监管到反监管的单轴</b>
+            <span>Andrew Ng 与 Nick Land 都不属于暂停派，但一个强调人类生产力，一个把人类中心主义本身当作限制。</span>
+          </div>
+          <div class="claim">
+            <b>技术认识论也会改变政治位置</b>
+            <span>Sutton 的 Bitter Lesson 不是政策宣言，却削弱了“人类手工知识是智能核心”的直觉，因此必须单独放进地图。</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-side" aria-label="Project summary">
+        <div class="stats">
+          <div class="stat">
+            <strong id="statThinkers">20</strong>
+            <span>人物、机构或运动节点</span>
+          </div>
+          <div class="stat">
+            <strong id="statWorks">38</strong>
+            <span>代表性文本和机构文件</span>
+          </div>
+          <div class="stat">
+            <strong>2</strong>
+            <span>坐标轴：风险/治理，人类中心性</span>
+          </div>
+          <div class="stat">
+            <strong>8</strong>
+            <span>主要流派桶：安全、批判、扩展、乐观、加速等</span>
+          </div>
+        </div>
+        <div class="map-note">
+          <h2>这页的用途</h2>
+          <p>
+            它可以作为项目母页：先给出分类框架，再用散点图展示分布，然后逐个介绍人物思想、代表作品、影响渠道和阅读重点。
+            页面是单文件 HTML，不依赖服务器或外部库。
+          </p>
+          <p>
+            坐标是第一版研究假设，不是最终裁判。它更适合用于讨论、读书计划和定位新文章，而不是给人物贴永久标签。
+          </p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="why-2d">
+      <div class="section-head">
+        <h2>为什么这个维度是二维的？</h2>
+        <p>
+          单轴通常把人分成“悲观/乐观”或“监管/创新”，但 AI 思想的真实分歧至少有两个相对独立的问题：
+          第一，AI 的主要社会问题是灾难性风险、正常技术治理、现实社会伤害，还是加速不足？第二，人类是否应该继续作为智能系统的最终目的和控制中心？
+        </p>
+      </div>
+      <div class="axis-grid">
+        <div class="axis-box">
+          <h3>横轴：风险与治理立场</h3>
+          <div class="scale">
+            <div class="scale-row"><code>-2</code><span>停下、关停、硬 doomer：先进 AI 在当前路径上极可能带来文明级或灭绝级失败。</span></div>
+            <div class="scale-row"><code>-1</code><span>安全优先、alignment 优先、强治理：可以继续研究，但部署必须受安全和制度约束。</span></div>
+            <div class="scale-row"><code>0</code><span>普通技术、现实伤害或 hype 怀疑：AI 很重要，但不应被神化为单一末日或救世叙事。</span></div>
+            <div class="scale-row"><code>+1</code><span>建设和部署友好：AI 是生产力、科学和产品进步，应积极落地，同时处理副作用。</span></div>
+            <div class="scale-row"><code>+2</code><span>加速主义、奇点或强技术乐观：发展本身被看作道德、文明或演化上的核心方向。</span></div>
+          </div>
+        </div>
+
+        <div class="axis-box">
+          <h3>纵轴：人类中心性与反人类中心性</h3>
+          <div class="scale">
+            <div class="scale-row"><code>+2</code><span>民主、公正、权利和人类社会目标优先：AI 首先是人类制度中的权力和分配问题。</span></div>
+            <div class="scale-row"><code>+1</code><span>人类兼容、人类生存或偏好满足：重点是让系统对人类有益、可控、可校准。</span></div>
+            <div class="scale-row"><code>0</code><span>技术中性或混合：主要讨论架构、能力、商业或经验判断，不强烈押注人本或反人本。</span></div>
+            <div class="scale-row"><code>-1</code><span>计算中心、规模中心、反手工知识：相信搜索、学习、算力和一般方法压过人类直觉。</span></div>
+            <div class="scale-row"><code>-2</code><span>反人类中心、后人类或技术资本自治：技术演化不应由传统人类主义完全约束。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="example-grid">
+        <div class="example">
+          <h3>例子一：同样“担心 AI”，对象不同</h3>
+          <p>Yudkowsky 担心 alignment 失败导致人类灭绝；Bender/Gebru 担心数据、劳工、环境和代表性伤害；Narayanan/Kapoor 担心把普通技术包装成魔法。</p>
+        </div>
+        <div class="example">
+          <h3>例子二：同样“反暂停”，伦理不同</h3>
+          <p>Andrew Ng 的反暂停是生产力和实际应用乐观；Andreessen 的反暂停更强政治化；e/acc 和 Land 则把加速本身推到更高位置。</p>
+        </div>
+        <div class="example">
+          <h3>例子三：技术思想不等于政策思想</h3>
+          <p>Sutton 的 Bitter Lesson 主要是技术认识论，不是治理宣言；但它解释了为什么很多 AI 文化更信任规模、搜索和学习，而不是人类预设规则。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="distribution">
+      <div class="section-head">
+        <h2>这些思想大致处在什么分布？</h2>
+        <p>
+          第一版分布有一个明显特征：多数政策、伦理和安全人物仍然在纵轴上方，也就是人类保护、人类兼容或民主治理一侧。
+          右下角的反人类中心加速主义人数少，但解释力强，因为它给“为什么有人把约束视为危险”提供了极端参照。
+        </p>
+      </div>
+      <div class="distribution">
+        <div class="summary-list" id="categorySummary"></div>
+        <div class="matrix">
+          <div class="quadrant">
+            <h3>左上：安全、控制与人类保护</h3>
+            <p>这里聚集 x-risk、alignment 和强治理人物。核心问题是先进 AI 是否会脱离人类控制。</p>
+            <ul>
+              <li>Yudkowsky / MIRI</li>
+              <li>Bostrom</li>
+              <li>Russell、Christiano、Cotra、Hendrycks</li>
+            </ul>
+          </div>
+          <div class="quadrant">
+            <h3>中上：社会伤害、权力与普通技术</h3>
+            <p>这里不一定接受 AGI 灭绝叙事，而是把 AI 放回制度、数据、劳工、种族、环境和 hype 中理解。</p>
+            <ul>
+              <li>Bender / Gebru / Mitchell / McMillan-Major</li>
+              <li>Crawford、Benjamin</li>
+              <li>Narayanan / Kapoor、Marcus / Mitchell</li>
+            </ul>
+          </div>
+          <div class="quadrant">
+            <h3>右上：建设、部署与人类收益</h3>
+            <p>这里承认 AI 的治理问题，但总体认为应用、生产力和科学收益应当积极推进。</p>
+            <ul>
+              <li>Andrew Ng</li>
+              <li>Sam Altman / OpenAI</li>
+              <li>Dario Amodei / Anthropic 处在安全与建设之间</li>
+            </ul>
+          </div>
+          <div class="quadrant">
+            <h3>右下：规模、奇点与加速</h3>
+            <p>这里从技术认识论进入后人类或技术资本叙事。它不总是主流政策立场，但能解释 AI 文化中的加速冲动。</p>
+            <ul>
+              <li>Rich Sutton、Yann LeCun</li>
+              <li>Ray Kurzweil、Marc Andreessen</li>
+              <li>e/acc、Nick Land</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="interactive" id="map" aria-label="Interactive thought map">
+      <section class="chart-shell" aria-label="AI thought spectrum chart">
+        <div class="chart-title">
+          <h2>交互二维地图</h2>
+          <p>
+            横轴越左，越偏暂停、关停、安全优先或治理优先；越右，越偏建设、部署、技术乐观或加速。
+            纵轴越上，越强调人类中心、民主治理和人类兼容；越下，越强调计算中心、后人类或技术资本自治。
+          </p>
+          <div class="toolbar" id="filters" aria-label="Category filters"></div>
+          <div class="toolbar">
+            <input class="search" id="search" type="search" placeholder="搜索人物、流派、作品或关键词">
+          </div>
+        </div>
+        <div class="plot-wrap">
+          <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
+            <title id="chartTitle">AI 思想二维散点图</title>
+            <desc id="chartDesc">A two-axis chart placing AI thinkers and movements by governance stance and humanism stance.</desc>
+          </svg>
+        </div>
+      </section>
+
+      <aside class="detail-panel" aria-label="Selected thinker details">
+        <div class="detail-head">
+          <h2 id="detailName">选择一个节点</h2>
+          <div class="cluster" id="detailCluster">点击散点图中的人物或流派，查看思想概况、代表作和阅读重点。</div>
+          <div class="scores">
+            <div class="score">
+              <b>风险/治理</b>
+              <span id="riskScore">-</span>
+            </div>
+            <div class="score">
+              <b>人类中心性</b>
+              <span id="humanismScore">-</span>
+            </div>
+            <div class="score">
+              <b>影响力</b>
+              <span id="influenceScore">-</span>
+            </div>
+          </div>
+        </div>
+        <div class="detail-body">
+          <div class="section-title">核心思想</div>
+          <p id="stanceText">这张图默认先选中 Rich Sutton，因为 Bitter Lesson 是理解当代 AI 文化的技术认识论锚点。</p>
+          <div class="section-title">为什么放在这里</div>
+          <p id="placementText">坐标是第一版分类，用来帮助讨论，不是最终标签。</p>
+          <div class="section-title">代表作</div>
+          <div id="worksMini"></div>
+          <div class="section-title">影响渠道</div>
+          <div class="pill-list" id="basis"></div>
+          <div class="section-title">阅读重点</div>
+          <p id="readingFocus"></p>
+          <p class="footnote"><a id="profileJump" href="#profiles">跳到下方完整人物卡片</a></p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="profiles">
+      <div class="section-head">
+        <h2>人物与流派思想介绍</h2>
+        <p>
+          每张卡片都回答四个问题：这个人或流派的核心思想是什么，为什么放在这个坐标，代表性工作有哪些，以及阅读时最该抓住什么。
+          为了避免把复杂思想压扁，卡片同时保留了“强对照位置”：也就是它最容易被误读或最应该拿来比较的另一端。
+        </p>
+      </div>
+      <div class="profile-grid" id="profileGrid"></div>
+    </section>
+
+    <section class="section" id="works">
+      <div class="section-head">
+        <h2>代表性工作总表</h2>
+        <p>
+          这个表不是完整 bibliography，而是用于定位思想流派的 first-pass reading list。优先读“highest”和“high”的文本；
+          它们通常是一个流派的核心声明、机构文件或被反复引用的争论锚点。
+        </p>
+      </div>
+      <div class="works-table" id="worksTable"></div>
+    </section>
+
+    <section class="section" id="reading">
+      <div class="section-head">
+        <h2>建议阅读路线</h2>
+        <p>
+          如果目标是快速建立判断力，不要按人物名随机读。更好的顺序是先读每个象限的锚点，再回到具体人物。
+        </p>
+      </div>
+      <div class="example-grid">
+        <div class="example">
+          <h3>第一步：先读技术认识论和安全极端</h3>
+          <p>从 Sutton 的 <i>The Bitter Lesson</i> 入手，再读 Yudkowsky 2008/2022 和 Bostrom 2012/2014。这样能先理解“规模为什么有吸引力”和“失控为什么被一些人看成灭绝问题”。</p>
+        </div>
+        <div class="example">
+          <h3>第二步：读批判 AI 和普通技术</h3>
+          <p>读 <i>Stochastic Parrots</i>、Crawford、Benjamin、Narayanan/Kapoor。它们把讨论从未来 AGI 拉回现实制度、数据、劳工、种族、环境和评估。</p>
+        </div>
+        <div class="example">
+          <h3>第三步：读乐观与加速主义</h3>
+          <p>读 Amodei、OpenAI、Ng、Andreessen、Kurzweil、e/acc 和 Land。重点不是问“谁对谁错”，而是看他们如何定义收益、约束、人类和未来。</p>
+        </div>
+      </div>
+      <p class="footnote">
+        数据来源：本项目的 <code>data/ai-thought-spectrum.json</code> 与 <code>research/2026-05-14-ai-social-thought-spectrum-source-map.md</code>。
+        页面最后更新：2026-05-16。部分代表作链接指向作者主页、机构页面、出版社、arXiv、ACM 或公开 essay。
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const thinkers = [
+      {
+        id: "eliezer-yudkowsky",
+        name: "Eliezer Yudkowsky",
+        shortName: "Yudkowsky",
+        cluster: "Rationalist AI x-risk / MIRI",
+        category: "X-risk safety",
+        risk: -2,
+        humanism: 1,
+        influence: 5,
+        stance: "先进 AI 很可能在 alignment 未解决时杀死人类；问题不是普通安全漏洞，而是目标错位后系统会以压倒性能力追求非人类目标。",
+        placement: "他在横轴最左侧，因为其公共立场接近关停或强暂停；纵轴为 +1，因为目标是保护人类生存，但他的论证并不主要通过民主正义或社会权力框架展开。",
+        focus: "读他时要抓住两个层次：一是智能体目标错位的技术论证，二是他为什么认为渐进式治理、evals 或行业自律都不足以改变结局。",
+        counter: "最强对照不是一般乐观派，而是 Christiano/Russell 这类仍接受重大风险但认为可通过技术和制度逐步降低风险的人。",
+        basis: ["movement formation", "AI alignment field-building", "public discourse"],
+        works: [
+          { title: "Artificial Intelligence as a Positive and Negative Factor in Global Risk", year: 2008, type: "chapter / essay", priority: "highest", url: "https://www.yudkowsky.net/wp-content/uploads/2020/09/AIPosNegFactor.pdf", why: "早期 rationalist AI x-risk 的经典表述。" },
+          { title: "AGI Ruin: A List of Lethalities", year: 2022, type: "essay", priority: "highest", url: "https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities", why: "最紧凑的 hard-doomer 公共论证。" },
+          { title: "Pausing AI Developments Isn't Enough. We Need to Shut It All Down", year: 2023, type: "public essay", priority: "high", url: "https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/", why: "面向主流媒体的关停论证。" }
+        ]
+      },
+      {
+        id: "nick-bostrom",
+        name: "Nick Bostrom",
+        shortName: "Bostrom",
+        cluster: "Superintelligence / philosophical x-risk",
+        category: "X-risk safety",
+        risk: -2,
+        humanism: 1,
+        influence: 5,
+        stance: "超级智能可能形成工具性趋同目标，例如自我保护、资源获取和摆脱约束；如果目标不兼容，人类会失去控制权。",
+        placement: "他与 Yudkowsky 同在左侧极端，但风格更哲学化、战略化。纵轴 +1 是因为核心对象是人类生存和控制，而不是社会正义或民主分配。",
+        focus: "重点读 instrumental convergence、orthogonality thesis 和 intelligence explosion 如何连成一个风险模型。",
+        counter: "最直接的对照是 normal-technology 观点：它会质疑超级智能框架是否过度抽象、是否跳过了现实制度和工程限制。",
+        basis: ["academic citations", "policy discourse", "movement formation"],
+        works: [
+          { title: "Ethical Issues in Advanced Artificial Intelligence", year: 2003, type: "essay", priority: "high", url: "https://nickbostrom.com/ethics/ai", why: "早期高级 AI 伦理和风险框架。" },
+          { title: "The Superintelligent Will: Motivation and Instrumental Rationality in Advanced Artificial Agents", year: 2012, type: "academic paper", priority: "highest", url: "https://nickbostrom.com/superintelligentwill.pdf", why: "工具性趋同的核心来源。" },
+          { title: "Superintelligence: Paths, Dangers, Strategies", year: 2014, type: "book", priority: "highest", url: "https://global.oup.com/academic/product/superintelligence-9780199678112", why: "书长形式的领域定义性 x-risk 论证。" }
+        ]
+      },
+      {
+        id: "stuart-russell",
+        name: "Stuart Russell",
+        shortName: "Russell",
+        cluster: "Beneficial AI / human-compatible AI",
+        category: "X-risk safety",
+        risk: -1,
+        humanism: 2,
+        influence: 5,
+        stance: "AI 系统不应被设计成固定目标的最大化器，而应承认自己不确定人类偏好，并持续从人类行为中学习如何有益。",
+        placement: "横轴 -1，因为他强烈安全优先但不是关停派；纵轴 +2，因为其方案明确把 human-compatible 和人类偏好放在设计原则中心。",
+        focus: "读他时要看 beneficial AI 与传统目标函数最大化之间的差异：问题不是给 AI 一个更好的目标，而是重写目标设定的制度和形式。",
+        counter: "Yudkowsky 会质疑这种可证明有益路径是否足够；LeCun/Ng 则可能认为风险叙事高估了当前技术路线。",
+        basis: ["academic authority", "textbook influence", "institution-building", "policy discourse"],
+        works: [
+          { title: "Human Compatible: Artificial Intelligence and the Problem of Control", year: 2019, type: "book", priority: "highest", url: "https://www.penguinrandomhouse.com/books/566677/human-compatible-by-stuart-russell/", why: "控制问题和 beneficial-AI 的主要公共表述。" },
+          { title: "Provably Beneficial Artificial Intelligence", year: 2016, type: "lecture / paper frame", priority: "medium", url: "https://people.eecs.berkeley.edu/~russell/research/future/q-and-a.html", why: "人类兼容 AI 的技术入口。" }
+        ]
+      },
+      {
+        id: "paul-christiano",
+        name: "Paul Christiano",
+        shortName: "Christiano",
+        cluster: "Scalable alignment / technical safety",
+        category: "X-risk safety",
+        risk: -1,
+        humanism: 1,
+        influence: 4,
+        stance: "AI 失败不一定来自突然的恶意超级智能，也可能来自逐步委托、监督失败、优化压力和人类无法评估复杂任务。",
+        placement: "横轴 -1，因为他处于严肃 alignment 风险阵营；纵轴 +1，因为其关注点是让系统可监督、可校准、最终服务人类判断。",
+        focus: "重点看 scalable oversight：当人类无法直接判断复杂答案时，如何用 debate、amplification 或训练流程维持监督。",
+        counter: "hard doomer 会认为这些方案仍无法覆盖最危险的失控；normal-tech 派会认为这类失败模型太 AGI 中心。",
+        basis: ["technical alignment", "OpenAI safety lineage", "field-building"],
+        works: [
+          { title: "What Failure Looks Like", year: 2019, type: "essay", priority: "highest", url: "https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like", why: "渐进式失败模型的经典文本。" },
+          { title: "AI Safety via Debate", year: 2018, type: "paper", priority: "high", url: "https://arxiv.org/abs/1805.00899", why: "scalable oversight 的代表方案。" }
+        ]
+      },
+      {
+        id: "ajeya-cotra",
+        name: "Ajeya Cotra",
+        shortName: "Cotra",
+        cluster: "AI timelines / Open Philanthropy",
+        category: "X-risk safety",
+        risk: -1,
+        humanism: 1,
+        influence: 4,
+        stance: "可以用算力需求和生物锚点来预测 transformative AI 时间线；时间线越短，安全和治理越紧急。",
+        placement: "她不是完整意识形态人物，但在安全生态里影响很大，因为 timeline 判断会决定资源分配、政策紧迫性和研究优先级。",
+        focus: "重点不是把生物锚点当精确预言，而是理解 timeline forecast 如何把技术参数转化为社会行动紧迫性。",
+        counter: "LeCun/Marcus/Mitchell 等能力怀疑者会质疑从算力到通用智能的外推是否可靠。",
+        basis: ["AI safety timelines", "grantmaking", "EA and policy discourse"],
+        works: [
+          { title: "Forecasting Transformative AI with Biological Anchors", year: 2020, type: "report", priority: "high", url: "https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines", why: "影响较大的 compute-based timelines 报告。" },
+          { title: "Forecasting Transformative AI: The Biological Anchors Method in a Nutshell", year: 2021, type: "summary essay", priority: "medium", url: "https://www.cold-takes.com/forecasting-transformative-ai-the-biological-anchors-method-in-a-nutshell/", why: "timeline 方法的可读总结。" }
+        ]
+      },
+      {
+        id: "dario-amodei-anthropic",
+        name: "Dario Amodei / Anthropic",
+        shortName: "Amodei / Anthropic",
+        cluster: "Frontier-lab safety optimism",
+        category: "Frontier lab governance",
+        risk: -0.5,
+        humanism: 1,
+        influence: 5,
+        stance: "前沿 AI 可能带来巨大利益，但继续 scaling 必须伴随安全研究、评估阈值、部署限制和责任制度。",
+        placement: "他处在安全与建设之间：比普通乐观派更强调风险，比暂停派更愿意继续推进 frontier lab scaling。",
+        focus: "读时要抓住“高风险 + 高上限 + 机构化治理”的组合：这不是纯 doomer，也不是无条件加速。",
+        counter: "暂停派会认为实验室自我治理不够；critical AI 会问这种治理是否忽略劳工、权力和市场集中。",
+        basis: ["frontier lab policy", "public discourse", "industry practice"],
+        works: [
+          { title: "Core Views on AI Safety", year: 2023, type: "company essay", priority: "high", url: "https://www.anthropic.com/news/core-views-on-ai-safety", why: "Anthropic 对风险、alignment 和安全部署的公司级表述。" },
+          { title: "Anthropic's Responsible Scaling Policy", year: 2023, type: "policy document", priority: "high", url: "https://www.anthropic.com/news/anthropics-responsible-scaling-policy", why: "eval-triggered safety governance 的重要机构化文件。" },
+          { title: "Machines of Loving Grace", year: 2024, type: "essay", priority: "highest", url: "https://www.darioamodei.com/machines-of-loving-grace", why: "安全意识下的高收益 AI 乐观主义。" }
+        ]
+      },
+      {
+        id: "dan-hendrycks-cais",
+        name: "Dan Hendrycks / Center for AI Safety",
+        shortName: "Hendrycks / CAIS",
+        cluster: "Public AI x-risk and ML safety",
+        category: "X-risk safety",
+        risk: -1.5,
+        humanism: 1,
+        influence: 4,
+        stance: "AI 应被视为社会级风险，与核战争、疫情等全球风险一起纳入公共治理和技术安全议程。",
+        placement: "横轴在 -1.5，因为它连接技术 ML safety 和公共灭绝风险倡议；纵轴 +1，因为目标是人类安全，而不是后人类愿景。",
+        focus: "看它如何把 benchmark、安全问题列表和一句话风险声明转化为公共政策与学术 agenda。",
+        counter: "normal-tech 与 critical AI 都会质疑：把注意力集中在灭绝风险是否挤压了现实伤害和能力评估问题。",
+        basis: ["public discourse", "policy agenda-setting", "ML safety benchmarks"],
+        works: [
+          { title: "Unsolved Problems in ML Safety", year: 2021, type: "paper", priority: "high", url: "https://arxiv.org/abs/2109.13916", why: "技术安全 agenda 来源。" },
+          { title: "Statement on AI Risk", year: 2023, type: "public statement", priority: "high", url: "https://www.safe.ai/work/statement-on-ai-risk", why: "公共灭绝风险声明的代表文本。" }
+        ]
+      },
+      {
+        id: "bender-gebru-mitchell-mcmillan-major",
+        name: "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major",
+        shortName: "Stochastic Parrots",
+        cluster: "Critical AI / stochastic parrots",
+        category: "Critical AI",
+        risk: 0,
+        humanism: 2,
+        influence: 5,
+        stance: "大语言模型的危险不只在未来 AGI，而在当下的社会、环境、劳工、数据、代表性和权力问题。",
+        placement: "横轴 0，因为它不是 doomer 也不是加速派，而是现实伤害和制度批判；纵轴 +2，因为它明确以人类社会、公正和问责为中心。",
+        focus: "读时要把它看作 critical AI 的锚点：它批评的不是“模型会不会聪明”，而是规模叙事如何遮蔽伤害和责任。",
+        counter: "Bitter Lesson/scale 派会认为它低估了通用方法带来的能力进步；x-risk 派会认为它低估了未来极端风险。",
+        basis: ["academic citations", "public controversy", "AI ethics field-building", "policy discourse"],
+        works: [
+          { title: "On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?", year: 2021, type: "conference paper", priority: "highest", url: "https://dl.acm.org/doi/10.1145/3442188.3445922", why: "大型语言模型 critical-AI 批判的经典论文。" }
+        ]
+      },
+      {
+        id: "kate-crawford",
+        name: "Kate Crawford",
+        shortName: "Crawford",
+        cluster: "AI political economy / extraction",
+        category: "Critical AI",
+        risk: 0,
+        humanism: 2,
+        influence: 4,
+        stance: "AI 不是无形智能，而是由矿产、能源、劳工、数据、分类系统、公司和国家权力组成的物质基础设施。",
+        placement: "她在中上方：不以 AGI 灭绝为核心，也不以能力乐观为核心，而把 AI 当作政治经济和提取系统。",
+        focus: "读时要追问每个 AI 系统背后的供应链、数据集、分类标准和制度权力，而不是只看模型输出。",
+        counter: "frontier-lab 安全叙事可能认为她对 AGI 风险关注不足；技术乐观派则会认为她低估了 AI 的社会收益。",
+        basis: ["academic discourse", "public discourse", "AI ethics"],
+        works: [
+          { title: "Atlas of AI", year: 2021, type: "book", priority: "high", url: "https://yalebooks.yale.edu/book/9780300264630/atlas-of-ai/", why: "AI 物质基础和政治经济批判的书长版本。" },
+          { title: "Excavating AI", year: 2019, type: "essay / project", priority: "medium", url: "https://excavating.ai/", why: "图像数据集、分类和权力的具体谱系。" }
+        ]
+      },
+      {
+        id: "ruha-benjamin",
+        name: "Ruha Benjamin",
+        shortName: "Benjamin",
+        cluster: "Race, automation, and technology critique",
+        category: "Critical AI",
+        risk: 0,
+        humanism: 2,
+        influence: 4,
+        stance: "自动化系统常以中立和客观的名义复制、放大种族等级和社会不平等。",
+        placement: "横轴 0，因为重点是现实社会秩序而非 AGI 极端风险；纵轴 +2，因为她明确从人类尊严、公正和反种族主义出发。",
+        focus: "读她时不要把问题缩小成算法偏差修补，而要看技术如何嵌入制度想象、分类和治理。",
+        counter: "normal-tech 派会与她共享反 hype，但可能更重评估和误用；x-risk 派则把焦点放到未来失控。",
+        basis: ["academic discourse", "public discourse", "critical technology studies"],
+        works: [
+          { title: "Race After Technology", year: 2019, type: "book", priority: "medium", url: "https://www.ruhabenjamin.com/race-after-technology", why: "技术、种族和自动化社会秩序的关键文本。" }
+        ]
+      },
+      {
+        id: "narayanan-kapoor",
+        name: "Arvind Narayanan and Sayash Kapoor",
+        shortName: "Narayanan / Kapoor",
+        cluster: "AI hype skepticism / normal technology",
+        category: "Normal technology",
+        risk: 0,
+        humanism: 1.5,
+        influence: 4,
+        stance: "AI 是强大但经常被夸大的技术；必须区分真实能力、snake oil、统计预测误用和魔法式 AGI 叙事。",
+        placement: "横轴 0 是 normal-technology 立场；纵轴 1.5 是因为其判断服务于人类机构决策、消费者保护和政策清醒。",
+        focus: "读时抓住评估方法：什么问题适合 AI，什么是伪预测，什么是把未知能力包装成确定产品。",
+        counter: "x-risk 派会说他们低估了尾部风险；techno-optimist 会说他们压低了变革潜力。",
+        basis: ["public discourse", "policy discourse", "academic credibility"],
+        works: [
+          { title: "AI Snake Oil", year: 2024, type: "book", priority: "high", url: "https://www.aisnakeoil.com/", why: "可读的 anti-hype 和普通技术框架。" },
+          { title: "AI as Normal Technology", year: 2025, type: "essay / paper", priority: "high", url: "https://knightcolumbia.org/content/ai-as-normal-technology", why: "对乌托邦和灾难例外主义的简洁反框架。" }
+        ]
+      },
+      {
+        id: "gary-marcus-melanie-mitchell",
+        name: "Gary Marcus / Melanie Mitchell",
+        shortName: "Marcus / Mitchell",
+        cluster: "Deep learning skepticism",
+        category: "Normal technology",
+        risk: 0,
+        humanism: 0.5,
+        influence: 4,
+        stance: "当前深度学习很强，但脆弱、缺少稳健抽象和常识；不应把成功外推为通用智能已经近在眼前。",
+        placement: "横轴 0，因为这是能力和 hype 怀疑，不是暂停或加速政策；纵轴 0.5，因为它略偏人类理解和认知结构，但主要是技术判断。",
+        focus: "读时看他们对 out-of-distribution、symbolic reasoning、common sense 和历史 AI 过度承诺的批评。",
+        counter: "Bitter Lesson 派会认为手工结构和人类直觉终究会输给规模；frontier labs 会说实践能力进步快于怀疑者预期。",
+        basis: ["public discourse", "technical critique", "AI skepticism"],
+        works: [
+          { title: "Deep Learning: A Critical Appraisal", year: 2018, type: "paper", priority: "medium", url: "https://arxiv.org/abs/1801.00631", why: "深度学习泛化能力怀疑的代表论文。" },
+          { title: "Why AI Is Harder Than We Think", year: 2021, type: "paper", priority: "medium", url: "https://arxiv.org/abs/2104.12871", why: "关于 AI 反复过度承诺的可读批评。" }
+        ]
+      },
+      {
+        id: "rich-sutton",
+        name: "Rich Sutton",
+        shortName: "Sutton",
+        cluster: "Bitter Lesson / computation-centered AI",
+        category: "Scaling thought",
+        risk: 1,
+        humanism: -1,
+        influence: 5,
+        stance: "长期来看，利用搜索、学习和计算的一般方法会胜过把人类领域知识手工编码进系统的办法。",
+        placement: "横轴 +1，因为它支持继续沿计算和学习扩展路线前进；纵轴 -1，因为它反人类直觉中心，但并不是 Land 式反人类政治。",
+        focus: "读时抓住“技术认识论”：AI 进步不是来自把人类知识写进去，而是来自让系统用更多计算从数据和环境中学。",
+        counter: "critical AI 会问规模路线的社会代价；Marcus/Mitchell 会问一般方法是否足以获得稳健理解。",
+        basis: ["field paradigm", "lab culture", "technical AI discourse"],
+        works: [
+          { title: "The Bitter Lesson", year: 2019, type: "essay", priority: "highest", url: "http://www.incompleteideas.net/IncIdeas/BitterLesson.html", why: "规模、搜索、学习和一般方法的经典声明。" }
+        ]
+      },
+      {
+        id: "yann-lecun",
+        name: "Yann LeCun",
+        shortName: "LeCun",
+        cluster: "Open-source / architecture optimism / anti-doom",
+        category: "Scaling thought",
+        risk: 1,
+        humanism: 0,
+        influence: 5,
+        stance: "当前系统还不是通用智能，未来需要世界模型和新架构；近端 doomer 叙事夸大了现有路线的危险。",
+        placement: "横轴 +1，因为他是建设和架构乐观派；纵轴 0，因为其论证主要是技术和能力判断，不是明确人本主义或后人类主义。",
+        focus: "读时看他如何区分 LLM 成就、世界模型、自治智能和长期架构路线。",
+        counter: "x-risk 派会认为他低估了 scaling 已经产生的危险；Marcus/Mitchell 与他共享部分深度学习限制判断，但政策语气不同。",
+        basis: ["technical authority", "industry leadership", "public discourse"],
+        works: [
+          { title: "A Path Towards Autonomous Machine Intelligence", year: 2022, type: "position paper", priority: "high", url: "https://openreview.net/forum?id=BZ5a1r-kVsf", why: "未来 AI 架构和 world model 路线的代表文本。" }
+        ]
+      },
+      {
+        id: "andrew-ng",
+        name: "Andrew Ng",
+        shortName: "Ng",
+        cluster: "Pragmatic AI optimism",
+        category: "Pragmatic optimism",
+        risk: 1,
+        humanism: 1,
+        influence: 4,
+        stance: "AI 像电力一样是通用技术，应广泛用于提高生产力、产业效率和实际产品价值。",
+        placement: "横轴 +1，因为他强调部署和建设；纵轴 +1，因为收益框架仍是人类组织、经济和实际应用。",
+        focus: "读时不要把他当作奇点思想家，而要看他如何把 AI 转译成企业应用、教育和工程实践。",
+        counter: "critical AI 会问部署带来的不平等和权力问题；hard safety 会问这种应用乐观是否低估前沿风险。",
+        basis: ["education", "industry adoption", "public discourse"],
+        works: [
+          { title: "AI is the New Electricity", year: 2017, type: "public talk / essay theme", priority: "medium", url: "https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity", why: "商业生产力框架的代表表达。" }
+        ]
+      },
+      {
+        id: "sam-altman-openai",
+        name: "Sam Altman / OpenAI",
+        shortName: "Altman / OpenAI",
+        cluster: "Managed AGI optimism",
+        category: "Frontier lab governance",
+        risk: 1,
+        humanism: 1,
+        influence: 5,
+        stance: "AGI 可以带来广泛繁荣和能力跃迁，但需要安全、治理、利益共享和制度化部署安排。",
+        placement: "横轴 +1，因为它是 managed build 的 AGI 乐观；纵轴 +1，因为公开叙事仍把人类收益和制度安排作为目标。",
+        focus: "读时看 abundance 叙事如何与 charter、治理承诺和 frontier lab 商业现实结合。",
+        counter: "Yudkowsky 会质疑继续建设本身；critical AI 会质疑利益共享语言是否足以处理权力集中和劳动替代。",
+        basis: ["frontier lab", "capital allocation", "public discourse", "policy discourse"],
+        works: [
+          { title: "OpenAI Charter", year: 2018, type: "institutional charter", priority: "high", url: "https://openai.com/charter/", why: "AGI 和 benefit-sharing 的机构核心声明。" },
+          { title: "Planning for AGI and Beyond", year: 2023, type: "company essay", priority: "high", url: "https://openai.com/blog/planning-for-agi-and-beyond", why: "OpenAI 关于 AGI、安全和治理的公开框架。" },
+          { title: "The Intelligence Age", year: 2024, type: "essay", priority: "high", url: "https://ia.samaltman.com/", why: "AGI abundance 乐观主义的简洁表述。" }
+        ]
+      },
+      {
+        id: "ray-kurzweil",
+        name: "Ray Kurzweil",
+        shortName: "Kurzweil",
+        cluster: "Singularity / transhumanist optimism",
+        category: "Techno-optimism",
+        risk: 2,
+        humanism: -0.5,
+        influence: 5,
+        stance: "计算、AI、生物技术和人机融合会推动奇点到来，人类未来将通过技术扩展自身能力和形态。",
+        placement: "横轴 +2，因为这是强技术乐观和奇点叙事；纵轴 -0.5，因为它部分后人类，但通常仍以人类增强和延续为正面愿景。",
+        focus: "读时看指数增长、奇点时间线、人机融合和 transhumanism 如何组织成一个未来叙事。",
+        counter: "normal-tech 和 capability skeptic 会质疑指数外推；critical AI 会问这种未来想象忽略谁的身体、资源和社会条件。",
+        basis: ["public discourse", "transhumanist movement", "technology culture"],
+        works: [
+          { title: "The Singularity Is Near", year: 2005, type: "book", priority: "high", url: "https://www.penguinrandomhouse.com/books/288771/the-singularity-is-near-by-ray-kurzweil/", why: "现代奇点乐观主义的代表书。" },
+          { title: "The Singularity Is Nearer", year: 2024, type: "book", priority: "medium", url: "https://www.penguinrandomhouse.com/books/669467/the-singularity-is-nearer-by-ray-kurzweil/", why: "更新版奇点论述。" }
+        ]
+      },
+      {
+        id: "marc-andreessen",
+        name: "Marc Andreessen",
+        shortName: "Andreessen",
+        cluster: "Techno-optimism / anti-pause politics",
+        category: "Techno-optimism",
+        risk: 2,
+        humanism: 0.5,
+        influence: 4,
+        stance: "AI 应该被积极发展，因为它能扩大丰裕、解决问题、提升人类能力；过度监管或暂停会伤害未来。",
+        placement: "横轴 +2，因为他是明确 anti-pause 的技术乐观政治；纵轴 +0.5，因为叙事仍声称服务人类繁荣，但带有强市场和反监管倾向。",
+        focus: "读时看他如何把 AI 乐观、市场自由、反监管和文明进步绑定到同一政治叙事。",
+        counter: "critical AI 会质疑权力、劳动和不平等；x-risk 派会认为这种乐观低估尾部风险。",
+        basis: ["venture capital", "public discourse", "political ideology", "tech culture"],
+        works: [
+          { title: "Why AI Will Save the World", year: 2023, type: "essay", priority: "highest", url: "https://a16z.com/ai-will-save-the-world/", why: "当代 pro-AI anti-doomer 的代表 essay。" },
+          { title: "The Techno-Optimist Manifesto", year: 2023, type: "manifesto", priority: "high", url: "https://a16z.com/the-techno-optimist-manifesto/", why: "AI 乐观背后的更广技术政治宣言。" }
+        ]
+      },
+      {
+        id: "effective-accelerationism",
+        name: "e/acc / effective accelerationism",
+        shortName: "e/acc",
+        cluster: "Accelerationist AI politics",
+        category: "Accelerationism",
+        risk: 2,
+        humanism: -1.5,
+        influence: 3,
+        stance: "技术加速本身被视为道德和文明任务；监管、暂停和安全话语常被看作更大的风险。",
+        placement: "横轴 +2，因为它把加速推到核心；纵轴 -1.5，因为它通常弱化人类中心治理，强调技术演化、市场和去中心化加速。",
+        focus: "读时要注意它更多是 memetic/political movement，而不是严密学术体系；不同自称 e/acc 的人内部差异很大。",
+        counter: "安全派认为它把风险外部性浪漫化；critical AI 认为它把权力和伤害当成发展成本。",
+        basis: ["memetic influence", "tech culture", "anti-regulation politics"],
+        works: [
+          { title: "Effective Accelerationism", year: 2022, type: "manifesto / movement text", priority: "medium", url: "https://effectiveacceleration.tech/", why: "当代 e/acc framing 的运动来源。" }
+        ]
+      },
+      {
+        id: "nick-land",
+        name: "Nick Land",
+        shortName: "Land",
+        cluster: "Accelerationism / Dark Enlightenment",
+        category: "Accelerationism",
+        risk: 2,
+        humanism: -2,
+        influence: 4,
+        stance: "资本、技术和智能被想象为超出人类主义控制的自主 runaway process；人类并不是未来的最终尺度。",
+        placement: "他是右下角极端：加速、技术资本自治、反人类中心和后人类谱系。重要性主要是思想谱系和文化影响，不是主流 AI 技术政策。",
+        focus: "读时要谨慎区分其早期 cybernetic accelerationism 与后期 Dark Enlightenment 政治；这里把他作为边界案例而非规范推荐。",
+        counter: "几乎所有 human-centered 流派都是对照：AI safety 保护人类生存，critical AI 保护民主和公正，normal-tech 则拒绝神秘化技术资本。",
+        basis: ["genealogical influence", "political subculture", "accelerationist thought"],
+        works: [
+          { title: "Meltdown", year: 1994, type: "essay", priority: "high", url: "https://www.ccru.net/swarm1/1_melt.htm", why: "cybernetic / accelerationist anti-humanism 的经典文本。" },
+          { title: "The Dark Enlightenment", year: 2012, type: "essay series", priority: "high", url: "https://www.thedarkenlightenment.com/the-dark-enlightenment-by-nick-land/", why: "Land 后期反动政治谱系的重要文本，需谨慎处理。" }
+        ]
+      }
+    ];
+
+    const movementDocs = [
+      { id: "pause-giant-ai-experiments", title: "Pause Giant AI Experiments: An Open Letter", year: 2023, cluster: "AI pause / governance", url: "https://futureoflife.org/open-letter/pause-giant-ai-experiments/", why: "pause position 的运动文件。" },
+      { id: "statement-on-ai-risk", title: "Statement on AI Risk", year: 2023, cluster: "AI extinction-risk public messaging", url: "https://www.safe.ai/work/statement-on-ai-risk", why: "公共 x-risk 声明的压缩版本。" },
+      { id: "bletchley-declaration", title: "The Bletchley Declaration", year: 2023, cluster: "AI safety governance", url: "https://www.gov.uk/government/publications/ai-safety-summit-2023-the-bletchley-declaration/the-bletchley-declaration-by-countries-attending-the-ai-safety-summit-1-2-november-2023", why: "政府层面对 frontier AI safety 的制度化表达。" }
+    ];
+
+    const categoryInfo = {
+      "X-risk safety": {
+        zh: "X-risk / alignment safety",
+        color: "#b42318",
+        summary: "把先进 AI 视为潜在文明级风险，核心问题是控制、alignment、监督和时间线。"
+      },
+      "Frontier lab governance": {
+        zh: "前沿实验室治理",
+        color: "#0f766e",
+        summary: "同时接受高上限和高风险，主张 continued scaling 但配合 evals、部署门槛和制度承诺。"
+      },
+      "Critical AI": {
+        zh: "Critical AI / 社会伤害",
+        color: "#7c3aed",
+        summary: "关注现实制度、数据、劳工、环境、种族、表示和权力，而不是只讨论未来 AGI。"
+      },
+      "Normal technology": {
+        zh: "普通技术 / hype 怀疑",
+        color: "#475569",
+        summary: "承认 AI 重要但反对神化，强调能力评估、误用、脆弱性和过度承诺。"
+      },
+      "Scaling thought": {
+        zh: "Scaling / Bitter Lesson",
+        color: "#0369a1",
+        summary: "强调搜索、学习、计算和一般方法，削弱人类手工知识中心主义。"
+      },
+      "Pragmatic optimism": {
+        zh: "务实 AI 乐观",
+        color: "#15803d",
+        summary: "把 AI 当作生产力和应用平台，关注教育、产品、企业和产业落地。"
+      },
+      "Techno-optimism": {
+        zh: "技术乐观 / 奇点",
+        color: "#c2410c",
+        summary: "把 AI 放入丰裕、奇点、市场自由或文明进步叙事中。"
+      },
+      "Accelerationism": {
+        zh: "加速主义 / 后人类边界",
+        color: "#7f1d1d",
+        summary: "把约束视为风险，把技术、资本或智能演化推到人类中心之外。"
+      }
+    };
+
+    const svg = document.getElementById("chart");
+    const width = 1000;
+    const height = 660;
+    const margin = { top: 52, right: 58, bottom: 86, left: 82 };
+    const plotW = width - margin.left - margin.right;
+    const plotH = height - margin.top - margin.bottom;
+    let activeCategory = "All";
+    let activePoint = null;
+
+    const jitter = {
+      "eliezer-yudkowsky": [-16, -12],
+      "nick-bostrom": [16, 10],
+      "paul-christiano": [-16, 8],
+      "ajeya-cotra": [14, -10],
+      "andrew-ng": [-15, -11],
+      "sam-altman-openai": [16, 11],
+      "bender-gebru-mitchell-mcmillan-major": [-38, -16],
+      "kate-crawford": [18, 2],
+      "ruha-benjamin": [0, 24],
+      "ray-kurzweil": [-20, 10],
+      "marc-andreessen": [15, -8],
+      "dario-amodei-anthropic": [12, 8],
+      "dan-hendrycks-cais": [8, -12],
+      "rich-sutton": [-12, 0],
+      "yann-lecun": [12, 4]
+    };
+
+    const x = value => margin.left + ((value + 2) / 4) * plotW;
+    const y = value => margin.top + ((2 - value) / 4) * plotH;
+    const fmt = value => value > 0 ? `+${value}` : `${value}`;
+
+    function svgEl(name, attrs = {}, text = "") {
+      const node = document.createElementNS("http://www.w3.org/2000/svg", name);
+      Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+      if (text) node.textContent = text;
+      return node;
+    }
+
+    function drawAxes() {
+      [-2, -1, 0, 1, 2].forEach(tick => {
+        svg.appendChild(svgEl("line", { x1: x(tick), x2: x(tick), y1: margin.top, y2: height - margin.bottom, class: "grid-line" }));
+        svg.appendChild(svgEl("line", { x1: margin.left, x2: width - margin.right, y1: y(tick), y2: y(tick), class: "grid-line" }));
+        svg.appendChild(svgEl("text", { x: x(tick), y: height - margin.bottom + 25, "text-anchor": "middle", class: "axis-small" }, fmt(tick)));
+        svg.appendChild(svgEl("text", { x: margin.left - 22, y: y(tick) + 4, "text-anchor": "end", class: "axis-small" }, fmt(tick)));
+      });
+
+      svg.appendChild(svgEl("line", { x1: x(-2), x2: x(2), y1: y(0), y2: y(0), class: "axis-line" }));
+      svg.appendChild(svgEl("line", { x1: x(0), x2: x(0), y1: y(2), y2: y(-2), class: "axis-line" }));
+
+      svg.appendChild(svgEl("text", { x: x(-2), y: height - 28, "text-anchor": "start", class: "axis-label" }, "暂停 / 关停 / 安全优先"));
+      svg.appendChild(svgEl("text", { x: x(2), y: height - 28, "text-anchor": "end", class: "axis-label" }, "建设 / 技术乐观 / 加速"));
+      svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "风险与治理立场"));
+      svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "人类中心 / 民主治理"));
+      svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "计算中心 / 后人类"));
+      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "人类中心性"));
+    }
+
+    function drawFilters() {
+      const filters = document.getElementById("filters");
+      filters.innerHTML = "";
+      const allButton = makeFilterButton("All", "全部");
+      filters.appendChild(allButton);
+      Object.keys(categoryInfo).forEach(category => {
+        filters.appendChild(makeFilterButton(category, categoryInfo[category].zh));
+      });
+    }
+
+    function makeFilterButton(category, label) {
+      const button = document.createElement("button");
+      button.className = "filter";
+      button.type = "button";
+      button.dataset.category = category;
+      button.innerHTML = category === "All"
+        ? "<span class=\"swatch\" style=\"background:#111827\"></span>全部"
+        : `<span class="swatch" style="background:${categoryInfo[category].color}"></span>${label}`;
+      button.addEventListener("click", () => {
+        activeCategory = category;
+        document.querySelectorAll(".filter").forEach(item => item.classList.toggle("active", item.dataset.category === category));
+        applyFilters();
+      });
+      if (category === "All") button.classList.add("active");
+      return button;
+    }
+
+    function drawPoints() {
+      thinkers.forEach(item => {
+        const offset = jitter[item.id] || [0, 0];
+        const cx = x(item.risk) + offset[0];
+        const cy = y(item.humanism) + offset[1];
+        const radius = 6 + item.influence * 0.72;
+        const point = svgEl("circle", {
+          cx,
+          cy,
+          r: radius,
+          fill: categoryInfo[item.category].color,
+          class: "point",
+          tabindex: "0",
+          "aria-label": item.name,
+          "data-id": item.id,
+          "data-category": item.category
+        });
+        point.addEventListener("click", () => selectItem(item, point));
+        point.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") selectItem(item, point);
+        });
+        svg.appendChild(point);
+
+        const label = svgEl("text", {
+          x: cx + 10,
+          y: cy + 4,
+          class: "point-label",
+          "data-label-id": item.id,
+          "data-category": item.category
+        }, item.shortName);
+        svg.appendChild(label);
+      });
+    }
+
+    function matchesSearch(item, term) {
+      if (!term) return true;
+      const corpus = [
+        item.name,
+        item.shortName,
+        item.cluster,
+        item.category,
+        item.stance,
+        item.placement,
+        item.focus,
+        ...item.works.flatMap(work => [work.title, work.type, work.priority, work.why])
+      ].join(" ").toLowerCase();
+      return corpus.includes(term.toLowerCase());
+    }
+
+    function applyFilters() {
+      const term = document.getElementById("search").value.trim();
+      thinkers.forEach(item => {
+        const visible = (activeCategory === "All" || item.category === activeCategory) && matchesSearch(item, term);
+        const point = svg.querySelector(`[data-id="${item.id}"]`);
+        const label = svg.querySelector(`[data-label-id="${item.id}"]`);
+        if (point) point.classList.toggle("dimmed", !visible);
+        if (label) label.classList.toggle("dimmed", !visible);
+      });
+    }
+
+    function selectItem(item, circle) {
+      if (activePoint) activePoint.classList.remove("active");
+      activePoint = circle || svg.querySelector(`[data-id="${item.id}"]`);
+      if (activePoint) activePoint.classList.add("active");
+
+      document.getElementById("detailName").textContent = item.name;
+      document.getElementById("detailCluster").textContent = `${item.cluster} · ${categoryInfo[item.category].zh}`;
+      document.getElementById("riskScore").textContent = fmt(item.risk);
+      document.getElementById("humanismScore").textContent = fmt(item.humanism);
+      document.getElementById("influenceScore").textContent = `${item.influence}/5`;
+      document.getElementById("stanceText").textContent = item.stance;
+      document.getElementById("placementText").textContent = item.placement;
+      document.getElementById("readingFocus").textContent = item.focus;
+      document.getElementById("profileJump").href = `#profile-${item.id}`;
+
+      const worksMini = document.getElementById("worksMini");
+      worksMini.innerHTML = "";
+      item.works.forEach(work => {
+        const div = document.createElement("div");
+        div.className = "mini-work";
+        div.innerHTML = `<a href="${work.url}" target="_blank" rel="noopener noreferrer">${work.title}</a><span>${work.year} · ${work.type} · ${work.priority}</span>`;
+        worksMini.appendChild(div);
+      });
+
+      const basis = document.getElementById("basis");
+      basis.innerHTML = "";
+      item.basis.forEach(value => {
+        const span = document.createElement("span");
+        span.textContent = value;
+        basis.appendChild(span);
+      });
+    }
+
+    function renderCategorySummary() {
+      const target = document.getElementById("categorySummary");
+      target.innerHTML = "";
+      Object.entries(categoryInfo).forEach(([category, info]) => {
+        const members = thinkers.filter(item => item.category === category);
+        const avgRisk = members.reduce((sum, item) => sum + item.risk, 0) / members.length;
+        const avgHumanism = members.reduce((sum, item) => sum + item.humanism, 0) / members.length;
+        const div = document.createElement("div");
+        div.className = "summary-item";
+        div.innerHTML = `
+          <span class="swatch" style="background:${info.color}"></span>
+          <div>
+            <b>${info.zh} · ${members.length} 个节点</b>
+            <span>${info.summary}</span>
+            <span>平均坐标：风险/治理 ${fmt(Number(avgRisk.toFixed(2)))}，人类中心性 ${fmt(Number(avgHumanism.toFixed(2)))}</span>
+          </div>
+        `;
+        target.appendChild(div);
+      });
+    }
+
+    function renderProfiles() {
+      const grid = document.getElementById("profileGrid");
+      grid.innerHTML = "";
+      thinkers.forEach(item => {
+        const article = document.createElement("article");
+        article.className = "profile";
+        article.id = `profile-${item.id}`;
+        article.innerHTML = `
+          <div class="profile-head">
+            <div>
+              <h3>${item.name}</h3>
+              <div class="meta">${item.cluster} · ${categoryInfo[item.category].zh}</div>
+            </div>
+            <div class="coord">风险 ${fmt(item.risk)}<br>人本 ${fmt(item.humanism)}<br>影响 ${item.influence}/5</div>
+          </div>
+          <dl>
+            <div>
+              <dt>核心思想</dt>
+              <dd>${item.stance}</dd>
+            </div>
+            <div>
+              <dt>坐标解释</dt>
+              <dd>${item.placement}</dd>
+            </div>
+            <div>
+              <dt>代表性工作</dt>
+              <dd>
+                <ol>
+                  ${item.works.map(work => `<li><a href="${work.url}" target="_blank" rel="noopener noreferrer">${work.title}</a> (${work.year})：${work.why}</li>`).join("")}
+                </ol>
+              </dd>
+            </div>
+            <div>
+              <dt>阅读重点</dt>
+              <dd>${item.focus}</dd>
+            </div>
+            <div>
+              <dt>强对照位置</dt>
+              <dd>${item.counter}</dd>
+            </div>
+          </dl>
+        `;
+        grid.appendChild(article);
+      });
+    }
+
+    function renderWorksTable() {
+      const table = document.getElementById("worksTable");
+      table.innerHTML = "";
+      thinkers.forEach(item => {
+        item.works.forEach(work => {
+          const row = document.createElement("div");
+          row.className = "work-row";
+          row.innerHTML = `
+            <div>
+              <b>${item.shortName}</b>
+              <span>${categoryInfo[item.category].zh}</span>
+            </div>
+            <div>
+              <b><a href="${work.url}" target="_blank" rel="noopener noreferrer">${work.title}</a></b>
+              <span>${work.type}</span>
+            </div>
+            <div>
+              <b>${work.year}</b>
+              <span>${work.priority}</span>
+            </div>
+            <p>${work.why}</p>
+          `;
+          table.appendChild(row);
+        });
+      });
+      movementDocs.forEach(doc => {
+        const row = document.createElement("div");
+        row.className = "work-row";
+        row.innerHTML = `
+          <div>
+            <b>Movement document</b>
+            <span>${doc.cluster}</span>
+          </div>
+          <div>
+            <b><a href="${doc.url}" target="_blank" rel="noopener noreferrer">${doc.title}</a></b>
+            <span>institutional / movement text</span>
+          </div>
+          <div>
+            <b>${doc.year}</b>
+            <span>high</span>
+          </div>
+          <p>${doc.why}</p>
+        `;
+        table.appendChild(row);
+      });
+    }
+
+    function updateStats() {
+      const workCount = thinkers.reduce((sum, item) => sum + item.works.length, 0) + movementDocs.length;
+      document.getElementById("statThinkers").textContent = thinkers.length;
+      document.getElementById("statWorks").textContent = workCount;
+    }
+
+    drawFilters();
+    drawAxes();
+    drawPoints();
+    renderCategorySummary();
+    renderProfiles();
+    renderWorksTable();
+    updateStats();
+    document.getElementById("search").addEventListener("input", applyFilters);
+    selectItem(thinkers.find(item => item.id === "rich-sutton"));
+  </script>
+</body>
+</html>

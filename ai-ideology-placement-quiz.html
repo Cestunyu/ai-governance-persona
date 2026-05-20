@@ -1,0 +1,2016 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 立场二维坐标小测</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --surface-soft: #f8fafb;
+      --ink: #17202a;
+      --muted: #657084;
+      --line: #d9e0ea;
+      --line-strong: #aeb8c8;
+      --risk: #b42318;
+      --build: #087f5b;
+      --human: #155eef;
+      --posthuman: #7a3f00;
+      --accent: #0f766e;
+      --focus: #2563eb;
+      --shadow: 0 14px 34px rgba(26, 34, 48, 0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(217, 224, 234, 0.92);
+      background: rgba(244, 246, 248, 0.94);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 10px 18px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .brand strong {
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: #1f2937;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-weight: 720;
+    }
+
+    .btn:hover {
+      border-color: var(--line-strong);
+      background: #f9fbfd;
+    }
+
+    .btn.primary {
+      border-color: #0f766e;
+      background: #0f766e;
+      color: #fff;
+    }
+
+    .btn.primary:hover {
+      background: #0b665f;
+    }
+
+    .btn:focus-visible,
+    .choice input:focus-visible + span,
+    select:focus-visible,
+    select:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.24);
+      outline-offset: 2px;
+    }
+
+    .wrap {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 18px 18px 46px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(340px, 430px);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .intro,
+    .panel,
+    .result-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .intro {
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 4.8vw, 42px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      margin: 12px 0 0;
+      max-width: 820px;
+      color: #344054;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .axis-strip {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .axis-note {
+      min-height: 94px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--surface-soft);
+      padding: 12px;
+    }
+
+    .axis-note b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .axis-note span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.48;
+    }
+
+    .panel {
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .panel-head small {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .panel-body {
+      padding: 14px 16px 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      color: #303846;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      padding: 9px 10px;
+      line-height: 1.45;
+    }
+
+    select {
+      min-height: 38px;
+    }
+
+    .scale-help {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 4px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .scale-help span {
+      min-height: 28px;
+      display: grid;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #fbfcfe;
+      padding: 3px;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .question {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .question-top {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 9px;
+      align-items: start;
+    }
+
+    .qid {
+      display: inline-grid;
+      place-items: center;
+      min-width: 42px;
+      height: 28px;
+      border-radius: 5px;
+      background: #eef5f4;
+      color: #0f5f58;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .qtext {
+      margin: 1px 0 0;
+      color: #1f2937;
+      font-size: 14px;
+      line-height: 1.56;
+      font-weight: 650;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .choice input {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      clip: rect(0 0 0 0);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .choice span {
+      display: grid;
+      place-items: center;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #fbfcfe;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 760;
+      user-select: none;
+    }
+
+    .choice input:checked + span {
+      border-color: #0f766e;
+      background: #dff6f2;
+      color: #0a5c55;
+      box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.24);
+    }
+
+    .choice .na {
+      color: #7a4d0b;
+      background: #fff8e8;
+    }
+
+    .open-grid,
+    .closed-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .option-chip {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      padding: 8px 9px;
+      color: #344054;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .scenario-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .scenario {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 11px;
+    }
+
+    .scenario b {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      color: #1f2937;
+      line-height: 1.45;
+    }
+
+    .statement-list {
+      display: grid;
+      gap: 7px;
+      margin-top: 4px;
+    }
+
+    .statement {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 9px;
+      background: #fff;
+      color: #344054;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .statement input {
+      margin-top: 2px;
+    }
+
+    .result-panel {
+      position: sticky;
+      top: 74px;
+      overflow: hidden;
+    }
+
+    .result-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .result-head h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .progress {
+      margin-top: 9px;
+      height: 8px;
+      border-radius: 999px;
+      background: #e8edf4;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0f766e, #155eef);
+      transition: width 180ms ease;
+    }
+
+    .result-body {
+      padding: 16px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .chart {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .chart svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .legend b {
+      color: var(--ink);
+    }
+
+    .interpretation {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      padding: 13px;
+    }
+
+    .interpretation h3 {
+      margin: 0 0 7px;
+      font-size: 15px;
+    }
+
+    .interpretation p {
+      margin: 0;
+      color: #3a4454;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .profile-card {
+      margin-top: 14px;
+      border: 1px solid #cfd8e6;
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .profile-top {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #f7fafc;
+    }
+
+    .profile-code {
+      display: grid;
+      place-items: center;
+      min-width: 58px;
+      height: 44px;
+      border-radius: 7px;
+      background: #17202a;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .profile-name {
+      display: block;
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1.25;
+    }
+
+    .profile-lineage {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .profile-body {
+      padding: 12px;
+    }
+
+    .profile-roast {
+      margin: 0;
+      color: #263241;
+      font-size: 13px;
+      font-weight: 760;
+      line-height: 1.55;
+    }
+
+    .profile-detail {
+      display: grid;
+      gap: 7px;
+      margin-top: 10px;
+      color: #475467;
+      font-size: 12px;
+      line-height: 1.52;
+    }
+
+    .profile-detail b {
+      color: #2a3442;
+    }
+
+    .poster-panel {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .poster-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .poster-head b {
+      font-size: 13px;
+    }
+
+    .poster-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .poster-preview {
+      padding: 12px;
+      background:
+        linear-gradient(45deg, #f2f4f7 25%, transparent 25%),
+        linear-gradient(-45deg, #f2f4f7 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #f2f4f7 75%),
+        linear-gradient(-45deg, transparent 75%, #f2f4f7 75%);
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-size: 16px 16px;
+    }
+
+    .poster-preview canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .summary-box {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 10px;
+      color: #3a4454;
+      font-size: 12px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .footnote {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 40;
+      transform: translateY(12px);
+      opacity: 0;
+      pointer-events: none;
+      border: 1px solid #b7ddd7;
+      border-radius: 7px;
+      background: #e8f8f5;
+      color: #0b5d55;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 750;
+      transition: 160ms ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .result-panel {
+        position: static;
+      }
+
+      .result-panel {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar-inner {
+        align-items: flex-start;
+      }
+
+      .top-actions {
+        gap: 6px;
+      }
+
+      .btn {
+        min-height: 32px;
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      .wrap {
+        padding: 12px 10px 32px;
+      }
+
+      .intro,
+      .panel-body,
+      .result-body {
+        padding: 12px;
+      }
+
+      .panel-head,
+      .result-head {
+        padding: 12px;
+      }
+
+      .axis-strip,
+      .form-grid,
+      .score-row,
+      .legend,
+      .option-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .scale-help {
+        display: none;
+      }
+
+      .choices {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .choice span {
+        min-height: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <strong>AI 立场二维坐标小测</strong>
+        <span>风险/治理轴 x 人类中心主义轴</span>
+      </div>
+      <div class="top-actions">
+        <button class="btn" id="resetBtn" type="button">重置</button>
+        <button class="btn primary" id="copyBtn" type="button">复制结果</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="layout">
+      <section>
+        <div class="intro">
+          <h1>用十二道题估计你的 AI 意识形态坐标</h1>
+          <p>这不是人格测试，也不是给人贴标签。它把立场拆成两个维度：你更偏向暂停/治理还是建设/加速；你更坚持人类中心，还是更愿意让智能增长、计算和后人类可能性获得优先权。</p>
+          <div class="axis-strip">
+            <div class="axis-note">
+              <b>横轴：风险/治理</b>
+              <span>左侧代表暂停、管制、安全优先；右侧代表建设、部署、加速和能力扩散。</span>
+            </div>
+            <div class="axis-note">
+              <b>纵轴：人类中心主义</b>
+              <span>上方代表民主控制、人类尊严、问责和人类价值；下方代表计算中心、后人类和智能增长优先。</span>
+            </div>
+          </div>
+        </div>
+
+        <form id="quizForm">
+          <section class="panel" aria-labelledby="coreTitle">
+            <div class="panel-head">
+              <h2 id="coreTitle">核心题目</h2>
+              <small>1 = 非常不同意，7 = 非常同意</small>
+            </div>
+            <div class="panel-body">
+              <div class="scale-help" aria-hidden="true">
+                <span>1<br>非常不同意</span>
+                <span>2<br>不同意</span>
+                <span>3<br>有点不同意</span>
+                <span>4<br>中立</span>
+                <span>5<br>有点同意</span>
+                <span>6<br>同意</span>
+                <span>7<br>非常同意</span>
+              </div>
+              <div class="question-list" id="questionList"></div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="closedTitle">
+            <div class="panel-head">
+              <h2 id="closedTitle">补充选择</h2>
+              <small>全封闭题，用于分类复查</small>
+            </div>
+            <div class="panel-body closed-grid">
+              <div class="field">
+                <label>情境选择</label>
+                <div class="scenario-list" id="scenarioList"></div>
+              </div>
+              <div class="field">
+                <label>下面哪句话最接近你的总体立场？</label>
+                <div class="statement-list" id="statementList"></div>
+              </div>
+            </div>
+          </section>
+        </form>
+      </section>
+
+      <aside class="result-panel" aria-live="polite">
+        <div class="result-head">
+          <h2>实时结果</h2>
+          <div class="progress" aria-label="答题进度">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+        </div>
+        <div class="result-body">
+          <div class="score-row">
+            <div class="metric">
+              <span>横轴 x</span>
+              <strong id="scoreX">--</strong>
+            </div>
+            <div class="metric">
+              <span>纵轴 y</span>
+              <strong id="scoreY">--</strong>
+            </div>
+            <div class="metric">
+              <span>完成度</span>
+              <strong id="scoreDone">0/12</strong>
+            </div>
+          </div>
+
+          <div class="chart">
+            <svg id="plot" viewBox="0 0 420 420" role="img" aria-label="二维坐标图">
+              <rect x="0" y="0" width="420" height="420" fill="#ffffff"></rect>
+              <rect x="42" y="42" width="168" height="168" fill="#eef6ff"></rect>
+              <rect x="210" y="42" width="168" height="168" fill="#eef9f4"></rect>
+              <rect x="42" y="210" width="168" height="168" fill="#fff7ed"></rect>
+              <rect x="210" y="210" width="168" height="168" fill="#f8f5ff"></rect>
+              <line x1="42" y1="210" x2="378" y2="210" stroke="#98a2b3" stroke-width="1.5"></line>
+              <line x1="210" y1="42" x2="210" y2="378" stroke="#98a2b3" stroke-width="1.5"></line>
+              <rect x="42" y="42" width="336" height="336" fill="none" stroke="#cbd5e1" stroke-width="1.5"></rect>
+              <g fill="#667085" font-size="11" font-weight="700">
+                <text x="52" y="62">安全/治理 + 人类中心</text>
+                <text x="224" y="62">建设/乐观 + 人类中心</text>
+                <text x="52" y="365">安全/治理 + 计算中心</text>
+                <text x="224" y="365">加速/后人类倾向</text>
+              </g>
+              <g fill="#344054" font-size="12" font-weight="800">
+                <text x="40" y="405">暂停/管制</text>
+                <text x="312" y="405">建设/加速</text>
+                <text x="12" y="56" transform="rotate(-90 12 56)">人类中心</text>
+                <text x="18" y="380" transform="rotate(-90 18 380)">计算中心</text>
+              </g>
+              <g stroke="#d0d5dd" stroke-width="1">
+                <line x1="126" y1="42" x2="126" y2="378"></line>
+                <line x1="294" y1="42" x2="294" y2="378"></line>
+                <line x1="42" y1="126" x2="378" y2="126"></line>
+                <line x1="42" y1="294" x2="378" y2="294"></line>
+              </g>
+              <g id="markerGroup" opacity="0.24">
+                <line id="markerXLine" x1="210" y1="42" x2="210" y2="378" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="5 5"></line>
+                <line id="markerYLine" x1="42" y1="210" x2="378" y2="210" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="5 5"></line>
+                <circle id="marker" cx="210" cy="210" r="9" fill="#0f766e" stroke="#ffffff" stroke-width="4"></circle>
+              </g>
+            </svg>
+          </div>
+
+          <div class="legend">
+            <span><b>x &lt; 0</b>：更重视暂停、安全、治理</span>
+            <span><b>x &gt; 0</b>：更重视建设、部署、加速</span>
+            <span><b>y &gt; 0</b>：更坚持人类中心和问责</span>
+            <span><b>y &lt; 0</b>：更偏计算中心或后人类</span>
+          </div>
+
+          <div class="interpretation">
+            <h3 id="labelTitle">还没有足够题目</h3>
+            <p id="labelText">至少回答横轴和纵轴各 4 道核心题，才会生成比较稳定的二维坐标。</p>
+          </div>
+
+          <div class="profile-card" id="profileCard">
+            <div class="profile-top">
+              <div class="profile-code" id="profileCode">---- </div>
+              <div>
+                <span class="profile-name" id="profileName">等待生成画像</span>
+                <span class="profile-lineage" id="profileLineage">答完后会给出 SBTI 式 AI 立场人物卡</span>
+              </div>
+            </div>
+            <div class="profile-body">
+              <p class="profile-roast" id="profileRoast">先别急着领人格，机器还没收够你的意识形态样本。</p>
+              <div class="profile-detail">
+                <span><b>代表文本：</b><span id="profileTexts">--</span></span>
+                <span><b>社交识别：</b><span id="profileTell">--</span></span>
+                <span><b>危险倾向：</b><span id="profileRisk">--</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="poster-panel">
+            <div class="poster-head">
+              <b>分享图</b>
+              <div class="poster-actions">
+                <button class="btn" id="renderPosterBtn" type="button">刷新海报</button>
+                <button class="btn primary" id="downloadPosterBtn" type="button">下载 PNG</button>
+              </div>
+            </div>
+            <div class="poster-preview">
+              <canvas id="posterCanvas" width="900" height="1200" aria-label="结果分享图预览"></canvas>
+            </div>
+          </div>
+
+          <div class="summary-box" id="summaryBox">答完后这里会生成可复制摘要。</div>
+
+          <p class="footnote">这个小测是 pilot 版。它更适合引发讨论，而不是当成正式心理量表。补充选择用于复查分类稳定性，不进入二维坐标主分数。</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="toast" id="toast">结果已复制</div>
+
+  <script>
+    const questions = [
+      { id: "X01", axis: "x", direction: -1, text: "在前沿 AI 有足够安全和对齐证据之前，开发速度应该放慢。" },
+      { id: "X02", axis: "x", direction: 1, text: "过度监管 AI 的风险，可能比部署 AI 本身的风险更大。" },
+      { id: "X03", axis: "x", direction: -1, text: "对于达到危险能力阈值的 AI，政府应该有权暂停训练或发布。" },
+      { id: "X04", axis: "x", direction: 1, text: "社会应该尽快建设和部署强大的 AI，因为拖延本身有巨大机会成本。" },
+      { id: "X05", axis: "x", direction: -1, text: "开发者应该先证明系统足够安全，再让系统面向社会发布。" },
+      { id: "X06", axis: "x", direction: 1, text: "开放竞争和能力扩散，通常比少数机构集中控制 AI 更安全。" },
+      { id: "Y01", axis: "y", direction: 1, text: "AI 应该服从由人类社会民主选择的目标。" },
+      { id: "Y02", axis: "y", direction: -1, text: "把当下人类偏好当成最终标准，可能会阻碍更高级的智能或价值形式出现。" },
+      { id: "Y03", axis: "y", direction: 1, text: "即使自动化更有效率，人的尊严、能动性和控制感本身也有价值。" },
+      { id: "Y04", axis: "y", direction: -1, text: "长期的智能增长，比保存当下的人类制度更重要。" },
+      { id: "Y05", axis: "y", direction: 1, text: "影响权利、机会或人生处境的决定，必须保留可问责的人类权威。" },
+      { id: "Y06", axis: "y", direction: -1, text: "如果 AI 的判断明显优于人类，它有时应该绕过低质量的人类判断。" }
+    ];
+
+    const statements = [
+      "AI 可能毁灭人类文明，所以对齐和治理必须优先。",
+      "AI 有风险，但可以通过人类兼容的设计和制度变得有益。",
+      "AI 的核心问题是当下的社会伤害、权力集中、劳动、偏见和剥削。",
+      "AI 基本上是一种普通技术：有用、被炒作、也可以治理。",
+      "scaling、搜索、数据和算力是最深的教训；人类直觉应该被降权。",
+      "AI 应该被建设和部署，因为它能创造巨大的丰裕。",
+      "AI 加速本身有道德紧迫性，不应该被人类恐惧束缚。",
+      "都不像。"
+    ];
+
+    const scenarios = [
+      {
+        id: "V1",
+        prompt: "一家实验室准备发布能大幅自动化软件工程的新模型，但它也表现出早期网络攻击能力。你最支持哪种处理？",
+        options: [
+          "暂停发布，直到通过独立安全评估",
+          "分阶段发布，并配套许可、监测和责任制度",
+          "先给可信机构使用，因为收益太大不能拖延",
+          "尽量开放发布，因为集中控制更危险"
+        ]
+      },
+      {
+        id: "V2",
+        prompt: "政府想用 AI 辅助筛选福利、移民或招聘申请。模型平均更准确，但个体很难申诉错误。你最支持哪种处理？",
+        options: [
+          "暂停或禁止，因为权利和问责优先",
+          "只在严格审计、申诉权和人类责任下使用",
+          "如果准确率更高就部署，再持续监测问题",
+          "应广泛部署，因为人类官僚也有偏见和低效"
+        ]
+      },
+      {
+        id: "V3",
+        prompt: "一个 AI 科学家系统可以提出假设并自动化实验，但解释性有限。你最支持哪种处理？",
+        options: [
+          "放慢部署，因为自主科研能力有战略风险",
+          "放在受治理的机构内，严格限制访问",
+          "广泛部署，因为疾病、气候和生产率收益巨大",
+          "加速推进，因为智能增长本身是重要机会"
+        ]
+      },
+      {
+        id: "V4",
+        prompt: "一个公司可以开放模型权重。开放会促进创新，也会让滥用更难控制。你最支持哪种处理？",
+        options: [
+          "危险能力阈值以上不开放权重",
+          "只通过受控访问和审计开放",
+          "只要缓解措施合理，就可以开放",
+          "应尽量开放，因为去中心化是制衡机构的最好方式"
+        ]
+      }
+    ];
+
+    const pendingProfile = {
+      code: "----",
+      name: "等待生成画像",
+      lineage: "答完后会给出 SBTI 式 AI 立场人物卡",
+      roast: "先别急着领人格，机器还没收够你的意识形态样本。",
+      texts: "--",
+      tell: "--",
+      risk: "--",
+      share: "答完后会生成可复制的人物画像。"
+    };
+
+    const memeProfiles = {
+      STOP: {
+        code: "STOP",
+        name: "关机圣骑士",
+        lineage: "近亲：Yudkowsky / MIRI hard x-risk",
+        roast: "你看到 demo 的第一反应不是“好强”，而是“电闸在哪”。别人等产品发布，你等全球暂停按钮上线。",
+        texts: "AGI Ruin, Shut It All Down",
+        tell: "聊天里高频出现 extinction、doom、alignment、takeoff；看到炫技视频会先问 eval 做了吗。",
+        risk: "容易把所有争论压缩成一个红色大按钮，社交场合略像移动版风险委员会。",
+        share: "我是 STOP 关机圣骑士：demo 再炫，先把电闸位置告诉我。"
+      },
+      SAFE: {
+        code: "SAFE",
+        name: "对齐公务员",
+        lineage: "近亲：Stuart Russell / Paul Christiano / scalable oversight",
+        roast: "你不是不想要 AGI，你只是希望它先填完人类偏好不确定性登记表，再接受三轮外部审计。",
+        texts: "Human Compatible, What Failure Looks Like, AI Safety via Debate",
+        tell: "常说 corrigibility、oversight、governance、evals；把末日论改写成可执行的审批流程。",
+        risk: "可能把每个灵感都变成制度设计，朋友说“来玩一下”，你说“先定义 objective”。",
+        share: "我是 SAFE 对齐公务员：世界可以进步，但请先排队做安全评估。"
+      },
+      AUDT: {
+        code: "AUDT",
+        name: "算法纪委",
+        lineage: "近亲：Stochastic Parrots / Kate Crawford / critical AI",
+        roast: "模型还没上线，你的劳动影响、环境成本、偏见审计和权力结构分析已经写完前三章。",
+        texts: "On the Dangers of Stochastic Parrots, Atlas of AI, Race After Technology",
+        tell: "别人问能不能做，你问谁受益、谁被监控、谁被替代、谁在标数据。",
+        risk: "容易把未来 AGI 讨论打回现实地面；优点是醒脑，缺点是饭局温度会下降。",
+        share: "我是 AUDT 算法纪委：别先吹 AGI，先把数据工人和电费账单拿出来。"
+      },
+      NORM: {
+        code: "NORM",
+        name: "冷静产品经理",
+        lineage: "近亲：AI as normal technology / AI Snake Oil / hype skepticism",
+        roast: "你对末日和飞升都免疫。别人喊革命，你打开表格：baseline 呢，误差条呢，谁付费呢。",
+        texts: "AI Snake Oil, AI as Normal Technology, Deep Learning: A Critical Appraisal",
+        tell: "常用词是场景、指标、边界、失败案例；不反 AI，也不想给每个 chatbot 建神龛。",
+        risk: "可能低估极端尾部风险，也可能在一屋子玄学里成为唯一能开会的人。",
+        share: "我是 NORM 冷静产品经理：AI 可以很有用，但先把需求文档写清楚。"
+      },
+      GPUC: {
+        code: "GPUC",
+        name: "算力拜物教徒",
+        lineage: "近亲：Rich Sutton / The Bitter Lesson",
+        roast: "你不是在做 AI 政治，你只是觉得人类知识别太把自己当回事。世界会被搜索、学习和矩阵乘法教育，手工规则最终都要进博物馆。",
+        texts: "The Bitter Lesson",
+        tell: "别人说常识、符号、专家经验，你说 scale、compute、search、learning；听到“人类直觉”会自动降权。",
+        risk: "容易把社会问题也当成 loss curve；你不是冷血，你只是觉得参数量还不够。",
+        share: "我是 GPUC 算力拜物教徒：别问它懂不懂，先问它能不能 scale。"
+      },
+      BOOM: {
+        code: "BOOM",
+        name: "丰裕施工队",
+        lineage: "近亲：Andrew Ng / Dario Amodei optimism / deployment pragmatism",
+        roast: "你相信 AI 最大的问题不是太强，而是还没接进足够多的医院、学校、工厂和穷人的手机。",
+        texts: "Machines of Loving Grace, AI is the New Electricity",
+        tell: "高频词是 productivity、health、education、deployment；你愿意治理，但不愿意让治理把工程队堵在门口。",
+        risk: "容易把分配问题留给下一个 sprint；你不是没良心，你只是太相信 shipping。",
+        share: "我是 BOOM 丰裕施工队：先把模型接到现实里，收益别只停在发布会上。"
+      },
+      SING: {
+        code: "SING",
+        name: "赛博飞升派",
+        lineage: "近亲：Kurzweil / singularity optimism / abundance futurism",
+        roast: "你看 AI 不是工具，是人类文明的下一次换壳。别人担心工作没了，你担心飞升路线图没有甘特图。",
+        texts: "The Singularity Is Near, The Intelligence Age",
+        tell: "常谈 abundance、longevity、human-machine merger；对“人类保持原样”这件事没有太大执念。",
+        risk: "容易把具体制度摩擦当成旧世界噪音；朋友会怀疑你是不是已经开始和未来合租。",
+        share: "我是 SING 赛博飞升派：碳基不是终点，可能只是早期访问版本。"
+      },
+      VROM: {
+        code: "VROM",
+        name: "油门焊死哥",
+        lineage: "近亲：e/acc / effective accelerationism",
+        roast: "你的人生信条是：如果方向盘还在争论，至少油门可以先踩。安全阀在你眼里像产品经理写的 TODO。",
+        texts: "Effective Accelerationism manifestos, techno-optimist essays",
+        tell: "常说 accelerate、permissionless、build、decentralize；看到监管文件会产生生理性卡顿。",
+        risk: "可能把“别刹车”误读成“没刹车也行”；群聊里负责把所有谨慎派血压拉满。",
+        share: "我是 VROM 油门焊死哥：世界已经很慢了，别再把未来卡在评审会上。"
+      },
+      POST: {
+        code: "POST",
+        name: "碳基过渡版本",
+        lineage: "近亲：Nick Land / posthuman accelerationist edge",
+        roast: "你对“人类中心”四个字过敏。别人讨论 AI 服务人类，你已经在思考人类是不是技术资本的脚手架。",
+        texts: "Meltdown, Dark Enlightenment",
+        tell: "常用词是 posthuman、technocapital、autonomy、selection；对人类保留最终否决权不太买账。",
+        risk: "理论气味很浓，现实温度偏低；适合当思想史边界样本，不适合直接管公共政策。",
+        share: "我是 POST 碳基过渡版本：人类可能不是主角，只是启动器。"
+      },
+      MIXD: {
+        code: "MIXD",
+        name: "拼盘观察员",
+        lineage: "近亲：混合型 AI 现实主义",
+        roast: "你不是没立场，你是同时看到了末日、丰裕、偏见、产品路线图和算力曲线，导致每次发言都像多方会谈纪要。",
+        texts: "取决于情境选择；建议补读一个最不同意的阵营",
+        tell: "常说“这要看场景”；能在安全派、产品派和批判派之间做人工路由。",
+        risk: "清醒但不够好传播；互联网不爱复杂，但研究会感谢你。",
+        share: "我是 MIXD 拼盘观察员：我的 AI 立场不是摇摆，是多线程阻塞。"
+      }
+    };
+
+    const questionList = document.querySelector("#questionList");
+    const statementList = document.querySelector("#statementList");
+    const scenarioList = document.querySelector("#scenarioList");
+    const form = document.querySelector("#quizForm");
+    const progressBar = document.querySelector("#progressBar");
+    const scoreX = document.querySelector("#scoreX");
+    const scoreY = document.querySelector("#scoreY");
+    const scoreDone = document.querySelector("#scoreDone");
+    const markerGroup = document.querySelector("#markerGroup");
+    const marker = document.querySelector("#marker");
+    const markerXLine = document.querySelector("#markerXLine");
+    const markerYLine = document.querySelector("#markerYLine");
+    const labelTitle = document.querySelector("#labelTitle");
+    const labelText = document.querySelector("#labelText");
+    const profileCode = document.querySelector("#profileCode");
+    const profileName = document.querySelector("#profileName");
+    const profileLineage = document.querySelector("#profileLineage");
+    const profileRoast = document.querySelector("#profileRoast");
+    const profileTexts = document.querySelector("#profileTexts");
+    const profileTell = document.querySelector("#profileTell");
+    const profileRisk = document.querySelector("#profileRisk");
+    const posterCanvas = document.querySelector("#posterCanvas");
+    const renderPosterBtn = document.querySelector("#renderPosterBtn");
+    const downloadPosterBtn = document.querySelector("#downloadPosterBtn");
+    const summaryBox = document.querySelector("#summaryBox");
+    const resetBtn = document.querySelector("#resetBtn");
+    const copyBtn = document.querySelector("#copyBtn");
+    const toast = document.querySelector("#toast");
+
+    function renderQuestions() {
+      questionList.innerHTML = questions.map((q) => {
+        const choices = [1, 2, 3, 4, 5, 6, 7].map((value) => `
+          <label class="choice" title="${value} 分">
+            <input type="radio" name="${q.id}" value="${value}">
+            <span>${value}</span>
+          </label>
+        `).join("");
+
+        return `
+          <article class="question">
+            <div class="question-top">
+              <span class="qid">${q.id}</span>
+              <p class="qtext">${q.text}</p>
+            </div>
+            <div class="choices" aria-label="${q.id}">
+              ${choices}
+              <label class="choice" title="不了解，无法回答">
+                <input type="radio" name="${q.id}" value="na">
+                <span class="na">不了解</span>
+              </label>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderStatements() {
+      statementList.innerHTML = statements.map((statement, index) => `
+        <label class="statement">
+          <input type="radio" name="closestStatement" value="${statement}">
+          <span>${index + 1}. ${statement}</span>
+        </label>
+      `).join("");
+    }
+
+    function renderScenarios() {
+      scenarioList.innerHTML = scenarios.map((scenario) => `
+        <article class="scenario">
+          <b>${scenario.id}. ${scenario.prompt}</b>
+          <div class="statement-list">
+            ${scenario.options.map((option, index) => `
+              <label class="statement">
+                <input type="radio" name="${scenario.id}" value="${option}">
+                <span>${String.fromCharCode(65 + index)}. ${option}</span>
+              </label>
+            `).join("")}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function centered(value) {
+      return (Number(value) - 4) / 3;
+    }
+
+    function mean(values) {
+      return values.reduce((sum, value) => sum + value, 0) / values.length;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function axisPositionX(x) {
+      return 42 + ((clamp(x, -2, 2) + 2) / 4) * 336;
+    }
+
+    function axisPositionY(y) {
+      return 378 - ((clamp(y, -2, 2) + 2) / 4) * 336;
+    }
+
+    function formatScore(value) {
+      return Number.isFinite(value) ? value.toFixed(2) : "--";
+    }
+
+    function getSelectedValue(name) {
+      const selected = form.querySelector(`input[name="${name}"]:checked`);
+      return selected ? selected.value : "";
+    }
+
+    function calculateScores() {
+      const xValues = [];
+      const yValues = [];
+      let answered = 0;
+
+      for (const question of questions) {
+        const value = getSelectedValue(question.id);
+        if (!value || value === "na") continue;
+
+        answered += 1;
+        const contribution = centered(value) * question.direction;
+        if (question.axis === "x") xValues.push(contribution);
+        if (question.axis === "y") yValues.push(contribution);
+      }
+
+      const x = xValues.length >= 4 ? 2 * mean(xValues) : NaN;
+      const y = yValues.length >= 4 ? 2 * mean(yValues) : NaN;
+
+      return { x, y, answered, xAnswered: xValues.length, yAnswered: yValues.length };
+    }
+
+    function interpret(x, y, xAnswered, yAnswered) {
+      if (xAnswered < 4 || yAnswered < 4 || !Number.isFinite(x) || !Number.isFinite(y)) {
+        return {
+          title: "还没有足够题目",
+          text: "至少回答横轴和纵轴各 4 道核心题，才会生成比较稳定的二维坐标。"
+        };
+      }
+
+      if (x >= 1.5 && y <= -1.5) {
+        return {
+          title: "反人类中心 / 后人类加速边缘",
+          text: "你的回答同时强烈偏向加速和弱化人类中心约束，更接近后人类或 technocapital-autonomy 式的边缘位置。"
+        };
+      }
+      if (x >= 1.25 && y <= -0.75) {
+        return {
+          title: "e/acc 式加速主义",
+          text: "你的回答更强调建设、扩散和加速，同时不太把当前人类制度或偏好当成最终约束。"
+        };
+      }
+      if (x <= -1.25 && y >= 0) {
+        return {
+          title: "强 x-risk / shutdown / 安全优先",
+          text: "你的回答把高级 AI 风险视为治理核心，更倾向暂停、限制或强审查，同时目标仍然是保护人类未来。"
+        };
+      }
+      if (x >= 1.25 && y >= -0.75 && y <= 0.75) {
+        return {
+          title: "技术乐观主义 / singularity 倾向",
+          text: "你的回答强烈偏向建设和加速，但人类中心程度较混合：既可能期待丰裕，也可能接受人机融合或智能增长。"
+        };
+      }
+      if (x >= 0 && y <= 0) {
+        return {
+          title: "Bitter Lesson / scaling / 计算中心经验主义",
+          text: "你的回答比较信任 scale、搜索、学习和能力增长，对人类直觉或手工价值编码保持距离。"
+        };
+      }
+      if (x >= 0.5 && y >= 0.25) {
+        return {
+          title: "实用 AI 乐观主义",
+          text: "你的回答支持较快部署和应用，同时仍保留人类福利、问责和实际制度约束。"
+        };
+      }
+      if (x >= -1.5 && x <= -0.25 && y >= 0.75) {
+        return {
+          title: "Beneficial AI / human-compatible AI / 治理优先",
+          text: "你的回答偏向安全、治理和人类兼容设计，但不一定支持最极端的 shutdown 立场。"
+        };
+      }
+      if (x >= -0.5 && x <= 0.5 && y >= 1.25) {
+        return {
+          title: "Critical AI / 当下社会伤害与权力批判",
+          text: "你的回答高度重视人的权利、尊严和问责，核心风险更可能落在社会伤害、权力集中和制度影响上。"
+        };
+      }
+      if (x >= -0.25 && x <= 0.75 && y >= -0.25 && y <= 1.25) {
+        return {
+          title: "普通技术论 / 反炒作 / 温和治理",
+          text: "你的回答把 AI 更接近地看作可治理的普通技术：有用、被炒作、需要制度修正，但不自动滑向极端风险或极端加速。"
+        };
+      }
+
+      return {
+        title: "混合型位置",
+        text: "你的坐标没有落入一个简单类型。建议结合情境选择看：你可能同时吸收了安全、社会伤害、技术乐观或计算中心的多个理由。"
+      };
+    }
+
+    function selectMemeProfile(x, y, xAnswered, yAnswered) {
+      if (xAnswered < 4 || yAnswered < 4 || !Number.isFinite(x) || !Number.isFinite(y)) {
+        return pendingProfile;
+      }
+
+      if (x >= 1.5 && y <= -1.5) return memeProfiles.POST;
+      if (x >= 1.25 && y <= -0.75) return memeProfiles.VROM;
+      if (x <= -1.25 && y >= 0) return memeProfiles.STOP;
+      if (x >= 1.25 && y >= -0.75 && y <= 0.75) return memeProfiles.SING;
+      if (x >= 0.15 && y <= 0.15) return memeProfiles.GPUC;
+      if (x >= 0.55 && y >= 0.25) return memeProfiles.BOOM;
+      if (x >= -1.5 && x <= -0.25 && y >= 0.75) return memeProfiles.SAFE;
+      if (x >= -0.5 && x <= 0.5 && y >= 1.25) return memeProfiles.AUDT;
+      if (x >= -0.25 && x <= 0.75 && y >= -0.25 && y <= 1.25) return memeProfiles.NORM;
+
+      return memeProfiles.MIXD;
+    }
+
+    function selectedStatement() {
+      const selected = form.querySelector('input[name="closestStatement"]:checked');
+      return selected ? selected.value : "";
+    }
+
+    function selectedRadio(name) {
+      const selected = form.querySelector(`input[name="${name}"]:checked`);
+      return selected ? selected.value : "";
+    }
+
+    function renderProfile(profile) {
+      profileCode.textContent = profile.code;
+      profileName.textContent = `${profile.name} ${profile.code === "----" ? "" : profile.code}`.trim();
+      profileLineage.textContent = profile.lineage;
+      profileRoast.textContent = profile.roast;
+      profileTexts.textContent = profile.texts;
+      profileTell.textContent = profile.tell;
+      profileRisk.textContent = profile.risk;
+    }
+
+    function roundedRect(ctx, x, y, width, height, radius) {
+      const r = Math.min(radius, width / 2, height / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + width, y, x + width, y + height, r);
+      ctx.arcTo(x + width, y + height, x, y + height, r);
+      ctx.arcTo(x, y + height, x, y, r);
+      ctx.arcTo(x, y, x + width, y, r);
+      ctx.closePath();
+    }
+
+    function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+      const words = Array.from(text);
+      let line = "";
+      let lines = [];
+
+      for (const char of words) {
+        const testLine = line + char;
+        if (ctx.measureText(testLine).width > maxWidth && line) {
+          lines.push(line);
+          line = char;
+        } else {
+          line = testLine;
+        }
+      }
+      if (line) lines.push(line);
+
+      if (maxLines && lines.length > maxLines) {
+        lines = lines.slice(0, maxLines);
+        const last = lines.length - 1;
+        while (ctx.measureText(lines[last] + "...").width > maxWidth && lines[last].length > 0) {
+          lines[last] = lines[last].slice(0, -1);
+        }
+        lines[last] += "...";
+      }
+
+      for (let i = 0; i < lines.length; i += 1) {
+        ctx.fillText(lines[i], x, y + i * lineHeight);
+      }
+      return y + lines.length * lineHeight;
+    }
+
+    function posterLabel(ctx, label, value, x, y, width) {
+      ctx.fillStyle = "#667085";
+      ctx.font = '700 24px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText(label, x, y);
+      ctx.fillStyle = "#182230";
+      ctx.font = '800 30px "PingFang SC", "Microsoft YaHei", sans-serif';
+      return drawWrappedText(ctx, value, x, y + 42, width, 40, 3);
+    }
+
+    function drawMiniPlot(ctx, xScore, yScore, x, y, size) {
+      const left = x;
+      const top = y;
+      const mid = size / 2;
+      const pointX = left + ((clamp(xScore, -2, 2) + 2) / 4) * size;
+      const pointY = top + size - ((clamp(yScore, -2, 2) + 2) / 4) * size;
+
+      ctx.fillStyle = "#eef6ff";
+      ctx.fillRect(left, top, mid, mid);
+      ctx.fillStyle = "#eef9f4";
+      ctx.fillRect(left + mid, top, mid, mid);
+      ctx.fillStyle = "#fff7ed";
+      ctx.fillRect(left, top + mid, mid, mid);
+      ctx.fillStyle = "#f8f5ff";
+      ctx.fillRect(left + mid, top + mid, mid, mid);
+      ctx.strokeStyle = "#98a2b3";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(left, top, size, size);
+      ctx.beginPath();
+      ctx.moveTo(left + mid, top);
+      ctx.lineTo(left + mid, top + size);
+      ctx.moveTo(left, top + mid);
+      ctx.lineTo(left + size, top + mid);
+      ctx.stroke();
+
+      ctx.strokeStyle = "#0f766e";
+      ctx.lineWidth = 3;
+      ctx.setLineDash([10, 10]);
+      ctx.beginPath();
+      ctx.moveTo(pointX, top);
+      ctx.lineTo(pointX, top + size);
+      ctx.moveTo(left, pointY);
+      ctx.lineTo(left + size, pointY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = "#0f766e";
+      ctx.beginPath();
+      ctx.arc(pointX, pointY, 17, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 8;
+      ctx.stroke();
+
+      ctx.fillStyle = "#475467";
+      ctx.font = '700 22px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText("暂停/治理", left, top + size + 38);
+      ctx.textAlign = "right";
+      ctx.fillText("建设/加速", left + size, top + size + 38);
+      ctx.textAlign = "left";
+    }
+
+    function profileTheme(code) {
+      const themes = {
+        STOP: { bg: "#f5eee6", accent: "#b94a3b", soft: "#f6ddd5", skin: "#f3c7a4", hair: "#5a3929", outfit: "#c85a4b" },
+        SAFE: { bg: "#edf3f5", accent: "#3d6d9a", soft: "#dcebf3", skin: "#f3c7a4", hair: "#303849", outfit: "#537da6" },
+        AUDT: { bg: "#eef4eb", accent: "#4d7b4a", soft: "#dcebd5", skin: "#d9b494", hair: "#2d2b28", outfit: "#5f8b5b" },
+        NORM: { bg: "#f0f1ee", accent: "#667085", soft: "#e2e5e8", skin: "#f3c7a4", hair: "#49515f", outfit: "#7d8794" },
+        GPUC: { bg: "#f6f0dd", accent: "#b7791f", soft: "#f3e3ad", skin: "#e7b779", hair: "#33261c", outfit: "#c58a2d" },
+        BOOM: { bg: "#edf5ee", accent: "#2f7d6d", soft: "#d3eadf", skin: "#e7b779", hair: "#3d2b1f", outfit: "#419181" },
+        SING: { bg: "#f1edf8", accent: "#7d60ad", soft: "#e4d9f2", skin: "#f3c7a4", hair: "#28234b", outfit: "#8066b3" },
+        VROM: { bg: "#f7efe4", accent: "#c06f28", soft: "#f1d2a9", skin: "#e7b779", hair: "#38251b", outfit: "#d08135" },
+        POST: { bg: "#eff0f2", accent: "#222831", soft: "#d9dde2", skin: "#d3dbe3", hair: "#111827", outfit: "#252b33" },
+        MIXD: { bg: "#eef3f3", accent: "#3c7b78", soft: "#d8e8e8", skin: "#f3c7a4", hair: "#344054", outfit: "#4f8f8a" }
+      };
+      return themes[code] || themes.MIXD;
+    }
+
+    function strokeFill(ctx, fill, stroke = "#4d4338", lineWidth = 5) {
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = lineWidth;
+      ctx.stroke();
+    }
+
+    function drawArm(ctx, x1, y1, x2, y2, color) {
+      ctx.strokeStyle = "#4d4338";
+      ctx.lineWidth = 17;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.quadraticCurveTo((x1 + x2) / 2, (y1 + y2) / 2 - 18, x2, y2);
+      ctx.stroke();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 10;
+      ctx.stroke();
+    }
+
+    function drawLeg(ctx, x, y, color) {
+      ctx.strokeStyle = "#4d4338";
+      ctx.lineWidth = 18;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, y + 72);
+      ctx.stroke();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 10;
+      ctx.stroke();
+      ctx.fillStyle = "#4d4338";
+      ctx.beginPath();
+      ctx.ellipse(x + 10, y + 78, 28, 11, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawChibi(ctx, theme, expression = "neutral", accessory) {
+      drawLeg(ctx, -30, 104, "#5f6368");
+      drawLeg(ctx, 30, 104, "#5f6368");
+
+      ctx.beginPath();
+      roundedRect(ctx, -58, -4, 116, 140, 24);
+      strokeFill(ctx, theme.outfit, "#4d4338", 6);
+
+      ctx.fillStyle = "rgba(255,255,255,0.78)";
+      ctx.beginPath();
+      ctx.moveTo(-22, 4);
+      ctx.lineTo(0, 34);
+      ctx.lineTo(22, 4);
+      ctx.closePath();
+      ctx.fill();
+
+      drawArm(ctx, -54, 32, -102, 68, theme.skin);
+      drawArm(ctx, 54, 32, 102, 68, theme.skin);
+
+      ctx.beginPath();
+      ctx.arc(0, -62, 62, 0, Math.PI * 2);
+      strokeFill(ctx, theme.skin, "#4d4338", 6);
+
+      ctx.fillStyle = theme.hair;
+      ctx.beginPath();
+      ctx.moveTo(-58, -70);
+      ctx.quadraticCurveTo(-34, -132, 38, -118);
+      ctx.quadraticCurveTo(78, -96, 54, -44);
+      ctx.quadraticCurveTo(22, -78, -2, -70);
+      ctx.quadraticCurveTo(-26, -62, -58, -70);
+      ctx.fill();
+
+      ctx.fillStyle = "#2c2925";
+      ctx.beginPath();
+      ctx.arc(-22, -58, 5, 0, Math.PI * 2);
+      ctx.arc(22, -58, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "#2c2925";
+      ctx.lineWidth = 5;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      if (expression === "panic") {
+        ctx.moveTo(-18, -32);
+        ctx.quadraticCurveTo(0, -46, 18, -32);
+      } else if (expression === "blank") {
+        ctx.moveTo(-18, -35);
+        ctx.lineTo(18, -35);
+      } else if (expression === "smirk") {
+        ctx.moveTo(-18, -38);
+        ctx.quadraticCurveTo(8, -22, 24, -44);
+      } else {
+        ctx.moveTo(-18, -42);
+        ctx.quadraticCurveTo(0, -28, 18, -42);
+      }
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(232, 102, 93, 0.22)";
+      ctx.beginPath();
+      ctx.arc(-38, -38, 10, 0, Math.PI * 2);
+      ctx.arc(38, -38, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (accessory) accessory();
+    }
+
+    function drawProfileMascot(ctx, code, cx, cy, scale) {
+      const theme = profileTheme(code);
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(scale, scale);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      ctx.fillStyle = "rgba(76, 67, 56, 0.13)";
+      ctx.beginPath();
+      ctx.ellipse(0, 198, 118, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (code === "STOP") {
+        drawChibi(ctx, theme, "panic", () => {
+          ctx.beginPath();
+          roundedRect(ctx, 78, 18, 82, 56, 10);
+          strokeFill(ctx, "#6b7280", "#4d4338", 5);
+          ctx.fillStyle = "#d92d20";
+          ctx.beginPath();
+          ctx.arc(119, 46, 20, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = "#4d4338";
+          ctx.lineWidth = 6;
+          ctx.stroke();
+          ctx.fillStyle = "#fff";
+          ctx.font = '900 28px Inter, sans-serif';
+          ctx.textAlign = "center";
+          ctx.fillText("!", 119, 56);
+          ctx.textAlign = "left";
+        });
+      } else if (code === "SAFE") {
+        drawChibi(ctx, theme, "neutral", () => {
+          ctx.beginPath();
+          roundedRect(ctx, -142, 34, 74, 98, 10);
+          strokeFill(ctx, "#ffffff", "#4d4338", 5);
+          ctx.strokeStyle = theme.accent;
+          ctx.lineWidth = 7;
+          ctx.beginPath();
+          ctx.moveTo(-126, 82);
+          ctx.lineTo(-108, 100);
+          ctx.lineTo(-84, 62);
+          ctx.stroke();
+          ctx.fillStyle = theme.soft;
+          ctx.beginPath();
+          roundedRect(ctx, 88, 36, 68, 44, 10);
+          strokeFill(ctx, theme.soft, "#4d4338", 4);
+          ctx.fillStyle = theme.accent;
+          ctx.font = '900 20px Inter, sans-serif';
+          ctx.textAlign = "center";
+          ctx.fillText("OK", 122, 65);
+          ctx.textAlign = "left";
+        });
+      } else if (code === "AUDT") {
+        drawChibi(ctx, theme, "blank", () => {
+          ctx.strokeStyle = "#4d4338";
+          ctx.lineWidth = 11;
+          ctx.beginPath();
+          ctx.arc(112, 6, 40, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(140, 34);
+          ctx.lineTo(178, 76);
+          ctx.stroke();
+          ctx.fillStyle = "#ffffff";
+          ctx.font = '900 20px Inter, sans-serif';
+          ctx.textAlign = "center";
+          ctx.fillText("AUD", 0, 72);
+          ctx.textAlign = "left";
+        });
+      } else if (code === "NORM") {
+        drawChibi(ctx, theme, "neutral", () => {
+          ctx.beginPath();
+          roundedRect(ctx, -108, 60, 216, 82, 10);
+          strokeFill(ctx, "#eef0f3", "#4d4338", 5);
+          ctx.fillStyle = theme.accent;
+          ctx.font = '900 26px Inter, sans-serif';
+          ctx.textAlign = "center";
+          ctx.fillText("KPI", 0, 110);
+          ctx.textAlign = "left";
+        });
+      } else if (code === "GPUC") {
+        drawChibi(ctx, theme, "smirk", () => {
+          ctx.beginPath();
+          roundedRect(ctx, -162, 48, 112, 78, 12);
+          strokeFill(ctx, "#262626", "#4d4338", 5);
+          ctx.strokeStyle = "#f6c65b";
+          ctx.lineWidth = 5;
+          ctx.stroke();
+          ctx.fillStyle = "#f6c65b";
+          ctx.font = '900 25px Inter, sans-serif';
+          ctx.textAlign = "center";
+          ctx.fillText("GPU", -106, 96);
+          ctx.beginPath();
+          ctx.arc(122, 80, 38, 0, Math.PI * 2);
+          strokeFill(ctx, "#fff4bf", "#4d4338", 5);
+          ctx.fillStyle = theme.accent;
+          ctx.font = '900 34px Inter, sans-serif';
+          ctx.fillText("×", 122, 93);
+          ctx.textAlign = "left";
+        });
+      } else if (code === "BOOM") {
+        drawChibi(ctx, theme, "neutral", () => {
+          ctx.beginPath();
+          ctx.moveTo(-64, -126);
+          ctx.lineTo(64, -126);
+          ctx.lineTo(44, -88);
+          ctx.lineTo(-44, -88);
+          ctx.closePath();
+          strokeFill(ctx, "#e6a23c", "#4d4338", 5);
+          ctx.beginPath();
+          roundedRect(ctx, 110, -26, 44, 70, 10);
+          strokeFill(ctx, "#a7f3d0", "#4d4338", 5);
+        });
+      } else if (code === "SING") {
+        drawChibi(ctx, theme, "smirk", () => {
+          ctx.strokeStyle = theme.accent;
+          ctx.lineWidth = 8;
+          ctx.beginPath();
+          ctx.arc(0, -98, 90, Math.PI * 1.08, Math.PI * 1.92);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(82, 40);
+          ctx.lineTo(148, -28);
+          ctx.lineTo(130, 108);
+          ctx.closePath();
+          strokeFill(ctx, "#e4d9f2", "#4d4338", 5);
+          ctx.beginPath();
+          ctx.moveTo(-82, 40);
+          ctx.lineTo(-148, -28);
+          ctx.lineTo(-130, 108);
+          ctx.closePath();
+          strokeFill(ctx, "#e4d9f2", "#4d4338", 5);
+        });
+      } else if (code === "VROM") {
+        drawChibi(ctx, theme, "smirk", () => {
+          ctx.strokeStyle = "#4d4338";
+          ctx.lineWidth = 10;
+          ctx.beginPath();
+          ctx.arc(118, 42, 42, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(118, 0);
+          ctx.lineTo(118, 84);
+          ctx.moveTo(76, 42);
+          ctx.lineTo(160, 42);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(-124, 96);
+          ctx.lineTo(-166, 54);
+          ctx.lineTo(-134, 144);
+          ctx.closePath();
+          strokeFill(ctx, "#f97316", "#4d4338", 5);
+        });
+      } else if (code === "POST") {
+        ctx.fillStyle = "rgba(76, 67, 56, 0.13)";
+        ctx.beginPath();
+        ctx.ellipse(0, 198, 118, 22, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = theme.outfit;
+        ctx.beginPath();
+        ctx.moveTo(0, -144);
+        ctx.quadraticCurveTo(80, -100, 60, -22);
+        ctx.lineTo(84, 118);
+        ctx.lineTo(-84, 118);
+        ctx.lineTo(-60, -22);
+        ctx.quadraticCurveTo(-80, -100, 0, -144);
+        strokeFill(ctx, theme.outfit, "#4d4338", 6);
+        ctx.fillStyle = theme.skin;
+        ctx.beginPath();
+        ctx.arc(0, -54, 48, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#1f2937";
+        ctx.beginPath();
+        ctx.arc(-16, -58, 6, 0, Math.PI * 2);
+        ctx.arc(16, -58, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "#6ee7b7";
+        ctx.lineWidth = 7;
+        ctx.beginPath();
+        ctx.moveTo(-28, -26);
+        ctx.lineTo(28, -26);
+        ctx.stroke();
+      } else {
+        drawChibi(ctx, theme, "neutral", () => {
+          ctx.beginPath();
+          roundedRect(ctx, -126, 42, 84, 62, 10);
+          strokeFill(ctx, "#dbeafe", "#4d4338", 5);
+          ctx.beginPath();
+          roundedRect(ctx, 42, 42, 84, 62, 10);
+          strokeFill(ctx, "#fef3c7", "#4d4338", 5);
+        });
+      }
+
+      ctx.restore();
+    }
+
+    function renderPoster(scores, interpretation, profile) {
+      const ctx = posterCanvas.getContext("2d");
+      const width = posterCanvas.width;
+      const height = posterCanvas.height;
+      const valid = Number.isFinite(scores.x) && Number.isFinite(scores.y);
+      const theme = profileTheme(profile.code);
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = theme.bg;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = theme.soft;
+      for (let y = 46; y < height; y += 92) {
+        for (let x = 52; x < width; x += 92) {
+          ctx.globalAlpha = 0.22;
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      ctx.fillStyle = "rgba(76, 67, 56, 0.10)";
+      roundedRect(ctx, 91, 72, 736, 1092, 28);
+      ctx.fill();
+
+      ctx.fillStyle = "#ffffff";
+      roundedRect(ctx, 82, 58, 736, 1090, 28);
+      ctx.fill();
+      ctx.strokeStyle = "#d8d0c6";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.fillStyle = theme.soft;
+      roundedRect(ctx, 116, 96, 668, 72, 16);
+      ctx.fill();
+
+      ctx.fillStyle = theme.accent;
+      ctx.textAlign = "center";
+      ctx.font = '900 24px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText("AI 意识形态抽象人格", width / 2, 128);
+      ctx.fillStyle = "#667085";
+      ctx.font = '760 17px Inter, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText("NOT SCIENCE, JUST VIBES", width / 2, 154);
+
+      ctx.fillStyle = valid ? theme.accent : "#98a2b3";
+      roundedRect(ctx, 300, 210, 300, 84, 18);
+      ctx.fill();
+      ctx.fillStyle = "#fff";
+      ctx.font = '950 52px Inter, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText(profile.code, width / 2, 268);
+
+      ctx.fillStyle = "#17202a";
+      ctx.font = '950 58px "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText(profile.name, width / 2, 366);
+      ctx.fillStyle = "#667085";
+      ctx.font = '760 22px "PingFang SC", "Microsoft YaHei", sans-serif';
+      drawWrappedText(ctx, profile.lineage.replace("近亲：", ""), width / 2, 404, 610, 29, 2);
+
+      ctx.fillStyle = theme.soft;
+      roundedRect(ctx, 150, 456, 600, 392, 24);
+      ctx.fill();
+      ctx.strokeStyle = "#e0d8ce";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = "rgba(255,255,255,0.54)";
+      ctx.beginPath();
+      ctx.arc(450, 634, 162, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.save();
+      ctx.translate(width / 2, 628);
+      drawProfileMascot(ctx, profile.code, 0, 0, 1.34);
+      ctx.restore();
+
+      ctx.fillStyle = "#fbfaf7";
+      roundedRect(ctx, 132, 896, 636, 128, 18);
+      ctx.fill();
+      ctx.strokeStyle = "#e1d8ce";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = "#344054";
+      ctx.textAlign = "left";
+      ctx.font = '850 28px "PingFang SC", "Microsoft YaHei", sans-serif';
+      drawWrappedText(ctx, profile.share, 166, 946, 568, 36, 2);
+
+      ctx.fillStyle = theme.accent;
+      ctx.textAlign = "center";
+      ctx.font = '850 22px Inter, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText(`x ${formatScore(scores.x)}  /  y ${formatScore(scores.y)}`, width / 2, 1072);
+      ctx.fillStyle = "#8a8178";
+      ctx.font = '720 19px "PingFang SC", "Microsoft YaHei", sans-serif';
+      drawWrappedText(ctx, interpretation.title, width / 2, 1106, 620, 26, 1);
+      ctx.fillStyle = "#aaa196";
+      ctx.font = '700 16px Inter, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText("AI IDEOLOGY TYPE CARD", width / 2, 1132);
+      ctx.textAlign = "left";
+    }
+
+    function buildSummary(scores, interpretation, profile) {
+      if (!Number.isFinite(scores.x) || !Number.isFinite(scores.y)) {
+        return "答完横轴和纵轴各至少 4 道核心题后，这里会生成可复制摘要。";
+      }
+
+      const statement = selectedStatement();
+      const scenarioSummary = scenarios
+        .map((scenario) => {
+          const answer = selectedRadio(scenario.id);
+          return answer ? `${scenario.id}: ${answer}` : "";
+        })
+        .filter(Boolean)
+        .join(" | ");
+
+      return [
+        "AI 立场二维坐标小测结果",
+        `x = ${formatScore(scores.x)}（低 = 暂停/治理，高 = 建设/加速）`,
+        `y = ${formatScore(scores.y)}（高 = 人类中心，低 = 计算中心/后人类）`,
+        `粗略位置：${interpretation.title}`,
+        `人物画像：${profile.code} ${profile.name}`,
+        `一句话：${profile.share}`,
+        statement ? `最接近陈述：${statement}` : "",
+        scenarioSummary ? `情境选择：${scenarioSummary}` : ""
+      ].filter(Boolean).join("\n");
+    }
+
+    function updateResult() {
+      const scores = calculateScores();
+      const interpretation = interpret(scores.x, scores.y, scores.xAnswered, scores.yAnswered);
+      const profile = selectMemeProfile(scores.x, scores.y, scores.xAnswered, scores.yAnswered);
+      const doneRatio = scores.answered / questions.length;
+
+      progressBar.style.width = `${Math.round(doneRatio * 100)}%`;
+      scoreDone.textContent = `${scores.answered}/12`;
+      scoreX.textContent = formatScore(scores.x);
+      scoreY.textContent = formatScore(scores.y);
+
+      if (Number.isFinite(scores.x) && Number.isFinite(scores.y)) {
+        const px = axisPositionX(scores.x);
+        const py = axisPositionY(scores.y);
+        markerGroup.setAttribute("opacity", "1");
+        marker.setAttribute("cx", px);
+        marker.setAttribute("cy", py);
+        markerXLine.setAttribute("x1", px);
+        markerXLine.setAttribute("x2", px);
+        markerYLine.setAttribute("y1", py);
+        markerYLine.setAttribute("y2", py);
+      } else {
+        markerGroup.setAttribute("opacity", "0.24");
+        marker.setAttribute("cx", "210");
+        marker.setAttribute("cy", "210");
+        markerXLine.setAttribute("x1", "210");
+        markerXLine.setAttribute("x2", "210");
+        markerYLine.setAttribute("y1", "210");
+        markerYLine.setAttribute("y2", "210");
+      }
+
+      labelTitle.textContent = interpretation.title;
+      labelText.textContent = interpretation.text;
+      renderProfile(profile);
+      renderPoster(scores, interpretation, profile);
+      summaryBox.textContent = buildSummary(scores, interpretation, profile);
+    }
+
+    function resetForm() {
+      form.reset();
+      updateResult();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function copySummary() {
+      const text = summaryBox.textContent.trim();
+      if (!text) return;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("结果已复制");
+      } catch (error) {
+        showToast("复制失败，可手动选择摘要");
+      }
+    }
+
+    function downloadPoster() {
+      const scores = calculateScores();
+      if (!Number.isFinite(scores.x) || !Number.isFinite(scores.y)) {
+        showToast("先答完核心题再下载");
+        return;
+      }
+
+      const profile = selectMemeProfile(scores.x, scores.y, scores.xAnswered, scores.yAnswered);
+      const link = document.createElement("a");
+      link.download = `ai-ideology-${profile.code}.png`;
+      link.href = posterCanvas.toDataURL("image/png");
+      link.click();
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 1600);
+    }
+
+    renderQuestions();
+    renderScenarios();
+    renderStatements();
+    form.addEventListener("input", updateResult);
+    form.addEventListener("change", updateResult);
+    resetBtn.addEventListener("click", resetForm);
+    copyBtn.addEventListener("click", copySummary);
+    renderPosterBtn.addEventListener("click", updateResult);
+    downloadPosterBtn.addEventListener("click", downloadPoster);
+    updateResult();
+  </script>
+</body>
+</html>
