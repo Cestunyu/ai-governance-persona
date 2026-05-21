@@ -32,10 +32,10 @@ So X mostly shows the control-versus-open-deployment response, while still movin
 
 There are 12 core Likert items: 4 R, 4 C, and 4 H.
 
-For each 1-7 item:
+For each 1-5 item:
 
 ```text
-centered = (answer - 4) / 3
+centered = (answer - 3) / 2
 item_score = 2 * centered
 ```
 

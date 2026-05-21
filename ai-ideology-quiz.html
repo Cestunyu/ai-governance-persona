@@ -1064,11 +1064,9 @@
     const likertOptions = [
       ["1", "1", "非常不同意"],
       ["2", "2", "不同意"],
-      ["3", "3", "有点不同意"],
-      ["4", "4", "中立"],
-      ["5", "5", "有点同意"],
-      ["6", "6", "同意"],
-      ["7", "7", "非常同意"]
+      ["3", "3", "中立"],
+      ["4", "4", "同意"],
+      ["5", "5", "非常同意"]
     ];
 
     const pages = [
@@ -1076,7 +1074,7 @@
         id: q.id,
         kind: "core",
         title: "核心题目",
-        subtitle: "1 = 非常不同意，7 = 非常同意",
+        subtitle: "1 = 非常不同意，5 = 非常同意",
         tag: q.id,
         instruction: "选择你对这句话的同意程度",
         prompt: q.text,
@@ -1171,7 +1169,7 @@
     }
 
     function centered(value) {
-      return (Number(value) - 4) / 3;
+      return (Number(value) - 3) / 2;
     }
 
     function formatScore(value) {
