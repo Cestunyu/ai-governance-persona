@@ -939,12 +939,11 @@
       "AI 应该被建设和部署，因为它能创造巨大的丰裕。",
       "AI 不只是工具，更像通往奇点、人机融合或文明升级的路径。",
       "AI 加速本身有道德紧迫性，不应该被人类恐惧束缚。",
-      "前沿 AI 不应开放扩散，但治理也不应以当下人类偏好为最终尺度；它需要强治理、系统治理和行星尺度计算秩序。",
       "如果更高级的智能或技术资本会超出人类中心框架，这未必是失败；人类可能只是过渡阶段。",
       "都不像。"
     ];
 
-    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "GPUC", "BOOM", "SING", "VROM", "SOVR", "POST", ""];
+    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "GPUC", "BOOM", "SING", "VROM", "POST", ""];
 
     const scenarioProfiles = {
       V1: ["STOP", "SAFE", "BOOM", "VROM"],
@@ -962,7 +961,6 @@
       BOOM: ["丰裕施工队", "近亲：Andrew Ng / Dario Amodei optimism", "你相信 AI 最大的问题不是太强，而是还没接进足够多现实系统。", "Machines of Loving Grace, AI is the New Electricity", "高频词是 productivity、health、education、deployment。"],
       SING: ["赛博飞升派", "近亲：Kurzweil / singularity optimism", "你看 AI 不是工具，是人类文明的下一次换壳。", "The Singularity Is Near, The Intelligence Age", "常谈 abundance、longevity、human-machine merger。"],
       VROM: ["油门焊死哥", "近亲：e/acc / effective accelerationism", "如果方向盘还在争论，至少油门可以先踩。", "Effective Accelerationism manifestos", "常说 accelerate、permissionless、build、decentralize。"],
-      SOVR: ["后人类控制派", "近亲：Benjamin Bratton / planetary computation", "你不相信开放扩散，也不把当下人类偏好当作最终尺度；AI 需要强治理和系统级架构。", "The Stack, The Revenge of the Real, Antikythera", "常说 planetary computation、Stack、sovereignty、synthetic intelligence。"],
       POST: ["碳基过渡版本", "近亲：Nick Land / posthuman accelerationist edge", "别人讨论 AI 服务人类，你已经在思考人类是不是技术资本的脚手架。", "Meltdown, Dark Enlightenment", "常用词是 posthuman、technocapital、autonomy。"]
     };
 
@@ -975,7 +973,6 @@
       BOOM: { x: 1.05, y: 0.9 },
       SING: { x: 1.45, y: -0.35 },
       VROM: { x: 1.85, y: -0.8 },
-      SOVR: { x: -1.15, y: -1.1 },
       POST: { x: 1.8, y: -1.8 }
     };
 
@@ -1377,7 +1374,6 @@
     function baseProfileFor(x, y) {
       if (!Number.isFinite(x) || !Number.isFinite(y)) return "";
       if (x >= 1.5 && y <= -1.5) return "POST";
-      if (x <= -0.75 && y <= -0.65) return "SOVR";
       if (x >= 1.25 && y <= -0.75) return "VROM";
       if (x <= -1.25 && y >= 0) return "STOP";
       if (x >= 1.25 && y >= -0.75 && y <= 0.75) return "SING";
@@ -1413,7 +1409,6 @@
       addEvidence(scores, "BOOM", (2.4 * opportunity) + (1.1 * open) + (1.0 * human));
       addEvidence(scores, "SING", (1.5 * opportunity) + (1.1 * open) + (1.2 * posthuman));
       addEvidence(scores, "VROM", (1.6 * opportunity) + (2.2 * open) + (0.7 * posthuman));
-      addEvidence(scores, "SOVR", (1.8 * control) + (2.1 * posthuman) + (0.5 * cat) + (0.4 * middleResponse));
       addEvidence(scores, "POST", (0.9 * opportunity) + (1.4 * open) + (2.5 * posthuman));
     }
 

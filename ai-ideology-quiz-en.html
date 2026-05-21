@@ -939,12 +939,11 @@
       "AI should be built and deployed because it can create enormous abundance.",
       "AI is not merely a tool; it is a path toward the singularity, human-machine merger, or civilizational upgrade.",
       "AI acceleration has moral urgency and should not be constrained by human fear.",
-      "Frontier AI should not be openly diffused, but governance should not treat current human preferences as the final constraint; it needs strong system-level governance and planetary computation.",
       "If higher intelligence or technocapital outgrows a human-centered frame, that is not necessarily failure; humans may be a transitional stage.",
       "None of these fit."
     ];
 
-    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "GPUC", "BOOM", "SING", "VROM", "SOVR", "POST", ""];
+    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "GPUC", "BOOM", "SING", "VROM", "POST", ""];
 
     const scenarioProfiles = {
       V1: ["STOP", "SAFE", "BOOM", "VROM"],
@@ -962,7 +961,6 @@
       BOOM: ["Abundance Builder", "Closest kin: Andrew Ng / Dario Amodei optimism", "You think the biggest AI problem is not that it is too strong, but that it is not plugged into enough real systems yet.", "Machines of Loving Grace, AI is the New Electricity", "High-frequency words: productivity, health, education, deployment."],
       SING: ["Cyber Ascender", "Closest kin: Kurzweil / singularity optimism", "You do not see AI as a tool; you see it as civilization changing bodies.", "The Singularity Is Near, The Intelligence Age", "Often talks about abundance, longevity, human-machine merger."],
       VROM: ["Throttle-Welded Builder", "Closest kin: e/acc / effective accelerationism", "If the steering wheel is still being debated, at least the accelerator can be pressed.", "Effective Accelerationism manifestos", "Often says accelerate, permissionless, build, decentralize."],
-      SOVR: ["Controlled Posthumanist", "Closest kin: Benjamin Bratton / planetary computation", "You distrust open diffusion, but you also do not treat current human preferences as the final constraint; AI needs strong system-level governance.", "The Stack, The Revenge of the Real, Antikythera", "Often says planetary computation, Stack, sovereignty, synthetic intelligence."],
       POST: ["Carbon-Based Transitional Form", "Closest kin: Nick Land / posthuman accelerationist edge", "While others debate whether AI should serve humans, you are wondering whether humans are scaffolding for technocapital.", "Meltdown, Dark Enlightenment", "Often says posthuman, technocapital, autonomy."]
     };
 
@@ -975,7 +973,6 @@
       BOOM: { x: 1.05, y: 0.9 },
       SING: { x: 1.45, y: -0.35 },
       VROM: { x: 1.85, y: -0.8 },
-      SOVR: { x: -1.15, y: -1.1 },
       POST: { x: 1.8, y: -1.8 }
     };
 
@@ -1377,7 +1374,6 @@
     function baseProfileFor(x, y) {
       if (!Number.isFinite(x) || !Number.isFinite(y)) return "";
       if (x >= 1.5 && y <= -1.5) return "POST";
-      if (x <= -0.75 && y <= -0.65) return "SOVR";
       if (x >= 1.25 && y <= -0.75) return "VROM";
       if (x <= -1.25 && y >= 0) return "STOP";
       if (x >= 1.25 && y >= -0.75 && y <= 0.75) return "SING";
@@ -1413,7 +1409,6 @@
       addEvidence(scores, "BOOM", (2.4 * opportunity) + (1.1 * open) + (1.0 * human));
       addEvidence(scores, "SING", (1.5 * opportunity) + (1.1 * open) + (1.2 * posthuman));
       addEvidence(scores, "VROM", (1.6 * opportunity) + (2.2 * open) + (0.7 * posthuman));
-      addEvidence(scores, "SOVR", (1.8 * control) + (2.1 * posthuman) + (0.5 * cat) + (0.4 * middleResponse));
       addEvidence(scores, "POST", (0.9 * opportunity) + (1.4 * open) + (2.5 * posthuman));
     }
 
