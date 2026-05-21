@@ -4,48 +4,89 @@ Last updated: 2026-05-20
 
 This note documents the active scoring logic used by `ai-ideology-quiz.html` and `ai-ideology-quiz-en.html`.
 
-## Axes
+## Framework
 
-- **X: governance-first <-> build-and-accelerate**
-  - Negative X means pause, restrict, gate, audit, or require safety evidence before deployment.
-  - Positive X means build, deploy, open, diffuse, and treat delay or regulation as a major cost.
-- **Y: human-centered <-> compute/intelligence-centered**
-  - Positive Y means human dignity, democratic legitimacy, appeal rights, accountable authority, and human-compatible goals matter intrinsically.
-  - Negative Y means current human judgment, preference, and institutions can be discounted when intelligence growth, compute, or more advanced value forms dominate.
+The quiz now uses three internal dimensions and projects them into a two-dimensional map.
 
-The two axes are not assumed to be statistically independent. Some items have small cross-loadings because their wording carries secondary semantic content. These are design weights for a pilot quiz, not validated factor loadings.
+- **R: risk / harm diagnosis**
+  - This is not a single left-right score. It asks what kind of AI problem the respondent thinks is primary.
+  - Four diagnosis types are scored separately: civilizational risk, current social harm, normal technology / hype, and opportunity cost.
+- **C: control / openness-build response**
+  - Negative C means release thresholds, licensing, audits, liability, and controlled access.
+  - Positive C means open competition, capability diffusion, faster deployment, and correction through use.
+- **H: humanism / posthumanism**
+  - Positive H means democratic human choice, human dignity, appeal rights, and accountable human authority.
+  - Negative H means current human preference and institutions should not be treated as final constraints on more advanced intelligence or future value.
 
-## Formula
+The displayed map is:
 
-For each 1-7 Likert item:
+```text
+X = 0.65 * C - 0.35 * R_projection
+Y = H
+R_projection = civilizational_risk - opportunity_cost
+```
+
+So X mostly shows the control-versus-open-deployment response, while still moving catastrophic-risk respondents left and opportunity-cost respondents right. Y directly shows human-centered versus posthuman/intelligence-centered values.
+
+## Core Items
+
+There are 12 core Likert items: 4 R, 4 C, and 4 H.
+
+For each 1-7 item:
 
 ```text
 centered = (answer - 4) / 3
-axis_score = 2 * sum(centered * axis_weight) / sum(abs(axis_weight))
+item_score = 2 * centered
 ```
 
-This keeps each coordinate roughly in `[-2, 2]`. The coordinate appears only on the map; the result type also uses scenario choices and the final multi-select self-placement as tie-break evidence.
+This keeps each scored component in `[-2, 2]`.
 
-## Core Item Semantics
+| ID | Dimension | Scoring role |
+|---|---|---|
+| R01 | R | Civilizational-risk diagnosis |
+| R02 | R | Current-social-harm diagnosis |
+| R03 | R | Normal-technology / hype diagnosis |
+| R04 | R | Opportunity-cost diagnosis |
+| C01 | C | Control threshold, direction -1 |
+| C02 | C | Licensing / audit / liability, direction -1 |
+| C03 | C | Open competition / anti-gatekeeping, direction +1 |
+| C04 | C | Faster real-world deployment, direction +1 |
+| H01 | H | Democratic human goal selection, direction +1 |
+| H02 | H | Accountable human authority, direction +1 |
+| H03 | H | Anti-finalizing-current-human-preferences, direction -1 |
+| H04 | H | AI judgment priority over low-quality human judgment, direction -1 |
 
-| ID | Main facet | X weight | Y weight | Why |
-|---|---:|---:|---:|---|
-| X01 | Frontier risk evidence threshold | -1.00 | +0.25 | Slowing frontier AI is mainly governance-first; the safety/alignment framing also implies human-compatible constraints. |
-| X02 | Anti-overregulation and deployment-risk tradeoff | +0.85 | -0.10 | The core claim favors deployment over regulation; it weakly discounts human institutional control. |
-| X03 | Dangerous capability threshold and state pause authority | -1.00 | +0.10 | This is a direct pause/gatekeeping item, with a mild human-accountability component through government authority. |
-| X04 | Rapid buildout and opportunity cost | +1.00 | -0.05 | This is the cleanest acceleration/deployment item; the Y loading stays minimal because opportunity-cost arguments can be human-benefit oriented. |
-| X05 | Pre-release safety proof and human compatibility | -0.90 | +0.30 | This combines deployment caution with stronger human-compatible safety evidence. |
-| X06 | Open competition and anti-centralized control | +0.75 | -0.25 | Openness pushes toward diffusion/building; the anti-control language overlaps slightly with decentralist or anti-human-institution instincts. |
-| Y01 | Democratic goal selection and human sovereignty | -0.15 | +1.00 | The main signal is human-centered legitimacy; democratic governance also mildly resists unchecked acceleration. |
-| Y02 | Anti-finalizing-current-preferences and advanced value | +0.15 | -1.00 | The main signal is posthuman or intelligence-centered value; it weakly favors moving beyond current governance constraints. |
-| Y03 | Dignity, agency, and control | -0.10 | +1.00 | This is a pure human-centered item, with a small cautionary implication for automation. |
-| Y04 | Long-run intelligence growth over institutions | +0.25 | -1.00 | This strongly discounts current human institutions and also tilts toward acceleration. |
-| Y05 | Rights, opportunities, and accountable human authority | -0.15 | +1.00 | This anchors human accountability and mildly supports governance before deployment. |
-| Y06 | AI judgment priority over low-quality human judgment | +0.20 | -1.00 | This strongly shifts toward compute/intelligence authority and mildly toward deployment or delegation. |
+## Dimension Scores
 
-## Current Design Implications
+R items are preserved as four separate diagnosis scores:
 
-- The center should no longer collapse as easily into `NORM`, because final self-placement and scenario choices can break central ties.
-- Contradictory answer patterns are allowed. The quiz should not pretend they are measurement errors.
-- Left-bottom answers are especially unstable: they combine strong governance caution with anti-human-centered value assumptions. Because there is no active meme type for that quadrant, scenario and self-placement evidence should dominate classification there.
-- If this becomes a research instrument, the next step is not more clever hand weighting. The next step is a pilot dataset, item-total checks, factor analysis with oblique rotation, and item revisions based on observed cross-loadings.
+```text
+civilizational_risk = score(R01)
+current_social_harm = score(R02)
+normal_technology = score(R03)
+opportunity_cost = score(R04)
+```
+
+C and H are averaged directional scores:
+
+```text
+C = 2 * average(centered(answer) * item_direction) over C01-C04
+H = 2 * average(centered(answer) * item_direction) over H01-H04
+```
+
+The result panel shows the dominant R diagnosis by highest R subscore, plus numeric C and H scores.
+
+## Classification
+
+The visible coordinate is only one part of the profile assignment. The profile classifier also uses:
+
+- Core R/C/H evidence derived from the three-dimensional scores.
+- Scenario choices as light cross-check evidence.
+- Final self-placement statements as stronger tie-break evidence.
+- Nearest projected profile anchor when evidence is tied or weak.
+
+This is still a pilot locator, not a validated psychometric instrument. The design goal is clearer construct separation: diagnosis first, response second, value frame third.
+
+## Next Validation Step
+
+If this becomes a research instrument, the next step is not more hand-tuned weighting. The next step is a pilot dataset, item-total checks, factor analysis with oblique rotation, and revisions based on observed cross-loadings and classification instability.

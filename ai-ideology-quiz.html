@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 立场二维坐标问卷</title>
+  <link rel="icon" href="data:,">
   <style>
     :root {
       color-scheme: light;
@@ -164,17 +165,12 @@
 
     .panel-head {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       gap: 10px;
-      padding: 14px 16px;
+      padding: 10px 16px;
       border-bottom: 1px solid var(--line);
       background: #fbfcfe;
-    }
-
-    .panel-head h2 {
-      margin: 0;
-      font-size: 16px;
     }
 
     .panel-head small {
@@ -345,7 +341,7 @@
 
     .result-topline {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -799,10 +795,6 @@
     <form id="quizForm" class="quiz-shell">
       <section class="panel" id="quizPager">
         <div class="panel-head">
-          <div>
-            <h2 id="pageTitle">核心题目</h2>
-            <small id="pageSubtitle">1 = 非常不同意，7 = 非常同意</small>
-          </div>
           <small id="pageCount">第 1 / 17 题</small>
         </div>
         <div class="panel-body">
@@ -815,7 +807,7 @@
 
           <article class="page-card">
             <div class="page-meta">
-              <span class="qid" id="pageTag">X01</span>
+              <span class="qid" id="pageTag">R01</span>
               <span id="pageInstruction">选择最接近你的位置</span>
             </div>
             <h2 class="page-prompt" id="pagePrompt"></h2>
@@ -841,6 +833,18 @@
           <span>画像</span>
           <strong id="scoreCode">--</strong>
         </div>
+        <div class="metric">
+          <span>R 诊断</span>
+          <strong id="dimensionR">--</strong>
+        </div>
+        <div class="metric">
+          <span>C 响应</span>
+          <strong id="dimensionC">--</strong>
+        </div>
+        <div class="metric">
+          <span>H 价值</span>
+          <strong id="dimensionH">--</strong>
+        </div>
       </div>
 
       <div class="map-card">
@@ -852,9 +856,9 @@
           <div class="map-axis horizontal"></div>
           <div class="map-axis vertical"></div>
           <span class="map-label top">人类中心</span>
-          <span class="map-label bottom">计算中心</span>
-          <span class="map-label left">治理优先</span>
-          <span class="map-label right">加速建设</span>
+          <span class="map-label bottom">后人类/智能中心</span>
+          <span class="map-label left">控制门槛</span>
+          <span class="map-label right">开放部署</span>
           <div class="reference-layer" id="referenceLayer"></div>
           <div class="map-dot" id="mapDot"><span id="mapDotCode">----</span></div>
         </div>
@@ -889,23 +893,23 @@
 
   <script>
     const axisMeaning = {
-      x: "治理优先 <-> 加速建设",
-      y: "人类中心 <-> 计算/智能中心"
+      x: "控制门槛 <-> 开放部署",
+      y: "人类中心 <-> 后人类/智能中心"
     };
 
     const questions = [
-      { id: "X01", weights: { x: -1, y: 0.25 }, facet: "前沿风险证据门槛", text: "在前沿 AI 有足够安全和对齐证据之前，开发速度应该放慢。" },
-      { id: "X02", weights: { x: 0.85, y: -0.1 }, facet: "反过度监管 / 部署风险权衡", text: "过度监管 AI 的风险，可能比部署 AI 本身的风险更大。" },
-      { id: "X03", weights: { x: -1, y: 0.1 }, facet: "危险能力阈值 / 国家暂停权", text: "对于达到危险能力阈值的 AI，政府应该有权暂停训练或发布。" },
-      { id: "X04", weights: { x: 1, y: -0.05 }, facet: "快速建设 / 机会成本", text: "社会应该尽快建设和部署强大的 AI，因为拖延本身有巨大机会成本。" },
-      { id: "X05", weights: { x: -0.9, y: 0.3 }, facet: "发布前安全证明 / 人类兼容", text: "开发者应该先证明系统足够安全，再让系统面向社会发布。" },
-      { id: "X06", weights: { x: 0.75, y: -0.25 }, facet: "开放竞争 / 反集中控制", text: "开放竞争和能力扩散，通常比少数机构集中控制 AI 更安全。" },
-      { id: "Y01", weights: { x: -0.15, y: 1 }, facet: "民主目标选择 / 人类主权", text: "AI 应该服从由人类社会民主选择的目标。" },
-      { id: "Y02", weights: { x: 0.15, y: -1 }, facet: "反当前偏好终局化 / 高级价值", text: "把当下人类偏好当成最终标准，可能会阻碍更高级的智能或价值形式出现。" },
-      { id: "Y03", weights: { x: -0.1, y: 1 }, facet: "尊严、能动性和控制感", text: "即使自动化更有效率，人的尊严、能动性和控制感本身也有价值。" },
-      { id: "Y04", weights: { x: 0.25, y: -1 }, facet: "长期智能增长 / 制度降权", text: "长期的智能增长，比保存当下的人类制度更重要。" },
-      { id: "Y05", weights: { x: -0.15, y: 1 }, facet: "权利机会 / 可问责人类权威", text: "影响权利、机会或人生处境的决定，必须保留可问责的人类权威。" },
-      { id: "Y06", weights: { x: 0.2, y: -1 }, facet: "AI 判断优先 / 绕过低质量人类判断", text: "如果 AI 的判断明显优于人类，它有时应该绕过低质量的人类判断。" }
+      { id: "R01", dimension: "r", diagnosis: "catastrophic", facet: "文明级风险诊断", text: "前沿 AI 不是普通产品风险；它在未来几十年内造成文明级失败的概率高到足以重排社会优先级。" },
+      { id: "R02", dimension: "r", diagnosis: "social", facet: "现实社会伤害诊断", text: "未来 AGI 灭绝风险被讨论得太多了；当前更紧迫的是 AI 已经在劳动、监控、偏见、环境成本、数据剥削和权力集中上造成伤害。" },
+      { id: "R03", dimension: "r", diagnosis: "normal", facet: "普通技术 / hype 诊断", text: "把 AI 说成末日或救世主都会误导政策；大多数 AI 问题应被当作普通技术的误用、评估失败和制度治理问题处理。" },
+      { id: "R04", dimension: "r", diagnosis: "opportunity", facet: "机会成本诊断", text: "AI 风险叙事已经系统性夸大；更大的危险是社会因为恐惧和监管错过医疗、教育、科学和生产力收益。" },
+      { id: "C01", dimension: "c", direction: -1, facet: "危险能力发布门槛", text: "一旦模型接近危险能力阈值，默认不应发布或开源，除非先通过独立安全评估。" },
+      { id: "C02", dimension: "c", direction: -1, facet: "许可、审计与问责", text: "高风险 AI 不应靠公司自律；它需要许可、审计、法律责任和可执行的申诉机制。" },
+      { id: "C03", dimension: "c", direction: 1, facet: "开放竞争 / 反 gatekeeping", text: "让少数公司或政府 gatekeep 前沿 AI，比开放竞争和能力扩散更危险。" },
+      { id: "C04", dimension: "c", direction: 1, facet: "真实部署中迭代", text: "即使会带来滥用和混乱，社会也应该更快部署强 AI，并在真实使用中迭代修正。" },
+      { id: "H01", dimension: "h", direction: 1, facet: "民主目标选择", text: "AI 的合法目标必须来自人类社会的民主选择，而不是实验室、市场或模型自己定义。" },
+      { id: "H02", dimension: "h", direction: 1, facet: "可问责人类权威", text: "在影响权利、机会或人生处境的问题上，AI 再准确也不能取代可问责的人类权威。" },
+      { id: "H03", dimension: "h", direction: -1, facet: "反当前偏好终局化", text: "把当下人类偏好当成最终价值标准，是对更高级智能和未来价值形式的过早封闭。" },
+      { id: "H04", dimension: "h", direction: -1, facet: "AI 判断优先", text: "如果 AI 的判断长期明显优于人类，让它绕过低质量的人类判断有时是合理的。" }
     ];
 
     const scenarios = [
@@ -967,37 +971,37 @@
 
     const profileAnchors = {
       STOP: { x: -1.8, y: 0.9 },
-      SAFE: { x: -0.9, y: 1.2 },
-      AUDT: { x: 0, y: 1.8 },
-      NORM: { x: 0.1, y: 0.6 },
-      GPUC: { x: 0.85, y: -0.8 },
-      BOOM: { x: 0.9, y: 0.8 },
-      SING: { x: 1.6, y: -0.1 },
-      VROM: { x: 1.65, y: -1.15 },
-      POST: { x: 1.85, y: -1.85 }
+      SAFE: { x: -1.05, y: 1.35 },
+      AUDT: { x: -0.45, y: 1.8 },
+      NORM: { x: -0.05, y: 0.9 },
+      GPUC: { x: 0.6, y: -1 },
+      BOOM: { x: 1.05, y: 0.9 },
+      SING: { x: 1.45, y: -0.35 },
+      VROM: { x: 1.85, y: -0.8 },
+      POST: { x: 1.8, y: -1.8 }
     };
 
     const referencePoints = [
       { id: "eliezer-yudkowsky", label: "Yudkowsky", name: "Eliezer Yudkowsky", cluster: "Rationalist AI x-risk / MIRI", x: -2, y: 1, influence: 5, dx: "-18px", dy: "-12px" },
-      { id: "nick-bostrom", label: "Bostrom", name: "Nick Bostrom", cluster: "Superintelligence / philosophical x-risk", x: -2, y: 1, influence: 5, dx: "16px", dy: "10px" },
+      { id: "nick-bostrom", label: "Bostrom", name: "Nick Bostrom", cluster: "Superintelligence / philosophical x-risk", x: -1.68, y: 1, influence: 5, dx: "16px", dy: "10px" },
       { id: "stuart-russell", label: "Russell", name: "Stuart Russell", cluster: "Beneficial AI / human-compatible AI", x: -1, y: 2, influence: 5, dx: "0px", dy: "0px" },
-      { id: "paul-christiano", label: "Christiano", name: "Paul Christiano", cluster: "Scalable alignment / technical safety", x: -1, y: 1, influence: 4, dx: "-18px", dy: "8px" },
-      { id: "ajeya-cotra", label: "Cotra", name: "Ajeya Cotra", cluster: "AI timelines / Open Philanthropy", x: -1, y: 1, influence: 4, dx: "16px", dy: "-10px" },
-      { id: "dario-amodei-anthropic", label: "Amodei", name: "Dario Amodei / Anthropic", cluster: "Frontier-lab safety optimism", x: -0.5, y: 1, influence: 5, dx: "12px", dy: "8px" },
-      { id: "dan-hendrycks-cais", label: "Hendrycks", name: "Dan Hendrycks / Center for AI Safety", cluster: "Public AI x-risk and ML safety", x: -1.5, y: 1, influence: 4, dx: "8px", dy: "-12px" },
-      { id: "bender-gebru-mitchell-mcmillan-major", label: "Bender et al.", name: "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major", cluster: "Critical AI / stochastic parrots", x: 0, y: 2, influence: 5, dx: "-40px", dy: "-16px" },
-      { id: "kate-crawford", label: "Crawford", name: "Kate Crawford", cluster: "AI political economy / extraction", x: 0, y: 2, influence: 4, dx: "18px", dy: "2px" },
-      { id: "ruha-benjamin", label: "Benjamin", name: "Ruha Benjamin", cluster: "Race, automation, and technology critique", x: 0, y: 2, influence: 4, dx: "0px", dy: "24px" },
-      { id: "narayanan-kapoor", label: "Narayanan/Kapoor", name: "Arvind Narayanan and Sayash Kapoor", cluster: "AI hype skepticism / normal technology", x: 0, y: 1.5, influence: 4, dx: "0px", dy: "0px" },
-      { id: "gary-marcus-melanie-mitchell", label: "Marcus/Mitchell", name: "Gary Marcus / Melanie Mitchell", cluster: "Deep learning skepticism", x: 0, y: 0.5, influence: 4, dx: "0px", dy: "0px" },
-      { id: "rich-sutton", label: "Sutton", name: "Rich Sutton", cluster: "Bitter Lesson / computation-centered AI", x: 1, y: -1, influence: 5, dx: "-12px", dy: "0px" },
-      { id: "yann-lecun", label: "LeCun", name: "Yann LeCun", cluster: "Open-source / architecture optimism / anti-doom", x: 1, y: 0, influence: 5, dx: "12px", dy: "4px" },
-      { id: "andrew-ng", label: "Andrew Ng", name: "Andrew Ng", cluster: "Pragmatic AI optimism", x: 1, y: 1, influence: 4, dx: "-15px", dy: "-11px" },
-      { id: "sam-altman-openai", label: "Altman/OpenAI", name: "Sam Altman / OpenAI", cluster: "Managed AGI optimism", x: 1, y: 1, influence: 5, dx: "16px", dy: "11px" },
-      { id: "ray-kurzweil", label: "Kurzweil", name: "Ray Kurzweil", cluster: "Singularity / transhumanist optimism", x: 2, y: -0.5, influence: 5, dx: "-20px", dy: "10px" },
-      { id: "marc-andreessen", label: "Andreessen", name: "Marc Andreessen", cluster: "Techno-optimism / anti-pause politics", x: 2, y: 0.5, influence: 4, dx: "15px", dy: "-8px" },
-      { id: "effective-accelerationism", label: "e/acc", name: "e/acc / effective accelerationism", cluster: "Accelerationist AI politics", x: 2, y: -1.5, influence: 3, dx: "0px", dy: "0px" },
-      { id: "nick-land", label: "Land", name: "Nick Land", cluster: "Accelerationism / Dark Enlightenment", x: 2, y: -2, influence: 4, dx: "0px", dy: "0px" }
+      { id: "paul-christiano", label: "Christiano", name: "Paul Christiano", cluster: "Scalable alignment / technical safety", x: -0.87, y: 1.2, influence: 4, dx: "-18px", dy: "8px" },
+      { id: "ajeya-cotra", label: "Cotra", name: "Ajeya Cotra", cluster: "AI timelines / Open Philanthropy", x: -0.87, y: 1, influence: 4, dx: "16px", dy: "-10px" },
+      { id: "dario-amodei-anthropic", label: "Amodei", name: "Dario Amodei / Anthropic", cluster: "Frontier-lab safety optimism", x: -0.22, y: 1.1, influence: 5, dx: "12px", dy: "8px" },
+      { id: "dan-hendrycks-cais", label: "Hendrycks", name: "Dan Hendrycks / Center for AI Safety", cluster: "Public AI x-risk and ML safety", x: -1.38, y: 1, influence: 4, dx: "8px", dy: "-12px" },
+      { id: "bender-gebru-mitchell-mcmillan-major", label: "Bender et al.", name: "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major", cluster: "Critical AI / stochastic parrots", x: -0.46, y: 2, influence: 5, dx: "-40px", dy: "-16px" },
+      { id: "kate-crawford", label: "Crawford", name: "Kate Crawford", cluster: "AI political economy / extraction", x: -0.39, y: 2, influence: 4, dx: "18px", dy: "2px" },
+      { id: "ruha-benjamin", label: "Benjamin", name: "Ruha Benjamin", cluster: "Race, automation, and technology critique", x: -0.39, y: 2, influence: 4, dx: "0px", dy: "24px" },
+      { id: "narayanan-kapoor", label: "Narayanan/Kapoor", name: "Arvind Narayanan and Sayash Kapoor", cluster: "AI hype skepticism / normal technology", x: -0.07, y: 1.5, influence: 4, dx: "0px", dy: "0px" },
+      { id: "gary-marcus-melanie-mitchell", label: "Marcus/Mitchell", name: "Gary Marcus / Melanie Mitchell", cluster: "Deep learning skepticism", x: 0.07, y: 0.5, influence: 4, dx: "0px", dy: "0px" },
+      { id: "rich-sutton", label: "Sutton", name: "Rich Sutton", cluster: "Bitter Lesson / computation-centered AI", x: 0.6, y: -1, influence: 5, dx: "-12px", dy: "0px" },
+      { id: "yann-lecun", label: "LeCun", name: "Yann LeCun", cluster: "Open-source / architecture optimism / anti-doom", x: 1.03, y: 0, influence: 5, dx: "12px", dy: "4px" },
+      { id: "andrew-ng", label: "Andrew Ng", name: "Andrew Ng", cluster: "Pragmatic AI optimism", x: 1.07, y: 1, influence: 4, dx: "-15px", dy: "-11px" },
+      { id: "sam-altman-openai", label: "Altman/OpenAI", name: "Sam Altman / OpenAI", cluster: "Managed AGI optimism", x: 0.84, y: 1, influence: 5, dx: "16px", dy: "11px" },
+      { id: "ray-kurzweil", label: "Kurzweil", name: "Ray Kurzweil", cluster: "Singularity / transhumanist optimism", x: 1.44, y: -0.4, influence: 5, dx: "-20px", dy: "10px" },
+      { id: "marc-andreessen", label: "Andreessen", name: "Marc Andreessen", cluster: "Techno-optimism / anti-pause politics", x: 1.64, y: 0.4, influence: 4, dx: "15px", dy: "-8px" },
+      { id: "effective-accelerationism", label: "e/acc", name: "e/acc / effective accelerationism", cluster: "Accelerationist AI politics", x: 1.93, y: -0.8, influence: 3, dx: "0px", dy: "0px" },
+      { id: "nick-land", label: "Land", name: "Nick Land", cluster: "Accelerationism / Dark Enlightenment", x: 1.79, y: -2, influence: 4, dx: "0px", dy: "0px" }
     ];
 
     const categoryInfo = {
@@ -1109,8 +1113,6 @@
     const form = document.querySelector("#quizForm");
     const quizPager = document.querySelector("#quizPager");
     const resultPanel = document.querySelector("#resultPanel");
-    const pageTitle = document.querySelector("#pageTitle");
-    const pageSubtitle = document.querySelector("#pageSubtitle");
     const pageCount = document.querySelector("#pageCount");
     const pageTag = document.querySelector("#pageTag");
     const pageInstruction = document.querySelector("#pageInstruction");
@@ -1123,6 +1125,9 @@
     const pagerNote = document.querySelector("#pagerNote");
     const scoreDone = document.querySelector("#scoreDone");
     const scoreCode = document.querySelector("#scoreCode");
+    const dimensionR = document.querySelector("#dimensionR");
+    const dimensionC = document.querySelector("#dimensionC");
+    const dimensionH = document.querySelector("#dimensionH");
     const mapDot = document.querySelector("#mapDot");
     const mapDotCode = document.querySelector("#mapDotCode");
     const mapQuadrant = document.querySelector("#mapQuadrant");
@@ -1169,19 +1174,45 @@
       return (Number(value) - 4) / 3;
     }
 
-    function weightedAxisScore(axis) {
-      let numerator = 0;
-      let denominator = 0;
+    function formatScore(value) {
+      if (!Number.isFinite(value)) return "--";
+      const rounded = Number(value.toFixed(2));
+      return rounded > 0 ? `+${rounded}` : `${rounded}`;
+    }
 
-      for (const q of questions) {
-        const value = selected(q.id);
-        const weight = q.weights[axis] || 0;
-        if (!value || weight === 0) continue;
-        numerator += centered(value) * weight;
-        denominator += Math.abs(weight);
-      }
+    function clampScore(value) {
+      return Math.max(-2, Math.min(2, value));
+    }
 
-      return denominator > 0 ? 2 * (numerator / denominator) : NaN;
+    function diagnosticValue(kind) {
+      const question = questions.find((item) => item.diagnosis === kind);
+      const value = question ? selected(question.id) : "";
+      return value ? clampScore(2 * centered(value)) : NaN;
+    }
+
+    function directedDimensionScore(dimension) {
+      const items = questions.filter((item) => item.dimension === dimension && item.direction);
+      const values = items
+        .map((item) => {
+          const value = selected(item.id);
+          return value ? centered(value) * item.direction : NaN;
+        })
+        .filter(Number.isFinite);
+
+      return values.length === items.length
+        ? 2 * (values.reduce((sum, value) => sum + value, 0) / values.length)
+        : NaN;
+    }
+
+    function dominantDiagnosis(result) {
+      const entries = [
+        ["catastrophic", result.rCatastrophic, "文明级风险"],
+        ["social", result.rSocialHarm, "现实社会伤害"],
+        ["normal", result.rNormalTech, "普通技术/hype"],
+        ["opportunity", result.rOpportunityCost, "机会成本"]
+      ];
+      const best = entries.reduce((winner, entry) => entry[1] > winner[1] ? entry : winner, entries[0]);
+      return { key: best[0], value: best[1], label: best[2] };
     }
 
     function answeredPages() {
@@ -1207,20 +1238,24 @@
         : isMulti ? "请选择至少一个选项继续" : "请选择一个选项继续";
     }
 
-    function renderPage() {
+    function scrollToElement(element) {
+      const topbarHeight = document.querySelector(".topbar")?.offsetHeight || 0;
+      const top = element.getBoundingClientRect().top + window.scrollY - topbarHeight - 12;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    }
+
+    function renderPage(shouldScroll = false) {
       if (currentIndex >= pages.length) {
         quizPager.hidden = true;
         resultPanel.hidden = false;
         update();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (shouldScroll) scrollToElement(resultPanel);
         return;
       }
 
       const page = pages[currentIndex];
       quizPager.hidden = false;
       resultPanel.hidden = true;
-      pageTitle.textContent = page.title;
-      pageSubtitle.textContent = page.subtitle;
       pageCount.textContent = `第 ${currentIndex + 1} / ${pages.length} 题`;
       pageTag.textContent = page.tag;
       pageInstruction.textContent = page.instruction;
@@ -1234,7 +1269,7 @@
         </label>
       `).join("");
       updatePagerControls();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (shouldScroll) scrollToElement(quizPager);
     }
 
     function calculate() {
@@ -1247,10 +1282,26 @@
       }
 
       const complete = answered === questions.length;
+      const rCatastrophic = complete ? diagnosticValue("catastrophic") : NaN;
+      const rSocialHarm = complete ? diagnosticValue("social") : NaN;
+      const rNormalTech = complete ? diagnosticValue("normal") : NaN;
+      const rOpportunityCost = complete ? diagnosticValue("opportunity") : NaN;
+      const rProjection = complete ? rCatastrophic - rOpportunityCost : NaN;
+      const c = complete ? directedDimensionScore("c") : NaN;
+      const h = complete ? directedDimensionScore("h") : NaN;
+      const x = complete ? clampScore((0.65 * c) - (0.35 * rProjection)) : NaN;
+      const y = complete ? h : NaN;
 
       return {
-        x: complete ? weightedAxisScore("x") : NaN,
-        y: complete ? weightedAxisScore("y") : NaN,
+        x,
+        y,
+        rProjection,
+        rCatastrophic,
+        rSocialHarm,
+        rNormalTech,
+        rOpportunityCost,
+        c,
+        h,
         answered
       };
     }
@@ -1273,8 +1324,33 @@
       scores[code] += weight;
     }
 
-    function profileEvidence() {
+    function addCoreProfileEvidence(scores, result) {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return;
+      const cat = Math.max(0, result.rCatastrophic);
+      const social = Math.max(0, result.rSocialHarm);
+      const normal = Math.max(0, result.rNormalTech);
+      const opportunity = Math.max(0, result.rOpportunityCost);
+      const control = Math.max(0, -result.c / 2);
+      const open = Math.max(0, result.c / 2);
+      const human = Math.max(0, result.h / 2);
+      const posthuman = Math.max(0, -result.h / 2);
+      const middleResponse = 1 - Math.min(1, Math.abs(result.c / 2));
+
+      addEvidence(scores, "STOP", (3.0 * cat) + (2.0 * control) + (0.6 * human));
+      addEvidence(scores, "SAFE", (1.5 * cat) + (1.7 * control) + (1.4 * human));
+      addEvidence(scores, "AUDT", (3.0 * social) + (0.8 * control) + (1.6 * human));
+      addEvidence(scores, "NORM", (3.0 * normal) + (0.6 * human) + (0.8 * middleResponse));
+      addEvidence(scores, "GPUC", (0.8 * normal) + (0.8 * open) + (1.4 * posthuman));
+      addEvidence(scores, "BOOM", (2.4 * opportunity) + (1.1 * open) + (1.0 * human));
+      addEvidence(scores, "SING", (1.5 * opportunity) + (1.1 * open) + (1.2 * posthuman));
+      addEvidence(scores, "VROM", (1.6 * opportunity) + (2.2 * open) + (0.7 * posthuman));
+      addEvidence(scores, "POST", (0.9 * opportunity) + (1.4 * open) + (2.5 * posthuman));
+    }
+
+    function profileEvidence(result) {
       const scores = Object.fromEntries(Object.keys(profiles).map((code) => [code, 0]));
+      addCoreProfileEvidence(scores, result);
+
       selectedValues("closestStatement").forEach((statement) => {
         const index = statements.indexOf(statement);
         addEvidence(scores, statementProfiles[index], 3);
@@ -1307,14 +1383,11 @@
       return topCode;
     }
 
-    function profileFor(x, y) {
-      if (!Number.isFinite(x) || !Number.isFinite(y)) return "NORM";
-      const base = baseProfileFor(x, y);
-      const centerOrBoundary = Math.abs(x) <= 1.05 && Math.abs(y) <= 1.25;
-      if (!centerOrBoundary && base) return base;
-      const winner = evidenceWinner(profileEvidence(), x, y);
+    function profileFor(result) {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return "NORM";
+      const winner = evidenceWinner(profileEvidence(result), result.x, result.y);
       if (winner) return winner;
-      return base || nearestProfileFor(x, y);
+      return nearestProfileFor(result.x, result.y);
     }
 
     function clampPercent(value) {
@@ -1356,8 +1429,8 @@
 
     function quadrantFor(x, y) {
       if (!Number.isFinite(x) || !Number.isFinite(y)) return "答完后显示位置";
-      const horizontal = x < -0.35 ? "治理优先" : x > 0.35 ? "加速建设" : "中间治理";
-      const vertical = y > 0.35 ? "人类中心" : y < -0.35 ? "计算中心" : "中间价值";
+      const horizontal = x < -0.35 ? "控制门槛" : x > 0.35 ? "开放部署" : "响应中间";
+      const vertical = y > 0.35 ? "人类中心" : y < -0.35 ? "后人类/智能中心" : "价值中间";
       return `${horizontal} / ${vertical}`;
     }
 
@@ -1391,12 +1464,16 @@
 
     function update() {
       const result = calculate();
-      const code = profileFor(result.x, result.y);
+      const code = profileFor(result);
       const profile = profiles[code];
       const complete = Number.isFinite(result.x) && Number.isFinite(result.y);
+      const diagnosis = complete ? dominantDiagnosis(result) : null;
 
       scoreDone.textContent = `${result.answered}/12`;
       scoreCode.textContent = complete ? code : "--";
+      dimensionR.textContent = complete ? diagnosis.label : "--";
+      dimensionC.textContent = complete ? formatScore(result.c) : "--";
+      dimensionH.textContent = complete ? formatScore(result.h) : "--";
       updateMap(result, complete, code);
       profileCode.textContent = complete ? code : "----";
       profileName.textContent = complete ? `${profile[0]} ${code}` : "等待生成画像";
@@ -1412,6 +1489,8 @@
         ? [
             "AI 立场二维坐标问卷结果",
             `人物画像：${code} ${profile[0]}`,
+            `三维分数：R=${diagnosis.label}(${formatScore(diagnosis.value)}), C=${formatScore(result.c)}, H=${formatScore(result.h)}`,
+            `二维投影：X=${formatScore(result.x)}，Y=${formatScore(result.y)}；公式 X=0.65C-0.35R，Y=H`,
             statement ? `总体立场：${statement}` : "",
             scenarioSummary ? `情境选择：${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
@@ -1455,20 +1534,20 @@
     prevBtn.addEventListener("click", () => {
       if (currentIndex === 0) return;
       currentIndex -= 1;
-      renderPage();
+      renderPage(true);
     });
 
     nextBtn.addEventListener("click", () => {
       if (!currentPageAnswered()) return;
       currentIndex += 1;
-      renderPage();
+      renderPage(true);
     });
 
     resetBtn.addEventListener("click", resetQuiz);
     restartBtn.addEventListener("click", resetQuiz);
     editLastBtn.addEventListener("click", () => {
       currentIndex = pages.length - 1;
-      renderPage();
+      renderPage(true);
     });
 
     referenceLayer.addEventListener("click", (event) => {

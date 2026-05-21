@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI 思想光谱：二维意识形态地图</title>
+  <title>AI 思想光谱：三维打分的二维投影地图</title>
   <style>
     :root {
       color-scheme: light;
@@ -252,7 +252,7 @@
 
     .axis-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
 
@@ -583,6 +583,42 @@
       font-weight: 820;
     }
 
+    .dimension-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .dimension-row span {
+      min-width: 0;
+      padding: 7px 8px;
+      border: 1px solid #dce4f1;
+      border-radius: 6px;
+      background: #fff;
+      color: #475467;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .dimension-row b,
+    .dimension-row em {
+      display: block;
+      font-style: normal;
+    }
+
+    .dimension-row b {
+      color: #667085;
+      font-weight: 720;
+    }
+
+    .dimension-row em {
+      margin-top: 3px;
+      color: #101828;
+      font-size: 15px;
+      font-weight: 840;
+    }
+
     .detail-body {
       overflow: auto;
       padding: 16px 18px 18px;
@@ -826,7 +862,7 @@
     <div class="topbar-inner">
       <div class="brand">AI Social Thought Spectrum</div>
       <nav class="nav" aria-label="Page sections">
-        <a href="#why-2d">为什么二维</a>
+        <a href="#why-2d">为什么三维</a>
         <a href="#distribution">分布</a>
         <a href="#map">交互地图</a>
         <a href="#profiles">人物思想</a>
@@ -840,11 +876,10 @@
     <section class="hero" aria-labelledby="page-title">
       <div class="hero-main">
         <p class="kicker">AI 意识形态地图</p>
-        <h1 id="page-title">AI 思想光谱不是一条线，而是一张二维地图</h1>
+        <h1 id="page-title">AI 思想光谱先三维打分，再投影成二维地图</h1>
         <p class="lead">
-          这个项目用一个二维坐标系介绍围绕先进 AI 的主要人物、流派和代表文本。横轴问的是：
-          面对 AI，我们应该暂停、治理、正常部署、积极建设，还是加速？纵轴问的是：
-          AI 应该服从人类社会目标，还是应当让计算、资本、技术演化或后人类未来超出人类中心主义？
+          这个项目用 R/C/H 三个内部维度介绍围绕先进 AI 的主要人物、流派和代表文本：他们诊断的主要问题是什么，
+          他们偏好的治理响应是什么，以及他们把人类放在智能未来的什么位置。页面上的二维图是这三个分数的展示投影。
         </p>
         <div class="claim-strip">
           <div class="claim">
@@ -873,8 +908,8 @@
             <span>代表性文本和机构文件</span>
           </div>
           <div class="stat">
-            <strong>2</strong>
-            <span>坐标轴：风险/治理，人类中心性</span>
+            <strong>3</strong>
+            <span>内部维度：R 诊断，C 响应，H 价值</span>
           </div>
           <div class="stat">
             <strong>8</strong>
@@ -896,26 +931,37 @@
 
     <section class="section" id="why-2d">
       <div class="section-head">
-        <h2>为什么这个维度是二维的？</h2>
+        <h2>为什么先三维，再二维？</h2>
         <p>
-          单轴通常把人分成“悲观/乐观”或“监管/创新”，但 AI 思想的真实分歧至少有两个相对独立的问题：
-          第一，AI 的主要社会问题是灾难性风险、正常技术治理、现实社会伤害，还是加速不足？第二，人类是否应该继续作为智能系统的最终目的和控制中心？
+          单轴通常把人分成“悲观/乐观”或“监管/创新”，但 AI 思想的真实分歧至少有三个相对独立的问题：
+          第一，AI 的主要问题是灾难性风险、现实社会伤害、普通技术误用，还是发展太慢？第二，回应方式应偏向控制、许可和门槛，还是部署、开放和扩散？第三，人类是否仍是智能系统的最终目的和控制中心？
         </p>
       </div>
       <div class="axis-grid">
         <div class="axis-box">
-          <h3>横轴：风险与治理立场</h3>
+          <h3>R：风险 / 伤害诊断</h3>
           <div class="scale">
-            <div class="scale-row"><code>-2</code><span>停下、关停、硬 doomer：先进 AI 在当前路径上极可能带来文明级或灭绝级失败。</span></div>
-            <div class="scale-row"><code>-1</code><span>安全优先、alignment 优先、强治理：可以继续研究，但部署必须受安全和制度约束。</span></div>
-            <div class="scale-row"><code>0</code><span>普通技术、现实伤害或 hype 怀疑：AI 很重要，但不应被神化为单一末日或救世叙事。</span></div>
-            <div class="scale-row"><code>+1</code><span>建设和部署友好：AI 是生产力、科学和产品进步，应积极落地，同时处理副作用。</span></div>
-            <div class="scale-row"><code>+2</code><span>加速主义、奇点或强技术乐观：发展本身被看作道德、文明或演化上的核心方向。</span></div>
+            <div class="scale-row"><code>+2</code><span>灾难性或文明级风险是核心问题，尤其是前沿 AI / AGI 失控。</span></div>
+            <div class="scale-row"><code>+1</code><span>严肃前沿风险存在，但仍可通过技术和制度治理降低。</span></div>
+            <div class="scale-row"><code>0</code><span>主要问题是现实社会伤害、普通技术误用、权力结构或 hype。</span></div>
+            <div class="scale-row"><code>-1</code><span>风险总体可管理，主要代价来自过度谨慎、能力低估或部署不足。</span></div>
+            <div class="scale-row"><code>-2</code><span>发展太慢、约束过多或反技术政治本身是主要危险。</span></div>
           </div>
         </div>
 
         <div class="axis-box">
-          <h3>纵轴：人类中心性与反人类中心性</h3>
+          <h3>C：控制 / 开放响应</h3>
+          <div class="scale">
+            <div class="scale-row"><code>-2</code><span>暂停、关停、许可、危险能力门槛和强制安全证明。</span></div>
+            <div class="scale-row"><code>-1</code><span>强 evals、审计、责任制度和受控部署。</span></div>
+            <div class="scale-row"><code>0</code><span>场景化治理、普通产品评估或技术判断，不强烈偏控制或开放。</span></div>
+            <div class="scale-row"><code>+1</code><span>积极建设、部署、商业化、实验和能力扩散。</span></div>
+            <div class="scale-row"><code>+2</code><span>permissionless innovation、开放扩散、反 gatekeeping、强加速。</span></div>
+          </div>
+        </div>
+
+        <div class="axis-box">
+          <h3>H：人类中心性 / 后人类性</h3>
           <div class="scale">
             <div class="scale-row"><code>+2</code><span>民主、公正、权利和人类社会目标优先：AI 首先是人类制度中的权力和分配问题。</span></div>
             <div class="scale-row"><code>+1</code><span>人类兼容、人类生存或偏好满足：重点是让系统对人类有益、可控、可校准。</span></div>
@@ -939,6 +985,10 @@
           <h3>例子三：技术思想不等于政策思想</h3>
           <p>Sutton 的 Bitter Lesson 主要是技术认识论，不是治理宣言；但它解释了为什么很多 AI 文化更信任规模、搜索和学习，而不是人类预设规则。</p>
         </div>
+        <div class="example">
+          <h3>二维图只是投影</h3>
+          <p>图上横轴由 C 和 R 压缩而来：越开放、越部署、越不把灾难风险当核心，就越往右。纵轴直接显示 H：越人类中心越往上，越后人类或智能中心越往下。</p>
+        </div>
       </div>
     </section>
 
@@ -946,16 +996,16 @@
       <div class="section-head">
         <h2>这些思想大致处在什么分布？</h2>
         <p>
-          第一版分布有一个明显特征：多数政策、伦理和安全人物仍然在纵轴上方，也就是人类保护、人类兼容或民主治理一侧。
-          右下角的反人类中心加速主义人数少，但解释力强，因为它给“为什么有人把约束视为危险”提供了极端参照。
+          这一版先给每个人物或流派打 R/C/H 三个分数，再把 R 和 C 压缩成横轴，把 H 作为纵轴。
+          因此图上的距离不再只表示“悲观/乐观”，而是同时反映风险诊断、治理响应和价值主体。
         </p>
       </div>
       <div class="distribution">
         <div class="summary-list" id="categorySummary"></div>
         <div class="matrix">
           <div class="quadrant">
-            <h3>左上：安全、控制与人类保护</h3>
-            <p>这里聚集 x-risk、alignment 和强治理人物。核心问题是先进 AI 是否会脱离人类控制。</p>
+            <h3>左上：灾难风险、控制与人类保护</h3>
+            <p>这里聚集 x-risk、alignment 和强治理人物。R 高、C 低、H 偏高。</p>
             <ul>
               <li>Yudkowsky / MIRI</li>
               <li>Bostrom</li>
@@ -964,7 +1014,7 @@
           </div>
           <div class="quadrant">
             <h3>中上：社会伤害、权力与普通技术</h3>
-            <p>这里不一定接受 AGI 灭绝叙事，而是把 AI 放回制度、数据、劳工、种族、环境和 hype 中理解。</p>
+            <p>这里不一定接受 AGI 灭绝叙事，而是把 AI 放回制度、数据、劳工、种族、环境和 hype 中理解。R 近中间，H 高。</p>
             <ul>
               <li>Bender / Gebru / Mitchell / McMillan-Major</li>
               <li>Crawford、Benjamin</li>
@@ -973,7 +1023,7 @@
           </div>
           <div class="quadrant">
             <h3>右上：建设、部署与人类收益</h3>
-            <p>这里承认 AI 的治理问题，但总体认为应用、生产力和科学收益应当积极推进。</p>
+            <p>这里承认 AI 的治理问题，但总体认为应用、生产力和科学收益应当积极推进。R 偏低，C 偏高，H 仍偏人类收益。</p>
             <ul>
               <li>Andrew Ng</li>
               <li>Sam Altman / OpenAI</li>
@@ -981,8 +1031,8 @@
             </ul>
           </div>
           <div class="quadrant">
-            <h3>右下：规模、奇点与加速</h3>
-            <p>这里从技术认识论进入后人类或技术资本叙事。它不总是主流政策立场，但能解释 AI 文化中的加速冲动。</p>
+            <h3>右下：规模、开放加速与后人类边界</h3>
+            <p>这里从技术认识论进入开放加速、奇点或技术资本叙事。新版会把 e/acc 和 Land 拉开：前者更像开放加速，后者更像强后人类。</p>
             <ul>
               <li>Rich Sutton、Yann LeCun</li>
               <li>Ray Kurzweil、Marc Andreessen</li>
@@ -996,10 +1046,10 @@
     <section class="interactive" id="map" aria-label="Interactive thought map">
       <section class="chart-shell" aria-label="AI thought spectrum chart">
         <div class="chart-title">
-          <h2>交互二维地图</h2>
+          <h2>三维打分的二维投影图</h2>
           <p>
-            横轴越左，越偏暂停、关停、安全优先或治理优先；越右，越偏建设、部署、技术乐观或加速。
-            纵轴越上，越强调人类中心、民主治理和人类兼容；越下，越强调计算中心、后人类或技术资本自治。
+            横轴是投影后的 X：越左越偏控制、暂停、门槛和灾难风险诊断；越右越偏部署、开放、扩散和机会成本诊断。
+            纵轴是 H：越上越强调人类中心、民主治理和人类兼容；越下越强调计算中心、后人类或技术资本自治。
           </p>
           <div class="toolbar" id="filters" aria-label="Category filters"></div>
           <div class="toolbar">
@@ -1008,8 +1058,8 @@
         </div>
         <div class="plot-wrap">
           <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
-            <title id="chartTitle">AI 思想二维散点图</title>
-            <desc id="chartDesc">A two-axis chart placing AI thinkers and movements by governance stance and humanism stance.</desc>
+            <title id="chartTitle">AI 思想三维打分二维投影图</title>
+            <desc id="chartDesc">A projected two-axis chart placing AI thinkers and movements from three internal ideology scores.</desc>
           </svg>
         </div>
       </section>
@@ -1020,17 +1070,22 @@
           <div class="cluster" id="detailCluster">点击散点图中的人物或流派，查看思想概况、代表作和阅读重点。</div>
           <div class="scores">
             <div class="score">
-              <b>风险/治理</b>
+              <b>投影 X</b>
               <span id="riskScore">-</span>
             </div>
             <div class="score">
-              <b>人类中心性</b>
+              <b>投影 Y</b>
               <span id="humanismScore">-</span>
             </div>
             <div class="score">
               <b>影响力</b>
               <span id="influenceScore">-</span>
             </div>
+          </div>
+          <div class="dimension-row">
+            <span><b>R 诊断</b><em id="diagnosisScore">-</em></span>
+            <span><b>C 响应</b><em id="responseScore">-</em></span>
+            <span><b>H 价值</b><em id="valueScore">-</em></span>
           </div>
         </div>
         <div class="detail-body">
@@ -1481,6 +1536,129 @@
       }
     ];
 
+    const ideologyScores = {
+      "eliezer-yudkowsky": {
+        diagnosis: 2,
+        response: -2,
+        humanism: 1,
+        note: "灾难风险是核心，响应接近关停或强暂停，价值目标是保护人类生存。"
+      },
+      "nick-bostrom": {
+        diagnosis: 2,
+        response: -1.5,
+        humanism: 1,
+        note: "超级智能风险是核心，响应偏战略性控制，人类控制权是主要价值对象。"
+      },
+      "stuart-russell": {
+        diagnosis: 1.25,
+        response: -1.25,
+        humanism: 2,
+        note: "严肃控制问题加 human-compatible 设计，强人类中心但不是 hard shutdown。"
+      },
+      "paul-christiano": {
+        diagnosis: 1,
+        response: -0.8,
+        humanism: 1.2,
+        note: "关注渐进委托和监督失败，偏技术治理与可扩展监督。"
+      },
+      "ajeya-cotra": {
+        diagnosis: 1,
+        response: -0.8,
+        humanism: 1,
+        note: "timeline 判断提高风险紧迫性，本身不是完整政策或价值体系。"
+      },
+      "dario-amodei-anthropic": {
+        diagnosis: 0.8,
+        response: 0.1,
+        humanism: 1.1,
+        note: "同时承认前沿风险和巨大收益，响应是受控 continued scaling。"
+      },
+      "dan-hendrycks-cais": {
+        diagnosis: 1.7,
+        response: -1.2,
+        humanism: 1,
+        note: "公共 x-risk 与社会级风险治理，偏强安全制度化。"
+      },
+      "bender-gebru-mitchell-mcmillan-major": {
+        diagnosis: 0,
+        response: -0.7,
+        humanism: 2,
+        note: "主要诊断是现实社会伤害，响应偏审计、限制和问责。"
+      },
+      "kate-crawford": {
+        diagnosis: 0,
+        response: -0.6,
+        humanism: 2,
+        note: "AI 被视为提取、劳动、数据和权力基础设施，强人类社会中心。"
+      },
+      "ruha-benjamin": {
+        diagnosis: 0,
+        response: -0.6,
+        humanism: 2,
+        note: "核心是自动化如何复制社会等级，价值重心是公正、尊严和反歧视。"
+      },
+      "narayanan-kapoor": {
+        diagnosis: 0,
+        response: -0.1,
+        humanism: 1.5,
+        note: "普通技术和 hype 怀疑，响应是评估、边界和消费者/政策清醒。"
+      },
+      "gary-marcus-melanie-mitchell": {
+        diagnosis: -0.2,
+        response: 0,
+        humanism: 0.5,
+        note: "主要是能力和架构怀疑，不是强治理或强加速立场。"
+      },
+      "rich-sutton": {
+        diagnosis: -0.6,
+        response: 0.6,
+        humanism: -1,
+        note: "Bitter Lesson 是技术认识论：规模、搜索和计算压过人类手工知识。"
+      },
+      "yann-lecun": {
+        diagnosis: -0.9,
+        response: 1.1,
+        humanism: 0,
+        note: "风险叙事偏被夸大，响应偏开源、建设和架构推进。"
+      },
+      "andrew-ng": {
+        diagnosis: -1.2,
+        response: 1,
+        humanism: 1,
+        note: "主要诊断是部署不足和机会成本，价值叙事仍是人类生产力收益。"
+      },
+      "sam-altman-openai": {
+        diagnosis: -0.9,
+        response: 0.8,
+        humanism: 1,
+        note: "AGI 丰裕和 managed build，保留安全、治理和收益共享语言。"
+      },
+      "ray-kurzweil": {
+        diagnosis: -1.5,
+        response: 1.4,
+        humanism: -0.4,
+        note: "奇点和人机融合是机会叙事，偏 transhuman 但不是强反人类。"
+      },
+      "marc-andreessen": {
+        diagnosis: -1.7,
+        response: 1.6,
+        humanism: 0.4,
+        note: "反暂停、反监管和市场技术乐观，仍以人类丰裕为公共叙事。"
+      },
+      "effective-accelerationism": {
+        diagnosis: -1.8,
+        response: 2,
+        humanism: -0.8,
+        note: "核心是开放加速和反 gatekeeping，不必等同于 Land 式强反人类。"
+      },
+      "nick-land": {
+        diagnosis: -1.4,
+        response: 2,
+        humanism: -2,
+        note: "加速与技术资本自治被推到人类主义之外，是后人类边界案例。"
+      }
+    };
+
     const movementDocs = [
       { id: "pause-giant-ai-experiments", title: "Pause Giant AI Experiments: An Open Letter", year: 2023, cluster: "AI pause / governance", url: "https://futureoflife.org/open-letter/pause-giant-ai-experiments/", why: "pause position 的运动文件。" },
       { id: "statement-on-ai-risk", title: "Statement on AI Risk", year: 2023, cluster: "AI extinction-risk public messaging", url: "https://www.safe.ai/work/statement-on-ai-risk", why: "公共 x-risk 声明的压缩版本。" },
@@ -1529,6 +1707,31 @@
         summary: "把约束视为风险，把技术、资本或智能演化推到人类中心之外。"
       }
     };
+
+    function clampScore(value) {
+      return Math.max(-2, Math.min(2, value));
+    }
+
+    function projectedX(item) {
+      return clampScore((0.65 * item.ideology.response) - (0.35 * item.ideology.diagnosis));
+    }
+
+    function projectedY(item) {
+      return clampScore(item.ideology.humanism);
+    }
+
+    thinkers.forEach(item => {
+      item.ideology = ideologyScores[item.id] || {
+        diagnosis: item.risk,
+        response: item.risk,
+        humanism: item.humanism,
+        note: "Legacy fallback from the earlier two-axis placement."
+      };
+      item.projection = {
+        x: projectedX(item),
+        y: projectedY(item)
+      };
+    });
 
     const svg = document.getElementById("chart");
     const width = 1000;
@@ -1579,12 +1782,12 @@
       svg.appendChild(svgEl("line", { x1: x(-2), x2: x(2), y1: y(0), y2: y(0), class: "axis-line" }));
       svg.appendChild(svgEl("line", { x1: x(0), x2: x(0), y1: y(2), y2: y(-2), class: "axis-line" }));
 
-      svg.appendChild(svgEl("text", { x: x(-2), y: height - 28, "text-anchor": "start", class: "axis-label" }, "暂停 / 关停 / 安全优先"));
-      svg.appendChild(svgEl("text", { x: x(2), y: height - 28, "text-anchor": "end", class: "axis-label" }, "建设 / 技术乐观 / 加速"));
-      svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "风险与治理立场"));
-      svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "人类中心 / 民主治理"));
-      svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "计算中心 / 后人类"));
-      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "人类中心性"));
+      svg.appendChild(svgEl("text", { x: x(-2), y: height - 28, "text-anchor": "start", class: "axis-label" }, "控制 / 暂停 / 门槛"));
+      svg.appendChild(svgEl("text", { x: x(2), y: height - 28, "text-anchor": "end", class: "axis-label" }, "部署 / 开放 / 加速"));
+      svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "投影 X = 0.65C - 0.35R"));
+      svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "人类中心 / 问责"));
+      svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "智能中心 / 后人类"));
+      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "投影 Y = H"));
     }
 
     function drawFilters() {
@@ -1617,8 +1820,8 @@
     function drawPoints() {
       thinkers.forEach(item => {
         const offset = jitter[item.id] || [0, 0];
-        const cx = x(item.risk) + offset[0];
-        const cy = y(item.humanism) + offset[1];
+        const cx = x(item.projection.x) + offset[0];
+        const cy = y(item.projection.y) + offset[1];
         const radius = 6 + item.influence * 0.72;
         const point = svgEl("circle", {
           cx,
@@ -1658,6 +1861,7 @@
         item.stance,
         item.placement,
         item.focus,
+        item.ideology.note,
         ...item.works.flatMap(work => [work.title, work.type, work.priority, work.why])
       ].join(" ").toLowerCase();
       return corpus.includes(term.toLowerCase());
@@ -1681,11 +1885,14 @@
 
       document.getElementById("detailName").textContent = item.name;
       document.getElementById("detailCluster").textContent = `${item.cluster} · ${categoryInfo[item.category].zh}`;
-      document.getElementById("riskScore").textContent = fmt(item.risk);
-      document.getElementById("humanismScore").textContent = fmt(item.humanism);
+      document.getElementById("riskScore").textContent = fmt(Number(item.projection.x.toFixed(2)));
+      document.getElementById("humanismScore").textContent = fmt(Number(item.projection.y.toFixed(2)));
       document.getElementById("influenceScore").textContent = `${item.influence}/5`;
+      document.getElementById("diagnosisScore").textContent = fmt(item.ideology.diagnosis);
+      document.getElementById("responseScore").textContent = fmt(item.ideology.response);
+      document.getElementById("valueScore").textContent = fmt(item.ideology.humanism);
       document.getElementById("stanceText").textContent = item.stance;
-      document.getElementById("placementText").textContent = item.placement;
+      document.getElementById("placementText").textContent = `${item.placement} 三维解释：${item.ideology.note}`;
       document.getElementById("readingFocus").textContent = item.focus;
       document.getElementById("profileJump").href = `#profile-${item.id}`;
 
@@ -1712,8 +1919,10 @@
       target.innerHTML = "";
       Object.entries(categoryInfo).forEach(([category, info]) => {
         const members = thinkers.filter(item => item.category === category);
-        const avgRisk = members.reduce((sum, item) => sum + item.risk, 0) / members.length;
-        const avgHumanism = members.reduce((sum, item) => sum + item.humanism, 0) / members.length;
+        const avgX = members.reduce((sum, item) => sum + item.projection.x, 0) / members.length;
+        const avgY = members.reduce((sum, item) => sum + item.projection.y, 0) / members.length;
+        const avgDiagnosis = members.reduce((sum, item) => sum + item.ideology.diagnosis, 0) / members.length;
+        const avgResponse = members.reduce((sum, item) => sum + item.ideology.response, 0) / members.length;
         const div = document.createElement("div");
         div.className = "summary-item";
         div.innerHTML = `
@@ -1721,7 +1930,7 @@
           <div>
             <b>${info.zh} · ${members.length} 个节点</b>
             <span>${info.summary}</span>
-            <span>平均坐标：风险/治理 ${fmt(Number(avgRisk.toFixed(2)))}，人类中心性 ${fmt(Number(avgHumanism.toFixed(2)))}</span>
+            <span>平均投影：X ${fmt(Number(avgX.toFixed(2)))}，Y ${fmt(Number(avgY.toFixed(2)))}；R ${fmt(Number(avgDiagnosis.toFixed(2)))}，C ${fmt(Number(avgResponse.toFixed(2)))}</span>
           </div>
         `;
         target.appendChild(div);
@@ -1741,7 +1950,7 @@
               <h3>${item.name}</h3>
               <div class="meta">${item.cluster} · ${categoryInfo[item.category].zh}</div>
             </div>
-            <div class="coord">风险 ${fmt(item.risk)}<br>人本 ${fmt(item.humanism)}<br>影响 ${item.influence}/5</div>
+            <div class="coord">X ${fmt(Number(item.projection.x.toFixed(2)))} · Y ${fmt(Number(item.projection.y.toFixed(2)))}<br>R ${fmt(item.ideology.diagnosis)} · C ${fmt(item.ideology.response)} · H ${fmt(item.ideology.humanism)}<br>影响 ${item.influence}/5</div>
           </div>
           <dl>
             <div>
@@ -1750,7 +1959,7 @@
             </div>
             <div>
               <dt>坐标解释</dt>
-              <dd>${item.placement}</dd>
+              <dd>${item.placement} 三维解释：${item.ideology.note}</dd>
             </div>
             <div>
               <dt>代表性工作</dt>
