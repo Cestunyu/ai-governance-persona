@@ -660,6 +660,10 @@
       background: #fff;
     }
 
+    .result > .profile:first-child {
+      margin-top: 0;
+    }
+
     .profile-head {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
@@ -787,7 +791,7 @@
   </header>
 
   <main class="wrap">
-    <section class="hero">
+    <section class="hero" id="heroSection">
       <h1>测试你的 AI 立场</h1>
       <p>这是一份闭合问卷。核心分数只来自 12 道同意度题，情境题和总体立场用于复查分类，不包含开放填空。</p>
     </section>
@@ -824,13 +828,28 @@
     </form>
 
     <section class="result" id="resultPanel" aria-live="polite" hidden>
+      <div class="profile">
+        <div class="profile-head">
+          <div class="code" id="profileCode">----</div>
+          <div>
+            <h3 id="profileName">等待生成画像</h3>
+            <p id="profileLineage">答完核心题后生成类型。</p>
+          </div>
+        </div>
+        <div class="profile-body">
+          <p id="profileRoast">至少完成 12 道核心题，结果会更稳。</p>
+          <p><b>代表文本：</b><span id="profileTexts">--</span></p>
+          <p><b>社交识别：</b><span id="profileTell">--</span></p>
+        </div>
+      </div>
+
       <div class="result-topline">
         <div class="metric">
           <span>完成度</span>
           <strong id="scoreDone">0/12</strong>
         </div>
         <div class="metric">
-          <span>画像</span>
+          <span>立场</span>
           <strong id="scoreCode">--</strong>
         </div>
         <div class="metric">
@@ -865,21 +884,6 @@
         <div class="map-legend" id="mapLegend" aria-label="思想谱系图例"></div>
         <div class="reference-detail" id="referenceDetail" aria-live="polite">
           <span>点击图上的任一点查看图谱 profile。</span>
-        </div>
-      </div>
-
-      <div class="profile">
-        <div class="profile-head">
-          <div class="code" id="profileCode">----</div>
-          <div>
-            <h3 id="profileName">等待生成画像</h3>
-            <p id="profileLineage">答完核心题后生成类型。</p>
-          </div>
-        </div>
-        <div class="profile-body">
-          <p id="profileRoast">至少完成 12 道核心题，结果会更稳。</p>
-          <p><b>代表文本：</b><span id="profileTexts">--</span></p>
-          <p><b>社交识别：</b><span id="profileTell">--</span></p>
         </div>
       </div>
 
@@ -1109,6 +1113,7 @@
     let activeReferenceId = "";
 
     const form = document.querySelector("#quizForm");
+    const heroSection = document.querySelector("#heroSection");
     const quizPager = document.querySelector("#quizPager");
     const resultPanel = document.querySelector("#resultPanel");
     const pageCount = document.querySelector("#pageCount");
@@ -1244,6 +1249,7 @@
 
     function renderPage(shouldScroll = false) {
       if (currentIndex >= pages.length) {
+        heroSection.hidden = true;
         quizPager.hidden = true;
         resultPanel.hidden = false;
         update();
@@ -1252,6 +1258,7 @@
       }
 
       const page = pages[currentIndex];
+      heroSection.hidden = false;
       quizPager.hidden = false;
       resultPanel.hidden = true;
       pageCount.textContent = `第 ${currentIndex + 1} / ${pages.length} 题`;
@@ -1486,10 +1493,10 @@
       summaryBox.textContent = complete
         ? [
             "AI 立场二维坐标问卷结果",
+            statement ? `总体立场：${statement}` : "",
             `人物画像：${code} ${profile[0]}`,
             `三维分数：R=${diagnosis.label}(${formatScore(diagnosis.value)}), C=${formatScore(result.c)}, H=${formatScore(result.h)}`,
             `二维投影：X=${formatScore(result.x)}，Y=${formatScore(result.y)}；公式 X=0.65C-0.35R，Y=H`,
-            statement ? `总体立场：${statement}` : "",
             scenarioSummary ? `情境选择：${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
         : "答完 12 道核心题后，这里会生成结构化摘要。";
