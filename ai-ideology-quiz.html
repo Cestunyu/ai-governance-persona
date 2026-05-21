@@ -1257,7 +1257,7 @@
       quizPager.hidden = false;
       resultPanel.hidden = true;
       pageCount.textContent = `第 ${currentIndex + 1} / ${pages.length} 题`;
-      pageTag.textContent = page.tag;
+      pageTag.textContent = page.multiple ? `${page.tag} · 多选` : page.tag;
       pageInstruction.textContent = page.instruction;
       pagePrompt.textContent = page.prompt;
       const inputType = page.multiple ? "checkbox" : "radio";

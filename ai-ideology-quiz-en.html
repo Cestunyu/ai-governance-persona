@@ -1257,7 +1257,7 @@
       quizPager.hidden = false;
       resultPanel.hidden = true;
       pageCount.textContent = `Question ${currentIndex + 1} / ${pages.length}`;
-      pageTag.textContent = page.tag;
+      pageTag.textContent = page.multiple ? `${page.tag} · MULTI` : page.tag;
       pageInstruction.textContent = page.instruction;
       pagePrompt.textContent = page.prompt;
       const inputType = page.multiple ? "checkbox" : "radio";
