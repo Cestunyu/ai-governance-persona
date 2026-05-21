@@ -791,11 +791,6 @@
   </header>
 
   <main class="wrap">
-    <section class="hero" id="heroSection">
-      <h1>测试你的 AI 立场</h1>
-      <p>这是一份闭合问卷。核心分数只来自 12 道同意度题，情境题和总体立场用于复查分类，不包含开放填空。</p>
-    </section>
-
     <form id="quizForm" class="quiz-shell">
       <section class="panel" id="quizPager">
         <div class="panel-head">
@@ -845,7 +840,7 @@
 
       <div class="result-topline">
         <div class="metric">
-          <span>能力叙事</span>
+          <span>能力判断</span>
           <strong id="abilityNarrative">--</strong>
         </div>
         <div class="metric">
@@ -944,11 +939,12 @@
       "AI 应该被建设和部署，因为它能创造巨大的丰裕。",
       "AI 不只是工具，更像通往奇点、人机融合或文明升级的路径。",
       "AI 加速本身有道德紧迫性，不应该被人类恐惧束缚。",
+      "前沿 AI 不应开放扩散，但治理也不应以当下人类偏好为最终尺度；它需要强治理、系统治理和行星尺度计算秩序。",
       "如果更高级的智能或技术资本会超出人类中心框架，这未必是失败；人类可能只是过渡阶段。",
       "都不像。"
     ];
 
-    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "GPUC", "BOOM", "SING", "VROM", "POST", ""];
+    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "GPUC", "BOOM", "SING", "VROM", "SOVR", "POST", ""];
 
     const scenarioProfiles = {
       V1: ["STOP", "SAFE", "BOOM", "VROM"],
@@ -966,6 +962,7 @@
       BOOM: ["丰裕施工队", "近亲：Andrew Ng / Dario Amodei optimism", "你相信 AI 最大的问题不是太强，而是还没接进足够多现实系统。", "Machines of Loving Grace, AI is the New Electricity", "高频词是 productivity、health、education、deployment。"],
       SING: ["赛博飞升派", "近亲：Kurzweil / singularity optimism", "你看 AI 不是工具，是人类文明的下一次换壳。", "The Singularity Is Near, The Intelligence Age", "常谈 abundance、longevity、human-machine merger。"],
       VROM: ["油门焊死哥", "近亲：e/acc / effective accelerationism", "如果方向盘还在争论，至少油门可以先踩。", "Effective Accelerationism manifestos", "常说 accelerate、permissionless、build、decentralize。"],
+      SOVR: ["后人类控制派", "近亲：Benjamin Bratton / planetary computation", "你不相信开放扩散，也不把当下人类偏好当作最终尺度；AI 需要强治理和系统级架构。", "The Stack, The Revenge of the Real, Antikythera", "常说 planetary computation、Stack、sovereignty、synthetic intelligence。"],
       POST: ["碳基过渡版本", "近亲：Nick Land / posthuman accelerationist edge", "别人讨论 AI 服务人类，你已经在思考人类是不是技术资本的脚手架。", "Meltdown, Dark Enlightenment", "常用词是 posthuman、technocapital、autonomy。"]
     };
 
@@ -978,6 +975,7 @@
       BOOM: { x: 1.05, y: 0.9 },
       SING: { x: 1.45, y: -0.35 },
       VROM: { x: 1.85, y: -0.8 },
+      SOVR: { x: -1.15, y: -1.1 },
       POST: { x: 1.8, y: -1.8 }
     };
 
@@ -995,6 +993,7 @@
       { id: "narayanan-kapoor", label: "Narayanan/Kapoor", name: "Arvind Narayanan and Sayash Kapoor", cluster: "AI hype skepticism / normal technology", x: -0.07, y: 1.5, influence: 4, dx: "0px", dy: "0px" },
       { id: "gary-marcus-melanie-mitchell", label: "Marcus/Mitchell", name: "Gary Marcus / Melanie Mitchell", cluster: "Deep learning skepticism", x: 0.07, y: 0.5, influence: 4, dx: "0px", dy: "0px" },
       { id: "rich-sutton", label: "Sutton", name: "Rich Sutton", cluster: "Bitter Lesson / computation-centered AI", x: 0.6, y: -1, influence: 5, dx: "-12px", dy: "0px" },
+      { id: "benjamin-bratton", label: "Bratton", name: "Benjamin Bratton", cluster: "Posthuman control / planetary computation", x: -1.15, y: -1.1, influence: 4, dx: "12px", dy: "0px" },
       { id: "yann-lecun", label: "LeCun", name: "Yann LeCun", cluster: "Open-source / architecture optimism / anti-doom", x: 1.03, y: 0, influence: 5, dx: "12px", dy: "4px" },
       { id: "andrew-ng", label: "Andrew Ng", name: "Andrew Ng", cluster: "Pragmatic AI optimism", x: 1.07, y: 1, influence: 4, dx: "-15px", dy: "-11px" },
       { id: "sam-altman-openai", label: "Altman/OpenAI", name: "Sam Altman / OpenAI", cluster: "Managed AGI optimism", x: 0.84, y: 1, influence: 5, dx: "16px", dy: "11px" },
@@ -1010,6 +1009,7 @@
       "Critical AI": { label: "Critical AI / 社会伤害", color: "#7c3aed" },
       "Normal technology": { label: "普通技术 / hype 怀疑", color: "#475569" },
       "Scaling thought": { label: "Scaling / Bitter Lesson", color: "#0369a1" },
+      "Posthuman control": { label: "Posthuman control / 系统治理", color: "#5b21b6" },
       "Pragmatic optimism": { label: "务实 AI 乐观", color: "#15803d" },
       "Techno-optimism": { label: "技术乐观 / 奇点", color: "#c2410c" },
       "Accelerationism": { label: "加速主义 / 后人类边界", color: "#7f1d1d" }
@@ -1030,6 +1030,7 @@
       "narayanan-kapoor": "Normal technology",
       "gary-marcus-melanie-mitchell": "Normal technology",
       "rich-sutton": "Scaling thought",
+      "benjamin-bratton": "Posthuman control",
       "yann-lecun": "Scaling thought",
       "andrew-ng": "Pragmatic optimism",
       "ray-kurzweil": "Techno-optimism",
@@ -1052,6 +1053,7 @@
       "narayanan-kapoor": "AI 很强但经常被过度包装，评估要区分真实能力、snake oil 和魔法 AGI 叙事。",
       "gary-marcus-melanie-mitchell": "当前深度学习很强但脆弱，未必足以实现稳健通用智能。",
       "rich-sutton": "利用搜索、学习和计算的一般方法，最终会胜过手工编码人类领域知识。",
+      "benjamin-bratton": "以行星尺度计算、Stack 和 synthetic intelligence 理解治理；重点不是开放加速，而是强系统治理和非传统人类中心框架。",
       "yann-lecun": "先进 AI 需要新架构和 world models，近期 doomer 叙事被夸大了。",
       "andrew-ng": "AI 像电力一样是通用技术，应该广泛部署来创造价值。",
       "sam-altman-openai": "AGI 如果配合安全、治理和收益共享制度，可以带来广泛丰裕。",
@@ -1274,7 +1276,7 @@
       if (!Number.isFinite(value)) return "--";
       if (value >= 0.45) return "明显 bubble 怀疑";
       if (value >= 0.15) return "偏 hype 怀疑";
-      if (value > -0.15) return "混合/不明确";
+      if (value > -0.15) return "证据混合";
       if (value > -0.45) return "偏相信变革性 AI";
       return "强变革性 AI 信念";
     }
@@ -1310,7 +1312,7 @@
 
     function renderPage(shouldScroll = false) {
       if (currentIndex >= pages.length) {
-        heroSection.hidden = true;
+        if (heroSection) heroSection.hidden = true;
         quizPager.hidden = true;
         resultPanel.hidden = false;
         update();
@@ -1319,7 +1321,7 @@
       }
 
       const page = pages[currentIndex];
-      heroSection.hidden = false;
+      if (heroSection) heroSection.hidden = false;
       quizPager.hidden = false;
       resultPanel.hidden = true;
       pageCount.textContent = `第 ${currentIndex + 1} / ${pages.length} 题`;
@@ -1375,6 +1377,7 @@
     function baseProfileFor(x, y) {
       if (!Number.isFinite(x) || !Number.isFinite(y)) return "";
       if (x >= 1.5 && y <= -1.5) return "POST";
+      if (x <= -0.75 && y <= -0.65) return "SOVR";
       if (x >= 1.25 && y <= -0.75) return "VROM";
       if (x <= -1.25 && y >= 0) return "STOP";
       if (x >= 1.25 && y >= -0.75 && y <= 0.75) return "SING";
@@ -1410,6 +1413,7 @@
       addEvidence(scores, "BOOM", (2.4 * opportunity) + (1.1 * open) + (1.0 * human));
       addEvidence(scores, "SING", (1.5 * opportunity) + (1.1 * open) + (1.2 * posthuman));
       addEvidence(scores, "VROM", (1.6 * opportunity) + (2.2 * open) + (0.7 * posthuman));
+      addEvidence(scores, "SOVR", (1.8 * control) + (2.1 * posthuman) + (0.5 * cat) + (0.4 * middleResponse));
       addEvidence(scores, "POST", (0.9 * opportunity) + (1.4 * open) + (2.5 * posthuman));
     }
 
@@ -1558,7 +1562,7 @@
             "AI 立场二维坐标问卷结果",
             statement ? `总体立场：${statement}` : "",
             `人物画像：${code} ${profile[0]}`,
-            `光谱位置：能力叙事=${abilityLabel}；风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
+            `光谱位置：能力判断=${abilityLabel}；风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
             `二维位置：${quadrantFor(result.x, result.y)}`,
             scenarioSummary ? `情境选择：${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")

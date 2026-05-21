@@ -888,7 +888,7 @@
           </div>
           <div class="claim">
             <b>不是支持监管到反监管的单轴</b>
-            <span>Andrew Ng 与 Nick Land 都不属于暂停派，但一个强调人类生产力，一个把人类中心主义本身当作限制。</span>
+            <span>Andrew Ng、Benjamin Bratton 与 Nick Land 都不属于同一种“暂停派”，但一个强调人类生产力，一个强调系统治理，一个把人类中心主义本身当作限制。</span>
           </div>
           <div class="claim">
             <b>技术认识论也会改变政治位置</b>
@@ -900,11 +900,11 @@
       <aside class="hero-side" aria-label="Project summary">
         <div class="stats">
           <div class="stat">
-            <strong id="statThinkers">20</strong>
+            <strong id="statThinkers">21</strong>
             <span>人物、机构或运动节点</span>
           </div>
           <div class="stat">
-            <strong id="statWorks">38</strong>
+            <strong id="statWorks">44</strong>
             <span>代表性文本和机构文件</span>
           </div>
           <div class="stat">
@@ -1031,6 +1031,14 @@
             </ul>
           </div>
           <div class="quadrant">
+            <h3>左下：强系统治理与后人类控制</h3>
+            <p>这里不信任开放扩散，但也不把当下人类偏好当作最终尺度。它强调行星尺度计算、系统架构和非传统人类中心治理。</p>
+            <ul>
+              <li>Benjamin Bratton</li>
+              <li>Controlled Posthumanism / Posthuman Control</li>
+            </ul>
+          </div>
+          <div class="quadrant">
             <h3>右下：规模、开放加速与后人类边界</h3>
             <p>这里从技术认识论进入开放加速、奇点或技术资本叙事。新版会把 e/acc 和 Land 拉开：前者更像开放加速，后者更像强后人类。</p>
             <ul>
@@ -1149,7 +1157,7 @@
       </div>
       <p class="footnote">
         数据来源：本项目的 <code>data/ai-thought-spectrum.json</code> 与 <code>research/2026-05-14-ai-social-thought-spectrum-source-map.md</code>。
-        页面最后更新：2026-05-16。部分代表作链接指向作者主页、机构页面、出版社、arXiv、ACM 或公开 essay。
+        页面最后更新：2026-05-21。部分代表作链接指向作者主页、机构页面、出版社、arXiv、ACM 或公开 essay。
       </p>
     </section>
   </main>
@@ -1516,6 +1524,26 @@
         ]
       },
       {
+        id: "benjamin-bratton",
+        name: "Benjamin Bratton",
+        shortName: "Bratton",
+        cluster: "Posthuman control / planetary computation",
+        category: "Posthuman control",
+        risk: -0.2,
+        humanism: -1.1,
+        influence: 4,
+        stance: "AI 与计算应被放进行星尺度的系统治理框架中理解；问题不是简单开放或暂停，而是如何设计能处理 synthetic intelligence 的治理架构。",
+        placement: "左下角：响应偏强治理和系统治理，价值上不把当前人类偏好当作最终尺度，但也不同于 Land 式开放加速。",
+        focus: "读时看 planetary computation、Stack、sovereignty、synthetic intelligence 如何把技术、制度和治理尺度连成一个架构问题。",
+        counter: "开放加速派会认为这种系统治理会形成新的 gatekeeping；human-compatible safety 派会质疑它是否充分保护可问责的人类价值。",
+        basis: ["philosophy of technology", "design theory", "planetary computation", "governance theory"],
+        works: [
+          { title: "The Stack: On Software and Sovereignty", year: 2016, type: "book", priority: "highest", url: "https://mitpress.mit.edu/9780262029575/the-stack/", why: "行星尺度计算和软件主权框架的核心书。" },
+          { title: "The Revenge of the Real", year: 2021, type: "book", priority: "high", url: "https://www.versobooks.com/products/2749-the-revenge-of-the-real", why: "强治理、公共理性和后疫情政治框架的重要文本。" },
+          { title: "Antikythera", year: 2023, type: "research program", priority: "medium", url: "https://antikythera.org/about", why: "Bratton 主导的 planetary computation / synthetic intelligence 项目入口。" }
+        ]
+      },
+      {
         id: "nick-land",
         name: "Nick Land",
         shortName: "Land",
@@ -1651,6 +1679,12 @@
         humanism: -0.8,
         note: "核心是开放加速和反 gatekeeping，不必等同于 Land 式强反人类。"
       },
+      "benjamin-bratton": {
+        diagnosis: 0.2,
+        response: -1.25,
+        humanism: -1.1,
+        note: "强调行星尺度计算和系统治理，非开放加速，也非传统人类中心。"
+      },
       "nick-land": {
         diagnosis: -1.4,
         response: 2,
@@ -1690,6 +1724,11 @@
         zh: "Scaling / Bitter Lesson",
         color: "#0369a1",
         summary: "强调搜索、学习、计算和一般方法，削弱人类手工知识中心主义。"
+      },
+      "Posthuman control": {
+        zh: "Posthuman control / 系统治理",
+        color: "#5b21b6",
+        summary: "不主张开放加速，但也不把当前人类偏好当作最终尺度，强调行星尺度计算、强系统治理和 synthetic intelligence。"
       },
       "Pragmatic optimism": {
         zh: "务实 AI 乐观",
@@ -1757,6 +1796,7 @@
       "dario-amodei-anthropic": [12, 8],
       "dan-hendrycks-cais": [8, -12],
       "rich-sutton": [-12, 0],
+      "benjamin-bratton": [12, 0],
       "yann-lecun": [12, 4]
     };
 

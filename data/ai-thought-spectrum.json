@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "AI Social Thought Spectrum",
-    "last_updated": "2026-05-14",
+    "last_updated": "2026-05-21",
     "status": "first-pass seed dataset",
     "risk_axis": {
       "-2": "shutdown, pause, or hard doomer",
@@ -674,6 +674,49 @@
         "confidence": "low"
       },
       "collection_priority": "medium"
+    },
+    {
+      "id": "benjamin-bratton",
+      "name": "Benjamin Bratton",
+      "cluster": "Posthuman control / planetary computation",
+      "stance_summary": "AI and computation should be understood through planetary-scale systems governance rather than open acceleration or conventional human-centered preference finality.",
+      "spectrum_position": {
+        "risk_axis": -1,
+        "humanism_axis": -1,
+        "notes": "Strong-governance and system-governance frame; posthuman or non-traditional human-centered without Land-style open acceleration."
+      },
+      "representative_works": [
+        {
+          "title": "The Stack: On Software and Sovereignty",
+          "year": 2016,
+          "type": "book",
+          "url": "https://mitpress.mit.edu/9780262029575/the-stack/",
+          "priority": "highest",
+          "why": "Core planetary computation and software sovereignty framework."
+        },
+        {
+          "title": "The Revenge of the Real",
+          "year": 2021,
+          "type": "book",
+          "url": "https://www.versobooks.com/products/2749-the-revenge-of-the-real",
+          "priority": "high",
+          "why": "Important text for strong governance, public reason, and post-pandemic politics."
+        },
+        {
+          "title": "Antikythera",
+          "year": 2023,
+          "type": "research program",
+          "url": "https://antikythera.org/about",
+          "priority": "medium",
+          "why": "Entry point for Bratton's planetary computation and synthetic intelligence research program."
+        }
+      ],
+      "influence": {
+        "score_1_to_5": 4,
+        "basis": ["philosophy of technology", "design theory", "planetary computation", "governance theory"],
+        "confidence": "medium"
+      },
+      "collection_priority": "high"
     },
     {
       "id": "nick-land",
