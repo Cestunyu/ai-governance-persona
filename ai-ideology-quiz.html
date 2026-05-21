@@ -845,8 +845,8 @@
 
       <div class="result-topline">
         <div class="metric">
-          <span>主结果</span>
-          <strong id="scoreCode">--</strong>
+          <span>能力叙事</span>
+          <strong id="abilityNarrative">--</strong>
         </div>
         <div class="metric">
           <span>风险判断</span>
@@ -1122,7 +1122,7 @@
     const prevBtn = document.querySelector("#prevBtn");
     const nextBtn = document.querySelector("#nextBtn");
     const pagerNote = document.querySelector("#pagerNote");
-    const scoreCode = document.querySelector("#scoreCode");
+    const abilityNarrative = document.querySelector("#abilityNarrative");
     const dimensionR = document.querySelector("#dimensionR");
     const dimensionC = document.querySelector("#dimensionC");
     const dimensionH = document.querySelector("#dimensionH");
@@ -1239,6 +1239,44 @@
       }
       if (value > -1.2) return "智能中心";
       return "强后人类/智能中心";
+    }
+
+    function itemCenteredScore(id) {
+      const value = selected(id);
+      return value ? centered(value) : NaN;
+    }
+
+    function abilityNarrativeScore() {
+      const weights = [
+        ["R03", 0.45],
+        ["R02", 0.10],
+        ["R01", -0.35],
+        ["R04", -0.25],
+        ["C04", -0.20],
+        ["H04", -0.20],
+        ["H03", -0.15],
+        ["C01", -0.10]
+      ];
+
+      let numerator = 0;
+      let denominator = 0;
+      for (const [id, weight] of weights) {
+        const value = itemCenteredScore(id);
+        if (!Number.isFinite(value)) continue;
+        numerator += value * weight;
+        denominator += Math.abs(weight);
+      }
+
+      return denominator > 0 ? numerator / denominator : NaN;
+    }
+
+    function abilityNarrativeLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value >= 0.45) return "明显 bubble 怀疑";
+      if (value >= 0.15) return "偏 hype 怀疑";
+      if (value > -0.15) return "混合/不明确";
+      if (value > -0.45) return "偏相信变革性 AI";
+      return "强变革性 AI 信念";
     }
 
     function answeredPages() {
@@ -1498,8 +1536,9 @@
       const riskLabel = complete ? riskSpectrumLabel(result) : "--";
       const responseLabel = complete ? responseSpectrumLabel(result.c) : "--";
       const valueLabel = complete ? valueSpectrumLabel(result.h) : "--";
+      const abilityLabel = complete ? abilityNarrativeLabel(abilityNarrativeScore()) : "--";
 
-      scoreCode.textContent = complete ? code : "--";
+      abilityNarrative.textContent = abilityLabel;
       dimensionR.textContent = riskLabel;
       dimensionC.textContent = responseLabel;
       dimensionH.textContent = valueLabel;
@@ -1519,7 +1558,7 @@
             "AI 立场二维坐标问卷结果",
             statement ? `总体立场：${statement}` : "",
             `人物画像：${code} ${profile[0]}`,
-            `光谱位置：风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
+            `光谱位置：能力叙事=${abilityLabel}；风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
             `二维位置：${quadrantFor(result.x, result.y)}`,
             scenarioSummary ? `情境选择：${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")

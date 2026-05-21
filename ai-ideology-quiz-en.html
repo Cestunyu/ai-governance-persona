@@ -845,8 +845,8 @@
 
       <div class="result-topline">
         <div class="metric">
-          <span>Main Result</span>
-          <strong id="scoreCode">--</strong>
+          <span>AI Narrative</span>
+          <strong id="abilityNarrative">--</strong>
         </div>
         <div class="metric">
           <span>Risk Judgment</span>
@@ -1122,7 +1122,7 @@
     const prevBtn = document.querySelector("#prevBtn");
     const nextBtn = document.querySelector("#nextBtn");
     const pagerNote = document.querySelector("#pagerNote");
-    const scoreCode = document.querySelector("#scoreCode");
+    const abilityNarrative = document.querySelector("#abilityNarrative");
     const dimensionR = document.querySelector("#dimensionR");
     const dimensionC = document.querySelector("#dimensionC");
     const dimensionH = document.querySelector("#dimensionH");
@@ -1239,6 +1239,44 @@
       }
       if (value > -1.2) return "intelligence-centered";
       return "strongly posthuman / intelligence-centered";
+    }
+
+    function itemCenteredScore(id) {
+      const value = selected(id);
+      return value ? centered(value) : NaN;
+    }
+
+    function abilityNarrativeScore() {
+      const weights = [
+        ["R03", 0.45],
+        ["R02", 0.10],
+        ["R01", -0.35],
+        ["R04", -0.25],
+        ["C04", -0.20],
+        ["H04", -0.20],
+        ["H03", -0.15],
+        ["C01", -0.10]
+      ];
+
+      let numerator = 0;
+      let denominator = 0;
+      for (const [id, weight] of weights) {
+        const value = itemCenteredScore(id);
+        if (!Number.isFinite(value)) continue;
+        numerator += value * weight;
+        denominator += Math.abs(weight);
+      }
+
+      return denominator > 0 ? numerator / denominator : NaN;
+    }
+
+    function abilityNarrativeLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value >= 0.45) return "bubble skeptic";
+      if (value >= 0.15) return "hype-skeptical";
+      if (value > -0.15) return "mixed/unclear";
+      if (value > -0.45) return "transformative-leaning";
+      return "strong transformative believer";
     }
 
     function answeredPages() {
@@ -1498,8 +1536,9 @@
       const riskLabel = complete ? riskSpectrumLabel(result) : "--";
       const responseLabel = complete ? responseSpectrumLabel(result.c) : "--";
       const valueLabel = complete ? valueSpectrumLabel(result.h) : "--";
+      const abilityLabel = complete ? abilityNarrativeLabel(abilityNarrativeScore()) : "--";
 
-      scoreCode.textContent = complete ? code : "--";
+      abilityNarrative.textContent = abilityLabel;
       dimensionR.textContent = riskLabel;
       dimensionC.textContent = responseLabel;
       dimensionH.textContent = valueLabel;
@@ -1519,7 +1558,7 @@
             "AI ideology placement quiz result",
             statement ? `Overall stance: ${statement}` : "",
             `Profile: ${code} ${profile[0]}`,
-            `Spectrum position: risk judgment=${riskLabel}; governance position=${responseLabel}; value position=${valueLabel}`,
+            `Spectrum position: AI narrative=${abilityLabel}; risk judgment=${riskLabel}; governance position=${responseLabel}; value position=${valueLabel}`,
             `Two-axis position: ${quadrantFor(result.x, result.y)}`,
             scenarioSummary ? `Scenario choices: ${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
