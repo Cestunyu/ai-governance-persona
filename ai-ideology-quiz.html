@@ -341,7 +341,7 @@
 
     .result-topline {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -362,8 +362,8 @@
     .metric strong {
       display: block;
       margin-top: 5px;
-      font-size: 24px;
-      line-height: 1;
+      font-size: clamp(15px, 2vw, 19px);
+      line-height: 1.25;
     }
 
     .map-card {
@@ -845,23 +845,19 @@
 
       <div class="result-topline">
         <div class="metric">
-          <span>完成度</span>
-          <strong id="scoreDone">0/12</strong>
-        </div>
-        <div class="metric">
-          <span>立场</span>
+          <span>主结果</span>
           <strong id="scoreCode">--</strong>
         </div>
         <div class="metric">
-          <span>R 诊断</span>
+          <span>风险判断</span>
           <strong id="dimensionR">--</strong>
         </div>
         <div class="metric">
-          <span>C 响应</span>
+          <span>治理位置</span>
           <strong id="dimensionC">--</strong>
         </div>
         <div class="metric">
-          <span>H 价值</span>
+          <span>价值位置</span>
           <strong id="dimensionH">--</strong>
         </div>
       </div>
@@ -1126,7 +1122,6 @@
     const prevBtn = document.querySelector("#prevBtn");
     const nextBtn = document.querySelector("#nextBtn");
     const pagerNote = document.querySelector("#pagerNote");
-    const scoreDone = document.querySelector("#scoreDone");
     const scoreCode = document.querySelector("#scoreCode");
     const dimensionR = document.querySelector("#dimensionR");
     const dimensionC = document.querySelector("#dimensionC");
@@ -1207,15 +1202,43 @@
         : NaN;
     }
 
-    function dominantDiagnosis(result) {
+    function riskSpectrumLabel(result) {
       const entries = [
-        ["catastrophic", result.rCatastrophic, "文明级风险"],
-        ["social", result.rSocialHarm, "现实社会伤害"],
-        ["normal", result.rNormalTech, "普通技术/hype"],
-        ["opportunity", result.rOpportunityCost, "机会成本"]
-      ];
-      const best = entries.reduce((winner, entry) => entry[1] > winner[1] ? entry : winner, entries[0]);
-      return { key: best[0], value: best[1], label: best[2] };
+        { key: "catastrophic", value: result.rCatastrophic, label: "文明级风险" },
+        { key: "social", value: result.rSocialHarm, label: "现实社会伤害" },
+        { key: "normal", value: result.rNormalTech, label: "普通技术/过度叙事" },
+        { key: "opportunity", value: result.rOpportunityCost, label: "机会成本" }
+      ].sort((a, b) => b.value - a.value);
+      const [top, second] = entries;
+      if (top.value < 0.4) return `${top.label} / ${second.label}（弱信号）`;
+      if (top.value - second.value <= 0.35) return `${top.label} / ${second.label}并重`;
+      return `主导：${top.label}；次要：${second.label}`;
+    }
+
+    function responseSpectrumLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value <= -1.2) return "强控制";
+      if (value <= -0.4) return "控制倾向";
+      if (value < 0.4) {
+        if (value <= -0.15) return "中间，略偏控制";
+        if (value >= 0.15) return "中间，略偏开放";
+        return "中间";
+      }
+      if (value < 1.2) return "开放倾向";
+      return "强开放";
+    }
+
+    function valueSpectrumLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value >= 1.2) return "强人类中心";
+      if (value >= 0.4) return "人类中心";
+      if (value > -0.4) {
+        if (value >= 0.15) return "中间，略偏人类中心";
+        if (value <= -0.15) return "中间，略偏智能中心";
+        return "中间";
+      }
+      if (value > -1.2) return "智能中心";
+      return "强后人类/智能中心";
     }
 
     function answeredPages() {
@@ -1472,13 +1495,14 @@
       const code = profileFor(result);
       const profile = profiles[code];
       const complete = Number.isFinite(result.x) && Number.isFinite(result.y);
-      const diagnosis = complete ? dominantDiagnosis(result) : null;
+      const riskLabel = complete ? riskSpectrumLabel(result) : "--";
+      const responseLabel = complete ? responseSpectrumLabel(result.c) : "--";
+      const valueLabel = complete ? valueSpectrumLabel(result.h) : "--";
 
-      scoreDone.textContent = `${result.answered}/12`;
       scoreCode.textContent = complete ? code : "--";
-      dimensionR.textContent = complete ? diagnosis.label : "--";
-      dimensionC.textContent = complete ? formatScore(result.c) : "--";
-      dimensionH.textContent = complete ? formatScore(result.h) : "--";
+      dimensionR.textContent = riskLabel;
+      dimensionC.textContent = responseLabel;
+      dimensionH.textContent = valueLabel;
       updateMap(result, complete, code);
       profileCode.textContent = complete ? code : "----";
       profileName.textContent = complete ? `${profile[0]} ${code}` : "等待生成画像";
@@ -1495,8 +1519,8 @@
             "AI 立场二维坐标问卷结果",
             statement ? `总体立场：${statement}` : "",
             `人物画像：${code} ${profile[0]}`,
-            `三维分数：R=${diagnosis.label}(${formatScore(diagnosis.value)}), C=${formatScore(result.c)}, H=${formatScore(result.h)}`,
-            `二维投影：X=${formatScore(result.x)}，Y=${formatScore(result.y)}；公式 X=0.65C-0.35R，Y=H`,
+            `光谱位置：风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
+            `二维位置：${quadrantFor(result.x, result.y)}`,
             scenarioSummary ? `情境选择：${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
         : "答完 12 道核心题后，这里会生成结构化摘要。";

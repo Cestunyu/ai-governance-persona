@@ -341,7 +341,7 @@
 
     .result-topline {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -362,8 +362,8 @@
     .metric strong {
       display: block;
       margin-top: 5px;
-      font-size: 24px;
-      line-height: 1;
+      font-size: clamp(15px, 2vw, 19px);
+      line-height: 1.25;
     }
 
     .map-card {
@@ -845,23 +845,19 @@
 
       <div class="result-topline">
         <div class="metric">
-          <span>Completion</span>
-          <strong id="scoreDone">0/12</strong>
-        </div>
-        <div class="metric">
-          <span>Stance</span>
+          <span>Main Result</span>
           <strong id="scoreCode">--</strong>
         </div>
         <div class="metric">
-          <span>R Diagnosis</span>
+          <span>Risk Judgment</span>
           <strong id="dimensionR">--</strong>
         </div>
         <div class="metric">
-          <span>C Response</span>
+          <span>Governance Position</span>
           <strong id="dimensionC">--</strong>
         </div>
         <div class="metric">
-          <span>H Value</span>
+          <span>Value Position</span>
           <strong id="dimensionH">--</strong>
         </div>
       </div>
@@ -1126,7 +1122,6 @@
     const prevBtn = document.querySelector("#prevBtn");
     const nextBtn = document.querySelector("#nextBtn");
     const pagerNote = document.querySelector("#pagerNote");
-    const scoreDone = document.querySelector("#scoreDone");
     const scoreCode = document.querySelector("#scoreCode");
     const dimensionR = document.querySelector("#dimensionR");
     const dimensionC = document.querySelector("#dimensionC");
@@ -1207,15 +1202,43 @@
         : NaN;
     }
 
-    function dominantDiagnosis(result) {
+    function riskSpectrumLabel(result) {
       const entries = [
-        ["catastrophic", result.rCatastrophic, "civilizational risk"],
-        ["social", result.rSocialHarm, "current social harm"],
-        ["normal", result.rNormalTech, "normal technology/hype"],
-        ["opportunity", result.rOpportunityCost, "opportunity cost"]
-      ];
-      const best = entries.reduce((winner, entry) => entry[1] > winner[1] ? entry : winner, entries[0]);
-      return { key: best[0], value: best[1], label: best[2] };
+        { key: "catastrophic", value: result.rCatastrophic, label: "civilizational risk" },
+        { key: "social", value: result.rSocialHarm, label: "current social harm" },
+        { key: "normal", value: result.rNormalTech, label: "normal tech / overnarrative" },
+        { key: "opportunity", value: result.rOpportunityCost, label: "opportunity cost" }
+      ].sort((a, b) => b.value - a.value);
+      const [top, second] = entries;
+      if (top.value < 0.4) return `${top.label} / ${second.label} (weak signal)`;
+      if (top.value - second.value <= 0.35) return `${top.label} / ${second.label} balanced`;
+      return `primary: ${top.label}; secondary: ${second.label}`;
+    }
+
+    function responseSpectrumLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value <= -1.2) return "strong control";
+      if (value <= -0.4) return "control-leaning";
+      if (value < 0.4) {
+        if (value <= -0.15) return "middle, slightly control-leaning";
+        if (value >= 0.15) return "middle, slightly open";
+        return "middle";
+      }
+      if (value < 1.2) return "open-leaning";
+      return "strong openness";
+    }
+
+    function valueSpectrumLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value >= 1.2) return "strongly human-centered";
+      if (value >= 0.4) return "human-centered";
+      if (value > -0.4) {
+        if (value >= 0.15) return "middle, slightly human-centered";
+        if (value <= -0.15) return "middle, slightly intelligence-centered";
+        return "middle";
+      }
+      if (value > -1.2) return "intelligence-centered";
+      return "strongly posthuman / intelligence-centered";
     }
 
     function answeredPages() {
@@ -1472,13 +1495,14 @@
       const code = profileFor(result);
       const profile = profiles[code];
       const complete = Number.isFinite(result.x) && Number.isFinite(result.y);
-      const diagnosis = complete ? dominantDiagnosis(result) : null;
+      const riskLabel = complete ? riskSpectrumLabel(result) : "--";
+      const responseLabel = complete ? responseSpectrumLabel(result.c) : "--";
+      const valueLabel = complete ? valueSpectrumLabel(result.h) : "--";
 
-      scoreDone.textContent = `${result.answered}/12`;
       scoreCode.textContent = complete ? code : "--";
-      dimensionR.textContent = complete ? diagnosis.label : "--";
-      dimensionC.textContent = complete ? formatScore(result.c) : "--";
-      dimensionH.textContent = complete ? formatScore(result.h) : "--";
+      dimensionR.textContent = riskLabel;
+      dimensionC.textContent = responseLabel;
+      dimensionH.textContent = valueLabel;
       updateMap(result, complete, code);
       profileCode.textContent = complete ? code : "----";
       profileName.textContent = complete ? `${profile[0]} ${code}` : "Waiting for profile";
@@ -1495,8 +1519,8 @@
             "AI ideology placement quiz result",
             statement ? `Overall stance: ${statement}` : "",
             `Profile: ${code} ${profile[0]}`,
-            `Three-dimensional scores: R=${diagnosis.label}(${formatScore(diagnosis.value)}), C=${formatScore(result.c)}, H=${formatScore(result.h)}`,
-            `Two-dimensional projection: X=${formatScore(result.x)}, Y=${formatScore(result.y)}; formula X=0.65C-0.35R, Y=H`,
+            `Spectrum position: risk judgment=${riskLabel}; governance position=${responseLabel}; value position=${valueLabel}`,
+            `Two-axis position: ${quadrantFor(result.x, result.y)}`,
             scenarioSummary ? `Scenario choices: ${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
         : "A structured summary will appear here after all 12 core items are complete.";
