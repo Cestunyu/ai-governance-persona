@@ -323,6 +323,14 @@
       line-height: 1.4;
     }
 
+    .submit-status {
+      min-height: 18px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
     .qid {
       display: inline-grid;
       place-items: center;
@@ -927,6 +935,7 @@
         <button class="btn" id="editLastBtn" type="button">Edit Last Answer</button>
         <button class="btn primary" id="restartBtn" type="button">Restart</button>
       </div>
+      <div class="submit-status" id="submitStatus" aria-live="polite"></div>
     </section>
 
     <div class="reference-modal" id="referenceModal" hidden>
@@ -1179,6 +1188,7 @@
     let currentIndex = 0;
     let answers = {};
     let activeReferenceId = "";
+    let lastSubmittedFingerprint = "";
 
     const form = document.querySelector("#quizForm");
     const heroSection = document.querySelector("#heroSection");
@@ -1212,6 +1222,7 @@
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
     const summaryBox = document.querySelector("#summaryBox");
+    const submitStatus = document.querySelector("#submitStatus");
     const resetBtn = document.querySelector("#resetBtn");
     const editLastBtn = document.querySelector("#editLastBtn");
     const restartBtn = document.querySelector("#restartBtn");
@@ -1607,6 +1618,97 @@
       mapDot.style.bottom = `${coordToPercent(result.y)}%`;
     }
 
+    function canSubmitResults() {
+      const host = window.location.hostname;
+      if (!host || host === "localhost" || host === "127.0.0.1") return false;
+      if (host === "cestunyu.github.io" || host.endsWith(".github.io")) return false;
+      return true;
+    }
+
+    function fixedScore(value) {
+      return Number.isFinite(value) ? Number(value.toFixed(4)) : "";
+    }
+
+    function buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel) {
+      const abilityScore = abilityNarrativeScore();
+      return {
+        quiz_id: "ai-ideology-quiz",
+        quiz_version: "2026-05-24",
+        locale: "en",
+        completed_at: new Date().toISOString(),
+        profile_code: code,
+        profile_name: profile[0],
+        profile_lineage: profile[1],
+        scores: {
+          x: fixedScore(result.x),
+          y: fixedScore(result.y),
+          r_projection: fixedScore(result.rProjection),
+          r_catastrophic: fixedScore(result.rCatastrophic),
+          r_social_harm: fixedScore(result.rSocialHarm),
+          r_normal_tech: fixedScore(result.rNormalTech),
+          r_opportunity_cost: fixedScore(result.rOpportunityCost),
+          c: fixedScore(result.c),
+          h: fixedScore(result.h),
+          ability: fixedScore(abilityScore)
+        },
+        labels: {
+          ability: abilityLabel,
+          risk: riskLabel,
+          governance: responseLabel,
+          value: valueLabel,
+          quadrant: quadrantFor(result.x, result.y)
+        },
+        answers: Object.fromEntries(questions.map((question) => [question.id, selected(question.id)])),
+        scenarios: Object.fromEntries(scenarios.map((scenario) => [scenario.id, selected(scenario.id)])),
+        warmup_reaction: selected("warmupReaction"),
+        closest_statement: selectedValues("closestStatement"),
+        summary: summaryBox.textContent
+      };
+    }
+
+    function resultFingerprint(payload) {
+      return JSON.stringify({
+        locale: payload.locale,
+        profile_code: payload.profile_code,
+        scores: payload.scores,
+        answers: payload.answers,
+        scenarios: payload.scenarios,
+        closest_statement: payload.closest_statement,
+        warmup_reaction: payload.warmup_reaction
+      });
+    }
+
+    async function submitResultPayload(payload) {
+      submitStatus.textContent = "Recording result...";
+      try {
+        const response = await fetch("/api/submit-result", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+          keepalive: true
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        submitStatus.textContent = "Result recorded.";
+      } catch (error) {
+        submitStatus.textContent = "Result recording failed. Your result is still available here.";
+      }
+    }
+
+    function maybeSubmitResult(result, complete, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel) {
+      if (!submitStatus) return;
+      if (!complete) {
+        submitStatus.textContent = "";
+        return;
+      }
+      if (!canSubmitResults()) return;
+
+      const payload = buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
+      const fingerprint = resultFingerprint(payload);
+      if (fingerprint === lastSubmittedFingerprint) return;
+      lastSubmittedFingerprint = fingerprint;
+      submitResultPayload(payload);
+    }
+
     function update() {
       const result = calculate();
       const code = profileFor(result);
@@ -1644,12 +1746,15 @@
             scenarioSummary ? `Scenario choices: ${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
         : "A structured summary will appear here after all 12 core items are complete.";
+      maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
     }
 
     function resetQuiz() {
       answers = {};
       currentIndex = 0;
       activeReferenceId = "";
+      lastSubmittedFingerprint = "";
+      if (submitStatus) submitStatus.textContent = "";
       update();
       renderReferencePoints();
       renderReferenceDetail();
