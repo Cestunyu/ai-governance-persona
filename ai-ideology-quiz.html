@@ -1165,11 +1165,11 @@
       {
         id: "closestStatement",
         kind: "statement",
-        title: "总体立场",
-        subtitle: "固定选项，可多选，用于复查分类",
+        title: "总体立场（多选）",
+        subtitle: "最后一题为多选，不进入坐标计算，用于复查分类",
         tag: "SELF",
-        instruction: "可多选；如果都不像，请只选最后一项",
-        prompt: "下面哪些话接近你现在的 AI 立场？",
+        instruction: "这是多选题：可以选择多个接近你的说法；如果都不像，请只选最后一项",
+        prompt: "下面哪些话接近你现在的 AI 立场？（可多选）",
         options: statements.map((statement, i) => [statement, String(i + 1), statement]),
         multiple: true,
         exclusiveValue: statements[statements.length - 1]

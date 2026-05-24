@@ -1165,11 +1165,11 @@
       {
         id: "closestStatement",
         kind: "statement",
-        title: "Overall Stance",
-        subtitle: "Fixed options, multiple choice, used as a cross-check",
+        title: "Overall Stance (Multiple Select)",
+        subtitle: "Final question: select all that apply; not included in coordinate scoring",
         tag: "SELF",
-        instruction: "Select all that fit; if none fit, select only the last option",
-        prompt: "Which statements are closest to your current AI stance?",
+        instruction: "This is a multiple-select question: choose every statement that feels close. If none fit, select only the last option",
+        prompt: "Which statements are closest to your current AI stance? (Select all that apply)",
         options: statements.map((statement, i) => [statement, String(i + 1), statement]),
         multiple: true,
         exclusiveValue: statements[statements.length - 1]
