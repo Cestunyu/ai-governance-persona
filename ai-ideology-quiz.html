@@ -244,6 +244,7 @@
       font-size: clamp(22px, 4vw, 34px);
       line-height: 1.22;
       letter-spacing: 0;
+      white-space: pre-line;
     }
 
     .single-options {
@@ -604,12 +605,58 @@
       border-radius: 999px;
     }
 
+    .reference-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+
+    .reference-modal[hidden] {
+      display: none;
+    }
+
+    .reference-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(18, 25, 38, 0.42);
+    }
+
+    .reference-modal-card {
+      position: relative;
+      z-index: 1;
+      width: min(560px, 100%);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(20, 31, 52, 0.24);
+      padding: 14px;
+    }
+
+    .reference-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: inline-grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: #344054;
+      font-size: 18px;
+      font-weight: 820;
+      cursor: pointer;
+    }
+
     .reference-detail {
-      margin: 0 14px 14px;
       border: 1px solid var(--line);
       border-radius: 7px;
       background: var(--soft);
-      padding: 10px 12px;
+      padding: 13px 44px 13px 13px;
       min-height: 78px;
     }
 
@@ -794,14 +841,14 @@
     <form id="quizForm" class="quiz-shell">
       <section class="panel" id="quizPager">
         <div class="panel-head">
-          <small id="pageCount">第 1 / 17 题</small>
+          <small id="pageCount">第 1 / 18 题</small>
         </div>
         <div class="panel-body">
           <div class="progress-row" aria-hidden="true">
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/17</div>
+            <div class="progress-text" id="progressText">0/18</div>
           </div>
 
           <article class="page-card">
@@ -873,9 +920,6 @@
           <div class="map-dot" id="mapDot"><span id="mapDotCode">----</span></div>
         </div>
         <div class="map-legend" id="mapLegend" aria-label="思想谱系图例"></div>
-        <div class="reference-detail" id="referenceDetail" aria-live="polite">
-          <span>点击图上的任一点查看图谱 profile。</span>
-        </div>
       </div>
 
       <div class="summary" id="summaryBox">答完后这里会生成结构化摘要。</div>
@@ -884,6 +928,14 @@
         <button class="btn primary" id="restartBtn" type="button">重新测试</button>
       </div>
     </section>
+
+    <div class="reference-modal" id="referenceModal" hidden>
+      <div class="reference-modal-backdrop" data-reference-close></div>
+      <section class="reference-modal-card" role="dialog" aria-modal="true" aria-labelledby="referenceModalTitle">
+        <button class="reference-modal-close" type="button" aria-label="关闭图谱详情" data-reference-close>&times;</button>
+        <div class="reference-detail" id="referenceDetail" aria-live="polite"></div>
+      </section>
+    </div>
   </main>
 
   <script>
@@ -893,18 +945,18 @@
     };
 
     const questions = [
-      { id: "R01", dimension: "r", diagnosis: "catastrophic", facet: "文明级风险诊断", text: "前沿 AI 不是普通产品风险；它在未来几十年内造成文明级失败的概率高到足以重排社会优先级。" },
-      { id: "R02", dimension: "r", diagnosis: "social", facet: "现实社会伤害诊断", text: "未来 AGI 灭绝风险被讨论得太多了；当前更紧迫的是 AI 已经在劳动、监控、偏见、环境成本、数据剥削和权力集中上造成伤害。" },
-      { id: "R03", dimension: "r", diagnosis: "normal", facet: "普通技术 / hype 诊断", text: "把 AI 说成末日或救世主都会误导政策；大多数 AI 问题应被当作普通技术的误用、评估失败和制度治理问题处理。" },
+      { id: "R01", dimension: "r", diagnosis: "catastrophic", facet: "文明级风险诊断", text: "如果最先进的 AI 发展失控，可能带来非常严重、难以挽回的后果；这个风险大到值得社会优先处理。" },
+      { id: "R02", dimension: "r", diagnosis: "social", facet: "现实社会伤害诊断", text: "相比遥远的 AI 灭绝风险，我更担心 AI 现在已经带来的问题：工作、监控、偏见、环境成本、数据使用和权力集中。" },
+      { id: "R03", dimension: "r", diagnosis: "normal", facet: "普通技术 / hype 诊断", text: "把 AI 说成末日或救世主都会误导判断；大多数问题还是要看具体用途、测试结果和管理规则。" },
       { id: "R04", dimension: "r", diagnosis: "opportunity", facet: "机会成本诊断", text: "对 AI 的安全限制本身也会造成实质伤害，因为它会推迟医疗、教育、科研和生产力收益。" },
-      { id: "C01", dimension: "c", direction: -1, facet: "危险能力发布门槛", text: "一旦模型接近危险能力阈值，默认不应发布或开源，除非先通过独立安全评估。" },
-      { id: "C02", dimension: "c", direction: -1, facet: "许可、审计与问责", text: "高风险 AI 不应靠公司自律；它需要许可、审计、法律责任和可执行的申诉机制。" },
-      { id: "C03", dimension: "c", direction: 1, facet: "开放竞争 / 反 gatekeeping", text: "让少数公司或政府 gatekeep 前沿 AI，比开放竞争和能力扩散更危险。" },
-      { id: "C04", dimension: "c", direction: 1, facet: "真实部署中迭代", text: "即使会带来滥用和混乱，社会也应该更快部署强 AI，并在真实使用中迭代修正。" },
-      { id: "H01", dimension: "h", direction: 1, facet: "民主目标选择", text: "AI 的合法目标必须来自人类社会的民主选择，而不是实验室、市场或模型自己定义。" },
-      { id: "H02", dimension: "h", direction: 1, facet: "可问责人类权威", text: "在影响权利、机会或人生处境的问题上，AI 再准确也不能取代可问责的人类权威。" },
-      { id: "H03", dimension: "h", direction: -1, facet: "反当前偏好终局化", text: "把当下人类偏好当成最终价值标准，是对更高级智能和未来价值形式的过早封闭。" },
-      { id: "H04", dimension: "h", direction: -1, facet: "AI 判断优先", text: "如果 AI 的判断长期明显优于人类，让它绕过低质量的人类判断有时是合理的。" }
+      { id: "C01", dimension: "c", direction: -1, facet: "危险能力发布门槛", text: "如果一个模型已经可能被用于严重伤害，在发布或开源前，应先通过独立安全测试。" },
+      { id: "C02", dimension: "c", direction: -1, facet: "许可、审计与问责", text: "高风险 AI 不应只靠公司自觉；需要外部检查、法律责任和出问题后的申诉渠道。" },
+      { id: "C03", dimension: "c", direction: 1, facet: "开放竞争 / 反 gatekeeping", text: "让少数公司或政府控制最强 AI，可能比让更多人参与竞争和使用更危险。" },
+      { id: "C04", dimension: "c", direction: 1, facet: "真实部署中迭代", text: "即使会出错或被滥用，社会也应该更快使用强 AI，并在真实使用中修正问题。" },
+      { id: "H01", dimension: "h", direction: 1, facet: "民主目标选择", text: "AI 应该追求什么目标，最终必须由人类社会共同决定，而不是由公司、市场或模型自己决定。" },
+      { id: "H02", dimension: "h", direction: 1, facet: "可问责人类权威", text: "在人生重要决定上，即使 AI 很准确，也不能完全取代能负责、能解释的人。" },
+      { id: "H03", dimension: "h", direction: -1, facet: "反当前偏好终局化", text: "把今天的人类偏好当成永远不变的最终标准，可能会限制更高级智能和未来价值的发展。" },
+      { id: "H04", dimension: "h", direction: -1, facet: "AI 判断优先", text: "如果 AI 的判断长期明显优于人类，有些时候让它越过低质量的人类判断是合理的。" }
     ];
 
     const scenarios = [
@@ -1006,6 +1058,7 @@
       "Critical AI": { label: "Critical AI / 社会伤害", color: "#7c3aed" },
       "Normal technology": { label: "普通技术 / hype 怀疑", color: "#475569" },
       "Scaling thought": { label: "Scaling / Bitter Lesson", color: "#0369a1" },
+      "Architecture optimism": { label: "架构乐观 / 世界模型", color: "#4f46e5" },
       "Posthuman control": { label: "Posthuman control / 系统治理", color: "#5b21b6" },
       "Pragmatic optimism": { label: "务实 AI 乐观", color: "#15803d" },
       "Techno-optimism": { label: "技术乐观 / 奇点", color: "#c2410c" },
@@ -1028,7 +1081,7 @@
       "gary-marcus-melanie-mitchell": "Normal technology",
       "rich-sutton": "Scaling thought",
       "benjamin-bratton": "Posthuman control",
-      "yann-lecun": "Scaling thought",
+      "yann-lecun": "Architecture optimism",
       "andrew-ng": "Pragmatic optimism",
       "ray-kurzweil": "Techno-optimism",
       "marc-andreessen": "Techno-optimism",
@@ -1068,8 +1121,28 @@
       ["5", "5", "非常同意"]
     ];
 
+    const warmupPage = {
+      id: "warmupReaction",
+      kind: "warmup",
+      title: "开始之前",
+      subtitle: "不计分，只帮你进入问题",
+      tag: "开始",
+      instruction: "先选一个直觉，没有正确答案",
+      prompt: "这个测试不是考知识，而是看你怎么看 AI 的风险、收益和管理方式。\n\n你第一次看到一个很强的新 AI 工具时，最自然的反应更接近哪一种？",
+      options: [
+        ["先想它能帮人做什么", "A", "先想它能帮人做什么"],
+        ["先担心它会不会出事", "B", "先担心它会不会出事"],
+        ["先想谁会控制它", "C", "先想谁会控制它"],
+        ["先想它是不是被夸大了", "D", "先想它是不是被夸大了"],
+        ["说不清，要看具体场景", "E", "说不清，要看具体场景"]
+      ]
+    };
+
+    const coreQuestionOrder = ["R03", "R04", "H02", "C03", "C02", "H01", "C01", "C04", "R02", "H03", "H04", "R01"];
+
     const pages = [
-      ...questions.map((q) => ({
+      warmupPage,
+      ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
         id: q.id,
         kind: "core",
         title: "核心题目",
@@ -1131,6 +1204,7 @@
     const mapLegend = document.querySelector("#mapLegend");
     const referenceLayer = document.querySelector("#referenceLayer");
     const referenceDetail = document.querySelector("#referenceDetail");
+    const referenceModal = document.querySelector("#referenceModal");
     const profileCode = document.querySelector("#profileCode");
     const profileName = document.querySelector("#profileName");
     const profileLineage = document.querySelector("#profileLineage");
@@ -1499,9 +1573,14 @@
       return `${horizontal} / ${vertical}`;
     }
 
+    function closeReferenceModal() {
+      referenceModal.hidden = true;
+    }
+
     function renderReferenceDetail(point) {
       if (!point) {
-        referenceDetail.innerHTML = "<span>点击图上的任一点查看图谱 profile。</span>";
+        referenceDetail.innerHTML = "";
+        closeReferenceModal();
         return;
       }
 
@@ -1510,12 +1589,13 @@
       const stance = referenceProfiles[point.id] || point.cluster;
       referenceDetail.innerHTML = `
         <div class="reference-detail-head">
-          <b>${escapeHTML(point.name)}</b>
+          <b id="referenceModalTitle">${escapeHTML(point.name)}</b>
           <span class="reference-detail-badge" style="--color:${info.color}">${escapeHTML(info.label)}</span>
         </div>
         <p>${escapeHTML(stance)}</p>
         <p><b>谱系：</b>${escapeHTML(point.cluster)} · <b>图谱位置：</b>${escapeHTML(quadrantFor(point.x, point.y))} · <b>影响力：</b>${escapeHTML(point.influence)}/5</p>
       `;
+      referenceModal.hidden = false;
     }
 
     function updateMap(result, complete, code) {
@@ -1549,12 +1629,14 @@
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
 
+      const warmup = selected("warmupReaction");
       const scenarioSummary = scenarios.map((s) => selected(s.id) ? `${s.id}: ${selected(s.id)}` : "").filter(Boolean).join(" | ");
       const statement = selectedValues("closestStatement").join(" | ");
 
       summaryBox.textContent = complete
         ? [
             "AI 立场二维坐标问卷结果",
+            warmup ? `开场直觉：${warmup}` : "",
             statement ? `总体立场：${statement}` : "",
             `人物画像：${code} ${profile[0]}`,
             `光谱位置：能力判断=${abilityLabel}；风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
@@ -1625,6 +1707,16 @@
       activeReferenceId = point.id;
       renderReferencePoints();
       renderReferenceDetail(point);
+    });
+
+    referenceModal.addEventListener("click", (event) => {
+      if (!event.target.matches("[data-reference-close]")) return;
+      closeReferenceModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || referenceModal.hidden) return;
+      closeReferenceModal();
     });
 
     update();
