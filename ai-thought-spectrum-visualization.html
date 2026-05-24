@@ -863,6 +863,7 @@
       <div class="brand">AI Social Thought Spectrum</div>
       <nav class="nav" aria-label="Page sections">
         <a href="#why-2d">为什么三维</a>
+        <a href="#quiz-flow">问卷阶段</a>
         <a href="#distribution">分布</a>
         <a href="#map">交互地图</a>
         <a href="#profiles">人物思想</a>
@@ -912,14 +913,14 @@
             <span>内部维度：R 诊断，C 响应，H 价值</span>
           </div>
           <div class="stat">
-            <strong>8</strong>
-            <span>主要流派桶：安全、批判、扩展、乐观、加速等</span>
+            <strong>10</strong>
+            <span>主要流派桶：安全、批判、架构、乐观、加速等</span>
           </div>
         </div>
         <div class="map-note">
           <h2>这页的用途</h2>
           <p>
-            它可以作为项目母页：先给出分类框架，再用散点图展示分布，然后逐个介绍人物思想、代表作品、影响渠道和阅读重点。
+            它可以作为项目母页：先给出分类框架和问卷阶段，再用散点图展示分布，然后逐个介绍人物思想、代表作品、影响渠道和阅读重点。
             页面是单文件 HTML，不依赖服务器或外部库。
           </p>
           <p>
@@ -983,11 +984,57 @@
         </div>
         <div class="example">
           <h3>例子三：技术思想不等于政策思想</h3>
-          <p>Sutton 的 Bitter Lesson 主要是技术认识论，不是治理宣言；但它解释了为什么很多 AI 文化更信任规模、搜索和学习，而不是人类预设规则。</p>
+          <p>Sutton 的 Bitter Lesson 主要是技术认识论，不是治理宣言；LeCun 的世界模型路线也不是单纯 scaling 乐观。两者都影响政策直觉，但应分开处理。</p>
         </div>
         <div class="example">
           <h3>二维图只是投影</h3>
           <p>图上横轴由 C 和 R 压缩而来：越开放、越部署、越不把灾难风险当核心，就越往右。纵轴直接显示 H：越人类中心越往上，越后人类或智能中心越往下。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="quiz-flow">
+      <div class="section-head">
+        <h2>问卷现在如何分阶段？</h2>
+        <p>
+          图谱页解释 R/C/H 框架；quiz 页面把这个框架变成 18 页闭合问卷。只有 12 道核心同意度题进入坐标计算；
+          开场直觉、情境选择和最后的自我定位用于降低误判、复查画像，不直接改变 R/C/H 分数。
+        </p>
+      </div>
+      <div class="example-grid">
+        <div class="example">
+          <h3>0. 开场直觉</h3>
+          <p>1 题 warmup，不计入坐标。它只记录用户看到强 AI 工具时的第一反应：收益、事故、控制、hype，或取决于场景。</p>
+        </div>
+        <div class="example">
+          <h3>1. 核心计分题</h3>
+          <p>12 道五点同意度题，覆盖 R 风险/伤害诊断、C 控制/开放响应、H 人类中心/后人类价值。它们是二维坐标和四个光谱标签的唯一分数来源。</p>
+        </div>
+        <div class="example">
+          <h3>2. 情境复查题</h3>
+          <p>4 道固定情境题，不改二维坐标，但会给人物画像提供弱证据，用来判断用户在具体部署、开源、公共部门和科研场景中的实际反应。</p>
+        </div>
+        <div class="example">
+          <h3>3. 总体立场复查</h3>
+          <p>最后 1 题为多选自我定位。它不改变 R/C/H 分数，但会帮助 profile 在相近类型之间做 tie-break，并让用户检查结果是否像自己。</p>
+        </div>
+      </div>
+      <div class="example-grid">
+        <div class="example">
+          <h3>核心题顺序</h3>
+          <p>当前 quiz 不从最极端的 doom 题开始，而是按 R03、R04、H02、C03、C02、H01、C01、C04、R02、H03、H04、R01 排列，先进入普通技术和机会成本，再逐步进入控制、价值和文明级风险。</p>
+        </div>
+        <div class="example">
+          <h3>结果页四个标签</h3>
+          <p>结果页先显示能力判断，再显示风险判断、治理位置和价值位置。能力判断不是第四个坐标轴，而是用现有题目复查用户更接近 bubble 怀疑、证据混合，还是变革性 AI 信念。</p>
+        </div>
+        <div class="example">
+          <h3>画像与图谱的关系</h3>
+          <p>quiz 画像保留 9 个：STOP、SAFE、AUDT、NORM、GPUC、BOOM、SING、VROM、POST。Bratton 仍在图谱左下角作为 reference point，但不再是一个可测出的主画像。</p>
+        </div>
+        <div class="example">
+          <h3>题目立场强度</h3>
+          <p>新版核心题刻意把若干立场写得更有代价感，例如安全测试会推迟发布、公共程序会降低效率、AI 决策权会削弱人的最终裁量权，以减少“大家都同意”的弱题。</p>
         </div>
       </div>
     </section>
@@ -1155,17 +1202,21 @@
           <p>从 Sutton 的 <i>The Bitter Lesson</i> 入手，再读 Yudkowsky 2008/2022 和 Bostrom 2012/2014。这样能先理解“规模为什么有吸引力”和“失控为什么被一些人看成灭绝问题”。</p>
         </div>
         <div class="example">
-          <h3>第二步：读批判 AI 和普通技术</h3>
+          <h3>第二步：读架构乐观和普通技术</h3>
+          <p>读 LeCun 的 <i>A Path Towards Autonomous Machine Intelligence</i>，再读 Marcus/Mitchell、Narayanan/Kapoor。这样能区分“当前 LLM scaling 不够”和“AI 只是 hype”这两种不同怀疑。</p>
+        </div>
+        <div class="example">
+          <h3>第三步：读批判 AI</h3>
           <p>读 <i>Stochastic Parrots</i>、Crawford、Benjamin、Narayanan/Kapoor。它们把讨论从未来 AGI 拉回现实制度、数据、劳工、种族、环境和评估。</p>
         </div>
         <div class="example">
-          <h3>第三步：读乐观与加速主义</h3>
+          <h3>第四步：读乐观与加速主义</h3>
           <p>读 Amodei、OpenAI、Ng、Andreessen、Kurzweil、e/acc 和 Land。重点不是问“谁对谁错”，而是看他们如何定义收益、约束、人类和未来。</p>
         </div>
       </div>
       <p class="footnote">
         数据来源：本项目的 <code>data/ai-thought-spectrum.json</code> 与 <code>research/2026-05-14-ai-social-thought-spectrum-source-map.md</code>。
-        页面最后更新：2026-05-21。部分代表作链接指向作者主页、机构页面、出版社、arXiv、ACM 或公开 essay。
+        页面最后更新：2026-05-24。部分代表作链接指向作者主页、机构页面、出版社、arXiv、ACM 或公开 essay。
       </p>
     </section>
   </main>
