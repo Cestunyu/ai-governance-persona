@@ -849,14 +849,14 @@
     <form id="quizForm" class="quiz-shell">
       <section class="panel" id="quizPager">
         <div class="panel-head">
-          <small id="pageCount">Question 1 / 15</small>
+          <small id="pageCount">Question 1 / 14</small>
         </div>
         <div class="panel-body">
           <div class="progress-row" aria-hidden="true">
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/15</div>
+            <div class="progress-text" id="progressText">0/14</div>
           </div>
 
           <article class="page-card">
@@ -1127,27 +1127,9 @@
       ["5", "5", "Strongly agree"]
     ];
 
-    const warmupPage = {
-      id: "warmupReaction",
-      kind: "warmup",
-      title: "Before We Start",
-      subtitle: "Not scored; just a warm-up",
-      tag: "START",
-      instruction: "Choose your first instinct; there is no right answer",
-      prompt: "When you first see a very powerful new AI tool, which reaction feels closest to yours?",
-      options: [
-        ["I first think about what it can help people do", "A", "I first think about what it can help people do"],
-        ["I first worry about what could go wrong", "B", "I first worry about what could go wrong"],
-        ["I first wonder who will control it", "C", "I first wonder who will control it"],
-        ["I first wonder whether it is being overhyped", "D", "I first wonder whether it is being overhyped"],
-        ["I am not sure; it depends on the situation", "E", "I am not sure; it depends on the situation"]
-      ]
-    };
-
     const coreQuestionOrder = ["R04", "H02", "C03", "C02", "H01", "C04", "H03", "H04", "R01"];
 
     const pages = [
-      warmupPage,
       ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
         id: q.id,
         kind: "core",
@@ -1657,7 +1639,6 @@
         },
         answers: Object.fromEntries(questions.map((question) => [question.id, selected(question.id)])),
         scenarios: Object.fromEntries(scenarios.map((scenario) => [scenario.id, selected(scenario.id)])),
-        warmup_reaction: selected("warmupReaction"),
         closest_statement: selectedValues("closestStatement"),
         summary: summaryBox.textContent
       };
@@ -1670,8 +1651,7 @@
         scores: payload.scores,
         answers: payload.answers,
         scenarios: payload.scenarios,
-        closest_statement: payload.closest_statement,
-        warmup_reaction: payload.warmup_reaction
+        closest_statement: payload.closest_statement
       });
     }
 
@@ -1728,14 +1708,12 @@
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
 
-      const warmup = selected("warmupReaction");
       const scenarioSummary = scenarios.map((s) => selected(s.id) ? `${s.id}: ${selected(s.id)}` : "").filter(Boolean).join(" | ");
       const statement = selectedValues("closestStatement").join(" | ");
 
       summaryBox.textContent = complete
         ? [
             "AI ideology placement quiz result",
-            warmup ? `Opening instinct: ${warmup}` : "",
             statement ? `Overall stance: ${statement}` : "",
             `Profile: ${code} ${profile[0]}`,
             `Spectrum position: AI capability belief=${abilityLabel}; risk judgment=${riskLabel}; governance position=${responseLabel}; value position=${valueLabel}`,

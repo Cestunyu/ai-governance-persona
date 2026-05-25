@@ -849,14 +849,14 @@
     <form id="quizForm" class="quiz-shell">
       <section class="panel" id="quizPager">
         <div class="panel-head">
-          <small id="pageCount">第 1 / 15 题</small>
+          <small id="pageCount">第 1 / 14 题</small>
         </div>
         <div class="panel-body">
           <div class="progress-row" aria-hidden="true">
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/15</div>
+            <div class="progress-text" id="progressText">0/14</div>
           </div>
 
           <article class="page-card">
@@ -1127,27 +1127,9 @@
       ["5", "5", "非常同意"]
     ];
 
-    const warmupPage = {
-      id: "warmupReaction",
-      kind: "warmup",
-      title: "开始之前",
-      subtitle: "不计分，只帮你进入问题",
-      tag: "开始",
-      instruction: "先选一个直觉，没有正确答案",
-      prompt: "你第一次看到一个很强的新 AI 工具时，最自然的反应更接近哪一种？",
-      options: [
-        ["先想它能帮人做什么", "A", "先想它能帮人做什么"],
-        ["先担心它会不会出事", "B", "先担心它会不会出事"],
-        ["先想谁会控制它", "C", "先想谁会控制它"],
-        ["先想它是不是被夸大了", "D", "先想它是不是被夸大了"],
-        ["说不清，要看具体场景", "E", "说不清，要看具体场景"]
-      ]
-    };
-
     const coreQuestionOrder = ["R04", "H02", "C03", "C02", "H01", "C04", "H03", "H04", "R01"];
 
     const pages = [
-      warmupPage,
       ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
         id: q.id,
         kind: "core",
@@ -1657,7 +1639,6 @@
         },
         answers: Object.fromEntries(questions.map((question) => [question.id, selected(question.id)])),
         scenarios: Object.fromEntries(scenarios.map((scenario) => [scenario.id, selected(scenario.id)])),
-        warmup_reaction: selected("warmupReaction"),
         closest_statement: selectedValues("closestStatement"),
         summary: summaryBox.textContent
       };
@@ -1670,8 +1651,7 @@
         scores: payload.scores,
         answers: payload.answers,
         scenarios: payload.scenarios,
-        closest_statement: payload.closest_statement,
-        warmup_reaction: payload.warmup_reaction
+        closest_statement: payload.closest_statement
       });
     }
 
@@ -1728,14 +1708,12 @@
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
 
-      const warmup = selected("warmupReaction");
       const scenarioSummary = scenarios.map((s) => selected(s.id) ? `${s.id}: ${selected(s.id)}` : "").filter(Boolean).join(" | ");
       const statement = selectedValues("closestStatement").join(" | ");
 
       summaryBox.textContent = complete
         ? [
             "AI 立场二维坐标问卷结果",
-            warmup ? `开场直觉：${warmup}` : "",
             statement ? `总体立场：${statement}` : "",
             `人物画像：${code} ${profile[0]}`,
             `光谱位置：能力判断=${abilityLabel}；风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
