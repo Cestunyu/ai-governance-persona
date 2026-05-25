@@ -350,7 +350,7 @@
 
     .result-topline {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -361,7 +361,7 @@
       padding: 11px;
     }
 
-    .metric span {
+    .metric > span {
       display: block;
       color: var(--muted);
       font-size: 11px;
@@ -373,6 +373,66 @@
       margin-top: 5px;
       font-size: clamp(15px, 2vw, 19px);
       line-height: 1.25;
+    }
+
+    .spectrum {
+      display: grid;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .spectrum-scale {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3164d4 0%, #e4e7ec 50%, #0f766e 100%);
+    }
+
+    .spectrum-scale::after {
+      content: "";
+      position: absolute;
+      inset: -4px auto -4px 50%;
+      width: 1px;
+      background: rgba(52, 64, 84, 0.34);
+    }
+
+    .spectrum-marker {
+      position: absolute;
+      top: 50%;
+      left: var(--pos, 50%);
+      width: 15px;
+      height: 15px;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      background: #101828;
+      box-shadow: 0 2px 8px rgba(20, 31, 52, 0.22);
+      transform: translate(-50%, -50%);
+    }
+
+    .spectrum-marker[data-empty="true"] {
+      opacity: 0.35;
+    }
+
+    .spectrum-labels {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 740;
+      line-height: 1.2;
+    }
+
+    .spectrum-labels span {
+      min-width: 0;
+    }
+
+    .spectrum-labels span:nth-child(2) {
+      text-align: center;
+    }
+
+    .spectrum-labels span:last-child {
+      text-align: right;
     }
 
     .map-card {
@@ -897,18 +957,34 @@
         <div class="metric">
           <span>能力判断</span>
           <strong id="abilityNarrative">--</strong>
+          <div class="spectrum" aria-label="能力判断光谱">
+            <div class="spectrum-scale"><i class="spectrum-marker" id="abilitySpectrumMarker" data-empty="true"></i></div>
+            <div class="spectrum-labels"><span>变革性 AI</span><span>证据混合</span><span>Bubble 怀疑</span></div>
+          </div>
         </div>
         <div class="metric">
           <span>风险判断</span>
           <strong id="dimensionR">--</strong>
+          <div class="spectrum" aria-label="风险判断光谱">
+            <div class="spectrum-scale"><i class="spectrum-marker" id="riskSpectrumMarker" data-empty="true"></i></div>
+            <div class="spectrum-labels"><span>机会成本</span><span>混合</span><span>文明级风险</span></div>
+          </div>
         </div>
         <div class="metric">
           <span>治理位置</span>
           <strong id="dimensionC">--</strong>
+          <div class="spectrum" aria-label="治理位置光谱">
+            <div class="spectrum-scale"><i class="spectrum-marker" id="governanceSpectrumMarker" data-empty="true"></i></div>
+            <div class="spectrum-labels"><span>控制</span><span>中间</span><span>开放</span></div>
+          </div>
         </div>
         <div class="metric">
           <span>价值位置</span>
           <strong id="dimensionH">--</strong>
+          <div class="spectrum" aria-label="价值位置光谱">
+            <div class="spectrum-scale"><i class="spectrum-marker" id="valueSpectrumMarker" data-empty="true"></i></div>
+            <div class="spectrum-labels"><span>智能中心</span><span>中间</span><span>人类中心</span></div>
+          </div>
         </div>
       </div>
 
@@ -1243,6 +1319,19 @@
 
     function clampScore(value) {
       return Math.max(-2, Math.min(2, value));
+    }
+
+    function updateSpectrumMarker(id, value, min, max) {
+      const marker = document.getElementById(id);
+      if (!marker) return;
+      if (!Number.isFinite(value)) {
+        marker.style.setProperty("--pos", "50%");
+        marker.dataset.empty = "true";
+        return;
+      }
+      const percent = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+      marker.style.setProperty("--pos", `${percent}%`);
+      marker.dataset.empty = "false";
     }
 
     function diagnosticValue(kind) {
@@ -1694,12 +1783,17 @@
       const riskLabel = complete ? riskSpectrumLabel(result) : "--";
       const responseLabel = complete ? responseSpectrumLabel(result.c) : "--";
       const valueLabel = complete ? valueSpectrumLabel(result.h) : "--";
-      const abilityLabel = complete ? abilityNarrativeLabel(abilityNarrativeScore()) : "--";
+      const abilityScore = abilityNarrativeScore();
+      const abilityLabel = complete ? abilityNarrativeLabel(abilityScore) : "--";
 
       abilityNarrative.textContent = abilityLabel;
       dimensionR.textContent = riskLabel;
       dimensionC.textContent = responseLabel;
       dimensionH.textContent = valueLabel;
+      updateSpectrumMarker("abilitySpectrumMarker", abilityScore, -1, 1);
+      updateSpectrumMarker("riskSpectrumMarker", result.rProjection, -4, 4);
+      updateSpectrumMarker("governanceSpectrumMarker", result.c, -2, 2);
+      updateSpectrumMarker("valueSpectrumMarker", result.h, -2, 2);
       updateMap(result, complete, code);
       profileCode.textContent = complete ? code : "----";
       profileName.textContent = complete ? `${profile[0]} ${code}` : "等待生成画像";
