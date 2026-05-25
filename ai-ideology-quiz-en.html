@@ -983,7 +983,7 @@
           <strong id="dimensionH">--</strong>
           <div class="spectrum" aria-label="value position spectrum">
             <div class="spectrum-scale"><i class="spectrum-marker" id="valueSpectrumMarker" data-empty="true"></i></div>
-            <div class="spectrum-labels"><span>Intelligence-centered</span><span>Middle</span><span>Human-centered</span></div>
+            <div class="spectrum-labels"><span>Intelligence-centered</span><span>Middle</span><span>Social-structure-centered</span></div>
           </div>
         </div>
       </div>
@@ -996,7 +996,7 @@
         <div class="map-plot" aria-label="AI ideology two-axis map">
           <div class="map-axis horizontal"></div>
           <div class="map-axis vertical"></div>
-          <span class="map-label top">Human-centered</span>
+          <span class="map-label top">Social-structure-centered</span>
           <span class="map-label bottom">Posthuman / intelligence-centered</span>
           <span class="map-label left">Control threshold</span>
           <span class="map-label right">Open deployment</span>
@@ -1026,7 +1026,7 @@
   <script>
     const axisMeaning = {
       x: "control threshold <-> open deployment",
-      y: "human-centered <-> posthuman/intelligence-centered"
+      y: "social-structure-centered <-> posthuman/intelligence-centered"
     };
 
     const questions = [
@@ -1073,7 +1073,7 @@
       "AI should be built and deployed because it can create enormous abundance.",
       "AI is not merely a tool; it is a path toward the singularity, human-machine merger, or civilizational upgrade.",
       "AI acceleration has moral urgency and should not be constrained by human fear.",
-      "If higher intelligence or technocapital outgrows a human-centered frame, that is not necessarily failure; humans may be a transitional stage.",
+      "If higher intelligence or technocapital outgrows a social-structure-centered frame, that is not necessarily failure; humans may be a transitional stage.",
       "None of these fit."
     ];
 
@@ -1384,10 +1384,10 @@
 
     function valueSpectrumLabel(value) {
       if (!Number.isFinite(value)) return "--";
-      if (value >= 1.2) return "strongly human-centered";
-      if (value >= 0.4) return "human-centered";
+      if (value >= 1.2) return "strongly social-structure-centered";
+      if (value >= 0.4) return "social-structure-centered";
       if (value > -0.4) {
-        if (value >= 0.15) return "middle, slightly human-centered";
+        if (value >= 0.15) return "middle, slightly social-structure-centered";
         if (value <= -0.15) return "middle, slightly intelligence-centered";
         return "middle";
       }
@@ -1648,7 +1648,7 @@
     function quadrantFor(x, y) {
       if (!Number.isFinite(x) || !Number.isFinite(y)) return "Position appears after completion";
       const horizontal = x < -0.35 ? "Control threshold" : x > 0.35 ? "Open deployment" : "Middle response";
-      const vertical = y > 0.35 ? "Human-centered" : y < -0.35 ? "Posthuman/intelligence-centered" : "Middle values";
+      const vertical = y > 0.35 ? "Social-structure-centered" : y < -0.35 ? "Posthuman/intelligence-centered" : "Middle values";
       return `${horizontal} / ${vertical}`;
     }
 
