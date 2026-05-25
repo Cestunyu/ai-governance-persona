@@ -849,14 +849,14 @@
     <form id="quizForm" class="quiz-shell">
       <section class="panel" id="quizPager">
         <div class="panel-head">
-          <small id="pageCount">Question 1 / 18</small>
+          <small id="pageCount">Question 1 / 15</small>
         </div>
         <div class="panel-body">
           <div class="progress-row" aria-hidden="true">
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/18</div>
+            <div class="progress-text" id="progressText">0/15</div>
           </div>
 
           <article class="page-card">
@@ -887,7 +887,7 @@
           </div>
         </div>
         <div class="profile-body">
-          <p id="profileRoast">Complete all 12 core items for a stable result.</p>
+          <p id="profileRoast">Complete all 9 core items for a stable result.</p>
           <p><b>Representative texts:</b> <span id="profileTexts">--</span></p>
           <p><b>Social tell:</b> <span id="profileTell">--</span></p>
         </div>
@@ -954,18 +954,15 @@
     };
 
     const questions = [
-      { id: "R01", dimension: "r", diagnosis: "catastrophic", facet: "civilizational risk diagnosis", text: "If the most advanced AI develops out of control, it could cause extremely serious and hard-to-reverse harm; that risk is large enough for society to treat it as a priority." },
-      { id: "R02", dimension: "r", diagnosis: "social", facet: "current social harm diagnosis", text: "Even if long-term loss-of-control risks deserve serious attention, I still think current policy should first address the social harms AI is already causing or amplifying: labor impacts, surveillance, bias, environmental costs, data use, and concentrated power." },
-      { id: "R03", dimension: "r", diagnosis: "normal", facet: "normal technology / hype diagnosis", text: "Even if AI may undergo sudden capability jumps in the future, I still think today's main policies should not be built around the most extreme long-term scenarios; regulation should first focus on system risks that can already be observed and tested." },
+      { id: "R01", dimension: "r", diagnosis: "catastrophic", facet: "civilizational risk diagnosis", text: "If the most advanced AI develops out of control, it could cause very serious consequences; that risk is large enough for society to treat it as a priority." },
       { id: "R04", dimension: "r", diagnosis: "opportunity", facet: "opportunity-cost diagnosis", text: "Safety restrictions on AI can themselves cause substantial harm because they delay medical, educational, scientific, and productivity gains." },
-      { id: "C01", dimension: "c", direction: -1, facet: "dangerous capability release threshold", text: "Even if this delays beneficial releases, raises costs, and makes it harder for small teams to compete, models with serious misuse capabilities should still pass independent safety testing before release or open-sourcing." },
       { id: "C02", dimension: "c", direction: -1, facet: "licensing, audits, and accountability", text: "High-risk AI should not rely only on companies doing the right thing; it needs outside checks, legal responsibility, and ways to appeal when things go wrong." },
       { id: "C03", dimension: "c", direction: 1, facet: "open competition / anti-gatekeeping", text: "Letting a few companies or governments control the strongest AI may be more dangerous than letting more people participate, compete, and use it." },
-      { id: "C04", dimension: "c", direction: 1, facet: "iteration through real deployment", text: "Even if real deployment exposes errors and misuse risks, many problems with powerful AI can only be found and fixed through actual use, so it should not remain in closed testing for too long." },
-      { id: "H01", dimension: "h", direction: 1, facet: "democratic goal selection", text: "Even if public deliberation is slow, messy, and may reduce technical efficiency, AI's goals and boundaries should still be decided through human public procedures, not mainly by companies, markets, or model optimization processes." },
-      { id: "H02", dimension: "h", direction: 1, facet: "accountable human authority", text: "For major life decisions, even a very accurate AI should not fully replace a responsible person who can explain the decision." },
+      { id: "C04", dimension: "c", direction: 1, facet: "iteration through real deployment", text: "Many AI problems can only be discovered in real use, so AI should not stay in closed testing for too long, even if this brings safety problems." },
+      { id: "H01", dimension: "h", direction: 1, facet: "democratic goal selection", text: "AI's goals should be decided by human society, even if that process is slow and messy, rather than mainly by companies, markets, and technical progress." },
+      { id: "H02", dimension: "h", direction: 1, facet: "accountable human authority", text: "For some life decisions, even if AI is much more accurate than humans, there must still be human responsibility and explanation." },
       { id: "H03", dimension: "h", direction: -1, facet: "anti-finalizing-current-preferences", text: "Treating today's human preferences as the final standard forever may limit more advanced intelligence and future forms of value." },
-      { id: "H04", dimension: "h", direction: -1, facet: "AI judgment priority", text: "If, over time, AI judgment becomes significantly better than human judgment in some domains, then even if this weakens final human discretion, AI should be allowed to hold stronger practical decision power in some high-impact decisions." }
+      { id: "H04", dimension: "h", direction: -1, facet: "AI judgment priority", text: "If AI is significantly better than human judgment in some domains over the long run, it should be allowed to replace humans and hold stronger practical decision power." }
     ];
 
     const scenarios = [
@@ -1147,7 +1144,7 @@
       ]
     };
 
-    const coreQuestionOrder = ["R03", "R04", "H02", "C03", "C02", "H01", "C01", "C04", "R02", "H03", "H04", "R01"];
+    const coreQuestionOrder = ["R04", "H02", "C03", "C02", "H01", "C04", "H03", "H04", "R01"];
 
     const pages = [
       warmupPage,
@@ -1292,8 +1289,10 @@
         { key: "social", value: result.rSocialHarm, label: "current social harm" },
         { key: "normal", value: result.rNormalTech, label: "normal tech / overnarrative" },
         { key: "opportunity", value: result.rOpportunityCost, label: "opportunity cost" }
-      ].sort((a, b) => b.value - a.value);
+      ].filter((entry) => Number.isFinite(entry.value)).sort((a, b) => b.value - a.value);
+      if (!entries.length) return "--";
       const [top, second] = entries;
+      if (!second) return `primary: ${top.label}`;
       if (top.value < 0.4) return `${top.label} / ${second.label} (weak signal)`;
       if (top.value - second.value <= 0.35) return `${top.label} / ${second.label} balanced`;
       return `primary: ${top.label}; secondary: ${second.label}`;
@@ -1332,14 +1331,11 @@
 
     function abilityNarrativeScore() {
       const weights = [
-        ["R03", 0.45],
-        ["R02", 0.10],
         ["R01", -0.35],
         ["R04", -0.25],
         ["C04", -0.20],
         ["H04", -0.20],
-        ["H03", -0.15],
-        ["C01", -0.10]
+        ["H03", -0.15]
       ];
 
       let numerator = 0;
@@ -1476,10 +1472,11 @@
 
     function addCoreProfileEvidence(scores, result) {
       if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return;
-      const cat = Math.max(0, result.rCatastrophic);
-      const social = Math.max(0, result.rSocialHarm);
-      const normal = Math.max(0, result.rNormalTech);
-      const opportunity = Math.max(0, result.rOpportunityCost);
+      const positive = (value) => Number.isFinite(value) ? Math.max(0, value) : 0;
+      const cat = positive(result.rCatastrophic);
+      const social = positive(result.rSocialHarm);
+      const normal = positive(result.rNormalTech);
+      const opportunity = positive(result.rOpportunityCost);
       const control = Math.max(0, -result.c / 2);
       const open = Math.max(0, result.c / 2);
       const human = Math.max(0, result.h / 2);
@@ -1727,7 +1724,7 @@
       profileCode.textContent = complete ? code : "----";
       profileName.textContent = complete ? `${profile[0]} ${code}` : "Waiting for profile";
       profileLineage.textContent = complete ? profile[1] : "Complete the core items to generate a type.";
-      profileRoast.textContent = complete ? profile[2] : "Complete all 12 core items for a stable result.";
+      profileRoast.textContent = complete ? profile[2] : "Complete all 9 core items for a stable result.";
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
 
@@ -1745,7 +1742,7 @@
             `Two-axis position: ${quadrantFor(result.x, result.y)}`,
             scenarioSummary ? `Scenario choices: ${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
-        : "A structured summary will appear here after all 12 core items are complete.";
+        : "A structured summary will appear here after all 9 core items are complete.";
       maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
     }
 

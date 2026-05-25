@@ -849,14 +849,14 @@
     <form id="quizForm" class="quiz-shell">
       <section class="panel" id="quizPager">
         <div class="panel-head">
-          <small id="pageCount">第 1 / 18 题</small>
+          <small id="pageCount">第 1 / 15 题</small>
         </div>
         <div class="panel-body">
           <div class="progress-row" aria-hidden="true">
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/18</div>
+            <div class="progress-text" id="progressText">0/15</div>
           </div>
 
           <article class="page-card">
@@ -887,7 +887,7 @@
           </div>
         </div>
         <div class="profile-body">
-          <p id="profileRoast">至少完成 12 道核心题，结果会更稳。</p>
+          <p id="profileRoast">至少完成 9 道核心题，结果会更稳。</p>
           <p><b>代表文本：</b><span id="profileTexts">--</span></p>
           <p><b>社交识别：</b><span id="profileTell">--</span></p>
         </div>
@@ -954,18 +954,15 @@
     };
 
     const questions = [
-      { id: "R01", dimension: "r", diagnosis: "catastrophic", facet: "文明级风险诊断", text: "如果最先进的 AI 发展失控，可能带来非常严重、难以挽回的后果；这个风险大到值得社会优先处理。" },
-      { id: "R02", dimension: "r", diagnosis: "social", facet: "现实社会伤害诊断", text: "即使长期失控风险值得认真对待，我仍认为当前政策应优先处理 AI 已经造成或正在放大的现实社会伤害：劳动、监控、偏见、环境成本、数据使用和权力集中。" },
-      { id: "R03", dimension: "r", diagnosis: "normal", facet: "普通技术 / hype 诊断", text: "即使 AI 未来可能出现突然的能力跃迁，我仍认为现在不应围绕最极端的长期情景来制定主要政策；监管重点应先放在已经能观察和测试的系统风险上。" },
+      { id: "R01", dimension: "r", diagnosis: "catastrophic", facet: "文明级风险诊断", text: "如果最先进的 AI 发展失控，可能带来非常严重的后果；这个风险大到值得社会优先处理。" },
       { id: "R04", dimension: "r", diagnosis: "opportunity", facet: "机会成本诊断", text: "对 AI 的安全限制本身也会造成实质伤害，因为它会推迟医疗、教育、科研和生产力收益。" },
-      { id: "C01", dimension: "c", direction: -1, facet: "危险能力发布门槛", text: "即使这会推迟有益发布、增加成本，并让小团队更难竞争，具有严重滥用能力的模型在发布或开源前仍应先通过独立安全测试。" },
       { id: "C02", dimension: "c", direction: -1, facet: "许可、审计与问责", text: "高风险 AI 不应只靠公司自觉；需要外部检查、法律责任和出问题后的申诉渠道。" },
       { id: "C03", dimension: "c", direction: 1, facet: "开放竞争 / 反 gatekeeping", text: "让少数公司或政府控制最强 AI，可能比让更多人参与竞争和使用更危险。" },
-      { id: "C04", dimension: "c", direction: 1, facet: "真实部署中迭代", text: "即使真实部署会暴露错误和滥用风险，强 AI 的很多问题也只有在实际使用中才能发现和修正，因此不应长期停留在封闭测试中。" },
-      { id: "H01", dimension: "h", direction: 1, facet: "民主目标选择", text: "即使公共协商会缓慢、混乱，并可能降低技术效率，AI 的目标和边界仍应由人类社会的公共程序决定，而不是主要由公司、市场或模型优化过程决定。" },
-      { id: "H02", dimension: "h", direction: 1, facet: "可问责人类权威", text: "在人生重要决定上，即使 AI 很准确，也不能完全取代能负责、能解释的人。" },
+      { id: "C04", dimension: "c", direction: 1, facet: "真实部署中迭代", text: "AI 的很多问题也只有在实际使用中才能发现，因此不应长期停留在封闭测试中，即使这会带来安全问题。" },
+      { id: "H01", dimension: "h", direction: 1, facet: "民主目标选择", text: "AI 的目标应由人类社会决定，即使这个过程缓慢而混乱，而不是主要由公司、市场和技术进展决定。" },
+      { id: "H02", dimension: "h", direction: 1, facet: "可问责人类权威", text: "在人生的一些决定上，即使 AI 比人类准确得多，也应该必须要有人类的负责和解释。" },
       { id: "H03", dimension: "h", direction: -1, facet: "反当前偏好终局化", text: "把今天的人类偏好当成永远不变的最终标准，可能会限制更高级智能和未来价值的发展。" },
-      { id: "H04", dimension: "h", direction: -1, facet: "AI 判断优先", text: "如果 AI 在某些领域长期显著优于人类判断，即使这会削弱人的最终裁量权，也应允许 AI 在部分高影响决策中拥有更强的实际决定权。" }
+      { id: "H04", dimension: "h", direction: -1, facet: "AI 判断优先", text: "如果 AI 在某些领域长期显著优于人类判断，就应该允许 AI 取代人类拥有更强的实际决定权。" }
     ];
 
     const scenarios = [
@@ -1147,7 +1144,7 @@
       ]
     };
 
-    const coreQuestionOrder = ["R03", "R04", "H02", "C03", "C02", "H01", "C01", "C04", "R02", "H03", "H04", "R01"];
+    const coreQuestionOrder = ["R04", "H02", "C03", "C02", "H01", "C04", "H03", "H04", "R01"];
 
     const pages = [
       warmupPage,
@@ -1292,8 +1289,10 @@
         { key: "social", value: result.rSocialHarm, label: "现实社会伤害" },
         { key: "normal", value: result.rNormalTech, label: "普通技术/过度叙事" },
         { key: "opportunity", value: result.rOpportunityCost, label: "机会成本" }
-      ].sort((a, b) => b.value - a.value);
+      ].filter((entry) => Number.isFinite(entry.value)).sort((a, b) => b.value - a.value);
+      if (!entries.length) return "--";
       const [top, second] = entries;
+      if (!second) return `主导：${top.label}`;
       if (top.value < 0.4) return `${top.label} / ${second.label}（弱信号）`;
       if (top.value - second.value <= 0.35) return `${top.label} / ${second.label}并重`;
       return `主导：${top.label}；次要：${second.label}`;
@@ -1332,14 +1331,11 @@
 
     function abilityNarrativeScore() {
       const weights = [
-        ["R03", 0.45],
-        ["R02", 0.10],
         ["R01", -0.35],
         ["R04", -0.25],
         ["C04", -0.20],
         ["H04", -0.20],
-        ["H03", -0.15],
-        ["C01", -0.10]
+        ["H03", -0.15]
       ];
 
       let numerator = 0;
@@ -1476,10 +1472,11 @@
 
     function addCoreProfileEvidence(scores, result) {
       if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return;
-      const cat = Math.max(0, result.rCatastrophic);
-      const social = Math.max(0, result.rSocialHarm);
-      const normal = Math.max(0, result.rNormalTech);
-      const opportunity = Math.max(0, result.rOpportunityCost);
+      const positive = (value) => Number.isFinite(value) ? Math.max(0, value) : 0;
+      const cat = positive(result.rCatastrophic);
+      const social = positive(result.rSocialHarm);
+      const normal = positive(result.rNormalTech);
+      const opportunity = positive(result.rOpportunityCost);
       const control = Math.max(0, -result.c / 2);
       const open = Math.max(0, result.c / 2);
       const human = Math.max(0, result.h / 2);
@@ -1727,7 +1724,7 @@
       profileCode.textContent = complete ? code : "----";
       profileName.textContent = complete ? `${profile[0]} ${code}` : "等待生成画像";
       profileLineage.textContent = complete ? profile[1] : "答完核心题后生成类型。";
-      profileRoast.textContent = complete ? profile[2] : "至少完成 12 道核心题，结果会更稳。";
+      profileRoast.textContent = complete ? profile[2] : "至少完成 9 道核心题，结果会更稳。";
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
 
@@ -1745,7 +1742,7 @@
             `二维位置：${quadrantFor(result.x, result.y)}`,
             scenarioSummary ? `情境选择：${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
-        : "答完 12 道核心题后，这里会生成结构化摘要。";
+        : "答完 9 道核心题后，这里会生成结构化摘要。";
       maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
     }
 
