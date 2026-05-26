@@ -920,7 +920,7 @@
         <div class="map-plot" aria-label="AI ideology two-axis map">
           <div class="map-axis horizontal"></div>
           <div class="map-axis vertical"></div>
-          <span class="map-label top">Human-centered</span>
+          <span class="map-label top">Human/social-structure-centered</span>
           <span class="map-label bottom">Posthuman / intelligence-centered</span>
           <span class="map-label left">Control threshold</span>
           <span class="map-label right">Open deployment</span>
@@ -950,7 +950,7 @@
   <script>
     const axisMeaning = {
       x: "control threshold <-> open deployment",
-      y: "human-centered <-> posthuman/intelligence-centered"
+      y: "human/social-structure-centered <-> posthuman/intelligence-centered"
     };
 
     const questions = [
@@ -982,7 +982,7 @@
       "AI should move faster into medicine, education, and research.",
       "AI could upgrade human capabilities.",
       "We should accelerate and open AI, not let a few institutions block it.",
-      "Future intelligence may move beyond a human-centered frame.",
+      "Future intelligence may move beyond a human/social-structure-centered frame.",
       "None of these fit."
     ];
 
@@ -1020,6 +1020,7 @@
       { id: "eliezer-yudkowsky", label: "Yudkowsky", name: "Eliezer Yudkowsky", cluster: "Rationalist AI x-risk / MIRI", x: -2, y: 1, influence: 5, dx: "-18px", dy: "-12px" },
       { id: "nick-bostrom", label: "Bostrom", name: "Nick Bostrom", cluster: "Superintelligence / philosophical x-risk", x: -1.68, y: 1, influence: 5, dx: "16px", dy: "10px" },
       { id: "stuart-russell", label: "Russell", name: "Stuart Russell", cluster: "Beneficial AI / human-compatible AI", x: -1, y: 2, influence: 5, dx: "0px", dy: "0px" },
+      { id: "pope-leo-xiv", label: "Leo XIV", name: "Pope Leo XIV / Magnifica Humanitas", cluster: "Catholic social humanism / AI governance", x: -0.9, y: 1.9, influence: 4, dx: "28px", dy: "-26px" },
       { id: "paul-christiano", label: "Christiano", name: "Paul Christiano", cluster: "Scalable alignment / technical safety", x: -0.87, y: 1.2, influence: 4, dx: "-18px", dy: "8px" },
       { id: "ajeya-cotra", label: "Cotra", name: "Ajeya Cotra", cluster: "AI timelines / Open Philanthropy", x: -0.87, y: 1, influence: 4, dx: "16px", dy: "-10px" },
       { id: "dario-amodei-anthropic", label: "Amodei", name: "Dario Amodei / Anthropic", cluster: "Frontier-lab safety optimism", x: -0.22, y: 1.1, influence: 5, dx: "12px", dy: "8px" },
@@ -1042,6 +1043,7 @@
 
     const categoryInfo = {
       "X-risk safety": { label: "X-risk / alignment safety", color: "#b42318" },
+      "Catholic social humanism": { label: "Catholic social humanism / human dignity", color: "#9a3412" },
       "Frontier lab governance": { label: "Frontier lab governance", color: "#0f766e" },
       "Critical AI": { label: "Critical AI / social harm", color: "#7c3aed" },
       "Normal technology": { label: "Normal technology / hype skepticism", color: "#475569" },
@@ -1057,6 +1059,7 @@
       "eliezer-yudkowsky": "X-risk safety",
       "nick-bostrom": "X-risk safety",
       "stuart-russell": "X-risk safety",
+      "pope-leo-xiv": "Catholic social humanism",
       "paul-christiano": "X-risk safety",
       "ajeya-cotra": "X-risk safety",
       "dan-hendrycks-cais": "X-risk safety",
@@ -1081,6 +1084,7 @@
       "eliezer-yudkowsky": "Advanced AI is likely to kill humanity unless alignment is solved before deployment.",
       "nick-bostrom": "Superintelligent agents may pursue convergent instrumental goals that threaten human control.",
       "stuart-russell": "AI systems should be designed around uncertainty about human preferences and provable benefit to humans.",
+      "pope-leo-xiv": "AI should serve human dignity, the common good, and the vulnerable; technological power needs public responsibility, governance, and disarmament from logics of domination.",
       "paul-christiano": "Advanced AI failure may arise through gradual delegation, misalignment, and scalable oversight failures.",
       "ajeya-cotra": "Transformative AI timelines can be forecast using compute requirements and biological anchors.",
       "dario-amodei-anthropic": "AI could bring enormous benefits, but frontier scaling requires explicit safety, evals, and deployment thresholds.",
@@ -1293,10 +1297,10 @@
 
     function valueSpectrumLabel(value) {
       if (!Number.isFinite(value)) return "--";
-      if (value >= 1.2) return "strongly human-centered";
-      if (value >= 0.4) return "human-centered";
+      if (value >= 1.2) return "strongly human/social-structure-centered";
+      if (value >= 0.4) return "human/social-structure-centered";
       if (value > -0.4) {
-        if (value >= 0.15) return "middle, slightly human-centered";
+        if (value >= 0.15) return "middle, slightly human/social-structure-centered";
         if (value <= -0.15) return "middle, slightly intelligence-centered";
         return "middle";
       }
@@ -1557,7 +1561,7 @@
     function quadrantFor(x, y) {
       if (!Number.isFinite(x) || !Number.isFinite(y)) return "Position appears after completion";
       const horizontal = x < -0.35 ? "Control threshold" : x > 0.35 ? "Open deployment" : "Middle response";
-      const vertical = y > 0.35 ? "Human-centered" : y < -0.35 ? "Posthuman/intelligence-centered" : "Middle values";
+      const vertical = y > 0.35 ? "Human/social-structure-centered" : y < -0.35 ? "Posthuman/intelligence-centered" : "Middle values";
       return `${horizontal} / ${vertical}`;
     }
 

@@ -1283,6 +1283,25 @@
         ]
       },
       {
+        id: "pope-leo-xiv",
+        name: "Pope Leo XIV",
+        shortName: "Leo XIV",
+        cluster: "Magnifica Humanitas / Catholic social humanism",
+        category: "Catholic social humanism",
+        risk: -0.9,
+        humanism: 2,
+        influence: 4,
+        stance: "AI 必须服务人的尊严、共同善、弱者保护和和平；技术权力不能以效率、利润或支配逻辑取代良知、责任和公共治理。",
+        placement: "左上偏上：响应上支持强公共责任、治理和多边约束，但不是关停派；价值轴接近 +2，因为核心是人类尊严、良知、关系和社会共同善。",
+        focus: "读时看 Catholic Social Doctrine 如何把 AI 放进共同善、劳动、战争、平台权力、教育和人的不可替代性这些问题里。",
+        counter: "x-risk safety 会觉得他不是技术 alignment 论证；critical AI 会更世俗化地谈权力和劳动；技术乐观派会认为他过于强调约束。",
+        basis: ["Catholic social doctrine", "papal encyclical", "human dignity", "AI governance"],
+        works: [
+          { title: "Magnifica Humanitas", year: 2026, type: "encyclical", priority: "highest", url: "https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html", why: "教皇 Leo XIV 关于 AI、人类尊严、共同善和技术治理的核心文本。" },
+          { title: "Presentation and promulgation of Magnifica Humanitas", year: 2026, type: "address", priority: "high", url: "https://www.vatican.va/content/leo-xiv/en/speeches/2026/may/documents/20260525-presentazione-enciclica.html", why: "集中说明“disarm AI”不是拒绝技术，而是解除支配、排斥和死亡逻辑。" }
+        ]
+      },
+      {
         id: "paul-christiano",
         name: "Paul Christiano",
         shortName: "Christiano",
@@ -1642,6 +1661,12 @@
         humanism: 2,
         note: "严肃控制问题加 human-compatible 设计，强人类中心但不是 hard shutdown。"
       },
+      "pope-leo-xiv": {
+        diagnosis: 0.5,
+        response: -1.1,
+        humanism: 2,
+        note: "AI 是重大社会和人类学挑战；响应偏公共治理、责任链和多边约束，价值核心是人的尊严与共同善。"
+      },
       "paul-christiano": {
         diagnosis: 1,
         response: -0.8,
@@ -1763,6 +1788,11 @@
         zh: "X-risk / alignment safety",
         color: "#b42318",
         summary: "把先进 AI 视为潜在文明级风险，核心问题是控制、alignment、监督和时间线。"
+      },
+      "Catholic social humanism": {
+        zh: "Catholic social humanism / 人类尊严",
+        color: "#9a3412",
+        summary: "从人的尊严、共同善、弱者保护、劳动、和平和公共责任出发，要求技术权力服从社会和伦理治理。"
       },
       "Frontier lab governance": {
         zh: "前沿实验室治理",
@@ -1889,7 +1919,7 @@
       svg.appendChild(svgEl("text", { x: x(-2), y: height - 28, "text-anchor": "start", class: "axis-label" }, "控制 / 暂停 / 门槛"));
       svg.appendChild(svgEl("text", { x: x(2), y: height - 28, "text-anchor": "end", class: "axis-label" }, "部署 / 开放 / 加速"));
       svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "投影 X = 0.65C - 0.35R"));
-      svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "人类中心 / 问责"));
+      svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "人类/社会结构中心 / 问责"));
       svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "智能中心 / 后人类"));
       svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "投影 Y = H"));
     }
