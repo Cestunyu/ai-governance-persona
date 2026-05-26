@@ -312,6 +312,124 @@
       line-height: 1.45;
     }
 
+    .map-primer {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .mini-map {
+      position: relative;
+      min-height: 360px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(180, 35, 24, 0.08), rgba(255, 255, 255, 0.82) 48%, rgba(21, 128, 61, 0.1)),
+        linear-gradient(180deg, rgba(15, 118, 110, 0.12), rgba(255, 255, 255, 0.2) 48%, rgba(91, 33, 182, 0.1));
+      overflow: hidden;
+    }
+
+    .mini-map::before,
+    .mini-map::after {
+      content: "";
+      position: absolute;
+      background: rgba(92, 103, 121, 0.48);
+    }
+
+    .mini-map::before {
+      left: 50%;
+      top: 34px;
+      bottom: 42px;
+      width: 1px;
+    }
+
+    .mini-map::after {
+      left: 42px;
+      right: 42px;
+      top: 50%;
+      height: 1px;
+    }
+
+    .mini-axis-label {
+      position: absolute;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 760;
+      line-height: 1.25;
+    }
+
+    .mini-left {
+      left: 14px;
+      bottom: 14px;
+    }
+
+    .mini-right {
+      right: 14px;
+      bottom: 14px;
+      text-align: right;
+    }
+
+    .mini-top {
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .mini-bottom {
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .mini-point {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      min-height: 28px;
+      padding: 4px 7px;
+      border: 2px solid #ffffff;
+      border-radius: 999px;
+      background: var(--color, #475569);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 780;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
+      white-space: nowrap;
+    }
+
+    .map-key {
+      display: grid;
+      gap: 10px;
+    }
+
+    .map-key-item {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .map-key-item b {
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .map-key-item span {
+      color: #3d4655;
+      font-size: 13px;
+      line-height: 1.48;
+    }
+
     .example-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -844,9 +962,14 @@
 
       .claim-strip,
       .axis-grid,
+      .map-primer,
       .example-grid,
       .matrix,
       .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .map-key-item {
         grid-template-columns: 1fr;
       }
 
@@ -921,7 +1044,7 @@
           </div>
           <div class="stat">
             <strong>3</strong>
-            <span>dimensions: diagnosis, governance, value</span>
+            <span>dimensions: risk, governance, value</span>
           </div>
           <div class="stat">
             <strong>10</strong>
@@ -944,61 +1067,62 @@
       <div class="section-head">
         <h2>How to read the map</h2>
         <p>
-          Many AI debates look like “pessimism vs optimism” or “regulation vs innovation.” The deeper disagreement usually has three layers:
-          what the problem is, how society should respond, and whether humans and social institutions should remain the final constraint on AI.
+          Read this first as a two-dimensional map, not as a personality test. In the quiz, Risk Judgment and Governance Position jointly shape the horizontal position;
+          Value Position shapes the vertical position; AI Capability Belief is a separate tag that helps explain the profile but does not directly move the point.
         </p>
       </div>
-      <div class="axis-grid">
-        <div class="axis-box">
-          <h3>1. Problem Diagnosis</h3>
-          <div class="scale">
-            <div class="scale-row"><code>+2</code><span>The core problem is frontier AI loss of control, catastrophic outcomes, or civilization-level risk.</span></div>
-            <div class="scale-row"><code>+1</code><span>Frontier risks are serious, but can still be reduced through technical and institutional governance.</span></div>
-            <div class="scale-row"><code>0</code><span>The focus is present social harm, ordinary misuse, power structures, or overclaiming.</span></div>
-            <div class="scale-row"><code>-1</code><span>The risks are broadly manageable; excess caution and underdeployment also create losses.</span></div>
-            <div class="scale-row"><code>-2</code><span>The main danger is moving too slowly, constraining too much, or letting anti-technology politics dominate.</span></div>
-          </div>
+
+      <div class="map-primer">
+        <div class="mini-map" role="img" aria-label="Two-dimensional AI thought spectrum diagram">
+          <span class="mini-axis-label mini-top">Human/social-structure-centered</span>
+          <span class="mini-axis-label mini-bottom">Intelligence-centered / posthuman</span>
+          <span class="mini-axis-label mini-left">Control, thresholds, civilization risk</span>
+          <span class="mini-axis-label mini-right">Openness, deployment, opportunity cost</span>
+          <span class="mini-point" style="left: 18%; top: 22%; --color:#b42318;">STOP</span>
+          <span class="mini-point" style="left: 31%; top: 17%; --color:#0f766e;">SAFE</span>
+          <span class="mini-point" style="left: 38%; top: 19%; --color:#7c3aed;">AUDT</span>
+          <span class="mini-point" style="left: 51%; top: 32%; --color:#475569;">NORM</span>
+          <span class="mini-point" style="left: 70%; top: 26%; --color:#15803d;">BOOM</span>
+          <span class="mini-point" style="left: 63%; top: 68%; --color:#0369a1;">GPUC</span>
+          <span class="mini-point" style="left: 88%; top: 70%; --color:#7f1d1d;">VROM</span>
         </div>
 
-        <div class="axis-box">
-          <h3>2. Governance Response</h3>
-          <div class="scale">
-            <div class="scale-row"><code>-2</code><span>Favors pauses, shutdowns, licensing, dangerous-capability thresholds, and strong safety proof.</span></div>
-            <div class="scale-row"><code>-1</code><span>Favors evaluations, audits, liability, and controlled deployment.</span></div>
-            <div class="scale-row"><code>0</code><span>Favors context-specific governance rather than a strong control or openness stance.</span></div>
-            <div class="scale-row"><code>+1</code><span>Favors building, deployment, commercialization, experimentation, and capability diffusion.</span></div>
-            <div class="scale-row"><code>+2</code><span>Favors open diffusion, resists control by a small number of institutions, and leans strongly accelerationist.</span></div>
+        <div class="map-key">
+          <div class="map-key-item">
+            <b>Horizontal: Risk Judgment + Governance Position</b>
+            <span>Further left means stronger concern about civilization-level risk and a stronger preference for control, thresholds, pauses, or audits. Further right means greater concern about the cost of restriction and a stronger preference for openness, deployment, and diffusion.</span>
           </div>
-        </div>
-
-        <div class="axis-box">
-          <h3>3. Value Center</h3>
-          <div class="scale">
-            <div class="scale-row"><code>+2</code><span>Emphasizes human dignity, democracy, justice, rights, and social institutions.</span></div>
-            <div class="scale-row"><code>+1</code><span>Emphasizes human compatibility, human survival, preference satisfaction, and accountable control.</span></div>
-            <div class="scale-row"><code>0</code><span>Mostly discusses architecture, capability, business, or empirical judgment without a strong humanist or anti-humanist commitment.</span></div>
-            <div class="scale-row"><code>-1</code><span>Trusts computation, scale, search, learning, and general methods more than human intuition.</span></div>
-            <div class="scale-row"><code>-2</code><span>Posthuman or techno-capital autonomy: future intelligence should not be fully constrained by traditional humanism.</span></div>
+          <div class="map-key-item">
+            <b>Vertical: Value Position</b>
+            <span>Higher positions emphasize human dignity, public accountability, democracy, and social institutions. Lower positions emphasize intelligence, computation, techno-capital, or posthuman directions.</span>
+          </div>
+          <div class="map-key-item">
+            <b>AI Capability Belief: Side Tag</b>
+            <span>The quiz also says whether you lean toward transformative AI, mixed evidence, or bubble skepticism. This helps interpret the profile, but it is not a direct coordinate on the map.</span>
+          </div>
+          <div class="map-key-item">
+            <b>Reference Points</b>
+            <span>The thinkers, institutions, and movements on the map are comparison points. They do not determine your quiz result; they help explain who a region resembles and which positions sit nearby or opposite.</span>
           </div>
         </div>
       </div>
 
       <div class="example-grid">
         <div class="example">
-          <h3>Same worry label, different object</h3>
-          <p>Yudkowsky worries that alignment failure could kill humanity; Bender/Gebru worry about data, labor, environment, and representation harms; Narayanan/Kapoor worry about ordinary technologies being packaged as magic.</p>
+          <h3>Upper left is not generic pessimism</h3>
+          <p>It usually combines civilization-level risk judgment, strong governance position, and a human-protection goal: Yudkowsky, Russell, and Christiano sit around this region.</p>
         </div>
         <div class="example">
-          <h3>Same anti-pause stance, different ethics</h3>
-          <p>Andrew Ng’s anti-pause stance is tied to productivity and applications; Andreessen’s is more politically charged; e/acc and Land give acceleration itself a much higher status.</p>
+          <h3>The top is not one kind of humanism</h3>
+          <p>Critical AI, Pope Leo XIV, and Russell all sit high, but for different reasons: social justice, human dignity, and human-compatible control are different value languages.</p>
         </div>
         <div class="example">
-          <h3>Technical thought is not the same as policy ideology</h3>
-          <p>Sutton’s Bitter Lesson is mainly a technical epistemology, not a governance manifesto. LeCun’s world-model agenda is not simply “bigger models are enough.” Both shape policy instincts, but should be kept distinct.</p>
+          <h3>The right side is not one optimism</h3>
+          <p>Andrew Ng emphasizes applications and productivity; Kurzweil emphasizes singularity and human-machine merger; e/acc emphasizes open acceleration. They are all rightward, but not vertically alike.</p>
         </div>
         <div class="example">
-          <h3>The two-axis chart is only an entry point</h3>
-          <p>The horizontal axis combines problem diagnosis and governance response: left means stronger control and higher risk diagnosis; right means more deployment, openness, and opportunity-cost concern. The vertical axis shows the value center: upward means more human/social-structure centered, downward means more intelligence-centered or posthuman.</p>
+          <h3>Capability belief is separate</h3>
+          <p>Someone can think today’s AI is overclaimed and still support open deployment; someone can believe AI is very powerful and still demand strict governance. Do not collapse capability belief into the coordinate.</p>
         </div>
       </div>
     </section>
@@ -1014,7 +1138,7 @@
       <div class="example-grid">
         <div class="example">
           <h3>1. Core scored items</h3>
-          <p>Nine five-point agreement items cover problem diagnosis, governance response, and value center. They produce the two-dimensional coordinate and spectrum label.</p>
+          <p>Nine five-point agreement items cover Risk Judgment, Governance Position, and Value Position. They produce the two-dimensional coordinate and spectrum label.</p>
         </div>
         <div class="example">
           <h3>2. Scenario cross-checks</h3>
@@ -1036,7 +1160,7 @@
         </div>
         <div class="example">
           <h3>Why show capability belief?</h3>
-          <p>Capability belief is not a fourth coordinate. It is a secondary tag: is the user closer to overclaiming skepticism, mixed evidence, or belief in deep AI transformation?</p>
+          <p>Capability belief is not a fourth coordinate. It is a secondary tag: is the user closer to transformative AI, mixed evidence, or bubble skepticism?</p>
         </div>
         <div class="example">
           <h3>Profile vs map</h3>
@@ -1064,11 +1188,11 @@
         </div>
         <div class="example">
           <h3>How the horizontal axis works</h3>
-          <p>The horizontal axis combines governance response and problem diagnosis: more control, pause, and civilization-risk judgment moves left; more deployment, openness, and opportunity-cost concern moves right.</p>
+          <p>The horizontal axis combines the quiz's Governance Position and Risk Judgment: more control, pause, and civilization-risk judgment moves left; more deployment, openness, and opportunity-cost concern moves right.</p>
         </div>
         <div class="example">
           <h3>How the vertical axis works</h3>
-          <p>The vertical axis shows the value center: upward means more emphasis on human dignity, public accountability, democracy, and social structures; downward means more emphasis on intelligence, computation, techno-capital, or posthuman directions.</p>
+          <p>The vertical axis corresponds to the quiz's Value Position: upward means more emphasis on human dignity, public accountability, democracy, and social structures; downward means more emphasis on intelligence, computation, techno-capital, or posthuman directions.</p>
         </div>
         <div class="example">
           <h3>Uncertainty</h3>
@@ -1159,7 +1283,7 @@
         <div class="plot-wrap">
           <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
             <title id="chartTitle">AI Thought Spectrum Map</title>
-            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk diagnosis, governance response, and value center.</desc>
+            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk judgment, governance position, and value position.</desc>
           </svg>
         </div>
       </section>
@@ -1183,9 +1307,9 @@
             </div>
           </div>
           <div class="dimension-row">
-            <span><b>Diagnosis</b><em id="diagnosisScore">-</em></span>
-            <span><b>Response</b><em id="responseScore">-</em></span>
-            <span><b>Value Center</b><em id="valueScore">-</em></span>
+            <span><b>Risk Judgment</b><em id="diagnosisScore">-</em></span>
+            <span><b>Governance Position</b><em id="responseScore">-</em></span>
+            <span><b>Value Position</b><em id="valueScore">-</em></span>
           </div>
         </div>
         <div class="detail-body">
@@ -2310,7 +2434,7 @@
       svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "Horizontal: combined control-to-openness position"));
       svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "Human/social-structure centered / accountable"));
       svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "Intelligence-centered / posthuman"));
-      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "Vertical: value center"));
+      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "Vertical: value position"));
     }
 
     function drawFilters() {
@@ -2453,7 +2577,7 @@
           <div>
             <b>${info.zh} · ${members.length} point${members.length > 1 ? "s" : ""}</b>
             <span>${info.summary}</span>
-            <span>Average position: horizontal ${fmt(Number(avgX.toFixed(2)))}, vertical ${fmt(Number(avgY.toFixed(2)))}; diagnosis ${fmt(Number(avgDiagnosis.toFixed(2)))}, response ${fmt(Number(avgResponse.toFixed(2)))}</span>
+            <span>Average position: horizontal ${fmt(Number(avgX.toFixed(2)))}, vertical ${fmt(Number(avgY.toFixed(2)))}; risk judgment ${fmt(Number(avgDiagnosis.toFixed(2)))}, governance position ${fmt(Number(avgResponse.toFixed(2)))}</span>
           </div>
         `;
         target.appendChild(div);
@@ -2473,7 +2597,7 @@
               <h3>${item.name}</h3>
               <div class="meta">${item.cluster} · ${categoryInfo[item.category].zh}</div>
             </div>
-            <div class="coord">Horizontal ${fmt(Number(item.projection.x.toFixed(2)))} · Vertical ${fmt(Number(item.projection.y.toFixed(2)))}<br>Diagnosis ${fmt(item.ideology.diagnosis)} · Response ${fmt(item.ideology.response)} · Value ${fmt(item.ideology.humanism)}<br>Influence ${item.influence}/5</div>
+            <div class="coord">Horizontal ${fmt(Number(item.projection.x.toFixed(2)))} · Vertical ${fmt(Number(item.projection.y.toFixed(2)))}<br>Risk ${fmt(item.ideology.diagnosis)} · Governance ${fmt(item.ideology.response)} · Value ${fmt(item.ideology.humanism)}<br>Influence ${item.influence}/5</div>
           </div>
           <dl>
             <div>

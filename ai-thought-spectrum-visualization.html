@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 思想光谱地图</title>
-  <meta name="description" content="一张比较 AI 思想立场的互动地图：问题诊断、治理响应，以及人类/社会结构在智能未来中的位置。">
+  <meta name="description" content="一张比较 AI 思想立场的互动地图：风险判断、治理位置、价值位置，以及能力判断辅助标签。">
   <link rel="canonical" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization.html">
   <link rel="alternate" hreflang="zh-CN" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization.html">
   <link rel="alternate" hreflang="en" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization-en.html">
@@ -310,6 +310,124 @@
       color: #3d4655;
       font-size: 13px;
       line-height: 1.45;
+    }
+
+    .map-primer {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .mini-map {
+      position: relative;
+      min-height: 360px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(180, 35, 24, 0.08), rgba(255, 255, 255, 0.82) 48%, rgba(21, 128, 61, 0.1)),
+        linear-gradient(180deg, rgba(15, 118, 110, 0.12), rgba(255, 255, 255, 0.2) 48%, rgba(91, 33, 182, 0.1));
+      overflow: hidden;
+    }
+
+    .mini-map::before,
+    .mini-map::after {
+      content: "";
+      position: absolute;
+      background: rgba(92, 103, 121, 0.48);
+    }
+
+    .mini-map::before {
+      left: 50%;
+      top: 34px;
+      bottom: 42px;
+      width: 1px;
+    }
+
+    .mini-map::after {
+      left: 42px;
+      right: 42px;
+      top: 50%;
+      height: 1px;
+    }
+
+    .mini-axis-label {
+      position: absolute;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 760;
+      line-height: 1.25;
+    }
+
+    .mini-left {
+      left: 14px;
+      bottom: 14px;
+    }
+
+    .mini-right {
+      right: 14px;
+      bottom: 14px;
+      text-align: right;
+    }
+
+    .mini-top {
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .mini-bottom {
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .mini-point {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      min-height: 28px;
+      padding: 4px 7px;
+      border: 2px solid #ffffff;
+      border-radius: 999px;
+      background: var(--color, #475569);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 780;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
+      white-space: nowrap;
+    }
+
+    .map-key {
+      display: grid;
+      gap: 10px;
+    }
+
+    .map-key-item {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .map-key-item b {
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .map-key-item span {
+      color: #3d4655;
+      font-size: 13px;
+      line-height: 1.48;
     }
 
     .example-grid {
@@ -844,9 +962,14 @@
 
       .claim-strip,
       .axis-grid,
+      .map-primer,
       .example-grid,
       .matrix,
       .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .map-key-item {
         grid-template-columns: 1fr;
       }
 
@@ -944,61 +1067,62 @@
       <div class="section-head">
         <h2>怎么读这张图？</h2>
         <p>
-          很多 AI 争论看起来像“悲观 vs 乐观”或“监管 vs 创新”，但真正的分歧通常分成三层：
-          第一，问题到底是什么；第二，我们应该怎样回应；第三，人类和社会制度是否仍应是 AI 的最终约束。
+          先把它当作一张二维坐标图，而不是一套人格测试。问卷结果里的“风险判断”和“治理位置”共同决定横向位置；
+          “价值位置”决定纵向位置；“能力判断”只作为辅助标签，不直接移动地图上的点。
         </p>
       </div>
-      <div class="axis-grid">
-        <div class="axis-box">
-          <h3>1. 问题诊断</h3>
-          <div class="scale">
-            <div class="scale-row"><code>+2</code><span>核心问题是前沿 AI 失控、灾难性后果或文明级风险。</span></div>
-            <div class="scale-row"><code>+1</code><span>前沿风险很严肃，但仍可能通过技术和制度治理降低。</span></div>
-            <div class="scale-row"><code>0</code><span>重点在现实社会伤害、普通技术误用、权力结构或过度宣传。</span></div>
-            <div class="scale-row"><code>-1</code><span>风险总体可管理，过度谨慎和部署不足本身也会造成损失。</span></div>
-            <div class="scale-row"><code>-2</code><span>主要危险是发展太慢、约束过多或反技术政治。</span></div>
-          </div>
+
+      <div class="map-primer">
+        <div class="mini-map" role="img" aria-label="AI 思想光谱二维坐标示意图">
+          <span class="mini-axis-label mini-top">人类/社会结构中心</span>
+          <span class="mini-axis-label mini-bottom">智能中心 / 后人类</span>
+          <span class="mini-axis-label mini-left">控制、门槛、文明级风险</span>
+          <span class="mini-axis-label mini-right">开放、部署、机会成本</span>
+          <span class="mini-point" style="left: 18%; top: 22%; --color:#b42318;">STOP</span>
+          <span class="mini-point" style="left: 31%; top: 17%; --color:#0f766e;">SAFE</span>
+          <span class="mini-point" style="left: 38%; top: 19%; --color:#7c3aed;">AUDT</span>
+          <span class="mini-point" style="left: 51%; top: 32%; --color:#475569;">NORM</span>
+          <span class="mini-point" style="left: 70%; top: 26%; --color:#15803d;">BOOM</span>
+          <span class="mini-point" style="left: 63%; top: 68%; --color:#0369a1;">GPUC</span>
+          <span class="mini-point" style="left: 88%; top: 70%; --color:#7f1d1d;">VROM</span>
         </div>
 
-        <div class="axis-box">
-          <h3>2. 治理响应</h3>
-          <div class="scale">
-            <div class="scale-row"><code>-2</code><span>倾向暂停、关停、许可、危险能力门槛和强安全证明。</span></div>
-            <div class="scale-row"><code>-1</code><span>倾向评估、审计、责任制度和受控部署。</span></div>
-            <div class="scale-row"><code>0</code><span>倾向按场景治理，不强烈偏向控制或开放。</span></div>
-            <div class="scale-row"><code>+1</code><span>倾向建设、部署、商业化、实验和能力扩散。</span></div>
-            <div class="scale-row"><code>+2</code><span>倾向开放扩散、反对少数机构把关和强加速。</span></div>
+        <div class="map-key">
+          <div class="map-key-item">
+            <b>横轴：风险判断 + 治理位置</b>
+            <span>越左，越认为前沿 AI 可能带来文明级风险，并倾向控制、门槛、暂停或强审计；越右，越认为限制过多也有代价，并倾向开放、部署和扩散。</span>
           </div>
-        </div>
-
-        <div class="axis-box">
-          <h3>3. 价值中心</h3>
-          <div class="scale">
-            <div class="scale-row"><code>+2</code><span>强调人的尊严、民主、公正、权利和社会制度。</span></div>
-            <div class="scale-row"><code>+1</code><span>强调人类兼容、人类生存、偏好满足和可问责控制。</span></div>
-            <div class="scale-row"><code>0</code><span>主要讨论架构、能力、商业或经验判断，不强烈押注人本或反人本。</span></div>
-            <div class="scale-row"><code>-1</code><span>更相信计算、规模、搜索、学习和一般方法会压过人类直觉。</span></div>
-            <div class="scale-row"><code>-2</code><span>后人类或技术资本自治：未来智能不应由传统人类主义完全约束。</span></div>
+          <div class="map-key-item">
+            <b>纵轴：价值位置</b>
+            <span>越上，越强调人的尊严、公共问责、民主和社会制度；越下，越强调智能、计算、技术资本或后人类方向。</span>
+          </div>
+          <div class="map-key-item">
+            <b>能力判断：辅助标签</b>
+            <span>问卷会显示你更接近“变革性 AI”“证据混合”还是“泡沫怀疑”。它帮助解释画像，但不直接决定二维坐标。</span>
+          </div>
+          <div class="map-key-item">
+            <b>人物点：参照物</b>
+            <span>图上的人物、机构和运动是阅读参照，不会决定你的测试结果；它们帮助你理解某个区域大概像谁、和谁相邻、和谁相反。</span>
           </div>
         </div>
       </div>
 
       <div class="example-grid">
         <div class="example">
-          <h3>同样“担心 AI”，对象不同</h3>
-          <p>Yudkowsky 担心对齐失败导致人类灭绝；Bender/Gebru 担心数据、劳工、环境和代表性伤害；Narayanan/Kapoor 担心把普通技术包装成魔法。</p>
+          <h3>左上不是“普通悲观”</h3>
+          <p>这里通常同时有文明级风险判断、强治理位置和人类保护目标，例如 Yudkowsky、Russell、Christiano 一带。</p>
         </div>
         <div class="example">
-          <h3>同样“反暂停”，伦理不同</h3>
-          <p>Andrew Ng 的反暂停是生产力和实际应用乐观；Andreessen 的反暂停更强政治化；e/acc 和 Land 则把加速本身推到更高位置。</p>
+          <h3>上方不是同一种人本</h3>
+          <p>Critical AI、Pope Leo XIV、Russell 都在上方，但理由不同：社会正义、人的尊严、人类兼容分别是不同的价值语言。</p>
         </div>
         <div class="example">
-          <h3>技术思想不等于政策思想</h3>
-          <p>Sutton 的 Bitter Lesson 主要是技术认识论，不是治理宣言；LeCun 的世界模型路线也不是单纯“规模越大越好”的乐观。两者都影响政策直觉，但应分开处理。</p>
+          <h3>右侧也不是同一种乐观</h3>
+          <p>Andrew Ng 偏应用和生产力；Kurzweil 偏奇点和人机融合；e/acc 偏开放加速。它们都在右侧，但价值位置不同。</p>
         </div>
         <div class="example">
-          <h3>二维图只是阅读入口</h3>
-          <p>横轴把“问题诊断”和“治理响应”压缩在一起：越左越偏控制和高风险判断，越右越偏开放部署和机会成本判断。纵轴显示价值中心：越上越人类/社会结构中心，越下越智能中心或后人类。</p>
+          <h3>能力判断单独看</h3>
+          <p>一个人可以怀疑当前 AI 被过度宣传，也可以支持开放部署；也可以相信 AI 很强，但仍主张严格治理。所以能力判断不要和坐标混为一谈。</p>
         </div>
       </div>
     </section>
@@ -1014,7 +1138,7 @@
       <div class="example-grid">
         <div class="example">
           <h3>1. 核心计分题</h3>
-          <p>9 道五点同意度题覆盖风险诊断、治理响应和价值中心。它们是二维坐标和光谱标签的分数来源。</p>
+          <p>9 道五点同意度题覆盖风险判断、治理位置和价值位置。它们是二维坐标和光谱标签的分数来源。</p>
         </div>
         <div class="example">
           <h3>2. 情境复查题</h3>
@@ -1036,7 +1160,7 @@
         </div>
         <div class="example">
           <h3>为什么还显示能力判断？</h3>
-          <p>能力判断不是第四个坐标轴，而是辅助标签：用户更接近“泡沫怀疑”、证据混合，还是相信 AI 会带来深层变革。</p>
+          <p>能力判断不是第四个坐标轴，而是辅助标签：用户更接近“变革性 AI”、证据混合，还是“泡沫怀疑”。</p>
         </div>
         <div class="example">
           <h3>画像与图谱的关系</h3>
@@ -1064,11 +1188,11 @@
         </div>
         <div class="example">
           <h3>横轴怎么来</h3>
-          <p>横轴综合“治理响应”和“问题诊断”：更偏控制、暂停和文明级风险判断会向左；更偏部署、开放和机会成本判断会向右。</p>
+          <p>横轴综合问卷里的“治理位置”和“风险判断”：更偏控制、暂停和文明级风险判断会向左；更偏部署、开放和机会成本判断会向右。</p>
         </div>
         <div class="example">
           <h3>纵轴怎么来</h3>
-          <p>纵轴显示价值中心：越上越强调人的尊严、公共问责、民主和社会结构；越下越强调智能、计算、技术资本或后人类方向。</p>
+          <p>纵轴对应问卷里的“价值位置”：越上越强调人的尊严、公共问责、民主和社会结构；越下越强调智能、计算、技术资本或后人类方向。</p>
         </div>
         <div class="example">
           <h3>不确定性</h3>
@@ -1159,7 +1283,7 @@
         <div class="plot-wrap">
           <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
             <title id="chartTitle">AI 思想光谱地图</title>
-            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk diagnosis, governance response, and value center.</desc>
+            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk judgment, governance position, and value position.</desc>
           </svg>
         </div>
       </section>
@@ -1183,9 +1307,9 @@
             </div>
           </div>
           <div class="dimension-row">
-            <span><b>问题诊断</b><em id="diagnosisScore">-</em></span>
-            <span><b>治理响应</b><em id="responseScore">-</em></span>
-            <span><b>价值中心</b><em id="valueScore">-</em></span>
+            <span><b>风险判断</b><em id="diagnosisScore">-</em></span>
+            <span><b>治理位置</b><em id="responseScore">-</em></span>
+            <span><b>价值位置</b><em id="valueScore">-</em></span>
           </div>
         </div>
         <div class="detail-body">
@@ -1958,7 +2082,7 @@
       svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "横轴：控制与开放的综合位置"));
       svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "人类/社会结构中心 / 问责"));
       svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "智能中心 / 后人类"));
-      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "纵轴：价值中心"));
+      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "纵轴：价值位置"));
     }
 
     function drawFilters() {
@@ -2101,7 +2225,7 @@
           <div>
             <b>${info.zh} · ${members.length} 个节点</b>
             <span>${info.summary}</span>
-            <span>平均位置：横向 ${fmt(Number(avgX.toFixed(2)))}，纵向 ${fmt(Number(avgY.toFixed(2)))}；问题诊断 ${fmt(Number(avgDiagnosis.toFixed(2)))}，治理响应 ${fmt(Number(avgResponse.toFixed(2)))}</span>
+            <span>平均位置：横向 ${fmt(Number(avgX.toFixed(2)))}，纵向 ${fmt(Number(avgY.toFixed(2)))}；风险判断 ${fmt(Number(avgDiagnosis.toFixed(2)))}，治理位置 ${fmt(Number(avgResponse.toFixed(2)))}</span>
           </div>
         `;
         target.appendChild(div);
@@ -2121,7 +2245,7 @@
               <h3>${item.name}</h3>
               <div class="meta">${item.cluster} · ${categoryInfo[item.category].zh}</div>
             </div>
-            <div class="coord">横向 ${fmt(Number(item.projection.x.toFixed(2)))} · 纵向 ${fmt(Number(item.projection.y.toFixed(2)))}<br>问题 ${fmt(item.ideology.diagnosis)} · 治理 ${fmt(item.ideology.response)} · 价值 ${fmt(item.ideology.humanism)}<br>影响 ${item.influence}/5</div>
+            <div class="coord">横向 ${fmt(Number(item.projection.x.toFixed(2)))} · 纵向 ${fmt(Number(item.projection.y.toFixed(2)))}<br>风险 ${fmt(item.ideology.diagnosis)} · 治理 ${fmt(item.ideology.response)} · 价值 ${fmt(item.ideology.humanism)}<br>影响 ${item.influence}/5</div>
           </div>
           <dl>
             <div>
