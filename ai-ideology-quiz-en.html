@@ -95,6 +95,12 @@
       color: #fff;
     }
 
+    .btn.compact {
+      min-height: 30px;
+      padding: 5px 9px;
+      font-size: 12px;
+    }
+
     .topbar-actions {
       display: flex;
       flex-wrap: wrap;
@@ -165,7 +171,7 @@
 
     .panel-head {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       gap: 10px;
       padding: 10px 16px;
@@ -832,6 +838,37 @@
       word-break: break-word;
     }
 
+    .share-card {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .share-card p {
+      margin: 0;
+      color: #344054;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .share-preview {
+      width: min(100%, 420px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .share-download-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
     [hidden] {
       display: none !important;
     }
@@ -909,6 +946,7 @@
     <form id="quizForm" class="quiz-shell">
       <section class="panel" id="quizPager">
         <div class="panel-head">
+          <button class="btn compact" id="prevTopBtn" type="button">Back</button>
           <small id="pageCount">Question 1 / 14</small>
         </div>
         <div class="panel-body">
@@ -1009,7 +1047,15 @@
       <div class="summary" id="summaryBox">A structured summary will appear here after completion.</div>
       <div class="result-actions">
         <button class="btn" id="editLastBtn" type="button">Edit Last Answer</button>
+        <button class="btn" id="shareBtn" type="button">Generate Share Image</button>
         <button class="btn primary" id="restartBtn" type="button">Restart</button>
+      </div>
+      <div class="share-card" id="shareCard" hidden>
+        <p id="shareStatus">The share image is ready. Save it and post it wherever you want.</p>
+        <img class="share-preview" id="sharePreview" alt="AI stance result share image preview">
+        <div class="share-download-row">
+          <a class="btn primary" id="shareDownload" href="#" download="ai-stance-result.png">Download Image</a>
+        </div>
       </div>
       <div class="submit-status" id="submitStatus" aria-live="polite"></div>
     </section>
@@ -1248,6 +1294,8 @@
     let answers = {};
     let activeReferenceId = "";
     let lastSubmittedFingerprint = "";
+    let autoAdvanceTimer = 0;
+    let shareImageUrl = "";
 
     const form = document.querySelector("#quizForm");
     const heroSection = document.querySelector("#heroSection");
@@ -1260,6 +1308,7 @@
     const pageOptions = document.querySelector("#pageOptions");
     const progressFill = document.querySelector("#progressFill");
     const progressText = document.querySelector("#progressText");
+    const prevTopBtn = document.querySelector("#prevTopBtn");
     const prevBtn = document.querySelector("#prevBtn");
     const nextBtn = document.querySelector("#nextBtn");
     const pagerNote = document.querySelector("#pagerNote");
@@ -1285,6 +1334,11 @@
     const resetBtn = document.querySelector("#resetBtn");
     const editLastBtn = document.querySelector("#editLastBtn");
     const restartBtn = document.querySelector("#restartBtn");
+    const shareBtn = document.querySelector("#shareBtn");
+    const shareCard = document.querySelector("#shareCard");
+    const shareStatus = document.querySelector("#shareStatus");
+    const sharePreview = document.querySelector("#sharePreview");
+    const shareDownload = document.querySelector("#shareDownload");
 
     function escapeHTML(value) {
       return String(value).replace(/[&<>"']/g, (char) => ({
@@ -1447,20 +1501,56 @@
       const done = answeredPages();
       const page = pages[currentIndex];
       const isMulti = Boolean(page && page.multiple);
+      const answered = currentPageAnswered();
+      const isLast = currentIndex === pages.length - 1;
       progressFill.style.width = `${Math.round((done / pages.length) * 100)}%`;
       progressText.textContent = `${done}/${pages.length}`;
       prevBtn.disabled = currentIndex === 0;
-      nextBtn.disabled = !currentPageAnswered();
-      nextBtn.textContent = currentIndex === pages.length - 1 ? "See Result" : "Next";
-      pagerNote.textContent = currentPageAnswered()
-        ? "Selected. You can continue."
-        : isMulti ? "Choose at least one option to continue." : "Choose one option to continue.";
+      if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
+      nextBtn.hidden = !isMulti && !answered;
+      nextBtn.disabled = !answered;
+      nextBtn.textContent = isLast ? "See Result" : "Next";
+      pagerNote.textContent = answered
+        ? isMulti ? "Click See Result when you are done." : "Use Back to change this answer, or continue."
+        : isMulti ? "Choose at least one option to continue." : "Selecting an option moves to the next question.";
     }
 
     function scrollToElement(element) {
       const topbarHeight = document.querySelector(".topbar")?.offsetHeight || 0;
       const top = element.getBoundingClientRect().top + window.scrollY - topbarHeight - 12;
       window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    }
+
+    function clearAutoAdvance() {
+      if (!autoAdvanceTimer) return;
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = 0;
+    }
+
+    function goToPrevious() {
+      clearAutoAdvance();
+      if (currentIndex === 0) return;
+      currentIndex -= 1;
+      renderPage(true);
+    }
+
+    function goToNext() {
+      clearAutoAdvance();
+      if (!currentPageAnswered()) return;
+      currentIndex += 1;
+      renderPage(true);
+    }
+
+    function scheduleAutoAdvance(pageId) {
+      const page = pages[currentIndex];
+      if (!page || page.id !== pageId || page.multiple || currentIndex >= pages.length - 1) return;
+      clearAutoAdvance();
+      autoAdvanceTimer = window.setTimeout(() => {
+        const activePage = pages[currentIndex];
+        if (activePage && activePage.id === pageId && currentPageAnswered()) {
+          goToNext();
+        }
+      }, 180);
     }
 
     function renderPage(shouldScroll = false) {
@@ -1822,7 +1912,207 @@
       maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
     }
 
+    function drawRoundedRect(ctx, x, y, width, height, radius) {
+      const r = Math.min(radius, width / 2, height / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + width - r, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+      ctx.lineTo(x + width, y + height - r);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+      ctx.lineTo(x + r, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 4) {
+      const source = String(text || "");
+      const tokens = source.includes(" ") ? source.split(/(\s+)/) : Array.from(source);
+      let line = "";
+      let lines = 0;
+      for (const token of tokens) {
+        const next = line + token;
+        if (ctx.measureText(next).width > maxWidth && line) {
+          ctx.fillText(line.trim(), x, y);
+          y += lineHeight;
+          lines += 1;
+          line = token.trimStart();
+          if (lines >= maxLines - 1) break;
+        } else {
+          line = next;
+        }
+      }
+      if (line && lines < maxLines) {
+        ctx.fillText(line.trim(), x, y);
+        y += lineHeight;
+      }
+      return y;
+    }
+
+    function resetShareImage() {
+      if (shareImageUrl) URL.revokeObjectURL(shareImageUrl);
+      shareImageUrl = "";
+      if (sharePreview) sharePreview.removeAttribute("src");
+      if (shareDownload) shareDownload.removeAttribute("href");
+      if (shareCard) shareCard.hidden = true;
+    }
+
+    function canvasToBlob(canvas) {
+      return new Promise((resolve) => canvas.toBlob(resolve, "image/png", 0.95));
+    }
+
+    async function generateShareImage() {
+      const result = calculate();
+      const complete = Number.isFinite(result.x) && Number.isFinite(result.y);
+      if (!complete) return;
+
+      const code = profileFor(result);
+      const profile = profiles[code];
+      const abilityScore = abilityNarrativeScore();
+      const abilityLabel = abilityNarrativeLabel(abilityScore);
+      const riskLabel = riskSpectrumLabel(result);
+      const responseLabel = responseSpectrumLabel(result.c);
+      const valueLabel = valueSpectrumLabel(result.h);
+      const canvas = document.createElement("canvas");
+      const width = 720;
+      const height = 1280;
+      const scale = 2;
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(scale, scale);
+
+      ctx.fillStyle = "#f5f6f8";
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "#ffffff";
+      drawRoundedRect(ctx, 36, 36, width - 72, height - 72, 18);
+      ctx.fill();
+
+      ctx.fillStyle = "#0f766e";
+      ctx.font = "800 26px Inter, Arial, sans-serif";
+      ctx.fillText("Test Your AI Stance", 64, 88);
+      ctx.fillStyle = "#667085";
+      ctx.font = "600 16px Inter, Arial, sans-serif";
+      ctx.fillText("AI stance coordinate quiz", 64, 116);
+
+      ctx.fillStyle = "#17202a";
+      drawRoundedRect(ctx, 64, 148, 120, 72, 12);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 30px Inter, Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(code, 124, 193);
+      ctx.textAlign = "left";
+
+      ctx.fillStyle = "#17202a";
+      ctx.font = "850 30px Inter, Arial, sans-serif";
+      ctx.fillText(profile[0], 204, 178);
+      ctx.fillStyle = "#475467";
+      ctx.font = "600 16px Inter, Arial, sans-serif";
+      drawWrappedText(ctx, profile[1], 204, 206, 430, 23, 2);
+
+      ctx.fillStyle = "#344054";
+      ctx.font = "700 20px Inter, Arial, sans-serif";
+      let y = drawWrappedText(ctx, profile[2], 64, 268, 592, 30, 3);
+
+      const metrics = [
+        ["Capability", abilityLabel],
+        ["Risk", riskLabel],
+        ["Governance", responseLabel],
+        ["Value", valueLabel]
+      ];
+      y += 18;
+      metrics.forEach(([label, value], index) => {
+        const col = index % 2;
+        const row = Math.floor(index / 2);
+        const x = 64 + col * 306;
+        const boxY = y + row * 96;
+        ctx.fillStyle = "#f8fafc";
+        drawRoundedRect(ctx, x, boxY, 286, 76, 10);
+        ctx.fill();
+        ctx.strokeStyle = "#d8dee8";
+        ctx.stroke();
+        ctx.fillStyle = "#667085";
+        ctx.font = "700 14px Inter, Arial, sans-serif";
+        ctx.fillText(label, x + 18, boxY + 26);
+        ctx.fillStyle = "#17202a";
+        ctx.font = "850 19px Inter, Arial, sans-serif";
+        drawWrappedText(ctx, value, x + 18, boxY + 54, 244, 22, 1);
+      });
+
+      const mapX = 118;
+      const mapY = y + 230;
+      const mapSize = 484;
+      ctx.fillStyle = "#fbfcfe";
+      drawRoundedRect(ctx, mapX, mapY, mapSize, mapSize, 12);
+      ctx.fill();
+      ctx.strokeStyle = "#cfd8e5";
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(23,32,42,0.25)";
+      ctx.beginPath();
+      ctx.moveTo(mapX, mapY + mapSize / 2);
+      ctx.lineTo(mapX + mapSize, mapY + mapSize / 2);
+      ctx.moveTo(mapX + mapSize / 2, mapY);
+      ctx.lineTo(mapX + mapSize / 2, mapY + mapSize);
+      ctx.stroke();
+      ctx.fillStyle = "#667085";
+      ctx.font = "700 14px Inter, Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Human/social structure", mapX + mapSize / 2, mapY + 26);
+      ctx.fillText("Posthuman/intelligence", mapX + mapSize / 2, mapY + mapSize - 16);
+      ctx.save();
+      ctx.translate(mapX + 20, mapY + mapSize / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText("Control / thresholds", 0, 0);
+      ctx.restore();
+      ctx.save();
+      ctx.translate(mapX + mapSize - 20, mapY + mapSize / 2);
+      ctx.rotate(Math.PI / 2);
+      ctx.fillText("Open / deploy", 0, 0);
+      ctx.restore();
+      ctx.textAlign = "left";
+      const dotX = mapX + (coordToPercent(result.x) / 100) * mapSize;
+      const dotY = mapY + mapSize - (coordToPercent(result.y) / 100) * mapSize;
+      ctx.fillStyle = "#0f766e";
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 12, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      ctx.fillStyle = "#17202a";
+      ctx.font = "850 22px Inter, Arial, sans-serif";
+      ctx.fillText(quadrantFor(result.x, result.y), 64, mapY + mapSize + 54);
+      ctx.fillStyle = "#475467";
+      ctx.font = "600 16px Inter, Arial, sans-serif";
+      drawWrappedText(ctx, `Representative works: ${profile[3]}`, 64, mapY + mapSize + 88, 592, 24, 2);
+      drawWrappedText(ctx, `Social tells: ${profile[4]}`, 64, mapY + mapSize + 142, 592, 24, 2);
+
+      ctx.fillStyle = "#98a2b3";
+      ctx.font = "700 13px Inter, Arial, sans-serif";
+      ctx.fillText("cestunyu.github.io/ai-ideology-quiz", 64, height - 72);
+
+      if (shareCard) shareCard.hidden = false;
+      if (shareStatus) shareStatus.textContent = "Generating image...";
+      const blob = await canvasToBlob(canvas);
+      resetShareImage();
+      shareImageUrl = blob ? URL.createObjectURL(blob) : canvas.toDataURL("image/png");
+      if (sharePreview) sharePreview.src = shareImageUrl;
+      if (shareDownload) {
+        shareDownload.href = shareImageUrl;
+        shareDownload.download = `ai-stance-${code}.png`;
+      }
+      if (shareStatus) shareStatus.textContent = "The share image is ready. Save it and post it wherever you want.";
+      if (shareCard) shareCard.hidden = false;
+      scrollToElement(shareCard);
+    }
+
     function resetQuiz() {
+      clearAutoAdvance();
+      resetShareImage();
       answers = {};
       currentIndex = 0;
       activeReferenceId = "";
@@ -1854,25 +2144,21 @@
       } else {
         answers[event.target.name] = event.target.value;
       }
+      resetShareImage();
       update();
       updatePagerControls();
+      if (event.target.type === "radio") scheduleAutoAdvance(event.target.name);
     });
 
-    prevBtn.addEventListener("click", () => {
-      if (currentIndex === 0) return;
-      currentIndex -= 1;
-      renderPage(true);
-    });
-
-    nextBtn.addEventListener("click", () => {
-      if (!currentPageAnswered()) return;
-      currentIndex += 1;
-      renderPage(true);
-    });
+    prevBtn.addEventListener("click", goToPrevious);
+    if (prevTopBtn) prevTopBtn.addEventListener("click", goToPrevious);
+    nextBtn.addEventListener("click", goToNext);
 
     resetBtn.addEventListener("click", resetQuiz);
     restartBtn.addEventListener("click", resetQuiz);
+    if (shareBtn) shareBtn.addEventListener("click", generateShareImage);
     editLastBtn.addEventListener("click", () => {
+      clearAutoAdvance();
       currentIndex = pages.length - 1;
       renderPage(true);
     });
