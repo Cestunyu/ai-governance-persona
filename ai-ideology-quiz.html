@@ -785,40 +785,6 @@
       margin-top: 0;
     }
 
-    .interpretation-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .interpretation-card {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      padding: 12px;
-    }
-
-    .interpretation-card.highlight {
-      border-color: rgba(15, 118, 110, 0.28);
-      background: #f0faf8;
-    }
-
-    .interpretation-card span {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .interpretation-card p {
-      margin: 0;
-      color: #273444;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
     .profile-head {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
@@ -857,6 +823,41 @@
       display: grid;
       gap: 8px;
       padding: 12px;
+    }
+
+    .plain-result {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .plain-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .plain-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .plain-card strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .plain-card p {
+      margin: 7px 0 0;
+      color: #3a4454;
+      font-size: 13px;
+      line-height: 1.55;
     }
 
     .summary {
@@ -926,7 +927,7 @@
         grid-template-columns: 1fr;
       }
 
-      .interpretation-grid {
+      .plain-result {
         grid-template-columns: 1fr;
       }
 
@@ -1029,22 +1030,16 @@
         </div>
       </div>
 
-      <div class="interpretation-grid" aria-label="结果解读">
-        <div class="interpretation-card highlight">
-          <span>一句话</span>
-          <p id="plainTakeaway">答完后会生成一段更直白的解释。</p>
+      <div class="plain-result">
+        <div class="plain-card">
+          <span>你的标签</span>
+          <strong id="plainLabel">--</strong>
+          <p id="plainLabelText">答完后显示一句话解释。</p>
         </div>
-        <div class="interpretation-card">
-          <span>最接近的参考点</span>
-          <p id="nearestReference">答完后显示。</p>
-        </div>
-        <div class="interpretation-card">
-          <span>这说明什么</span>
-          <p id="plainMeaning">答完后显示。</p>
-        </div>
-        <div class="interpretation-card">
-          <span>别误会</span>
-          <p id="plainCaveat">这不是人格测试，也不是永久标签。</p>
+        <div class="plain-card">
+          <span>接近的人</span>
+          <strong id="nearestPerson">--</strong>
+          <p id="nearestPersonText">答完后显示最接近的图谱参照。</p>
         </div>
       </div>
 
@@ -1211,6 +1206,18 @@
       SING: { x: 1.45, y: -0.35 },
       VROM: { x: 1.85, y: -0.8 },
       POST: { x: 1.8, y: -1.8 }
+    };
+
+    const profileReferenceCandidates = {
+      STOP: ["eliezer-yudkowsky", "nick-bostrom", "dan-hendrycks-cais"],
+      SAFE: ["stuart-russell", "paul-christiano", "ajeya-cotra", "dario-amodei-anthropic"],
+      AUDT: ["bender-gebru-mitchell-mcmillan-major", "kate-crawford", "ruha-benjamin", "pope-leo-xiv"],
+      NORM: ["narayanan-kapoor", "gary-marcus-melanie-mitchell"],
+      GPUC: ["rich-sutton"],
+      BOOM: ["andrew-ng", "dario-amodei-anthropic", "marc-andreessen"],
+      SING: ["ray-kurzweil"],
+      VROM: ["marc-andreessen", "effective-accelerationism"],
+      POST: ["benjamin-bratton", "nick-land"]
     };
 
     const referencePoints = [
@@ -1386,10 +1393,10 @@
     const profileRoast = document.querySelector("#profileRoast");
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
-    const plainTakeaway = document.querySelector("#plainTakeaway");
-    const nearestReference = document.querySelector("#nearestReference");
-    const plainMeaning = document.querySelector("#plainMeaning");
-    const plainCaveat = document.querySelector("#plainCaveat");
+    const plainLabel = document.querySelector("#plainLabel");
+    const plainLabelText = document.querySelector("#plainLabelText");
+    const nearestPerson = document.querySelector("#nearestPerson");
+    const nearestPersonText = document.querySelector("#nearestPersonText");
     const summaryBox = document.querySelector("#summaryBox");
     const submitStatus = document.querySelector("#submitStatus");
     const resetBtn = document.querySelector("#resetBtn");
@@ -1807,9 +1814,13 @@
       return `${horizontal} / ${vertical}`;
     }
 
-    function nearestReferenceFor(result) {
+    function nearestReferenceFor(result, code = "") {
       if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return null;
-      return referencePoints.reduce((best, point) => {
+      const candidateIds = profileReferenceCandidates[code] || [];
+      const pool = candidateIds.length
+        ? referencePoints.filter((point) => candidateIds.includes(point.id))
+        : referencePoints;
+      return pool.reduce((best, point) => {
         const distance = ((result.x - point.x) ** 2) + ((result.y - point.y) ** 2);
         if (!best || distance < best.distance) return { point, distance };
         if (distance === best.distance && point.influence > best.point.influence) return { point, distance };
@@ -1841,27 +1852,6 @@
       if (score >= 0.75) return "价值上你希望人类社会保留最终问责，尤其在医疗、教育、司法这类重要决定里。";
       if (score <= -0.75) return "价值上你更愿意让更强的智能、计算和学习方法突破人的直觉限制。";
       return "价值上你没有强烈站到“人类必须最终拍板”或“智能应超越人类”任何一边。";
-    }
-
-    function resultReading(result, code, profile, nearest) {
-      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) {
-        return {
-          takeaway: "答完后会生成一段更直白的解释。",
-          nearest: "答完后显示。",
-          meaning: "答完后显示。",
-          caveat: "这不是人格测试，也不是永久标签。"
-        };
-      }
-
-      const nearestText = nearest
-        ? `${nearest.name}。只是坐标最接近，不代表你完整赞同 TA。`
-        : "没有足够信息计算。";
-      return {
-        takeaway: `${profile[0]}：${riskPlainText(result)} ${governancePlainText(result.c)}`,
-        nearest: nearestText,
-        meaning: `${valuePlainText(result.h)} 所以你在图上大致落在「${quadrantFor(result.x, result.y)}」。`,
-        caveat: `这不是说你属于某个阵营，也不是说你反 AI 或盲目乐观；它只是把你这组答案放到当前这张思想地图上。`
-      };
     }
 
     function closeReferenceModal() {
@@ -1911,6 +1901,7 @@
 
     function buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel) {
       const abilityScore = abilityNarrativeScore();
+      const nearest = nearestReferenceFor(result, code);
       return {
         quiz_id: "ai-ideology-quiz",
         quiz_version: "2026-05-24",
@@ -1936,7 +1927,8 @@
           risk: riskLabel,
           governance: responseLabel,
           value: valueLabel,
-          quadrant: quadrantFor(result.x, result.y)
+          quadrant: quadrantFor(result.x, result.y),
+          nearest_reference: nearest ? nearest.name : ""
         },
         answers: Object.fromEntries(questions.map((question) => [question.id, selected(question.id)])),
         scenarios: Object.fromEntries(scenarios.map((scenario) => [scenario.id, selected(scenario.id)])),
@@ -1997,6 +1989,7 @@
       const valueLabel = complete ? valueSpectrumLabel(result.h) : "--";
       const abilityScore = abilityNarrativeScore();
       const abilityLabel = complete ? abilityNarrativeLabel(abilityScore) : "--";
+      const nearest = complete ? nearestReferenceFor(result, code) : null;
 
       abilityNarrative.textContent = abilityLabel;
       dimensionR.textContent = riskLabel;
@@ -2013,17 +2006,25 @@
       profileRoast.textContent = complete ? profile[2] : "至少完成 9 道核心题，结果会更稳。";
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
+      plainLabel.textContent = complete ? `${code} · ${profile[0]}` : "--";
+      plainLabelText.textContent = complete
+        ? `${riskPlainText(result)} ${governancePlainText(result.c)}`
+        : "答完后显示一句话解释。";
+      nearestPerson.textContent = nearest ? nearest.name : "--";
+      nearestPersonText.textContent = nearest
+        ? `这是你在图谱上最近的参考点。相似的是整体坐标，不代表你完整赞同 TA。`
+        : "答完后显示最接近的图谱参照。";
 
       const scenarioSummary = scenarios.map((s) => selected(s.id) ? `${s.id}: ${selected(s.id)}` : "").filter(Boolean).join(" | ");
       const statement = selectedValues("closestStatement").join(" | ");
 
       summaryBox.textContent = complete
         ? [
-            "AI 立场二维坐标问卷结果",
+            `标签：${code} · ${profile[0]}`,
+            nearest ? `接近的人：${nearest.name}` : "",
+            `${riskPlainText(result)} ${governancePlainText(result.c)}`,
             statement ? `总体立场：${statement}` : "",
-            `人物画像：${code} ${profile[0]}`,
-            `光谱位置：能力判断=${abilityLabel}；风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
-            `二维位置：${quadrantFor(result.x, result.y)}`,
+            `补充：能力判断=${abilityLabel}；风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
             scenarioSummary ? `情境选择：${scenarioSummary}` : ""
           ].filter(Boolean).join("\n")
         : "答完 9 道核心题后，这里会生成结构化摘要。";
@@ -2093,6 +2094,7 @@
       const riskLabel = riskSpectrumLabel(result);
       const responseLabel = responseSpectrumLabel(result.c);
       const valueLabel = valueSpectrumLabel(result.h);
+      const nearest = nearestReferenceFor(result, code);
       const canvas = document.createElement("canvas");
       const width = 720;
       const height = 1280;
@@ -2134,6 +2136,11 @@
       ctx.fillStyle = "#344054";
       ctx.font = "700 20px Inter, PingFang SC, Microsoft YaHei, sans-serif";
       let y = drawWrappedText(ctx, profile[2], 64, 268, 592, 30, 3);
+      if (nearest) {
+        ctx.fillStyle = "#0f766e";
+        ctx.font = "800 18px Inter, PingFang SC, Microsoft YaHei, sans-serif";
+        y = drawWrappedText(ctx, `接近的人：${nearest.name}`, 64, y + 10, 592, 26, 2);
+      }
 
       const metrics = [
         ["能力判断", abilityLabel],
