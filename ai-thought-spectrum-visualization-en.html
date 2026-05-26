@@ -312,122 +312,77 @@
       line-height: 1.45;
     }
 
-    .map-primer {
+    .spectrum-grid {
       display: grid;
-      grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
-      gap: 16px;
-      align-items: stretch;
-    }
-
-    .mini-map {
-      position: relative;
-      min-height: 360px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background:
-        linear-gradient(90deg, rgba(180, 35, 24, 0.08), rgba(255, 255, 255, 0.82) 48%, rgba(21, 128, 61, 0.1)),
-        linear-gradient(180deg, rgba(15, 118, 110, 0.12), rgba(255, 255, 255, 0.2) 48%, rgba(91, 33, 182, 0.1));
-      overflow: hidden;
-    }
-
-    .mini-map::before,
-    .mini-map::after {
-      content: "";
-      position: absolute;
-      background: rgba(92, 103, 121, 0.48);
-    }
-
-    .mini-map::before {
-      left: 50%;
-      top: 34px;
-      bottom: 42px;
-      width: 1px;
-    }
-
-    .mini-map::after {
-      left: 42px;
-      right: 42px;
-      top: 50%;
-      height: 1px;
-    }
-
-    .mini-axis-label {
-      position: absolute;
-      color: #344054;
-      font-size: 12px;
-      font-weight: 760;
-      line-height: 1.25;
-    }
-
-    .mini-left {
-      left: 14px;
-      bottom: 14px;
-    }
-
-    .mini-right {
-      right: 14px;
-      bottom: 14px;
-      text-align: right;
-    }
-
-    .mini-top {
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-
-    .mini-bottom {
-      bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-
-    .mini-point {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 42px;
-      min-height: 28px;
-      padding: 4px 7px;
-      border: 2px solid #ffffff;
-      border-radius: 999px;
-      background: var(--color, #475569);
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 780;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
-      white-space: nowrap;
-    }
-
-    .map-key {
-      display: grid;
-      gap: 10px;
-    }
-
-    .map-key-item {
-      display: grid;
-      grid-template-columns: 140px minmax(0, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      align-items: start;
-      padding: 13px;
+    }
+
+    .spectrum-card {
+      padding: 16px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #ffffff;
     }
 
-    .map-key-item b {
+    .spectrum-card h3 {
+      margin: 0;
+      color: #667085;
       font-size: 13px;
+      font-weight: 760;
+    }
+
+    .spectrum-card strong {
+      display: block;
+      margin-top: 6px;
+      color: #151922;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .spectrum-track {
+      position: relative;
+      height: 10px;
+      margin: 20px 0 9px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb 0%, #cfd8e8 50%, #0f8f7e 100%);
+    }
+
+    .spectrum-track::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -7px;
+      width: 2px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(52, 64, 84, 0.38);
+      transform: translateX(-50%);
+    }
+
+    .spectrum-labels {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      color: #5d6678;
+      font-size: 12px;
+      font-weight: 700;
       line-height: 1.35;
     }
 
-    .map-key-item span {
+    .spectrum-labels span:nth-child(2) {
+      text-align: center;
+    }
+
+    .spectrum-labels span:last-child {
+      text-align: right;
+    }
+
+    .spectrum-card p {
+      margin-top: 12px;
       color: #3d4655;
       font-size: 13px;
-      line-height: 1.48;
+      line-height: 1.58;
     }
 
     .example-grid {
@@ -962,14 +917,10 @@
 
       .claim-strip,
       .axis-grid,
-      .map-primer,
+      .spectrum-grid,
       .example-grid,
       .matrix,
       .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .map-key-item {
         grid-template-columns: 1fr;
       }
 
@@ -994,9 +945,7 @@
       <div class="brand">AI Social Thought Spectrum</div>
       <nav class="nav" aria-label="Page sections">
         <a href="ai-thought-spectrum-visualization.html">Chinese</a>
-        <a href="#why-2d">How to Read</a>
-        <a href="#quiz-flow">Quiz Logic</a>
-        <a href="#method">Method</a>
+        <a href="#why-2d">Four Spectrums</a>
         <a href="#distribution">Regions</a>
         <a href="#map">Map</a>
         <a href="#profiles">Thinkers</a>
@@ -1043,8 +992,8 @@
             <span>representative works and institutional texts</span>
           </div>
           <div class="stat">
-            <strong>3</strong>
-            <span>dimensions: risk, governance, value</span>
+            <strong>4</strong>
+            <span>result spectrums: capability, risk, governance, value</span>
           </div>
           <div class="stat">
             <strong>10</strong>
@@ -1054,7 +1003,7 @@
         <div class="map-note">
           <h2>How to use this page</h2>
           <p>
-            Start with the three dimensions, then use the scatterplot. Click a point to see why it is placed there, which texts anchor it, and which nearby positions are easy to confuse with it.
+            Start with the four spectrums, then use the scatterplot. Click a point to see why it is placed there, which texts anchor it, and which nearby positions are easy to confuse with it.
           </p>
           <p>
             The coordinates are for comparison and reading, not final judgment. Complex thinkers often span multiple regions; each point captures the dominant tendency in the public texts used here.
@@ -1065,138 +1014,38 @@
 
     <section class="section" id="why-2d">
       <div class="section-head">
-        <h2>How to read the map</h2>
-        <p>
-          Read this first as a two-dimensional map, not as a personality test. In the quiz, Risk Judgment and Governance Position jointly shape the horizontal position;
-          Value Position shapes the vertical position; AI Capability Belief is a separate tag that helps explain the profile but does not directly move the point.
-        </p>
+        <h2>Start with the four spectrums</h2>
+        <p>The quiz result first appears as four intuitive spectrums. Risk Judgment, Governance Position, and Value Position form the two-dimensional stance map; AI Capability Belief stays separate as a side tag.</p>
       </div>
 
-      <div class="map-primer">
-        <div class="mini-map" role="img" aria-label="Two-dimensional AI thought spectrum diagram">
-          <span class="mini-axis-label mini-top">Human/social-structure-centered</span>
-          <span class="mini-axis-label mini-bottom">Intelligence-centered / posthuman</span>
-          <span class="mini-axis-label mini-left">Control, thresholds, civilization risk</span>
-          <span class="mini-axis-label mini-right">Openness, deployment, opportunity cost</span>
-          <span class="mini-point" style="left: 18%; top: 22%; --color:#b42318;">STOP</span>
-          <span class="mini-point" style="left: 31%; top: 17%; --color:#0f766e;">SAFE</span>
-          <span class="mini-point" style="left: 38%; top: 19%; --color:#7c3aed;">AUDT</span>
-          <span class="mini-point" style="left: 51%; top: 32%; --color:#475569;">NORM</span>
-          <span class="mini-point" style="left: 70%; top: 26%; --color:#15803d;">BOOM</span>
-          <span class="mini-point" style="left: 63%; top: 68%; --color:#0369a1;">GPUC</span>
-          <span class="mini-point" style="left: 88%; top: 70%; --color:#7f1d1d;">VROM</span>
+      <div class="spectrum-grid">
+        <div class="spectrum-card">
+          <h3>AI Capability Belief</h3>
+          <strong>How powerful you think AI is</strong>
+          <div class="spectrum-track"></div>
+          <div class="spectrum-labels"><span>Transformative AI</span><span>Mixed</span><span>Bubble skeptic</span></div>
+          <p>This does not move the two-dimensional coordinate; it explains your judgment about AI capability narratives.</p>
         </div>
-
-        <div class="map-key">
-          <div class="map-key-item">
-            <b>Horizontal: Risk Judgment + Governance Position</b>
-            <span>Further left means stronger concern about civilization-level risk and a stronger preference for control, thresholds, pauses, or audits. Further right means greater concern about the cost of restriction and a stronger preference for openness, deployment, and diffusion.</span>
-          </div>
-          <div class="map-key-item">
-            <b>Vertical: Value Position</b>
-            <span>Higher positions emphasize human dignity, public accountability, democracy, and social institutions. Lower positions emphasize intelligence, computation, techno-capital, or posthuman directions.</span>
-          </div>
-          <div class="map-key-item">
-            <b>AI Capability Belief: Side Tag</b>
-            <span>The quiz also says whether you lean toward transformative AI, mixed evidence, or bubble skepticism. This helps interpret the profile, but it is not a direct coordinate on the map.</span>
-          </div>
-          <div class="map-key-item">
-            <b>Reference Points</b>
-            <span>The thinkers, institutions, and movements on the map are comparison points. They do not determine your quiz result; they help explain who a region resembles and which positions sit nearby or opposite.</span>
-          </div>
+        <div class="spectrum-card">
+          <h3>Risk Judgment</h3>
+          <strong>What you think the main problem is</strong>
+          <div class="spectrum-track"></div>
+          <div class="spectrum-labels"><span>Opportunity cost</span><span>Mixed</span><span>Civilizational risk</span></div>
+          <p>Together with governance position, this shapes the horizontal axis: civilizational risk pulls toward control; opportunity cost pulls toward openness.</p>
         </div>
-      </div>
-
-      <div class="example-grid">
-        <div class="example">
-          <h3>Upper left is not generic pessimism</h3>
-          <p>It usually combines civilization-level risk judgment, strong governance position, and a human-protection goal: Yudkowsky, Russell, and Christiano sit around this region.</p>
+        <div class="spectrum-card">
+          <h3>Governance Position</h3>
+          <strong>How society should respond</strong>
+          <div class="spectrum-track"></div>
+          <div class="spectrum-labels"><span>Control</span><span>Middle</span><span>Open</span></div>
+          <p>Together with risk judgment, this shapes the horizontal axis: control leans left, openness leans right.</p>
         </div>
-        <div class="example">
-          <h3>The top is not one kind of humanism</h3>
-          <p>Critical AI, Pope Leo XIV, and Russell all sit high, but for different reasons: social justice, human dignity, and human-compatible control are different value languages.</p>
-        </div>
-        <div class="example">
-          <h3>The right side is not one optimism</h3>
-          <p>Andrew Ng emphasizes applications and productivity; Kurzweil emphasizes singularity and human-machine merger; e/acc emphasizes open acceleration. They are all rightward, but not vertically alike.</p>
-        </div>
-        <div class="example">
-          <h3>Capability belief is separate</h3>
-          <p>Someone can think today’s AI is overclaimed and still support open deployment; someone can believe AI is very powerful and still demand strict governance. Do not collapse capability belief into the coordinate.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="quiz-flow">
-      <div class="section-head">
-        <h2>How this relates to the quiz</h2>
-        <p>
-          This map explains the classification frame behind the quiz. The quiz itself is closed-ended: the core coordinates come only from agreement items,
-          while scenario choices and final self-placement are used as cross-checks to avoid confusing nearby positions.
-        </p>
-      </div>
-      <div class="example-grid">
-        <div class="example">
-          <h3>1. Core scored items</h3>
-          <p>Nine five-point agreement items cover Risk Judgment, Governance Position, and Value Position. They produce the two-dimensional coordinate and spectrum label.</p>
-        </div>
-        <div class="example">
-          <h3>2. Scenario cross-checks</h3>
-          <p>Four concrete scenario items do not move the coordinate, but provide weak evidence about how a user reacts in release, public-sector, research, and open-source contexts.</p>
-        </div>
-        <div class="example">
-          <h3>3. Final self-placement</h3>
-          <p>The final multiple-choice item does not change the coordinate. It helps distinguish nearby types and lets users check whether the result feels recognizable.</p>
-        </div>
-        <div class="example">
-          <h3>4. Reference points</h3>
-          <p>The thinkers and movements on the scatterplot do not determine your result. They are reference points for understanding who a position resembles, who sits nearby, and who sits opposite.</p>
-        </div>
-      </div>
-      <div class="example-grid">
-        <div class="example">
-          <h3>Why not just ask “Are you afraid of AI?”</h3>
-          <p>Because some people fear loss of control, some fear corporate and state power, some fear overclaiming, and some fear too much restriction. One question would collapse these positions together.</p>
-        </div>
-        <div class="example">
-          <h3>Why show capability belief?</h3>
-          <p>Capability belief is not a fourth coordinate. It is a secondary tag: is the user closer to transformative AI, mixed evidence, or bubble skepticism?</p>
-        </div>
-        <div class="example">
-          <h3>Profile vs map</h3>
-          <p>The quiz gives a short profile. The map shows finer-grained thinkers and movements. The profile is shareable; the map is for understanding the underlying differences.</p>
-        </div>
-        <div class="example">
-          <h3>This is not a psychometric scale</h3>
-          <p>It is a public reading and self-placement tool. Coordinates help comparison; they do not imply stable personality types in a psychometric sense.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="method">
-      <div class="section-head">
-        <h2>Method and limitations</h2>
-        <p>
-          This is an interpretive map, not an academic scale. Each point is hand-coded from public texts, institutional documents, and long-running public positions,
-          then compressed from three judgment dimensions into a two-dimensional coordinate for easier comparison.
-        </p>
-      </div>
-      <div class="example-grid">
-        <div class="example">
-          <h3>What is being compared</h3>
-          <p>The map includes people, institutions, and movements. It compares the dominant tendency in public arguments and representative texts; it is not a final summary of anyone’s entire thought.</p>
-        </div>
-        <div class="example">
-          <h3>How the horizontal axis works</h3>
-          <p>The horizontal axis combines the quiz's Governance Position and Risk Judgment: more control, pause, and civilization-risk judgment moves left; more deployment, openness, and opportunity-cost concern moves right.</p>
-        </div>
-        <div class="example">
-          <h3>How the vertical axis works</h3>
-          <p>The vertical axis corresponds to the quiz's Value Position: upward means more emphasis on human dignity, public accountability, democracy, and social structures; downward means more emphasis on intelligence, computation, techno-capital, or posthuman directions.</p>
-        </div>
-        <div class="example">
-          <h3>Uncertainty</h3>
-          <p>Complex thinkers span multiple positions. New texts, events, or better evidence should change coordinates. This page presents the current version of the reading frame.</p>
+        <div class="spectrum-card">
+          <h3>Value Position</h3>
+          <strong>What sits at the value center</strong>
+          <div class="spectrum-track"></div>
+          <div class="spectrum-labels"><span>Intelligence-centered</span><span>Middle</span><span>Social-structure-centered</span></div>
+          <p>This determines the vertical axis: social-structure-centered positions sit higher; intelligence-centered or posthuman positions sit lower.</p>
         </div>
       </div>
     </section>

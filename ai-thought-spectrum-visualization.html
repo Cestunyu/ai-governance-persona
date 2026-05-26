@@ -312,122 +312,77 @@
       line-height: 1.45;
     }
 
-    .map-primer {
+    .spectrum-grid {
       display: grid;
-      grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
-      gap: 16px;
-      align-items: stretch;
-    }
-
-    .mini-map {
-      position: relative;
-      min-height: 360px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background:
-        linear-gradient(90deg, rgba(180, 35, 24, 0.08), rgba(255, 255, 255, 0.82) 48%, rgba(21, 128, 61, 0.1)),
-        linear-gradient(180deg, rgba(15, 118, 110, 0.12), rgba(255, 255, 255, 0.2) 48%, rgba(91, 33, 182, 0.1));
-      overflow: hidden;
-    }
-
-    .mini-map::before,
-    .mini-map::after {
-      content: "";
-      position: absolute;
-      background: rgba(92, 103, 121, 0.48);
-    }
-
-    .mini-map::before {
-      left: 50%;
-      top: 34px;
-      bottom: 42px;
-      width: 1px;
-    }
-
-    .mini-map::after {
-      left: 42px;
-      right: 42px;
-      top: 50%;
-      height: 1px;
-    }
-
-    .mini-axis-label {
-      position: absolute;
-      color: #344054;
-      font-size: 12px;
-      font-weight: 760;
-      line-height: 1.25;
-    }
-
-    .mini-left {
-      left: 14px;
-      bottom: 14px;
-    }
-
-    .mini-right {
-      right: 14px;
-      bottom: 14px;
-      text-align: right;
-    }
-
-    .mini-top {
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-
-    .mini-bottom {
-      bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-
-    .mini-point {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 42px;
-      min-height: 28px;
-      padding: 4px 7px;
-      border: 2px solid #ffffff;
-      border-radius: 999px;
-      background: var(--color, #475569);
-      color: #ffffff;
-      font-size: 11px;
-      font-weight: 780;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
-      white-space: nowrap;
-    }
-
-    .map-key {
-      display: grid;
-      gap: 10px;
-    }
-
-    .map-key-item {
-      display: grid;
-      grid-template-columns: 140px minmax(0, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      align-items: start;
-      padding: 13px;
+    }
+
+    .spectrum-card {
+      padding: 16px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #ffffff;
     }
 
-    .map-key-item b {
+    .spectrum-card h3 {
+      margin: 0;
+      color: #667085;
       font-size: 13px;
+      font-weight: 760;
+    }
+
+    .spectrum-card strong {
+      display: block;
+      margin-top: 6px;
+      color: #151922;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .spectrum-track {
+      position: relative;
+      height: 10px;
+      margin: 20px 0 9px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb 0%, #cfd8e8 50%, #0f8f7e 100%);
+    }
+
+    .spectrum-track::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -7px;
+      width: 2px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(52, 64, 84, 0.38);
+      transform: translateX(-50%);
+    }
+
+    .spectrum-labels {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      color: #5d6678;
+      font-size: 12px;
+      font-weight: 700;
       line-height: 1.35;
     }
 
-    .map-key-item span {
+    .spectrum-labels span:nth-child(2) {
+      text-align: center;
+    }
+
+    .spectrum-labels span:last-child {
+      text-align: right;
+    }
+
+    .spectrum-card p {
+      margin-top: 12px;
       color: #3d4655;
       font-size: 13px;
-      line-height: 1.48;
+      line-height: 1.58;
     }
 
     .example-grid {
@@ -962,14 +917,10 @@
 
       .claim-strip,
       .axis-grid,
-      .map-primer,
+      .spectrum-grid,
       .example-grid,
       .matrix,
       .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .map-key-item {
         grid-template-columns: 1fr;
       }
 
@@ -994,9 +945,7 @@
       <div class="brand">AI Social Thought Spectrum</div>
       <nav class="nav" aria-label="Page sections">
         <a href="ai-thought-spectrum-visualization-en.html">English</a>
-        <a href="#why-2d">怎么读图</a>
-        <a href="#quiz-flow">测试逻辑</a>
-        <a href="#method">方法限制</a>
+        <a href="#why-2d">四条光谱</a>
         <a href="#distribution">主要区域</a>
         <a href="#map">交互地图</a>
         <a href="#profiles">人物与流派</a>
@@ -1043,8 +992,8 @@
             <span>代表性文本和机构文件</span>
           </div>
           <div class="stat">
-            <strong>3</strong>
-            <span>判断维度：风险、治理、价值</span>
+            <strong>4</strong>
+            <span>结果光谱：能力、风险、治理、价值</span>
           </div>
           <div class="stat">
             <strong>10</strong>
@@ -1054,7 +1003,7 @@
         <div class="map-note">
           <h2>这页怎么用</h2>
           <p>
-            先看三个判断维度，再看散点图。点击一个点，可以看到它为什么被放在这里、代表文本是什么、和哪些立场最容易混淆。
+            先看四条光谱，再看散点图。点击一个点，可以看到它为什么被放在这里、代表文本是什么、和哪些立场最容易混淆。
           </p>
           <p>
             坐标是为了帮助比较和阅读，不是最终裁判。复杂人物会横跨多个区域；图上的位置只表示这套文本和公共立场中的主导倾向。
@@ -1065,138 +1014,38 @@
 
     <section class="section" id="why-2d">
       <div class="section-head">
-        <h2>怎么读这张图？</h2>
-        <p>
-          先把它当作一张二维坐标图，而不是一套人格测试。问卷结果里的“风险判断”和“治理位置”共同决定横向位置；
-          “价值位置”决定纵向位置；“能力判断”只作为辅助标签，不直接移动地图上的点。
-        </p>
+        <h2>先看四条光谱</h2>
+        <p>问卷结果先显示四条直观光谱。风险判断、治理位置和价值位置决定二维立场图；能力判断单独作为辅助标签。</p>
       </div>
 
-      <div class="map-primer">
-        <div class="mini-map" role="img" aria-label="AI 思想光谱二维坐标示意图">
-          <span class="mini-axis-label mini-top">人类/社会结构中心</span>
-          <span class="mini-axis-label mini-bottom">智能中心 / 后人类</span>
-          <span class="mini-axis-label mini-left">控制、门槛、文明级风险</span>
-          <span class="mini-axis-label mini-right">开放、部署、机会成本</span>
-          <span class="mini-point" style="left: 18%; top: 22%; --color:#b42318;">STOP</span>
-          <span class="mini-point" style="left: 31%; top: 17%; --color:#0f766e;">SAFE</span>
-          <span class="mini-point" style="left: 38%; top: 19%; --color:#7c3aed;">AUDT</span>
-          <span class="mini-point" style="left: 51%; top: 32%; --color:#475569;">NORM</span>
-          <span class="mini-point" style="left: 70%; top: 26%; --color:#15803d;">BOOM</span>
-          <span class="mini-point" style="left: 63%; top: 68%; --color:#0369a1;">GPUC</span>
-          <span class="mini-point" style="left: 88%; top: 70%; --color:#7f1d1d;">VROM</span>
+      <div class="spectrum-grid">
+        <div class="spectrum-card">
+          <h3>能力判断</h3>
+          <strong>你认为 AI 到底有多强</strong>
+          <div class="spectrum-track"></div>
+          <div class="spectrum-labels"><span>变革性 AI</span><span>证据混合</span><span>Bubble 怀疑</span></div>
+          <p>这条不移动二维坐标，只帮助解释你对 AI 能力叙事的判断。</p>
         </div>
-
-        <div class="map-key">
-          <div class="map-key-item">
-            <b>横轴：风险判断 + 治理位置</b>
-            <span>越左，越认为前沿 AI 可能带来文明级风险，并倾向控制、门槛、暂停或强审计；越右，越认为限制过多也有代价，并倾向开放、部署和扩散。</span>
-          </div>
-          <div class="map-key-item">
-            <b>纵轴：价值位置</b>
-            <span>越上，越强调人的尊严、公共问责、民主和社会制度；越下，越强调智能、计算、技术资本或后人类方向。</span>
-          </div>
-          <div class="map-key-item">
-            <b>能力判断：辅助标签</b>
-            <span>问卷会显示你更接近“变革性 AI”“证据混合”还是“泡沫怀疑”。它帮助解释画像，但不直接决定二维坐标。</span>
-          </div>
-          <div class="map-key-item">
-            <b>人物点：参照物</b>
-            <span>图上的人物、机构和运动是阅读参照，不会决定你的测试结果；它们帮助你理解某个区域大概像谁、和谁相邻、和谁相反。</span>
-          </div>
+        <div class="spectrum-card">
+          <h3>风险判断</h3>
+          <strong>你认为主要问题是什么</strong>
+          <div class="spectrum-track"></div>
+          <div class="spectrum-labels"><span>机会成本</span><span>混合</span><span>文明级风险</span></div>
+          <p>这条和治理位置共同影响横轴：更偏文明级风险会更靠控制侧，更偏机会成本会更靠开放侧。</p>
         </div>
-      </div>
-
-      <div class="example-grid">
-        <div class="example">
-          <h3>左上不是“普通悲观”</h3>
-          <p>这里通常同时有文明级风险判断、强治理位置和人类保护目标，例如 Yudkowsky、Russell、Christiano 一带。</p>
+        <div class="spectrum-card">
+          <h3>治理位置</h3>
+          <strong>你希望社会怎么回应</strong>
+          <div class="spectrum-track"></div>
+          <div class="spectrum-labels"><span>控制</span><span>中间</span><span>开放</span></div>
+          <p>这条和风险判断共同影响横轴：控制更靠左，开放更靠右。</p>
         </div>
-        <div class="example">
-          <h3>上方不是同一种人本</h3>
-          <p>Critical AI、Pope Leo XIV、Russell 都在上方，但理由不同：社会正义、人的尊严、人类兼容分别是不同的价值语言。</p>
-        </div>
-        <div class="example">
-          <h3>右侧也不是同一种乐观</h3>
-          <p>Andrew Ng 偏应用和生产力；Kurzweil 偏奇点和人机融合；e/acc 偏开放加速。它们都在右侧，但价值位置不同。</p>
-        </div>
-        <div class="example">
-          <h3>能力判断单独看</h3>
-          <p>一个人可以怀疑当前 AI 被过度宣传，也可以支持开放部署；也可以相信 AI 很强，但仍主张严格治理。所以能力判断不要和坐标混为一谈。</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="quiz-flow">
-      <div class="section-head">
-        <h2>和测试题是什么关系？</h2>
-        <p>
-          这张图解释测试背后的分类框架。测试本身是闭合问卷：核心坐标只来自同意度题，
-          情境题和最后的总体立场只用来复查画像，避免把相近立场误分。
-        </p>
-      </div>
-      <div class="example-grid">
-        <div class="example">
-          <h3>1. 核心计分题</h3>
-          <p>9 道五点同意度题覆盖风险判断、治理位置和价值位置。它们是二维坐标和光谱标签的分数来源。</p>
-        </div>
-        <div class="example">
-          <h3>2. 情境复查题</h3>
-          <p>4 道具体情境题不改坐标，但会给画像提供弱证据，用来检查用户在发布、公共部门、科研和开源场景中的实际反应。</p>
-        </div>
-        <div class="example">
-          <h3>3. 总体立场复查</h3>
-          <p>最后 1 题是多选自我定位。它不改变坐标，但会帮助系统在相近类型之间做辅助区分，也让用户检查结果是否像自己。</p>
-        </div>
-        <div class="example">
-          <h3>4. 图谱参考点</h3>
-          <p>散点图中的人物和流派不会决定你的结果。它们是参照物，帮助你理解“这个位置大概像谁、和谁相邻、和谁相反”。</p>
-        </div>
-      </div>
-      <div class="example-grid">
-        <div class="example">
-          <h3>为什么不只问“你怕不怕 AI”？</h3>
-          <p>因为有人怕的是失控，有人怕的是公司和国家权力，有人怕的是过度宣传，有人怕的是限制太多。单个问题会把这些立场混在一起。</p>
-        </div>
-        <div class="example">
-          <h3>为什么还显示能力判断？</h3>
-          <p>能力判断不是第四个坐标轴，而是辅助标签：用户更接近“变革性 AI”、证据混合，还是“泡沫怀疑”。</p>
-        </div>
-        <div class="example">
-          <h3>画像与图谱的关系</h3>
-          <p>测试结果会给出一个简短画像；图谱则展示更细的人物和流派。画像适合分享，图谱适合理解背后的思想差异。</p>
-        </div>
-        <div class="example">
-          <h3>这不是科学量表</h3>
-          <p>它是一个公开阅读和自我定位工具。坐标帮助比较，不代表心理测量意义上的稳定人格类型。</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="method">
-      <div class="section-head">
-        <h2>方法和限制</h2>
-        <p>
-          这张图是解释性地图，不是学术量表。每个节点根据公开文本、机构文件和长期公共立场人工标注，
-          再把三个判断维度压缩成一个二维坐标，方便比较相邻和相反的位置。
-        </p>
-      </div>
-      <div class="example-grid">
-        <div class="example">
-          <h3>比较对象</h3>
-          <p>图上既有人物，也有机构和运动。它比较的是公开论证和代表性文本中的主导倾向，不等于对个人全部思想的最终概括。</p>
-        </div>
-        <div class="example">
-          <h3>横轴怎么来</h3>
-          <p>横轴综合问卷里的“治理位置”和“风险判断”：更偏控制、暂停和文明级风险判断会向左；更偏部署、开放和机会成本判断会向右。</p>
-        </div>
-        <div class="example">
-          <h3>纵轴怎么来</h3>
-          <p>纵轴对应问卷里的“价值位置”：越上越强调人的尊严、公共问责、民主和社会结构；越下越强调智能、计算、技术资本或后人类方向。</p>
-        </div>
-        <div class="example">
-          <h3>不确定性</h3>
-          <p>复杂人物会横跨多个位置。新文本、新事件或更好的证据出现时，坐标应该调整；这个页面提供的是当前版本的阅读框架。</p>
+        <div class="spectrum-card">
+          <h3>价值位置</h3>
+          <strong>你把什么放在价值中心</strong>
+          <div class="spectrum-track"></div>
+          <div class="spectrum-labels"><span>智能中心</span><span>中间</span><span>社会结构中心</span></div>
+          <p>这条决定纵轴：越社会结构中心越靠上，越智能中心或后人类越靠下。</p>
         </div>
       </div>
     </section>
