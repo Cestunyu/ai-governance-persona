@@ -785,6 +785,40 @@
       margin-top: 0;
     }
 
+    .interpretation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .interpretation-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .interpretation-card.highlight {
+      border-color: rgba(15, 118, 110, 0.28);
+      background: #f0faf8;
+    }
+
+    .interpretation-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .interpretation-card p {
+      margin: 0;
+      color: #273444;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
     .profile-head {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
@@ -892,6 +926,10 @@
         grid-template-columns: 1fr;
       }
 
+      .interpretation-grid {
+        grid-template-columns: 1fr;
+      }
+
       .page-card {
         min-height: 340px;
       }
@@ -988,6 +1026,25 @@
           <p id="profileRoast">至少完成 9 道核心题，结果会更稳。</p>
           <p><b>代表文本：</b><span id="profileTexts">--</span></p>
           <p><b>社交识别：</b><span id="profileTell">--</span></p>
+        </div>
+      </div>
+
+      <div class="interpretation-grid" aria-label="结果解读">
+        <div class="interpretation-card highlight">
+          <span>一句话</span>
+          <p id="plainTakeaway">答完后会生成一段更直白的解释。</p>
+        </div>
+        <div class="interpretation-card">
+          <span>最接近的参考点</span>
+          <p id="nearestReference">答完后显示。</p>
+        </div>
+        <div class="interpretation-card">
+          <span>这说明什么</span>
+          <p id="plainMeaning">答完后显示。</p>
+        </div>
+        <div class="interpretation-card">
+          <span>别误会</span>
+          <p id="plainCaveat">这不是人格测试，也不是永久标签。</p>
         </div>
       </div>
 
@@ -1329,6 +1386,10 @@
     const profileRoast = document.querySelector("#profileRoast");
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
+    const plainTakeaway = document.querySelector("#plainTakeaway");
+    const nearestReference = document.querySelector("#nearestReference");
+    const plainMeaning = document.querySelector("#plainMeaning");
+    const plainCaveat = document.querySelector("#plainCaveat");
     const summaryBox = document.querySelector("#summaryBox");
     const submitStatus = document.querySelector("#submitStatus");
     const resetBtn = document.querySelector("#resetBtn");
@@ -1507,11 +1568,11 @@
       progressText.textContent = `${done}/${pages.length}`;
       prevBtn.disabled = currentIndex === 0;
       if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
-      nextBtn.hidden = !isMulti && !answered;
+      nextBtn.hidden = !isMulti;
       nextBtn.disabled = !answered;
       nextBtn.textContent = isLast ? "查看结果" : "下一题";
       pagerNote.textContent = answered
-        ? isMulti ? "选完后点击查看结果" : "需要修改可点上一题，也可以继续下一题"
+        ? isMulti ? "选完后点击查看结果" : "需要修改就点另一项；回退用上一题"
         : isMulti ? "请选择至少一个选项继续" : "点选后会自动进入下一题";
     }
 
@@ -1744,6 +1805,63 @@
       const horizontal = x < -0.35 ? "控制门槛" : x > 0.35 ? "开放部署" : "响应中间";
       const vertical = y > 0.35 ? "人类/社会结构中心" : y < -0.35 ? "后人类/智能中心" : "价值中间";
       return `${horizontal} / ${vertical}`;
+    }
+
+    function nearestReferenceFor(result) {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return null;
+      return referencePoints.reduce((best, point) => {
+        const distance = ((result.x - point.x) ** 2) + ((result.y - point.y) ** 2);
+        if (!best || distance < best.distance) return { point, distance };
+        if (distance === best.distance && point.influence > best.point.influence) return { point, distance };
+        return best;
+      }, null)?.point || null;
+    }
+
+    function riskPlainText(result) {
+      const candidates = [
+        { key: "catastrophic", value: result.rCatastrophic },
+        { key: "social", value: result.rSocialHarm },
+        { key: "normal", value: result.rNormalTech },
+        { key: "opportunity", value: result.rOpportunityCost }
+      ].sort((a, b) => b.value - a.value);
+      if (result.rProjection >= 1) return "你比较相信前沿 AI 可能出大事，所以倾向于提前设安全边界。";
+      if (result.rProjection <= -1) return "你更担心限制太多会拖慢医疗、教育、科研和生产力这些现实收益。";
+      if (candidates[0]?.key === "social") return "你最敏感的是 AI 已经在现实里放大的问题，比如偏见、监控、劳动和权力集中。";
+      if (candidates[0]?.key === "normal") return "你倾向把 AI 当成一种重要但不神秘的技术：有用、会出错，也常被过度包装。";
+      return "你没有把 AI 简单看成灾难或救星，而是在风险和收益之间保留判断。";
+    }
+
+    function governancePlainText(score) {
+      if (score <= -0.75) return "治理上你偏控制：先审计、设门槛、明确责任，再谈大规模发布。";
+      if (score >= 0.75) return "治理上你偏开放：先让更多场景用起来，在真实使用中发现并修正问题。";
+      return "治理上你偏折中：不是一刀切暂停，也不是无条件开放，而是看场景和风险等级。";
+    }
+
+    function valuePlainText(score) {
+      if (score >= 0.75) return "价值上你希望人类社会保留最终问责，尤其在医疗、教育、司法这类重要决定里。";
+      if (score <= -0.75) return "价值上你更愿意让更强的智能、计算和学习方法突破人的直觉限制。";
+      return "价值上你没有强烈站到“人类必须最终拍板”或“智能应超越人类”任何一边。";
+    }
+
+    function resultReading(result, code, profile, nearest) {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) {
+        return {
+          takeaway: "答完后会生成一段更直白的解释。",
+          nearest: "答完后显示。",
+          meaning: "答完后显示。",
+          caveat: "这不是人格测试，也不是永久标签。"
+        };
+      }
+
+      const nearestText = nearest
+        ? `${nearest.name}。只是坐标最接近，不代表你完整赞同 TA。`
+        : "没有足够信息计算。";
+      return {
+        takeaway: `${profile[0]}：${riskPlainText(result)} ${governancePlainText(result.c)}`,
+        nearest: nearestText,
+        meaning: `${valuePlainText(result.h)} 所以你在图上大致落在「${quadrantFor(result.x, result.y)}」。`,
+        caveat: `这不是说你属于某个阵营，也不是说你反 AI 或盲目乐观；它只是把你这组答案放到当前这张思想地图上。`
+      };
     }
 
     function closeReferenceModal() {
@@ -2148,6 +2266,16 @@
       update();
       updatePagerControls();
       if (event.target.type === "radio") scheduleAutoAdvance(event.target.name);
+    });
+
+    pageOptions.addEventListener("click", (event) => {
+      const label = event.target.closest(".single-option");
+      const input = label ? label.querySelector("input[type='radio']") : null;
+      const page = pages[currentIndex];
+      if (!input || !page || page.multiple) return;
+      window.setTimeout(() => {
+        if (input.checked && selected(page.id) === input.value) scheduleAutoAdvance(page.id);
+      }, 0);
     });
 
     prevBtn.addEventListener("click", goToPrevious);

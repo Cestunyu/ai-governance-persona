@@ -785,6 +785,40 @@
       margin-top: 0;
     }
 
+    .interpretation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .interpretation-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .interpretation-card.highlight {
+      border-color: rgba(15, 118, 110, 0.28);
+      background: #f0faf8;
+    }
+
+    .interpretation-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .interpretation-card p {
+      margin: 0;
+      color: #273444;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
     .profile-head {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
@@ -892,6 +926,10 @@
         grid-template-columns: 1fr;
       }
 
+      .interpretation-grid {
+        grid-template-columns: 1fr;
+      }
+
       .page-card {
         min-height: 340px;
       }
@@ -988,6 +1026,25 @@
           <p id="profileRoast">Complete all 9 core items for a stable result.</p>
           <p><b>Representative texts:</b> <span id="profileTexts">--</span></p>
           <p><b>Social tell:</b> <span id="profileTell">--</span></p>
+        </div>
+      </div>
+
+      <div class="interpretation-grid" aria-label="Result interpretation">
+        <div class="interpretation-card highlight">
+          <span>Plain English</span>
+          <p id="plainTakeaway">A clearer explanation will appear after completion.</p>
+        </div>
+        <div class="interpretation-card">
+          <span>Closest Reference Point</span>
+          <p id="nearestReference">Appears after completion.</p>
+        </div>
+        <div class="interpretation-card">
+          <span>What It Means</span>
+          <p id="plainMeaning">Appears after completion.</p>
+        </div>
+        <div class="interpretation-card">
+          <span>Do Not Overread It</span>
+          <p id="plainCaveat">This is not a personality test or permanent label.</p>
         </div>
       </div>
 
@@ -1329,6 +1386,10 @@
     const profileRoast = document.querySelector("#profileRoast");
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
+    const plainTakeaway = document.querySelector("#plainTakeaway");
+    const nearestReference = document.querySelector("#nearestReference");
+    const plainMeaning = document.querySelector("#plainMeaning");
+    const plainCaveat = document.querySelector("#plainCaveat");
     const summaryBox = document.querySelector("#summaryBox");
     const submitStatus = document.querySelector("#submitStatus");
     const resetBtn = document.querySelector("#resetBtn");
@@ -1507,11 +1568,11 @@
       progressText.textContent = `${done}/${pages.length}`;
       prevBtn.disabled = currentIndex === 0;
       if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
-      nextBtn.hidden = !isMulti && !answered;
+      nextBtn.hidden = !isMulti;
       nextBtn.disabled = !answered;
       nextBtn.textContent = isLast ? "See Result" : "Next";
       pagerNote.textContent = answered
-        ? isMulti ? "Click See Result when you are done." : "Use Back to change this answer, or continue."
+        ? isMulti ? "Click See Result when you are done." : "Choose another option to change it; use Back to return."
         : isMulti ? "Choose at least one option to continue." : "Selecting an option moves to the next question.";
     }
 
@@ -1744,6 +1805,63 @@
       const horizontal = x < -0.35 ? "Control threshold" : x > 0.35 ? "Open deployment" : "Middle response";
       const vertical = y > 0.35 ? "Human/social-structure-centered" : y < -0.35 ? "Posthuman/intelligence-centered" : "Middle values";
       return `${horizontal} / ${vertical}`;
+    }
+
+    function nearestReferenceFor(result) {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return null;
+      return referencePoints.reduce((best, point) => {
+        const distance = ((result.x - point.x) ** 2) + ((result.y - point.y) ** 2);
+        if (!best || distance < best.distance) return { point, distance };
+        if (distance === best.distance && point.influence > best.point.influence) return { point, distance };
+        return best;
+      }, null)?.point || null;
+    }
+
+    function riskPlainText(result) {
+      const candidates = [
+        { key: "catastrophic", value: result.rCatastrophic },
+        { key: "social", value: result.rSocialHarm },
+        { key: "normal", value: result.rNormalTech },
+        { key: "opportunity", value: result.rOpportunityCost }
+      ].sort((a, b) => b.value - a.value);
+      if (result.rProjection >= 1) return "You put real weight on frontier AI going badly wrong, so you want safety boundaries before the biggest deployments.";
+      if (result.rProjection <= -1) return "You are more worried that too much restriction will delay concrete gains in medicine, education, research, and productivity.";
+      if (candidates[0]?.key === "social") return "You are most sensitive to harms AI is already amplifying: bias, surveillance, labor, data use, and concentrated power.";
+      if (candidates[0]?.key === "normal") return "You tend to see AI as important but not magical: useful, fallible, and often oversold.";
+      return "You do not read AI as simply doom or salvation; you are balancing risks and benefits.";
+    }
+
+    function governancePlainText(score) {
+      if (score <= -0.75) return "On governance, you lean toward control: audits, thresholds, and responsibility before broad release.";
+      if (score >= 0.75) return "On governance, you lean toward openness: put AI into more real settings and learn from deployment.";
+      return "On governance, you are context-specific: neither blanket pause nor unconditional openness.";
+    }
+
+    function valuePlainText(score) {
+      if (score >= 0.75) return "On values, you want human society to keep final accountability, especially in healthcare, education, law, and other serious decisions.";
+      if (score <= -0.75) return "On values, you are more willing to let stronger intelligence, computation, and learning outrun ordinary human intuition.";
+      return "On values, you are not strongly committed to either 'humans must always decide' or 'intelligence should move beyond humans.'";
+    }
+
+    function resultReading(result, code, profile, nearest) {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) {
+        return {
+          takeaway: "A clearer explanation will appear after completion.",
+          nearest: "Appears after completion.",
+          meaning: "Appears after completion.",
+          caveat: "This is not a personality test or permanent label."
+        };
+      }
+
+      const nearestText = nearest
+        ? `${nearest.name}. This only means the coordinates are closest; it does not mean you fully agree with them.`
+        : "Not enough information to calculate.";
+      return {
+        takeaway: `${profile[0]}: ${riskPlainText(result)} ${governancePlainText(result.c)}`,
+        nearest: nearestText,
+        meaning: `${valuePlainText(result.h)} That is why you land around “${quadrantFor(result.x, result.y)}” on the map.`,
+        caveat: "This does not mean you belong to a camp, oppose AI, or worship AI. It only places this set of answers on the current map."
+      };
     }
 
     function closeReferenceModal() {
@@ -2148,6 +2266,16 @@
       update();
       updatePagerControls();
       if (event.target.type === "radio") scheduleAutoAdvance(event.target.name);
+    });
+
+    pageOptions.addEventListener("click", (event) => {
+      const label = event.target.closest(".single-option");
+      const input = label ? label.querySelector("input[type='radio']") : null;
+      const page = pages[currentIndex];
+      if (!input || !page || page.multiple) return;
+      window.setTimeout(() => {
+        if (input.checked && selected(page.id) === input.value) scheduleAutoAdvance(page.id);
+      }, 0);
     });
 
     prevBtn.addEventListener("click", goToPrevious);
