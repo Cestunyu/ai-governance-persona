@@ -945,9 +945,9 @@
       <div class="brand">AI Social Thought Spectrum</div>
       <nav class="nav" aria-label="Page sections">
         <a href="ai-thought-spectrum-visualization.html">Chinese</a>
+        <a href="#map">Map</a>
         <a href="#why-2d">Four Spectrums</a>
         <a href="#distribution">Regions</a>
-        <a href="#map">Map</a>
         <a href="#profiles">Thinkers</a>
         <a href="#works">Works</a>
         <a href="#reading">Reading Path</a>
@@ -1003,7 +1003,7 @@
         <div class="map-note">
           <h2>How to use this page</h2>
           <p>
-            Start with the four spectrums, then use the scatterplot. Click a point to see why it is placed there, which texts anchor it, and which nearby positions are easy to confuse with it.
+            Start with the interactive map, then use the four spectrums. Click a point to see why it is placed there, which texts anchor it, and which nearby positions are easy to confuse with it.
           </p>
           <p>
             The coordinates are for comparison and reading, not final judgment. Complex thinkers often span multiple regions; each point captures the dominant tendency in the public texts used here.
@@ -1012,9 +1012,70 @@
       </aside>
     </section>
 
+    <section class="interactive" id="map" aria-label="Interactive thought map">
+      <section class="chart-shell" aria-label="AI thought spectrum chart">
+        <div class="chart-title">
+          <h2>Interactive map</h2>
+          <p>
+            The further left, the more the position leans toward control, pauses, thresholds, and high-risk judgment. The further right, the more it leans toward deployment, openness, diffusion, and opportunity-cost concern.
+            The higher up, the more it emphasizes human dignity, democratic governance, and human compatibility. The lower down, the more it emphasizes computation-centered, posthuman, or techno-capital autonomy.
+          </p>
+          <div class="toolbar" id="filters" aria-label="Category filters"></div>
+          <div class="toolbar">
+            <input class="search" id="search" type="search" placeholder="Search thinkers, movements, works, or keywords">
+          </div>
+        </div>
+        <div class="plot-wrap">
+          <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
+            <title id="chartTitle">AI Thought Spectrum Map</title>
+            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk judgment, governance position, and value position.</desc>
+          </svg>
+        </div>
+      </section>
+
+      <aside class="detail-panel" aria-label="Selected thinker details">
+        <div class="detail-head">
+          <h2 id="detailName">Select a point</h2>
+          <div class="cluster" id="detailCluster">Click a thinker or movement to see its core idea, representative works, and reading focus.</div>
+          <div class="scores">
+            <div class="score">
+              <b>Horizontal</b>
+              <span id="riskScore">-</span>
+            </div>
+            <div class="score">
+              <b>Vertical</b>
+              <span id="humanismScore">-</span>
+            </div>
+            <div class="score">
+              <b>Influence</b>
+              <span id="influenceScore">-</span>
+            </div>
+          </div>
+          <div class="dimension-row">
+            <span><b>Risk Judgment</b><em id="diagnosisScore">-</em></span>
+            <span><b>Governance Position</b><em id="responseScore">-</em></span>
+            <span><b>Value Position</b><em id="valueScore">-</em></span>
+          </div>
+        </div>
+        <div class="detail-body">
+          <div class="section-title">Core idea</div>
+          <p id="stanceText">The map initially selects Rich Sutton because the Bitter Lesson is a technical-epistemic anchor for contemporary AI culture.</p>
+          <div class="section-title">Why placed here</div>
+          <p id="placementText">Coordinates help comparison; they are not final labels.</p>
+          <div class="section-title">Representative works</div>
+          <div id="worksMini"></div>
+          <div class="section-title">Influence channels</div>
+          <div class="pill-list" id="basis"></div>
+          <div class="section-title">Reading focus</div>
+          <p id="readingFocus"></p>
+          <p class="footnote"><a id="profileJump" href="#profiles">Jump to the full profile card</a></p>
+        </div>
+      </aside>
+    </section>
+
     <section class="section" id="why-2d">
       <div class="section-head">
-        <h2>Start with the four spectrums</h2>
+        <h2>Four result spectrums</h2>
         <p>The quiz result first appears as four intuitive spectrums. Risk Judgment, Governance Position, and Value Position form the two-dimensional stance map; AI Capability Belief stays separate as a side tag.</p>
       </div>
 
@@ -1114,67 +1175,6 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <section class="interactive" id="map" aria-label="Interactive thought map">
-      <section class="chart-shell" aria-label="AI thought spectrum chart">
-        <div class="chart-title">
-          <h2>Interactive map</h2>
-          <p>
-            The further left, the more the position leans toward control, pauses, thresholds, and high-risk judgment. The further right, the more it leans toward deployment, openness, diffusion, and opportunity-cost concern.
-            The higher up, the more it emphasizes human dignity, democratic governance, and human compatibility. The lower down, the more it emphasizes computation-centered, posthuman, or techno-capital autonomy.
-          </p>
-          <div class="toolbar" id="filters" aria-label="Category filters"></div>
-          <div class="toolbar">
-            <input class="search" id="search" type="search" placeholder="Search thinkers, movements, works, or keywords">
-          </div>
-        </div>
-        <div class="plot-wrap">
-          <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
-            <title id="chartTitle">AI Thought Spectrum Map</title>
-            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk judgment, governance position, and value position.</desc>
-          </svg>
-        </div>
-      </section>
-
-      <aside class="detail-panel" aria-label="Selected thinker details">
-        <div class="detail-head">
-          <h2 id="detailName">Select a point</h2>
-          <div class="cluster" id="detailCluster">Click a thinker or movement to see its core idea, representative works, and reading focus.</div>
-          <div class="scores">
-            <div class="score">
-              <b>Horizontal</b>
-              <span id="riskScore">-</span>
-            </div>
-            <div class="score">
-              <b>Vertical</b>
-              <span id="humanismScore">-</span>
-            </div>
-            <div class="score">
-              <b>Influence</b>
-              <span id="influenceScore">-</span>
-            </div>
-          </div>
-          <div class="dimension-row">
-            <span><b>Risk Judgment</b><em id="diagnosisScore">-</em></span>
-            <span><b>Governance Position</b><em id="responseScore">-</em></span>
-            <span><b>Value Position</b><em id="valueScore">-</em></span>
-          </div>
-        </div>
-        <div class="detail-body">
-          <div class="section-title">Core idea</div>
-          <p id="stanceText">The map initially selects Rich Sutton because the Bitter Lesson is a technical-epistemic anchor for contemporary AI culture.</p>
-          <div class="section-title">Why placed here</div>
-          <p id="placementText">Coordinates help comparison; they are not final labels.</p>
-          <div class="section-title">Representative works</div>
-          <div id="worksMini"></div>
-          <div class="section-title">Influence channels</div>
-          <div class="pill-list" id="basis"></div>
-          <div class="section-title">Reading focus</div>
-          <p id="readingFocus"></p>
-          <p class="footnote"><a id="profileJump" href="#profiles">Jump to the full profile card</a></p>
-        </div>
-      </aside>
     </section>
 
     <section class="section" id="profiles">

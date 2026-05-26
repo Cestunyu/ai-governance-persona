@@ -945,9 +945,9 @@
       <div class="brand">AI Social Thought Spectrum</div>
       <nav class="nav" aria-label="Page sections">
         <a href="ai-thought-spectrum-visualization-en.html">English</a>
+        <a href="#map">交互地图</a>
         <a href="#why-2d">四条光谱</a>
         <a href="#distribution">主要区域</a>
-        <a href="#map">交互地图</a>
         <a href="#profiles">人物与流派</a>
         <a href="#works">代表作</a>
         <a href="#reading">阅读路线</a>
@@ -1003,7 +1003,7 @@
         <div class="map-note">
           <h2>这页怎么用</h2>
           <p>
-            先看四条光谱，再看散点图。点击一个点，可以看到它为什么被放在这里、代表文本是什么、和哪些立场最容易混淆。
+            先看交互地图，再看四条光谱。点击一个点，可以看到它为什么被放在这里、代表文本是什么、和哪些立场最容易混淆。
           </p>
           <p>
             坐标是为了帮助比较和阅读，不是最终裁判。复杂人物会横跨多个区域；图上的位置只表示这套文本和公共立场中的主导倾向。
@@ -1012,9 +1012,70 @@
       </aside>
     </section>
 
+    <section class="interactive" id="map" aria-label="Interactive thought map">
+      <section class="chart-shell" aria-label="AI thought spectrum chart">
+        <div class="chart-title">
+          <h2>交互地图</h2>
+          <p>
+            横轴越左，越偏控制、暂停、门槛和高风险判断；越右，越偏部署、开放、扩散和机会成本判断。
+            纵轴越上，越强调人的尊严、民主治理和人类兼容；越下，越强调计算中心、后人类或技术资本自治。
+          </p>
+          <div class="toolbar" id="filters" aria-label="Category filters"></div>
+          <div class="toolbar">
+            <input class="search" id="search" type="search" placeholder="搜索人物、流派、作品或关键词">
+          </div>
+        </div>
+        <div class="plot-wrap">
+          <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
+            <title id="chartTitle">AI 思想光谱地图</title>
+            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk judgment, governance position, and value position.</desc>
+          </svg>
+        </div>
+      </section>
+
+      <aside class="detail-panel" aria-label="Selected thinker details">
+        <div class="detail-head">
+          <h2 id="detailName">选择一个节点</h2>
+          <div class="cluster" id="detailCluster">点击散点图中的人物或流派，查看思想概况、代表作和阅读重点。</div>
+          <div class="scores">
+            <div class="score">
+              <b>横向位置</b>
+              <span id="riskScore">-</span>
+            </div>
+            <div class="score">
+              <b>纵向位置</b>
+              <span id="humanismScore">-</span>
+            </div>
+            <div class="score">
+              <b>影响力</b>
+              <span id="influenceScore">-</span>
+            </div>
+          </div>
+          <div class="dimension-row">
+            <span><b>风险判断</b><em id="diagnosisScore">-</em></span>
+            <span><b>治理位置</b><em id="responseScore">-</em></span>
+            <span><b>价值位置</b><em id="valueScore">-</em></span>
+          </div>
+        </div>
+        <div class="detail-body">
+          <div class="section-title">核心思想</div>
+          <p id="stanceText">这张图默认先选中 Rich Sutton，因为 Bitter Lesson 是理解当代 AI 文化的技术认识论锚点。</p>
+          <div class="section-title">为什么放在这里</div>
+          <p id="placementText">坐标用来帮助比较，不是最终标签。</p>
+          <div class="section-title">代表作</div>
+          <div id="worksMini"></div>
+          <div class="section-title">影响渠道</div>
+          <div class="pill-list" id="basis"></div>
+          <div class="section-title">阅读重点</div>
+          <p id="readingFocus"></p>
+          <p class="footnote"><a id="profileJump" href="#profiles">跳到下方完整人物卡片</a></p>
+        </div>
+      </aside>
+    </section>
+
     <section class="section" id="why-2d">
       <div class="section-head">
-        <h2>先看四条光谱</h2>
+        <h2>四条结果光谱</h2>
         <p>问卷结果先显示四条直观光谱。风险判断、治理位置和价值位置决定二维立场图；能力判断单独作为辅助标签。</p>
       </div>
 
@@ -1114,67 +1175,6 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <section class="interactive" id="map" aria-label="Interactive thought map">
-      <section class="chart-shell" aria-label="AI thought spectrum chart">
-        <div class="chart-title">
-          <h2>交互地图</h2>
-          <p>
-            横轴越左，越偏控制、暂停、门槛和高风险判断；越右，越偏部署、开放、扩散和机会成本判断。
-            纵轴越上，越强调人的尊严、民主治理和人类兼容；越下，越强调计算中心、后人类或技术资本自治。
-          </p>
-          <div class="toolbar" id="filters" aria-label="Category filters"></div>
-          <div class="toolbar">
-            <input class="search" id="search" type="search" placeholder="搜索人物、流派、作品或关键词">
-          </div>
-        </div>
-        <div class="plot-wrap">
-          <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
-            <title id="chartTitle">AI 思想光谱地图</title>
-            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk judgment, governance position, and value position.</desc>
-          </svg>
-        </div>
-      </section>
-
-      <aside class="detail-panel" aria-label="Selected thinker details">
-        <div class="detail-head">
-          <h2 id="detailName">选择一个节点</h2>
-          <div class="cluster" id="detailCluster">点击散点图中的人物或流派，查看思想概况、代表作和阅读重点。</div>
-          <div class="scores">
-            <div class="score">
-              <b>横向位置</b>
-              <span id="riskScore">-</span>
-            </div>
-            <div class="score">
-              <b>纵向位置</b>
-              <span id="humanismScore">-</span>
-            </div>
-            <div class="score">
-              <b>影响力</b>
-              <span id="influenceScore">-</span>
-            </div>
-          </div>
-          <div class="dimension-row">
-            <span><b>风险判断</b><em id="diagnosisScore">-</em></span>
-            <span><b>治理位置</b><em id="responseScore">-</em></span>
-            <span><b>价值位置</b><em id="valueScore">-</em></span>
-          </div>
-        </div>
-        <div class="detail-body">
-          <div class="section-title">核心思想</div>
-          <p id="stanceText">这张图默认先选中 Rich Sutton，因为 Bitter Lesson 是理解当代 AI 文化的技术认识论锚点。</p>
-          <div class="section-title">为什么放在这里</div>
-          <p id="placementText">坐标用来帮助比较，不是最终标签。</p>
-          <div class="section-title">代表作</div>
-          <div id="worksMini"></div>
-          <div class="section-title">影响渠道</div>
-          <div class="pill-list" id="basis"></div>
-          <div class="section-title">阅读重点</div>
-          <p id="readingFocus"></p>
-          <p class="footnote"><a id="profileJump" href="#profiles">跳到下方完整人物卡片</a></p>
-        </div>
-      </aside>
     </section>
 
     <section class="section" id="profiles">
