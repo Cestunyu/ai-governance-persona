@@ -47,7 +47,8 @@ Use these buckets when collecting texts:
 - `ai-ideology-quiz.html`: Chinese clean quiz-only page with one-question-at-a-time flow and reference points from the two-axis thinker map.
 - `ai-ideology-quiz-en.html`: English clean quiz-only page with the same scoring logic, reference points, and language switch.
 - `ai-ideology-placement-quiz.html`: richer experimental page with live profile, copyable summary, and PNG share-poster logic.
-- `ai-thought-spectrum-visualization.html`: mother page for explaining the two-axis map and browsing thinkers, movements, and representative works.
+- `ai-thought-spectrum-visualization.html`: Chinese public-facing map for explaining the AI thought spectrum and browsing thinkers, movements, and representative works.
+- `ai-thought-spectrum-visualization-en.html`: English public-facing version of the same spectrum map.
 - `ROADMAP.md`: current two-day build plan and publication path.
 - `CURRENT.md`: active state, active files, and next actions.
 - `research/2026-05-14-ai-social-thought-spectrum-source-map.md`: source map for the spectrum and representative positions.
@@ -58,8 +59,8 @@ Use these buckets when collecting texts:
 The project now has four parallel lines:
 
 - Measurement: turn AI attitudes into a closed questionnaire and two-axis coordinates.
-- Explanation: make the two-axis map legible through the visualization page and source map.
-- Meme layer: convert coordinates into SBTI-style shareable profiles without letting the joke replace the measurement.
+- Explanation: make the spectrum map legible through the bilingual visualization pages and source map.
+- Meme layer: convert coordinates into short shareable profiles without letting the joke replace the measurement.
 - Data pipeline: collect pilot responses, store only the fields needed for analysis, and keep raw identifiable data out of this repository.
 
 ## Folder Structure
@@ -75,11 +76,12 @@ The project now has four parallel lines:
   - `2026-05-19-ai-ideology-placement-battery.md`: full pilot battery and scoring design
   - `2026-05-19-ai-ideology-short-locator-zh.md`: Chinese short locator for casual pilots
   - `2026-05-19-ai-ideology-closed-questionnaire-v1-zh.md`: closed-ended pilot questionnaire structure for data collection
-  - `2026-05-19-ai-ideology-meme-profiles-zh.md`: SBTI-style meme profile copy for result cards
+  - `2026-05-19-ai-ideology-meme-profiles-zh.md`: short profile copy for result cards
 - `ai-ideology-quiz.html`: standalone quiz-only Chinese page for data collection, using an MBTI-style one-question-at-a-time flow
 - `ai-ideology-quiz-en.html`: standalone quiz-only English page for international respondents
 - `ai-ideology-placement-quiz.html`: standalone Chinese HTML quiz that scores, plots, profiles, and generates PNG share posters for respondents
-- `ai-thought-spectrum-visualization.html`: standalone interactive visualization
+- `ai-thought-spectrum-visualization.html`: standalone Chinese interactive visualization
+- `ai-thought-spectrum-visualization-en.html`: standalone English interactive visualization
 - `cycles/`: dated learning cycles
 - `_system/checks/`: reusable checks for classifying new texts
 - `research/`: durable source maps and research context
@@ -96,11 +98,12 @@ The project now has four parallel lines:
 7. `questionnaires/2026-05-19-ai-ideology-meme-profiles-zh.md`
 8. `ai-ideology-placement-quiz.html`
 9. `ai-thought-spectrum-visualization.html`
-10. `concepts/ai-thought-spectrum-map.md`
-11. `data/ai-thought-spectrum.json`
-12. `_system/GUIDE.md`
-13. `research/2026-05-14-ai-social-thought-spectrum-source-map.md`
-14. `planning/2026-05-19-ai-ideology-quiz-pilot.md`
+10. `ai-thought-spectrum-visualization-en.html`
+11. `concepts/ai-thought-spectrum-map.md`
+12. `data/ai-thought-spectrum.json`
+13. `_system/GUIDE.md`
+14. `research/2026-05-14-ai-social-thought-spectrum-source-map.md`
+15. `planning/2026-05-19-ai-ideology-quiz-pilot.md`
 
 ## Current Default
 

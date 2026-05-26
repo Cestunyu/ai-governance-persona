@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI 思想光谱地图</title>
-  <meta name="description" content="一张比较 AI 思想立场的互动地图：问题诊断、治理响应，以及人类/社会结构在智能未来中的位置。">
-  <link rel="canonical" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization.html">
+  <title>AI Thought Spectrum Map</title>
+  <meta name="description" content="An interactive map of AI thought: what different thinkers diagnose as the problem, how they want AI governed, and where humans fit in the future of intelligence.">
+  <link rel="canonical" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization-en.html">
   <link rel="alternate" hreflang="zh-CN" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization.html">
   <link rel="alternate" hreflang="en" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization-en.html">
-  <meta property="og:title" content="AI 思想光谱地图">
-  <meta property="og:description" content="比较 AI 风险、治理、社会批判、技术乐观和加速主义等立场的互动地图。">
+  <meta property="og:title" content="AI Thought Spectrum Map">
+  <meta property="og:description" content="An interactive map comparing AI safety, social critique, techno-optimism, scaling thought, and accelerationist positions.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization.html">
+  <meta property="og:url" content="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization-en.html">
   <style>
     :root {
       color-scheme: light;
@@ -870,15 +870,15 @@
     <div class="topbar-inner">
       <div class="brand">AI Social Thought Spectrum</div>
       <nav class="nav" aria-label="Page sections">
-        <a href="ai-thought-spectrum-visualization-en.html">English</a>
-        <a href="#why-2d">怎么读图</a>
-        <a href="#quiz-flow">测试逻辑</a>
-        <a href="#method">方法限制</a>
-        <a href="#distribution">主要区域</a>
-        <a href="#map">交互地图</a>
-        <a href="#profiles">人物与流派</a>
-        <a href="#works">代表作</a>
-        <a href="#reading">阅读路线</a>
+        <a href="ai-thought-spectrum-visualization.html">Chinese</a>
+        <a href="#why-2d">How to Read</a>
+        <a href="#quiz-flow">Quiz Logic</a>
+        <a href="#method">Method</a>
+        <a href="#distribution">Regions</a>
+        <a href="#map">Map</a>
+        <a href="#profiles">Thinkers</a>
+        <a href="#works">Works</a>
+        <a href="#reading">Reading Path</a>
       </nav>
     </div>
   </div>
@@ -886,55 +886,55 @@
   <main class="wrap">
     <section class="hero" aria-labelledby="page-title">
       <div class="hero-main">
-        <p class="kicker">AI 立场地图</p>
-        <h1 id="page-title">不是所有“AI 风险”或“AI 乐观”都在说同一件事</h1>
+        <p class="kicker">AI Stance Map</p>
+        <h1 id="page-title">Not Every “AI Risk” or “AI Optimism” Claim Means the Same Thing</h1>
         <p class="lead">
-          这张图把围绕 AI 的主要人物、机构和思想流派放在同一张地图上。它关心三个问题：
-          他们最担心什么，他们希望怎样治理 AI，以及他们认为人类在智能未来中应该处在什么位置。
-          下面的二维图是一个阅读工具，不是给任何人贴永久标签。
+          This map places major AI thinkers, institutions, and movements on one shared field. It asks three questions:
+          what they think the main problem is, how they want AI governed, and where humans should stand in the future of intelligence.
+          The two-dimensional map below is a reading tool, not a permanent label for anyone.
         </p>
         <div class="claim-strip">
           <div class="claim">
-            <b>“担心 AI”并不只有一种意思</b>
-            <span>Yudkowsky 担心失控和灭绝风险；Bender/Gebru 担心数据、劳工、环境和权力；Narayanan/Kapoor 担心过度宣传和误用。</span>
+            <b>“Worried about AI” is not one position</b>
+            <span>Yudkowsky worries about loss of control and extinction risk; Bender/Gebru about data, labor, environment, and power; Narayanan/Kapoor about overclaiming and misuse.</span>
           </div>
           <div class="claim">
-            <b>“支持发展 AI”也不是一种立场</b>
-            <span>Andrew Ng 讲生产力，Altman 讲受治理的 AGI，Kurzweil 讲奇点，e/acc 讲加速。它们不能被压成同一种乐观主义。</span>
+            <b>“Pro-AI” is not one position either</b>
+            <span>Andrew Ng emphasizes productivity, Altman governed AGI, Kurzweil the singularity, and e/acc acceleration. These are not the same optimism.</span>
           </div>
           <div class="claim">
-            <b>技术判断会改变政治判断</b>
-            <span>如果你相信规模化和搜索会继续带来突破，和如果你认为当前 AI 多是过度包装，你对监管、开源和部署速度的直觉会很不同。</span>
+            <b>Technical beliefs change political instincts</b>
+            <span>If you believe scale and search will keep producing breakthroughs, your instincts about regulation, open source, and deployment speed will differ from someone who sees today’s AI as overclaimed.</span>
           </div>
         </div>
       </div>
 
-      <aside class="hero-side" aria-label="Project summary">
+      <aside class="hero-side" aria-label="Map summary">
         <div class="stats">
           <div class="stat">
             <strong id="statThinkers">22</strong>
-            <span>人物、机构或运动节点</span>
+            <span>thinkers, institutions, or movements</span>
           </div>
           <div class="stat">
             <strong id="statWorks">44</strong>
-            <span>代表性文本和机构文件</span>
+            <span>representative works and institutional texts</span>
           </div>
           <div class="stat">
             <strong>3</strong>
-            <span>判断维度：风险、治理、价值</span>
+            <span>dimensions: diagnosis, governance, value</span>
           </div>
           <div class="stat">
             <strong>10</strong>
-            <span>主要流派桶：安全、批判、架构、乐观、加速等</span>
+            <span>main clusters: safety, critique, architecture, optimism, acceleration, and more</span>
           </div>
         </div>
         <div class="map-note">
-          <h2>这页怎么用</h2>
+          <h2>How to use this page</h2>
           <p>
-            先看三个判断维度，再看散点图。点击一个点，可以看到它为什么被放在这里、代表文本是什么、和哪些立场最容易混淆。
+            Start with the three dimensions, then use the scatterplot. Click a point to see why it is placed there, which texts anchor it, and which nearby positions are easy to confuse with it.
           </p>
           <p>
-            坐标是为了帮助比较和阅读，不是最终裁判。复杂人物会横跨多个区域；图上的位置只表示这套文本和公共立场中的主导倾向。
+            The coordinates are for comparison and reading, not final judgment. Complex thinkers often span multiple regions; each point captures the dominant tendency in the public texts used here.
           </p>
         </div>
       </aside>
@@ -942,198 +942,198 @@
 
     <section class="section" id="why-2d">
       <div class="section-head">
-        <h2>怎么读这张图？</h2>
+        <h2>How to read the map</h2>
         <p>
-          很多 AI 争论看起来像“悲观 vs 乐观”或“监管 vs 创新”，但真正的分歧通常分成三层：
-          第一，问题到底是什么；第二，我们应该怎样回应；第三，人类和社会制度是否仍应是 AI 的最终约束。
+          Many AI debates look like “pessimism vs optimism” or “regulation vs innovation.” The deeper disagreement usually has three layers:
+          what the problem is, how society should respond, and whether humans and social institutions should remain the final constraint on AI.
         </p>
       </div>
       <div class="axis-grid">
         <div class="axis-box">
-          <h3>1. 问题诊断</h3>
+          <h3>1. Problem Diagnosis</h3>
           <div class="scale">
-            <div class="scale-row"><code>+2</code><span>核心问题是前沿 AI 失控、灾难性后果或文明级风险。</span></div>
-            <div class="scale-row"><code>+1</code><span>前沿风险很严肃，但仍可能通过技术和制度治理降低。</span></div>
-            <div class="scale-row"><code>0</code><span>重点在现实社会伤害、普通技术误用、权力结构或过度宣传。</span></div>
-            <div class="scale-row"><code>-1</code><span>风险总体可管理，过度谨慎和部署不足本身也会造成损失。</span></div>
-            <div class="scale-row"><code>-2</code><span>主要危险是发展太慢、约束过多或反技术政治。</span></div>
+            <div class="scale-row"><code>+2</code><span>The core problem is frontier AI loss of control, catastrophic outcomes, or civilization-level risk.</span></div>
+            <div class="scale-row"><code>+1</code><span>Frontier risks are serious, but can still be reduced through technical and institutional governance.</span></div>
+            <div class="scale-row"><code>0</code><span>The focus is present social harm, ordinary misuse, power structures, or overclaiming.</span></div>
+            <div class="scale-row"><code>-1</code><span>The risks are broadly manageable; excess caution and underdeployment also create losses.</span></div>
+            <div class="scale-row"><code>-2</code><span>The main danger is moving too slowly, constraining too much, or letting anti-technology politics dominate.</span></div>
           </div>
         </div>
 
         <div class="axis-box">
-          <h3>2. 治理响应</h3>
+          <h3>2. Governance Response</h3>
           <div class="scale">
-            <div class="scale-row"><code>-2</code><span>倾向暂停、关停、许可、危险能力门槛和强安全证明。</span></div>
-            <div class="scale-row"><code>-1</code><span>倾向评估、审计、责任制度和受控部署。</span></div>
-            <div class="scale-row"><code>0</code><span>倾向按场景治理，不强烈偏向控制或开放。</span></div>
-            <div class="scale-row"><code>+1</code><span>倾向建设、部署、商业化、实验和能力扩散。</span></div>
-            <div class="scale-row"><code>+2</code><span>倾向开放扩散、反对少数机构把关和强加速。</span></div>
+            <div class="scale-row"><code>-2</code><span>Favors pauses, shutdowns, licensing, dangerous-capability thresholds, and strong safety proof.</span></div>
+            <div class="scale-row"><code>-1</code><span>Favors evaluations, audits, liability, and controlled deployment.</span></div>
+            <div class="scale-row"><code>0</code><span>Favors context-specific governance rather than a strong control or openness stance.</span></div>
+            <div class="scale-row"><code>+1</code><span>Favors building, deployment, commercialization, experimentation, and capability diffusion.</span></div>
+            <div class="scale-row"><code>+2</code><span>Favors open diffusion, resists control by a small number of institutions, and leans strongly accelerationist.</span></div>
           </div>
         </div>
 
         <div class="axis-box">
-          <h3>3. 价值中心</h3>
+          <h3>3. Value Center</h3>
           <div class="scale">
-            <div class="scale-row"><code>+2</code><span>强调人的尊严、民主、公正、权利和社会制度。</span></div>
-            <div class="scale-row"><code>+1</code><span>强调人类兼容、人类生存、偏好满足和可问责控制。</span></div>
-            <div class="scale-row"><code>0</code><span>主要讨论架构、能力、商业或经验判断，不强烈押注人本或反人本。</span></div>
-            <div class="scale-row"><code>-1</code><span>更相信计算、规模、搜索、学习和一般方法会压过人类直觉。</span></div>
-            <div class="scale-row"><code>-2</code><span>后人类或技术资本自治：未来智能不应由传统人类主义完全约束。</span></div>
+            <div class="scale-row"><code>+2</code><span>Emphasizes human dignity, democracy, justice, rights, and social institutions.</span></div>
+            <div class="scale-row"><code>+1</code><span>Emphasizes human compatibility, human survival, preference satisfaction, and accountable control.</span></div>
+            <div class="scale-row"><code>0</code><span>Mostly discusses architecture, capability, business, or empirical judgment without a strong humanist or anti-humanist commitment.</span></div>
+            <div class="scale-row"><code>-1</code><span>Trusts computation, scale, search, learning, and general methods more than human intuition.</span></div>
+            <div class="scale-row"><code>-2</code><span>Posthuman or techno-capital autonomy: future intelligence should not be fully constrained by traditional humanism.</span></div>
           </div>
         </div>
       </div>
 
       <div class="example-grid">
         <div class="example">
-          <h3>同样“担心 AI”，对象不同</h3>
-          <p>Yudkowsky 担心对齐失败导致人类灭绝；Bender/Gebru 担心数据、劳工、环境和代表性伤害；Narayanan/Kapoor 担心把普通技术包装成魔法。</p>
+          <h3>Same worry label, different object</h3>
+          <p>Yudkowsky worries that alignment failure could kill humanity; Bender/Gebru worry about data, labor, environment, and representation harms; Narayanan/Kapoor worry about ordinary technologies being packaged as magic.</p>
         </div>
         <div class="example">
-          <h3>同样“反暂停”，伦理不同</h3>
-          <p>Andrew Ng 的反暂停是生产力和实际应用乐观；Andreessen 的反暂停更强政治化；e/acc 和 Land 则把加速本身推到更高位置。</p>
+          <h3>Same anti-pause stance, different ethics</h3>
+          <p>Andrew Ng’s anti-pause stance is tied to productivity and applications; Andreessen’s is more politically charged; e/acc and Land give acceleration itself a much higher status.</p>
         </div>
         <div class="example">
-          <h3>技术思想不等于政策思想</h3>
-          <p>Sutton 的 Bitter Lesson 主要是技术认识论，不是治理宣言；LeCun 的世界模型路线也不是单纯“规模越大越好”的乐观。两者都影响政策直觉，但应分开处理。</p>
+          <h3>Technical thought is not the same as policy ideology</h3>
+          <p>Sutton’s Bitter Lesson is mainly a technical epistemology, not a governance manifesto. LeCun’s world-model agenda is not simply “bigger models are enough.” Both shape policy instincts, but should be kept distinct.</p>
         </div>
         <div class="example">
-          <h3>二维图只是阅读入口</h3>
-          <p>横轴把“问题诊断”和“治理响应”压缩在一起：越左越偏控制和高风险判断，越右越偏开放部署和机会成本判断。纵轴显示价值中心：越上越人类/社会结构中心，越下越智能中心或后人类。</p>
+          <h3>The two-axis chart is only an entry point</h3>
+          <p>The horizontal axis combines problem diagnosis and governance response: left means stronger control and higher risk diagnosis; right means more deployment, openness, and opportunity-cost concern. The vertical axis shows the value center: upward means more human/social-structure centered, downward means more intelligence-centered or posthuman.</p>
         </div>
       </div>
     </section>
 
     <section class="section" id="quiz-flow">
       <div class="section-head">
-        <h2>和测试题是什么关系？</h2>
+        <h2>How this relates to the quiz</h2>
         <p>
-          这张图解释测试背后的分类框架。测试本身是闭合问卷：核心坐标只来自同意度题，
-          情境题和最后的总体立场只用来复查画像，避免把相近立场误分。
+          This map explains the classification frame behind the quiz. The quiz itself is closed-ended: the core coordinates come only from agreement items,
+          while scenario choices and final self-placement are used as cross-checks to avoid confusing nearby positions.
         </p>
       </div>
       <div class="example-grid">
         <div class="example">
-          <h3>1. 核心计分题</h3>
-          <p>9 道五点同意度题覆盖风险诊断、治理响应和价值中心。它们是二维坐标和光谱标签的分数来源。</p>
+          <h3>1. Core scored items</h3>
+          <p>Nine five-point agreement items cover problem diagnosis, governance response, and value center. They produce the two-dimensional coordinate and spectrum label.</p>
         </div>
         <div class="example">
-          <h3>2. 情境复查题</h3>
-          <p>4 道具体情境题不改坐标，但会给画像提供弱证据，用来检查用户在发布、公共部门、科研和开源场景中的实际反应。</p>
+          <h3>2. Scenario cross-checks</h3>
+          <p>Four concrete scenario items do not move the coordinate, but provide weak evidence about how a user reacts in release, public-sector, research, and open-source contexts.</p>
         </div>
         <div class="example">
-          <h3>3. 总体立场复查</h3>
-          <p>最后 1 题是多选自我定位。它不改变坐标，但会帮助系统在相近类型之间做辅助区分，也让用户检查结果是否像自己。</p>
+          <h3>3. Final self-placement</h3>
+          <p>The final multiple-choice item does not change the coordinate. It helps distinguish nearby types and lets users check whether the result feels recognizable.</p>
         </div>
         <div class="example">
-          <h3>4. 图谱参考点</h3>
-          <p>散点图中的人物和流派不会决定你的结果。它们是参照物，帮助你理解“这个位置大概像谁、和谁相邻、和谁相反”。</p>
+          <h3>4. Reference points</h3>
+          <p>The thinkers and movements on the scatterplot do not determine your result. They are reference points for understanding who a position resembles, who sits nearby, and who sits opposite.</p>
         </div>
       </div>
       <div class="example-grid">
         <div class="example">
-          <h3>为什么不只问“你怕不怕 AI”？</h3>
-          <p>因为有人怕的是失控，有人怕的是公司和国家权力，有人怕的是过度宣传，有人怕的是限制太多。单个问题会把这些立场混在一起。</p>
+          <h3>Why not just ask “Are you afraid of AI?”</h3>
+          <p>Because some people fear loss of control, some fear corporate and state power, some fear overclaiming, and some fear too much restriction. One question would collapse these positions together.</p>
         </div>
         <div class="example">
-          <h3>为什么还显示能力判断？</h3>
-          <p>能力判断不是第四个坐标轴，而是辅助标签：用户更接近“泡沫怀疑”、证据混合，还是相信 AI 会带来深层变革。</p>
+          <h3>Why show capability belief?</h3>
+          <p>Capability belief is not a fourth coordinate. It is a secondary tag: is the user closer to overclaiming skepticism, mixed evidence, or belief in deep AI transformation?</p>
         </div>
         <div class="example">
-          <h3>画像与图谱的关系</h3>
-          <p>测试结果会给出一个简短画像；图谱则展示更细的人物和流派。画像适合分享，图谱适合理解背后的思想差异。</p>
+          <h3>Profile vs map</h3>
+          <p>The quiz gives a short profile. The map shows finer-grained thinkers and movements. The profile is shareable; the map is for understanding the underlying differences.</p>
         </div>
         <div class="example">
-          <h3>这不是科学量表</h3>
-          <p>它是一个公开阅读和自我定位工具。坐标帮助比较，不代表心理测量意义上的稳定人格类型。</p>
+          <h3>This is not a psychometric scale</h3>
+          <p>It is a public reading and self-placement tool. Coordinates help comparison; they do not imply stable personality types in a psychometric sense.</p>
         </div>
       </div>
     </section>
 
     <section class="section" id="method">
       <div class="section-head">
-        <h2>方法和限制</h2>
+        <h2>Method and limitations</h2>
         <p>
-          这张图是解释性地图，不是学术量表。每个节点根据公开文本、机构文件和长期公共立场人工标注，
-          再把三个判断维度压缩成一个二维坐标，方便比较相邻和相反的位置。
+          This is an interpretive map, not an academic scale. Each point is hand-coded from public texts, institutional documents, and long-running public positions,
+          then compressed from three judgment dimensions into a two-dimensional coordinate for easier comparison.
         </p>
       </div>
       <div class="example-grid">
         <div class="example">
-          <h3>比较对象</h3>
-          <p>图上既有人物，也有机构和运动。它比较的是公开论证和代表性文本中的主导倾向，不等于对个人全部思想的最终概括。</p>
+          <h3>What is being compared</h3>
+          <p>The map includes people, institutions, and movements. It compares the dominant tendency in public arguments and representative texts; it is not a final summary of anyone’s entire thought.</p>
         </div>
         <div class="example">
-          <h3>横轴怎么来</h3>
-          <p>横轴综合“治理响应”和“问题诊断”：更偏控制、暂停和文明级风险判断会向左；更偏部署、开放和机会成本判断会向右。</p>
+          <h3>How the horizontal axis works</h3>
+          <p>The horizontal axis combines governance response and problem diagnosis: more control, pause, and civilization-risk judgment moves left; more deployment, openness, and opportunity-cost concern moves right.</p>
         </div>
         <div class="example">
-          <h3>纵轴怎么来</h3>
-          <p>纵轴显示价值中心：越上越强调人的尊严、公共问责、民主和社会结构；越下越强调智能、计算、技术资本或后人类方向。</p>
+          <h3>How the vertical axis works</h3>
+          <p>The vertical axis shows the value center: upward means more emphasis on human dignity, public accountability, democracy, and social structures; downward means more emphasis on intelligence, computation, techno-capital, or posthuman directions.</p>
         </div>
         <div class="example">
-          <h3>不确定性</h3>
-          <p>复杂人物会横跨多个位置。新文本、新事件或更好的证据出现时，坐标应该调整；这个页面提供的是当前版本的阅读框架。</p>
+          <h3>Uncertainty</h3>
+          <p>Complex thinkers span multiple positions. New texts, events, or better evidence should change coordinates. This page presents the current version of the reading frame.</p>
         </div>
       </div>
     </section>
 
     <section class="section" id="distribution">
       <div class="section-head">
-        <h2>主要区域</h2>
+        <h2>Main regions</h2>
         <p>
-          图上相近的人不一定完全同意彼此，只是他们在这三个问题上的重心相近。下面的区域说明可以作为阅读地图。
+          People who sit near each other do not necessarily agree. They simply share a center of gravity across the three questions. The region notes below are a reading guide.
         </p>
       </div>
       <div class="distribution">
         <div class="summary-list" id="categorySummary"></div>
         <div class="matrix">
           <div class="quadrant">
-            <h3>左上：灾难风险、控制与人类保护</h3>
-            <p>这里聚集文明级风险、AI 对齐和强治理人物。它们通常认为风险很高，治理应更谨慎，目标仍是保护人类。</p>
+            <h3>Upper left: catastrophic risk, control, and human protection</h3>
+            <p>This region gathers civilization-level risk, AI alignment, and strong-governance positions. They usually see the risk as high, governance as needing caution, and the goal as protecting humanity.</p>
             <ul>
               <li>Yudkowsky / MIRI</li>
               <li>Bostrom</li>
-              <li>Russell、Christiano、Cotra、Hendrycks</li>
+              <li>Russell, Christiano, Cotra, Hendrycks</li>
             </ul>
           </div>
           <div class="quadrant">
-            <h3>中上：社会伤害、权力与普通技术</h3>
-            <p>这里不一定接受 AGI 灭绝叙事，而是把 AI 放回制度、数据、劳工、种族、环境和过度宣传中理解。它们通常高度强调人类社会和公共问责。</p>
+            <h3>Upper middle: social harm, power, and ordinary technology</h3>
+            <p>This region does not necessarily accept the AGI extinction story. It puts AI back into institutions, data, labor, race, environment, and overclaiming, with strong emphasis on human society and public accountability.</p>
             <ul>
               <li>Bender / Gebru / Mitchell / McMillan-Major</li>
-              <li>Crawford、Benjamin</li>
-              <li>Narayanan / Kapoor、Marcus / Mitchell</li>
+              <li>Crawford, Benjamin</li>
+              <li>Narayanan / Kapoor, Marcus / Mitchell</li>
             </ul>
           </div>
           <div class="quadrant">
-            <h3>右上：建设、部署与人类收益</h3>
-            <p>这里承认 AI 的治理问题，但总体认为应用、生产力和科学收益应当积极推进。它们更重视发展不足的机会成本，价值叙事仍偏人类收益。</p>
+            <h3>Upper right: building, deployment, and human benefit</h3>
+            <p>This region acknowledges AI governance problems but thinks applications, productivity, and scientific gains should move forward. It stresses the opportunity cost of underdeployment and frames value around human benefit.</p>
             <ul>
               <li>Andrew Ng</li>
               <li>Sam Altman / OpenAI</li>
-              <li>Dario Amodei / Anthropic 处在安全与建设之间</li>
+              <li>Dario Amodei / Anthropic sits between safety and building</li>
             </ul>
           </div>
           <div class="quadrant">
-            <h3>左下：强系统治理与后人类控制</h3>
-            <p>这里不信任开放扩散，但也不把当下人类偏好当作最终尺度。它强调行星尺度计算、系统架构和非传统人类中心治理。</p>
+            <h3>Lower left: strong system governance and posthuman control</h3>
+            <p>This region distrusts open diffusion but also does not treat current human preferences as the final measure. It emphasizes planetary-scale computation, system architecture, and non-traditional human-centered governance.</p>
             <ul>
               <li>Benjamin Bratton</li>
               <li>Controlled Posthumanism / Posthuman Control</li>
             </ul>
           </div>
           <div class="quadrant">
-            <h3>右下：规模、开放加速与后人类边界</h3>
-            <p>这里从技术认识论进入开放加速、奇点或技术资本叙事。Sutton 是 Bitter Lesson 的规模和一般方法锚点；e/acc 和 Land 则分别偏开放加速与强后人类边界。</p>
+            <h3>Lower right: scale, open acceleration, and posthuman boundaries</h3>
+            <p>This region moves from technical epistemology into open acceleration, singularity, or techno-capital narratives. Sutton anchors scale and general methods through the Bitter Lesson; e/acc and Land move toward open acceleration and strong posthuman boundaries.</p>
             <ul>
               <li>Rich Sutton</li>
-              <li>Ray Kurzweil、Marc Andreessen</li>
-              <li>e/acc、Nick Land</li>
+              <li>Ray Kurzweil, Marc Andreessen</li>
+              <li>e/acc, Nick Land</li>
             </ul>
           </div>
           <div class="quadrant">
-            <h3>中右：架构乐观与世界模型路线</h3>
-            <p>这里反对近期灾难论叙事，也支持开放和建设，但不是简单的“大模型继续变大就够了”的乐观；核心判断是需要世界模型、规划能力和新架构。</p>
+            <h3>Middle right: architecture optimism and world models</h3>
+            <p>This region rejects near-term doom narratives and supports openness and building, but is not simply “bigger language models are enough” optimism. The core claim is that world models, planning, and new architectures matter.</p>
             <ul>
               <li>Yann LeCun</li>
               <li>Architecture optimism / World models</li>
@@ -1146,19 +1146,19 @@
     <section class="interactive" id="map" aria-label="Interactive thought map">
       <section class="chart-shell" aria-label="AI thought spectrum chart">
         <div class="chart-title">
-          <h2>交互地图</h2>
+          <h2>Interactive map</h2>
           <p>
-            横轴越左，越偏控制、暂停、门槛和高风险判断；越右，越偏部署、开放、扩散和机会成本判断。
-            纵轴越上，越强调人的尊严、民主治理和人类兼容；越下，越强调计算中心、后人类或技术资本自治。
+            The further left, the more the position leans toward control, pauses, thresholds, and high-risk judgment. The further right, the more it leans toward deployment, openness, diffusion, and opportunity-cost concern.
+            The higher up, the more it emphasizes human dignity, democratic governance, and human compatibility. The lower down, the more it emphasizes computation-centered, posthuman, or techno-capital autonomy.
           </p>
           <div class="toolbar" id="filters" aria-label="Category filters"></div>
           <div class="toolbar">
-            <input class="search" id="search" type="search" placeholder="搜索人物、流派、作品或关键词">
+            <input class="search" id="search" type="search" placeholder="Search thinkers, movements, works, or keywords">
           </div>
         </div>
         <div class="plot-wrap">
           <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
-            <title id="chartTitle">AI 思想光谱地图</title>
+            <title id="chartTitle">AI Thought Spectrum Map</title>
             <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk diagnosis, governance response, and value center.</desc>
           </svg>
         </div>
@@ -1166,50 +1166,50 @@
 
       <aside class="detail-panel" aria-label="Selected thinker details">
         <div class="detail-head">
-          <h2 id="detailName">选择一个节点</h2>
-          <div class="cluster" id="detailCluster">点击散点图中的人物或流派，查看思想概况、代表作和阅读重点。</div>
+          <h2 id="detailName">Select a point</h2>
+          <div class="cluster" id="detailCluster">Click a thinker or movement to see its core idea, representative works, and reading focus.</div>
           <div class="scores">
             <div class="score">
-              <b>横向位置</b>
+              <b>Horizontal</b>
               <span id="riskScore">-</span>
             </div>
             <div class="score">
-              <b>纵向位置</b>
+              <b>Vertical</b>
               <span id="humanismScore">-</span>
             </div>
             <div class="score">
-              <b>影响力</b>
+              <b>Influence</b>
               <span id="influenceScore">-</span>
             </div>
           </div>
           <div class="dimension-row">
-            <span><b>问题诊断</b><em id="diagnosisScore">-</em></span>
-            <span><b>治理响应</b><em id="responseScore">-</em></span>
-            <span><b>价值中心</b><em id="valueScore">-</em></span>
+            <span><b>Diagnosis</b><em id="diagnosisScore">-</em></span>
+            <span><b>Response</b><em id="responseScore">-</em></span>
+            <span><b>Value Center</b><em id="valueScore">-</em></span>
           </div>
         </div>
         <div class="detail-body">
-          <div class="section-title">核心思想</div>
-          <p id="stanceText">这张图默认先选中 Rich Sutton，因为 Bitter Lesson 是理解当代 AI 文化的技术认识论锚点。</p>
-          <div class="section-title">为什么放在这里</div>
-          <p id="placementText">坐标用来帮助比较，不是最终标签。</p>
-          <div class="section-title">代表作</div>
+          <div class="section-title">Core idea</div>
+          <p id="stanceText">The map initially selects Rich Sutton because the Bitter Lesson is a technical-epistemic anchor for contemporary AI culture.</p>
+          <div class="section-title">Why placed here</div>
+          <p id="placementText">Coordinates help comparison; they are not final labels.</p>
+          <div class="section-title">Representative works</div>
           <div id="worksMini"></div>
-          <div class="section-title">影响渠道</div>
+          <div class="section-title">Influence channels</div>
           <div class="pill-list" id="basis"></div>
-          <div class="section-title">阅读重点</div>
+          <div class="section-title">Reading focus</div>
           <p id="readingFocus"></p>
-          <p class="footnote"><a id="profileJump" href="#profiles">跳到下方完整人物卡片</a></p>
+          <p class="footnote"><a id="profileJump" href="#profiles">Jump to the full profile card</a></p>
         </div>
       </aside>
     </section>
 
     <section class="section" id="profiles">
       <div class="section-head">
-        <h2>人物与流派思想介绍</h2>
+        <h2>Thinker and movement profiles</h2>
         <p>
-          每张卡片回答四个问题：这个人或流派的核心思想是什么，为什么放在这个位置，代表性文本有哪些，以及阅读时最该抓住什么。
-          卡片也会列出一个“强对照位置”，帮助你避免把相邻但不同的立场混在一起。
+          Each card answers four questions: what the core idea is, why it sits at this position, which texts anchor it, and what to watch for while reading.
+          It also lists a strong contrast position, so nearby but distinct stances are not collapsed together.
         </p>
       </div>
       <div class="profile-grid" id="profileGrid"></div>
@@ -1217,10 +1217,10 @@
 
     <section class="section" id="works">
       <div class="section-head">
-        <h2>代表性工作总表</h2>
+        <h2>Representative works</h2>
         <p>
-          这个表不是完整书目，而是入门阅读清单。优先读“highest”和“high”的文本；
-          它们通常是一个流派的核心声明、机构文件或被反复引用的争论锚点。
+          This table is not a complete bibliography. It is an entry reading list. Start with “highest” and “high” texts;
+          they are usually core statements, institutional documents, or repeatedly cited anchors in the debate.
         </p>
       </div>
       <div class="works-table" id="worksTable"></div>
@@ -1228,32 +1228,32 @@
 
     <section class="section" id="reading">
       <div class="section-head">
-        <h2>建议阅读路线</h2>
+        <h2>Suggested reading path</h2>
         <p>
-          如果目标是快速建立判断力，不要按人物名随机读。更好的顺序是先读每个象限的锚点，再回到具体人物。
+          If the goal is to build judgment quickly, do not read randomly by name. Start with anchors for each region, then return to specific thinkers.
         </p>
       </div>
       <div class="example-grid">
         <div class="example">
-          <h3>第一步：先读技术认识论和安全极端</h3>
-          <p>从 Sutton 的 <i>The Bitter Lesson</i> 入手，再读 Yudkowsky 2008/2022 和 Bostrom 2012/2014。这样能先理解“规模为什么有吸引力”和“失控为什么被一些人看成灭绝问题”。</p>
+          <h3>Step 1: technical epistemology and the safety extreme</h3>
+          <p>Start with Sutton’s <i>The Bitter Lesson</i>, then read Yudkowsky 2008/2022 and Bostrom 2012/2014. This explains why scale is attractive and why some people treat loss of control as an extinction problem.</p>
         </div>
         <div class="example">
-          <h3>第二步：读架构乐观和普通技术</h3>
-          <p>读 LeCun 的 <i>A Path Towards Autonomous Machine Intelligence</i>，再读 Marcus/Mitchell、Narayanan/Kapoor。这样能区分“当前大模型路线还不够”和“AI 被过度宣传”这两种不同怀疑。</p>
+          <h3>Step 2: architecture optimism and ordinary technology</h3>
+          <p>Read LeCun’s <i>A Path Towards Autonomous Machine Intelligence</i>, then Marcus/Mitchell and Narayanan/Kapoor. This separates “today’s large-model route is not enough” from “AI is overclaimed.”</p>
         </div>
         <div class="example">
-          <h3>第三步：读批判 AI</h3>
-          <p>读 <i>Stochastic Parrots</i>、Crawford、Benjamin、Narayanan/Kapoor。它们把讨论从未来 AGI 拉回现实制度、数据、劳工、种族、环境和评估。</p>
+          <h3>Step 3: critical AI</h3>
+          <p>Read <i>Stochastic Parrots</i>, Crawford, Benjamin, and Narayanan/Kapoor. They pull the debate from future AGI back to institutions, data, labor, race, environment, and evaluation.</p>
         </div>
         <div class="example">
-          <h3>第四步：读乐观与加速主义</h3>
-          <p>读 Amodei、OpenAI、Ng、Andreessen、Kurzweil、e/acc 和 Land。重点不是问“谁对谁错”，而是看他们如何定义收益、约束、人类和未来。</p>
+          <h3>Step 4: optimism and accelerationism</h3>
+          <p>Read Amodei, OpenAI, Ng, Andreessen, Kurzweil, e/acc, and Land. The point is not only who is right, but how each defines benefit, constraint, humanity, and the future.</p>
         </div>
       </div>
       <p class="footnote">
-        说明：这是一张解释性地图，不是排名。部分代表作链接指向作者主页、机构页面、出版社、arXiv、ACM 或公开 essay。
-        页面最后更新：2026-05-26。
+        Note: this is an interpretive map, not a ranking. Some representative-work links point to author pages, institutional pages, publishers, arXiv, ACM, or public essays.
+        Last updated: 2026-05-26.
       </p>
     </section>
   </main>
@@ -1655,7 +1655,7 @@
         works: [
           { title: "The Stack: On Software and Sovereignty", year: 2016, type: "book", priority: "highest", url: "https://mitpress.mit.edu/9780262029575/the-stack/", why: "行星尺度计算和软件主权框架的核心书。" },
           { title: "The Revenge of the Real", year: 2021, type: "book", priority: "high", url: "https://www.versobooks.com/products/2749-the-revenge-of-the-real", why: "强治理、公共理性和后疫情政治框架的重要文本。" },
-          { title: "Antikythera", year: 2023, type: "research program", priority: "medium", url: "https://antikythera.org/about", why: "Bratton 主导的 planetary computation / synthetic intelligence 项目入口。" }
+          { title: "Antikythera", year: 2023, type: "research program", priority: "medium", url: "https://antikythera.org/about", why: "An entry point into Bratton's planetary computation and synthetic intelligence project." }
         ]
       },
       {
@@ -1895,12 +1895,364 @@
         diagnosis: item.risk,
         response: item.risk,
         humanism: item.humanism,
-        note: "这个节点暂时没有单独的三维说明。"
+        note: "No separate scoring note is available for this point yet."
       };
       item.projection = {
         x: projectedX(item),
         y: projectedY(item)
       };
+    });
+
+    const englishCategoryInfo = {
+      "X-risk safety": {
+        zh: "X-risk / alignment safety",
+        summary: "Treats advanced AI as a potential civilization-level risk; the core issues are control, alignment, oversight, and timelines."
+      },
+      "Catholic social humanism": {
+        zh: "Catholic social humanism / human dignity",
+        summary: "Starts from human dignity, the common good, protection of the vulnerable, labor, peace, and public responsibility."
+      },
+      "Frontier lab governance": {
+        zh: "Frontier lab governance",
+        summary: "Accepts both high upside and high risk, supporting continued frontier development with safety evaluations, deployment thresholds, and institutional commitments."
+      },
+      "Critical AI": {
+        zh: "Critical AI / social harm",
+        summary: "Focuses on institutions, data, labor, environment, race, representation, and power rather than only future AGI."
+      },
+      "Normal technology": {
+        zh: "Normal technology / overclaiming skepticism",
+        summary: "Treats AI as important but not magical, emphasizing capability evaluation, misuse, brittleness, and inflated claims."
+      },
+      "Scaling thought": {
+        zh: "Scaling / Bitter Lesson",
+        summary: "Emphasizes search, learning, computation, and general methods, weakening human handcrafted-knowledge centrality."
+      },
+      "Architecture optimism": {
+        zh: "Architecture optimism / world models",
+        summary: "Argues that current LLM scaling is not enough for human-level intelligence; world models, planning, memory, and new architectures matter."
+      },
+      "Posthuman control": {
+        zh: "Posthuman control / system governance",
+        summary: "Rejects open acceleration but also refuses to treat current human preferences as the final measure; emphasizes planetary computation and strong system governance."
+      },
+      "Pragmatic optimism": {
+        zh: "Pragmatic AI optimism",
+        summary: "Treats AI as a productivity and application platform, with emphasis on education, products, enterprise use, and industry deployment."
+      },
+      "Techno-optimism": {
+        zh: "Techno-optimism / singularity",
+        summary: "Places AI inside narratives of abundance, singularity, market freedom, and civilizational progress."
+      },
+      "Accelerationism": {
+        zh: "Accelerationism / posthuman boundary",
+        summary: "Treats constraint as a major danger and pushes technology, capital, or intelligence evolution beyond human-centered limits."
+      }
+    };
+    Object.entries(englishCategoryInfo).forEach(([category, patch]) => Object.assign(categoryInfo[category], patch));
+
+    const englishMovementDocs = {
+      "pause-giant-ai-experiments": { cluster: "AI pause / governance", why: "A movement document for the pause position." },
+      "statement-on-ai-risk": { cluster: "AI extinction-risk public messaging", why: "A compressed public statement of AI x-risk concern." },
+      "bletchley-declaration": { cluster: "AI safety governance", why: "An institutional expression of frontier AI safety at the government level." }
+    };
+    movementDocs.forEach(doc => Object.assign(doc, englishMovementDocs[doc.id] || {}));
+
+    const englishThinkerText = {
+      "eliezer-yudkowsky": {
+        cluster: "Rationalist AI x-risk / MIRI",
+        stance: "Advanced AI is likely to kill humanity if alignment is not solved first; the issue is not an ordinary security bug but goal misalignment under overwhelming capability.",
+        placement: "He sits at the far left because his public stance comes close to shutdown or a strong pause. His vertical score is +1 because the aim is human survival, but the argument is not primarily framed through democracy, justice, or social power.",
+        focus: "Read him on two levels: the technical argument about misaligned agency, and why he thinks gradual governance, safety evaluations, or industry self-regulation will not change the outcome.",
+        counter: "The strongest contrast is not generic optimism, but Christiano/Russell-style safety work that accepts serious risk while treating technical and institutional risk reduction as possible.",
+        ideologyNote: "Civilization-level loss-of-control diagnosis, with a response close to shutdown or a strong pause; human survival is the value anchor.",
+        basis: ["movement formation", "AI alignment field-building", "public discourse"],
+        works: [
+          { why: "A classic early statement of rationalist AI x-risk." },
+          { why: "A compact public argument for the strongest doom position." },
+          { why: "A mainstream-media statement of the shutdown argument." }
+        ]
+      },
+      "nick-bostrom": {
+        cluster: "Superintelligence / philosophical x-risk",
+        stance: "Superintelligence may develop instrumentally convergent goals such as self-preservation, resource acquisition, and escaping constraint; if its goals are incompatible with ours, humans lose control.",
+        placement: "He sits near Yudkowsky on the far left, but in a more philosophical and strategic style. The vertical score is +1 because the core object is human survival and control, not social justice or democratic distribution.",
+        focus: "Focus on how instrumental convergence, the orthogonality thesis, and intelligence explosion form one risk model.",
+        counter: "The direct contrast is the normal-technology view, which questions whether the superintelligence frame is too abstract and skips real institutions and engineering limits.",
+        ideologyNote: "High civilization-risk diagnosis with a control-centered response; the argument is abstract, strategic, and human-protective.",
+        basis: ["academic citations", "policy discourse", "movement formation"],
+        works: [
+          { why: "An early frame for advanced AI ethics and risk." },
+          { why: "A central source for instrumental convergence." },
+          { why: "A field-defining book-length x-risk argument." }
+        ]
+      },
+      "stuart-russell": {
+        cluster: "Beneficial AI / human-compatible AI",
+        stance: "AI systems should not be designed as fixed-objective maximizers; they should recognize uncertainty about human preferences and keep learning how to be beneficial from human behavior.",
+        placement: "Horizontal -1 because he is strongly safety-first without being a shutdown advocate. Vertical +2 because human compatibility and human preferences are explicit design principles.",
+        focus: "Watch how beneficial AI differs from traditional objective maximization: the point is not giving AI a better goal, but changing the form and institution of goal-setting.",
+        counter: "Yudkowsky would question whether this path is strong enough; LeCun/Ng would question whether the risk story overstates the present technical path.",
+        ideologyNote: "Safety-first but not shutdown-oriented; the value center is explicitly human-compatible and accountable.",
+        basis: ["academic authority", "textbook influence", "institution-building", "policy discourse"],
+        works: [
+          { why: "The main public statement of the control problem and beneficial AI." },
+          { why: "A technical entry point into human-compatible AI." }
+        ]
+      },
+      "pope-leo-xiv": {
+        cluster: "Magnifica Humanitas / Catholic social humanism",
+        stance: "AI must serve human dignity, the common good, protection of the vulnerable, and peace; technological power must not replace conscience, responsibility, and public governance with efficiency, profit, or domination.",
+        placement: "Upper-left: the response favors strong public responsibility, governance, and multilateral constraint without being a shutdown position. The value axis is near +2 because the core is human dignity, conscience, relationship, and the common good.",
+        focus: "Read how Catholic Social Doctrine places AI inside the common good, labor, war, platform power, education, and the irreplaceability of persons.",
+        counter: "X-risk safety will see that this is not a technical alignment argument; critical AI will make a more secular power-and-labor argument; technical optimists will see it as too constraint-heavy.",
+        ideologyNote: "Strong human-dignity and common-good center with a governance-first response, but not a shutdown view.",
+        basis: ["Catholic social doctrine", "papal encyclical", "human dignity", "AI governance"],
+        works: [
+          { why: "The core text on AI, human dignity, the common good, and technology governance." },
+          { why: "Clarifies that “disarming AI” means removing logics of domination, exclusion, and death rather than rejecting technology." }
+        ]
+      },
+      "paul-christiano": {
+        cluster: "Scalable alignment / technical safety",
+        stance: "AI failure may not come from a sudden malicious superintelligence; it may emerge from gradual delegation, oversight failure, optimization pressure, and humans losing the ability to evaluate complex tasks.",
+        placement: "Horizontal -1 because he belongs to the serious alignment-risk camp. Vertical +1 because the focus is making systems supervisable, calibrated, and ultimately responsive to human judgment.",
+        focus: "Focus on scalable oversight: when humans cannot directly judge complex answers, how can debate, amplification, or training processes maintain supervision?",
+        counter: "Strong doom positions will argue that these approaches still miss the most dangerous loss-of-control cases; normal-technology views will see the failure model as too AGI-centered.",
+        ideologyNote: "Serious alignment risk with a technical-risk-reduction response and human supervision as the value anchor.",
+        basis: ["technical alignment", "OpenAI safety lineage", "field-building"],
+        works: [
+          { why: "A classic text for gradual failure models." },
+          { why: "A representative scalable-oversight proposal." }
+        ]
+      },
+      "ajeya-cotra": {
+        cluster: "AI timelines / Open Philanthropy",
+        stance: "Transformative AI timelines can be forecast using compute requirements and biological anchors; shorter timelines make safety and governance more urgent.",
+        placement: "She is not a full ideology figure, but her timeline work is influential in the safety ecosystem because timelines drive resource allocation, policy urgency, and research priority.",
+        focus: "Do not read biological anchors as precise prophecy; read them as a way of turning technical parameters into social urgency.",
+        counter: "LeCun, Marcus, Mitchell, and other capability skeptics would question whether extrapolating from compute to general intelligence is reliable.",
+        ideologyNote: "Timeline-driven risk urgency: shorter transformative-AI forecasts increase the case for safety and governance priority.",
+        basis: ["AI safety timelines", "grantmaking", "EA and policy discourse"],
+        works: [
+          { why: "An influential compute-based timelines report." },
+          { why: "A readable summary of the timeline method." }
+        ]
+      },
+      "dario-amodei-anthropic": {
+        cluster: "Frontier-lab safety optimism",
+        stance: "Frontier AI could bring enormous benefits, but continued scaling must be paired with safety research, evaluation thresholds, deployment limits, and responsible institutions.",
+        placement: "He sits between safety and building: more risk-focused than ordinary optimists, more willing to continue frontier scaling than pause advocates.",
+        focus: "Track the combination of high risk, high upside, and institutional governance. This is neither pure doom nor unconditional acceleration.",
+        counter: "Pause advocates will say lab self-governance is insufficient; critical AI will ask whether it ignores labor, power, and market concentration.",
+        ideologyNote: "A managed-build position: accepts major risk and major upside, then tries to govern frontier development through evaluations and institutional thresholds.",
+        basis: ["frontier lab policy", "public discourse", "industry practice"],
+        works: [
+          { why: "Anthropic’s company-level statement on risk, alignment, and safe deployment." },
+          { why: "An important institutional document for evaluation-triggered safety governance." },
+          { why: "High-upside AI optimism under safety constraints." }
+        ]
+      },
+      "dan-hendrycks-cais": {
+        cluster: "Public AI x-risk and ML safety",
+        stance: "AI should be treated as a societal-scale risk alongside nuclear war and pandemics, and should be incorporated into public governance and technical safety agendas.",
+        placement: "Horizontal -1.5 because it connects technical ML safety with public extinction-risk advocacy. Vertical +1 because the goal is human safety, not a posthuman vision.",
+        focus: "Watch how benchmarks, lists of safety problems, and a one-sentence public risk statement become a policy and academic agenda.",
+        counter: "Normal-technology and critical AI views will ask whether focusing on extinction risk crowds out present harms and capability-evaluation issues.",
+        ideologyNote: "Public x-risk framing combined with ML-safety agenda-setting and human-protective governance.",
+        basis: ["public discourse", "policy agenda-setting", "ML safety benchmarks"],
+        works: [
+          { why: "A source for the technical safety agenda." },
+          { why: "A representative public statement of extinction-risk concern." }
+        ]
+      },
+      "bender-gebru-mitchell-mcmillan-major": {
+        cluster: "Critical AI / stochastic parrots",
+        stance: "The dangers of large language models are not only future AGI; they are present social, environmental, labor, data, representation, and power problems.",
+        placement: "Horizontal 0 because this is neither doom nor acceleration, but present harm and institutional critique. Vertical +2 because it explicitly centers human society, justice, and accountability.",
+        focus: "Read it as an anchor for critical AI: the critique is not just whether models are intelligent, but how scale narratives hide harm and responsibility.",
+        counter: "Bitter-Lesson and scale-oriented views will say it underestimates capability progress from general methods; x-risk views will say it underestimates future extreme risk.",
+        ideologyNote: "Present-harm diagnosis with strong human/social accountability; neither pause maximalism nor accelerationism.",
+        basis: ["academic citations", "public controversy", "AI ethics field-building", "policy discourse"],
+        works: [{ why: "A classic critical-AI paper on large language models." }]
+      },
+      "kate-crawford": {
+        cluster: "AI political economy / extraction",
+        stance: "AI is not immaterial intelligence; it is built from minerals, energy, labor, data, infrastructures, and institutions of classification and control.",
+        placement: "She sits high because the value center is social and political. The horizontal position is near the center because the critique targets extraction and power more than a simple pause/build split.",
+        focus: "Read her for the material supply chain and political economy of AI: extraction, labor, classification, and state/corporate power.",
+        counter: "Ordinary capability debates can miss the material stack; x-risk debates can miss present extraction and power.",
+        ideologyNote: "AI as political economy and extraction, with a strong human/social value center and controlled-governance instincts.",
+        basis: ["political economy", "public scholarship", "AI ethics field-building"],
+        works: [
+          { why: "A book-length political economy of AI." },
+          { why: "A visual and empirical account of AI’s extractive supply chain." }
+        ]
+      },
+      "ruha-benjamin": {
+        cluster: "Race, technology, and social justice",
+        stance: "Automated systems can reproduce and intensify racial hierarchy while appearing neutral, objective, or efficient.",
+        placement: "She sits high because the value center is justice, dignity, and anti-discrimination. The horizontal position leans modestly toward control because the response is scrutiny, refusal, and democratic accountability.",
+        focus: "Read her for how seemingly technical systems become infrastructure for social hierarchy.",
+        counter: "Productivity optimism often treats automation as neutral; her work asks whose world is being automated and who bears the cost.",
+        ideologyNote: "The core issue is automation reproducing social hierarchy; the value center is justice, dignity, and anti-discrimination.",
+        basis: ["race and technology studies", "public scholarship", "AI justice discourse"],
+        works: [
+          { why: "A major text on race, technology, and automation." },
+          { why: "A public-facing framework for resisting unjust technological futures." }
+        ]
+      },
+      "narayanan-kapoor": {
+        cluster: "AI overclaiming skepticism / normal technology",
+        stance: "Many AI claims are overblown; useful systems should be separated from brittle demonstrations, bad evaluations, and snake-oil promises.",
+        placement: "Horizontal 0 because this is capability and overclaiming skepticism rather than a pause or acceleration policy. Vertical 0.5 because it mildly centers human understanding and cognition, but the main claim is technical and empirical.",
+        focus: "Read them to distinguish sober AI evaluation from both doom narratives and product hype.",
+        counter: "X-risk views will argue that ordinary-technology skepticism misses the tail risk of powerful systems; accelerationist views will see it as dampening useful deployment.",
+        ideologyNote: "Normal-technology and overclaiming skepticism; the response is evaluation, bounded claims, and consumer/policy clarity.",
+        basis: ["AI evaluation", "public scholarship", "technical criticism"],
+        works: [
+          { why: "A readable anti-overclaiming and normal-technology frame." },
+          { why: "A research-facing argument about prediction limits and evaluation failures." }
+        ]
+      },
+      "gary-marcus-melanie-mitchell": {
+        cluster: "Architecture skepticism / cognitive science",
+        stance: "Current deep learning and LLM systems are impressive but brittle; robust intelligence may require richer representations, causality, reasoning, and world models.",
+        placement: "Horizontal 0 because this is capability and architecture skepticism, not a strong governance or acceleration stance. Vertical 0.5 because it is slightly human-cognition centered but mainly technical.",
+        focus: "Read them for the difference between scaling skepticism and AI skepticism: the claim is not that AI cannot matter, but that current architectures are insufficient.",
+        counter: "Bitter-Lesson views will argue that hand-built representations repeatedly lose to scale and learning.",
+        ideologyNote: "Mainly capability and architecture skepticism, not a strong governance or acceleration position.",
+        basis: ["cognitive science", "AI criticism", "public technical debate"],
+        works: [
+          { why: "Marcus’s core argument against pure deep-learning optimism." },
+          { why: "Mitchell’s broader argument about analogy, understanding, and limits." }
+        ]
+      },
+      "rich-sutton": {
+        cluster: "The Bitter Lesson / computation-centered empiricism",
+        stance: "The history of AI shows that methods leveraging computation, search, and learning tend to win over human handcrafted knowledge as compute grows.",
+        placement: "Horizontal right-of-center because the view favors scaling and general methods; vertical -1 because it decentrers human knowledge and intuition in technical epistemology.",
+        focus: "Read the Bitter Lesson as a cultural anchor: it explains why many AI builders distrust human priors, hand-engineered rules, and small-system intuitions.",
+        counter: "Critical AI will ask who pays for scale; architecture skeptics will ask whether scaling alone produces robust understanding.",
+        ideologyNote: "The Bitter Lesson is technical epistemology: scale, search, and computation beat human handcrafted knowledge.",
+        basis: ["technical epistemology", "reinforcement learning", "AI culture"],
+        works: [{ why: "A short essay that became a central cultural reference in AI." }]
+      },
+      "yann-lecun": {
+        cluster: "Architecture optimism / world models",
+        stance: "Current systems are not yet general intelligence; future AI needs world models and new architectures, and near-term doom narratives exaggerate the danger of the current path.",
+        placement: "Right-of-center because he favors open research and building; vertical 0 because the position is mainly technical and architectural rather than strongly humanist or posthuman.",
+        focus: "Read him to separate architecture optimism from naive scaling optimism. The key claim is not that today’s LLMs are enough, but that better architectures can produce more robust intelligence.",
+        counter: "X-risk safety will say architectural confidence does not remove future control problems; normal-technology skeptics will question whether the future leap is being assumed too quickly.",
+        ideologyNote: "Risk narratives are seen as overstated; the response leans toward open research, building, and architectural progress.",
+        basis: ["AI research leadership", "public technical debate", "open-source advocacy"],
+        works: [
+          { why: "A compact statement of the world-model path." },
+          { why: "A public-facing account of why current systems are not enough." }
+        ]
+      },
+      "andrew-ng": {
+        cluster: "Pragmatic deployment optimism",
+        stance: "AI is a general-purpose technology whose benefits are delayed by excessive fear; society should build, deploy, and teach more people to use it.",
+        placement: "Right-of-center because the response is deployment and opportunity-cost focused. Vertical +1 because the value story is human productivity, education, and practical benefit.",
+        focus: "Read him as application optimism, not singularity or posthuman acceleration. The moral language is about useful work delayed by overrestriction.",
+        counter: "Safety-first views will say this underweights tail risk; critical AI will ask which workers and institutions absorb the cost of deployment.",
+        ideologyNote: "The main diagnosis is underdeployment and opportunity cost; the value narrative remains human productivity and practical benefit.",
+        basis: ["education", "startup ecosystem", "public AI advocacy"],
+        works: [
+          { why: "A concise public argument against a broad pause." },
+          { why: "A representative deployment and education-oriented AI platform." }
+        ]
+      },
+      "sam-altman-openai": {
+        cluster: "AGI abundance / managed frontier build",
+        stance: "AGI could produce broad abundance and scientific progress, but frontier development should be managed through safety work, institutions, and benefit-sharing.",
+        placement: "Right-of-center because it supports continued frontier development; vertical +1 because it retains human benefit and governance language rather than posthuman acceleration.",
+        focus: "Read OpenAI as managed build: not pure acceleration, but also not pause-first. The key tension is who governs the frontier lab and how benefits are distributed.",
+        counter: "Pause advocates will doubt managed build; open accelerationists will reject central control; critical AI will focus on power concentration.",
+        ideologyNote: "AGI abundance and managed build, retaining language of safety, governance, and benefit sharing.",
+        basis: ["frontier lab leadership", "public discourse", "AGI governance"],
+        works: [
+          { why: "OpenAI’s early public charter for AGI and benefit sharing." },
+          { why: "A public statement of planning for superintelligence governance." },
+          { why: "Altman’s abundance-oriented public vision." }
+        ]
+      },
+      "ray-kurzweil": {
+        cluster: "Singularity / transhuman optimism",
+        stance: "AI and accelerating technology will merge with human intelligence, expand capability, and move civilization toward a singularity.",
+        placement: "Right because the dominant narrative is opportunity and acceleration; vertical slightly below center because it moves beyond ordinary humanism toward human-machine merger without becoming anti-human.",
+        focus: "Read him as singularitarian and transhumanist rather than current-LMM policy debate. The core is exponential technological change.",
+        counter: "Critical AI will say this abstracts away labor, power, and material costs; x-risk safety will say the transition is not automatically safe.",
+        ideologyNote: "Singularity and human-machine merger as opportunity; transhuman but not strongly anti-human.",
+        basis: ["singularity discourse", "public futurism", "transhumanism"],
+        works: [
+          { why: "The classic singularity text." },
+          { why: "A later update of the same accelerationist-futurist argument." }
+        ]
+      },
+      "marc-andreessen": {
+        cluster: "Techno-optimism / anti-pause politics",
+        stance: "AI should be built and deployed aggressively; fear-driven regulation and pauses threaten abundance, competition, and human flourishing.",
+        placement: "Far right because the response is anti-pause, anti-regulatory, and market-technological optimism. Vertical modestly positive because the public story is still human abundance.",
+        focus: "Read him as a political-economic techno-optimist, not simply a technical optimist. The argument joins markets, abundance, and anti-regulation.",
+        counter: "Safety-first views will see this as underweighting catastrophic risk; critical AI will see venture capital and market power as part of the problem.",
+        ideologyNote: "Anti-pause, anti-regulation, and market techno-optimism, still framed publicly around human abundance.",
+        basis: ["venture capital", "public manifesto", "AI policy politics"],
+        works: [
+          { why: "A representative pro-AI, anti-doom public essay." },
+          { why: "The broader political frame behind his AI stance." }
+        ]
+      },
+      "effective-accelerationism": {
+        cluster: "e/acc / open acceleration",
+        stance: "AI development should accelerate and diffuse widely; central control, licensing, and control by a small elite are more dangerous than open technological progress.",
+        placement: "Far right because openness and acceleration are central. Vertical below center because the movement often values intelligence and technological evolution beyond conventional humanist control.",
+        focus: "Read it as a memetic and political movement more than a tight academic doctrine. People using the label differ substantially.",
+        counter: "Safety governance views will say open diffusion makes dangerous capabilities harder to control; critical AI will ask who benefits from acceleration.",
+        ideologyNote: "Open acceleration and resistance to institutional control, not necessarily identical to Land-style anti-humanism.",
+        basis: ["online movement", "AI culture", "open-source politics"],
+        works: [
+          { why: "A representative entry point into the e/acc worldview." },
+          { why: "A public-facing statement of the open acceleration position." }
+        ]
+      },
+      "benjamin-bratton": {
+        cluster: "Posthuman control / planetary computation",
+        stance: "AI should be understood as part of planetary-scale computation and governance systems; the problem is not only human preference satisfaction but how synthetic intelligence is organized at system scale.",
+        placement: "Lower-left because it favors strong system governance rather than open acceleration, while also moving beyond traditional human-centered preference language.",
+        focus: "Read him for system governance, planetary computation, and synthetic intelligence rather than standard AI safety or Silicon Valley acceleration.",
+        counter: "Open accelerationists will see system governance as new institutional control; human-compatible safety views will ask whether accountable human values are protected enough.",
+        ideologyNote: "Emphasizes planetary computation and system governance; neither open acceleration nor traditional human-centeredness.",
+        basis: ["design theory", "planetary computation", "governance theory"],
+        works: [
+          { why: "A system-level design and governance frame." },
+          { why: "A representative text on planetary-scale computation." }
+        ]
+      },
+      "nick-land": {
+        cluster: "Accelerationism / techno-capital autonomy",
+        stance: "Technological and capital acceleration exceeds humanist political control; intelligence and capital should be read as processes that escape human-centered governance.",
+        placement: "Far right and bottom because acceleration is central and the value frame is explicitly posthuman or anti-humanist.",
+        focus: "Read him as an edge case that clarifies the lower-right boundary. He is not typical AI optimism; he is acceleration beyond humanist constraint.",
+        counter: "Almost every human-centered position on the map rejects the value frame even when it shares some openness or acceleration language.",
+        ideologyNote: "Acceleration and techno-capital autonomy pushed beyond humanism; a posthuman boundary case.",
+        basis: ["accelerationist theory", "online intellectual influence", "posthuman political philosophy"],
+        works: [
+          { why: "A canonical accelerationist text." },
+          { why: "A later fragmentary presentation of the same posthuman acceleration frame." }
+        ]
+      }
+    };
+
+    thinkers.forEach(item => {
+      const patch = englishThinkerText[item.id];
+      if (!patch) return;
+      ["cluster", "stance", "placement", "focus", "counter", "basis"].forEach(key => {
+        if (patch[key]) item[key] = patch[key];
+      });
+      if (patch.ideologyNote) item.ideology.note = patch.ideologyNote;
+      if (patch.works) item.works.forEach((work, index) => Object.assign(work, patch.works[index] || {}));
     });
 
     const svg = document.getElementById("chart");
@@ -1953,18 +2305,18 @@
       svg.appendChild(svgEl("line", { x1: x(-2), x2: x(2), y1: y(0), y2: y(0), class: "axis-line" }));
       svg.appendChild(svgEl("line", { x1: x(0), x2: x(0), y1: y(2), y2: y(-2), class: "axis-line" }));
 
-      svg.appendChild(svgEl("text", { x: x(-2), y: height - 28, "text-anchor": "start", class: "axis-label" }, "控制 / 暂停 / 门槛"));
-      svg.appendChild(svgEl("text", { x: x(2), y: height - 28, "text-anchor": "end", class: "axis-label" }, "部署 / 开放 / 加速"));
-      svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "横轴：控制与开放的综合位置"));
-      svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "人类/社会结构中心 / 问责"));
-      svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "智能中心 / 后人类"));
-      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "纵轴：价值中心"));
+      svg.appendChild(svgEl("text", { x: x(-2), y: height - 28, "text-anchor": "start", class: "axis-label" }, "Control / pause / thresholds"));
+      svg.appendChild(svgEl("text", { x: x(2), y: height - 28, "text-anchor": "end", class: "axis-label" }, "Deployment / openness / acceleration"));
+      svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "Horizontal: combined control-to-openness position"));
+      svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "Human/social-structure centered / accountable"));
+      svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "Intelligence-centered / posthuman"));
+      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "Vertical: value center"));
     }
 
     function drawFilters() {
       const filters = document.getElementById("filters");
       filters.innerHTML = "";
-      const allButton = makeFilterButton("All", "全部");
+      const allButton = makeFilterButton("All", "All");
       filters.appendChild(allButton);
       Object.keys(categoryInfo).forEach(category => {
         filters.appendChild(makeFilterButton(category, categoryInfo[category].zh));
@@ -1977,7 +2329,7 @@
       button.type = "button";
       button.dataset.category = category;
       button.innerHTML = category === "All"
-        ? "<span class=\"swatch\" style=\"background:#111827\"></span>全部"
+        ? "<span class=\"swatch\" style=\"background:#111827\"></span>All"
         : `<span class="swatch" style="background:${categoryInfo[category].color}"></span>${label}`;
       button.addEventListener("click", () => {
         activeCategory = category;
@@ -2063,7 +2415,7 @@
       document.getElementById("responseScore").textContent = fmt(item.ideology.response);
       document.getElementById("valueScore").textContent = fmt(item.ideology.humanism);
       document.getElementById("stanceText").textContent = item.stance;
-      document.getElementById("placementText").textContent = `${item.placement} 评分说明：${item.ideology.note}`;
+      document.getElementById("placementText").textContent = `${item.placement} Scoring note: ${item.ideology.note}`;
       document.getElementById("readingFocus").textContent = item.focus;
       document.getElementById("profileJump").href = `#profile-${item.id}`;
 
@@ -2099,9 +2451,9 @@
         div.innerHTML = `
           <span class="swatch" style="background:${info.color}"></span>
           <div>
-            <b>${info.zh} · ${members.length} 个节点</b>
+            <b>${info.zh} · ${members.length} point${members.length > 1 ? "s" : ""}</b>
             <span>${info.summary}</span>
-            <span>平均位置：横向 ${fmt(Number(avgX.toFixed(2)))}，纵向 ${fmt(Number(avgY.toFixed(2)))}；问题诊断 ${fmt(Number(avgDiagnosis.toFixed(2)))}，治理响应 ${fmt(Number(avgResponse.toFixed(2)))}</span>
+            <span>Average position: horizontal ${fmt(Number(avgX.toFixed(2)))}, vertical ${fmt(Number(avgY.toFixed(2)))}; diagnosis ${fmt(Number(avgDiagnosis.toFixed(2)))}, response ${fmt(Number(avgResponse.toFixed(2)))}</span>
           </div>
         `;
         target.appendChild(div);
@@ -2121,19 +2473,19 @@
               <h3>${item.name}</h3>
               <div class="meta">${item.cluster} · ${categoryInfo[item.category].zh}</div>
             </div>
-            <div class="coord">横向 ${fmt(Number(item.projection.x.toFixed(2)))} · 纵向 ${fmt(Number(item.projection.y.toFixed(2)))}<br>问题 ${fmt(item.ideology.diagnosis)} · 治理 ${fmt(item.ideology.response)} · 价值 ${fmt(item.ideology.humanism)}<br>影响 ${item.influence}/5</div>
+            <div class="coord">Horizontal ${fmt(Number(item.projection.x.toFixed(2)))} · Vertical ${fmt(Number(item.projection.y.toFixed(2)))}<br>Diagnosis ${fmt(item.ideology.diagnosis)} · Response ${fmt(item.ideology.response)} · Value ${fmt(item.ideology.humanism)}<br>Influence ${item.influence}/5</div>
           </div>
           <dl>
             <div>
-              <dt>核心思想</dt>
+              <dt>Core idea</dt>
               <dd>${item.stance}</dd>
             </div>
             <div>
-              <dt>坐标解释</dt>
-              <dd>${item.placement} 评分说明：${item.ideology.note}</dd>
+              <dt>Coordinate explanation</dt>
+              <dd>${item.placement} Scoring note: ${item.ideology.note}</dd>
             </div>
             <div>
-              <dt>代表性工作</dt>
+              <dt>Representative works</dt>
               <dd>
                 <ol>
                   ${item.works.map(work => `<li><a href="${work.url}" target="_blank" rel="noopener noreferrer">${work.title}</a> (${work.year})：${work.why}</li>`).join("")}
@@ -2141,11 +2493,11 @@
               </dd>
             </div>
             <div>
-              <dt>阅读重点</dt>
+              <dt>Reading focus</dt>
               <dd>${item.focus}</dd>
             </div>
             <div>
-              <dt>强对照位置</dt>
+              <dt>Strong contrast</dt>
               <dd>${item.counter}</dd>
             </div>
           </dl>
@@ -2184,7 +2536,7 @@
         row.className = "work-row";
         row.innerHTML = `
           <div>
-            <b>运动/机构文件</b>
+            <b>Movement/institutional text</b>
             <span>${doc.cluster}</span>
           </div>
           <div>
