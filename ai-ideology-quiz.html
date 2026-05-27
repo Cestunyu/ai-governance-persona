@@ -63,7 +63,10 @@
 
     .brand {
       display: grid;
-      gap: 1px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
     }
 
     .brand strong {
@@ -71,11 +74,24 @@
       line-height: 1.2;
     }
 
+    .brand-title {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .brand-progress {
-      display: none;
+      display: block;
+      justify-self: end;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
     }
 
     .brand span {
+      display: none;
       color: var(--muted);
       font-size: 11px;
       line-height: 1.2;
@@ -106,7 +122,7 @@
     }
 
     .topbar-actions {
-      display: flex;
+      display: none;
       flex-wrap: wrap;
       justify-content: flex-end;
       gap: 8px;
@@ -140,7 +156,6 @@
     }
 
     .hero,
-    .panel,
     .result {
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -171,6 +186,9 @@
     .panel {
       overflow: hidden;
       margin-bottom: 14px;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
     }
 
     .panel-head {
@@ -178,19 +196,17 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--line);
-      background: #fbfcfe;
+      padding: 0 0 8px;
+      border: 0;
+      background: transparent;
     }
 
     .panel-head small {
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
+      display: none;
     }
 
     .panel-body {
-      padding: 14px 16px 16px;
+      padding: 0;
     }
 
     .quiz-shell {
@@ -198,7 +214,7 @@
     }
 
     .progress-row {
-      display: grid;
+      display: none;
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
       align-items: center;
@@ -236,6 +252,7 @@
       border-radius: 8px;
       background: #fff;
       padding: clamp(18px, 4vw, 34px);
+      box-shadow: var(--shadow);
     }
 
     .page-meta {
@@ -1038,10 +1055,6 @@
         font-weight: 760;
       }
 
-      .brand-title {
-        display: none;
-      }
-
       .brand-progress {
         display: block;
       }
@@ -1058,9 +1071,12 @@
         padding: 6px 8px 34px;
       }
 
-      .panel-body,
       .result {
         padding: 8px;
+      }
+
+      .panel-body {
+        padding: 0;
       }
 
       .panel {
@@ -1897,7 +1913,7 @@
       const isLast = currentIndex === pages.length - 1;
       progressFill.style.width = `${Math.round((done / pages.length) * 100)}%`;
       progressText.textContent = `${done}/${pages.length}`;
-      if (brandProgress) brandProgress.textContent = `第 ${currentIndex + 1} / ${pages.length} 题 · 已答 ${done}/${pages.length}`;
+      if (brandProgress) brandProgress.textContent = `第 ${currentIndex + 1} / ${pages.length} 题`;
       if (pagerActions) pagerActions.hidden = !isMulti;
       prevBtn.disabled = currentIndex === 0;
       if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
