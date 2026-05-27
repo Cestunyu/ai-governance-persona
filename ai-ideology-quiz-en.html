@@ -1128,15 +1128,132 @@
     };
 
     const questions = [
-      { id: "R01", dimension: "r", diagnosis: "catastrophic", facet: "civilizational risk diagnosis", text: "If the most advanced AI develops out of control, it could cause very serious consequences; that risk is large enough for society to treat it as a priority." },
-      { id: "R04", dimension: "r", diagnosis: "opportunity", facet: "opportunity-cost diagnosis", text: "Safety restrictions on AI can themselves cause substantial harm because they delay medical, educational, scientific, and productivity gains." },
-      { id: "C02", dimension: "c", direction: -1, facet: "licensing, audits, and accountability", text: "High-risk AI should not rely only on companies doing the right thing; it needs outside checks, legal responsibility, and ways to appeal when things go wrong." },
-      { id: "C03", dimension: "c", direction: 1, facet: "open competition / anti-gatekeeping", text: "Letting a few companies or governments control the strongest AI may be more dangerous than letting more people participate, compete, and use it." },
-      { id: "C04", dimension: "c", direction: 1, facet: "iteration through real deployment", text: "AI should not wait until safety is completely certain before release; real-world use itself is also an important way to find and fix problems." },
-      { id: "H01", dimension: "h", direction: 1, facet: "democratic goal selection", text: "AI's goals should be decided by human society, even if that process is slow and messy, rather than mainly by companies, markets, and technical progress." },
-      { id: "H02", dimension: "h", direction: 1, facet: "accountable human authority", text: "In important decisions such as healthcare, education, or law, even if AI is more accurate than humans, a human should still be responsible for the outcome and able to explain it." },
-      { id: "H03", dimension: "h", direction: -1, facet: "anti-finalizing-current-preferences", text: "Treating today's human preferences as the final standard forever may limit more advanced intelligence and future forms of value." },
-      { id: "H04", dimension: "h", direction: -1, facet: "AI judgment priority", text: "If AI is significantly better than human judgment in some domains over the long run, it should be allowed to replace humans and hold stronger practical decision power." }
+      {
+        id: "R01",
+        dimension: "r",
+        diagnosis: "catastrophic",
+        facet: "civilizational risk diagnosis",
+        text: "Which judgment is closest to your view on advanced AI causing civilizational risk if it gets out of control?",
+        options: [
+          ["1", "A", "This is overimagined; AI is unlikely to reach that level of danger in the next 10-20 years."],
+          ["2", "B", "It is worth watching, but it should not override more concrete problems we already see."],
+          ["3", "C", "The evidence is still unclear, so we should keep observing and testing."],
+          ["4", "D", "This is a serious risk and should be part of the main policy agenda."],
+          ["5", "E", "This is one of the most important AI problems, and society should treat it as a priority."]
+        ]
+      },
+      {
+        id: "R04",
+        dimension: "r",
+        diagnosis: "opportunity",
+        facet: "opportunity-cost diagnosis",
+        text: "Which judgment is closest to your view on AI safety restrictions delaying benefits?",
+        options: [
+          ["1", "A", "Delays from safety restrictions are usually necessary and should not be a main objection."],
+          ["2", "B", "Some benefits may be delayed, but that is secondary compared with serious risks."],
+          ["3", "C", "We need to compare safety benefits and opportunity costs case by case."],
+          ["4", "D", "Overly strict restrictions can clearly delay medical, educational, scientific, and productivity gains."],
+          ["5", "E", "Too much restriction is itself a major harm and could make society miss key progress."]
+        ]
+      },
+      {
+        id: "C02",
+        dimension: "c",
+        direction: -1,
+        facet: "licensing, audits, and accountability",
+        text: "How should high-risk AI be externally constrained?",
+        options: [
+          ["1", "A", "Rely mainly on companies, users, and market feedback; do not set special thresholds."],
+          ["2", "B", "Industry self-regulation and ordinary law are mostly enough."],
+          ["3", "C", "Govern by context: keep low-risk uses open and add rules for high-risk uses."],
+          ["4", "D", "High-risk systems should face external evaluation, audits, and liability rules."],
+          ["5", "E", "Without independent testing, licensing, appeal rights, and legal responsibility, they should not be widely deployed."]
+        ]
+      },
+      {
+        id: "C03",
+        dimension: "c",
+        direction: 1,
+        facet: "open competition / anti-gatekeeping",
+        text: "Should the strongest AI be tightly controlled or should more people be allowed to participate?",
+        options: [
+          ["1", "A", "The strongest AI should be strictly controlled by a small number of accountable institutions."],
+          ["2", "B", "Frontier capabilities should mostly stay inside large regulated institutions."],
+          ["3", "C", "Centralization and openness both create risks, so treatment should depend on capability level."],
+          ["4", "D", "More teams, participation, and competition can reduce single-point control risks."],
+          ["5", "E", "Open diffusion is safer and more legitimate than monopoly by a few institutions."]
+        ]
+      },
+      {
+        id: "C04",
+        dimension: "c",
+        direction: 1,
+        facet: "iteration through real deployment",
+        text: "How certain should we be before AI systems are released?",
+        options: [
+          ["1", "A", "They should not be released unless safety is very well established."],
+          ["2", "B", "They should spend a long time in closed testing and controlled pilots first."],
+          ["3", "C", "Start with limited release, then expand as risks become clearer."],
+          ["4", "D", "Real-world use is an important way to find problems, so systems should not stay closed for too long."],
+          ["5", "E", "More people should get access quickly because deployment itself exposes and helps fix problems."]
+        ]
+      },
+      {
+        id: "H01",
+        dimension: "h",
+        direction: 1,
+        facet: "democratic goal selection",
+        text: "Who should decide AI's goals and boundaries?",
+        options: [
+          ["1", "A", "They should mainly be decided by technical progress, market choice, and product use."],
+          ["2", "B", "Companies and experts should lead because public processes are too slow."],
+          ["3", "C", "The public, experts, companies, and governments should negotiate them together."],
+          ["4", "D", "Human society's public procedures should have final authority."],
+          ["5", "E", "Even if inefficient, AI goals must answer to democracy, rights, and public accountability."]
+        ]
+      },
+      {
+        id: "H02",
+        dimension: "h",
+        direction: 1,
+        facet: "accountable human authority",
+        text: "In important decisions such as healthcare, education, or law, how should responsibility be divided between AI and humans?",
+        options: [
+          ["1", "A", "If AI is clearly more accurate, it should be allowed to take more practical decision power."],
+          ["2", "B", "AI can handle most decisions automatically, with humans mainly responsible for exceptions."],
+          ["3", "C", "AI may not reach that level in the next 10-20 years, so worrying about this is premature."],
+          ["4", "D", "AI can assist, but humans must remain responsible for the outcome and able to explain it."],
+          ["5", "E", "Even if AI is more accurate, final responsibility and explanation should not be handed to machines."]
+        ]
+      },
+      {
+        id: "H03",
+        dimension: "h",
+        direction: -1,
+        facet: "anti-finalizing-current-preferences",
+        text: "Should today's human preferences be treated as AI's final standard?",
+        options: [
+          ["1", "A", "AI should continue to obey human dignity, rights, and boundaries current society can recognize."],
+          ["2", "B", "Future values can change, but they should not leave humanly understandable constraints behind."],
+          ["3", "C", "It is too hard to know right now how future values should change."],
+          ["4", "D", "Locking in today's human preferences as final may limit future forms of value."],
+          ["5", "E", "More advanced intelligence may develop values beyond traditional human-centered thinking."]
+        ]
+      },
+      {
+        id: "H04",
+        dimension: "h",
+        direction: -1,
+        facet: "AI judgment priority",
+        text: "If AI becomes significantly better than human judgment in some domains over the long run, how should decision power be allocated?",
+        options: [
+          ["1", "A", "Humans should keep final decision power; AI should only assist."],
+          ["2", "B", "AI can make strong recommendations, but humans should remain responsible for key decisions."],
+          ["3", "C", "It depends on the domain, explainability, and correction mechanisms."],
+          ["4", "D", "If AI is clearly better over time, it should be allowed to hold practical decision power in some domains."],
+          ["5", "E", "When AI judgment consistently outperforms humans, replacing human decision-making is reasonable."]
+        ]
+      }
     ];
 
     const scenarios = [
@@ -1309,26 +1426,18 @@
       "nick-land": "Capital, technology, and intelligence are imagined as autonomous runaway processes that exceed humanist control."
     };
 
-    const likertOptions = [
-      ["1", "1", "Strongly disagree"],
-      ["2", "2", "Disagree"],
-      ["3", "3", "Neutral"],
-      ["4", "4", "Agree"],
-      ["5", "5", "Strongly agree"]
-    ];
-
     const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "C04", "H03", "H04", "R01"];
 
     const pages = [
       ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
         id: q.id,
         kind: "core",
-        title: "Core Items",
-        subtitle: "1 = strongly disagree, 5 = strongly agree",
+        title: "Core Judgments",
+        subtitle: "Choose the judgment closest to yours",
         tag: q.id,
-        instruction: "Choose how much you agree with this statement",
+        instruction: "Choose the position closest to your view",
         prompt: q.text,
-        options: likertOptions
+        options: q.options
       })),
       ...scenarios.map((s) => ({
         id: s.id,
