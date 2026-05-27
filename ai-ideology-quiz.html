@@ -947,6 +947,25 @@
       line-height: 1.45;
     }
 
+    .profile-source {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .profile-source[hidden] {
+      display: none;
+    }
+
+    .profile-source a {
+      color: var(--accent-strong);
+      font-size: 12px;
+      font-weight: 820;
+      line-height: 1.35;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
     .reference-section[data-ready="true"] strong {
       text-decoration: underline;
       text-decoration-thickness: 1px;
@@ -1263,6 +1282,15 @@
             <span>接近的人</span>
             <strong id="nearestPerson">--</strong>
             <p id="nearestPersonText">答完后显示最接近的图谱参照。</p>
+            <p class="profile-source" id="nearestSourceLine" hidden>
+              <span>参考资料</span>
+              <a id="nearestSourceLink" href="#" target="_blank" rel="noopener noreferrer">--</a>
+            </p>
+          </div>
+          <div class="profile-reference">
+            <span>分类稳定性</span>
+            <strong id="classificationConfidence">--</strong>
+            <p id="classificationConfidenceText">答完后显示位置、场景和自我确认是否一致。</p>
           </div>
         </div>
         <div class="profile-body">
@@ -1666,6 +1694,32 @@
       "nick-land": "资本、技术和智能被想象成超过人类主义控制的自主失控过程。"
     };
 
+    const referenceSources = {
+      "eliezer-yudkowsky": { title: "AGI Ruin: A List of Lethalities", url: "https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities" },
+      "nick-bostrom": { title: "Superintelligence", url: "https://nickbostrom.com/views/superintelligence.pdf" },
+      "stuart-russell": { title: "Human-Compatible Artificial Intelligence", url: "https://aima.cs.berkeley.edu/~russell/papers/mi19book-hcai.pdf" },
+      "pope-leo-xiv": { title: "Magnifica Humanitas", url: "https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html" },
+      "paul-christiano": { title: "What Failure Looks Like", url: "https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like" },
+      "ajeya-cotra": { title: "Forecasting Transformative AI with Biological Anchors", url: "https://www.cold-takes.com/forecasting-transformative-ai-the-biological-anchors-method-in-a-nutshell/" },
+      "dario-amodei-anthropic": { title: "Machines of Loving Grace", url: "https://darioamodei.com/essay/machines-of-loving-grace" },
+      "dan-hendrycks-cais": { title: "Statement on AI Risk", url: "https://safe.ai/work/statement-on-ai-risk" },
+      "bender-gebru-mitchell-mcmillan-major": { title: "On the Dangers of Stochastic Parrots", url: "https://dl.acm.org/doi/10.1145/3442188.3445922" },
+      "kate-crawford": { title: "Atlas of AI", url: "https://yalebooks.yale.edu/book/9780300264630/atlas-of-ai/" },
+      "ruha-benjamin": { title: "Race After Technology", url: "https://www.ruhabenjamin.com/race-after-technology" },
+      "ai-as-normal-technology": { title: "AI as Normal Technology", url: "https://www.normaltech.ai/p/ai-as-normal-technology" },
+      "narayanan-kapoor": { title: "AI Snake Oil", url: "https://www.aisnakeoil.com/" },
+      "gary-marcus-melanie-mitchell": { title: "Rebooting AI", url: "https://www.penguinrandomhouse.com/books/575774/rebooting-ai-by-gary-marcus-and-ernest-davis/" },
+      "rich-sutton": { title: "The Bitter Lesson", url: "http://www.incompleteideas.net/IncIdeas/BitterLesson.html" },
+      "benjamin-bratton": { title: "The Stack", url: "https://mitpress.mit.edu/9780262029575/the-stack/" },
+      "yann-lecun": { title: "A Path Towards Autonomous Machine Intelligence", url: "https://openreview.net/pdf?id=BZ5a1r-kVsf" },
+      "andrew-ng": { title: "Why AI Is the New Electricity", url: "https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity" },
+      "sam-altman-openai": { title: "Planning for AGI and beyond", url: "https://openai.com/index/planning-for-agi-and-beyond/" },
+      "ray-kurzweil": { title: "The Singularity Is Nearer", url: "https://www.thesingularityisnearer.com/" },
+      "marc-andreessen": { title: "The Techno-Optimist Manifesto", url: "https://a16z.com/the-techno-optimist-manifesto/" },
+      "effective-accelerationism": { title: "Effective Accelerationism", url: "https://wiki.p2pfoundation.net/Effective_Accelerationism" },
+      "nick-land": { title: "Meltdown", url: "https://www.ccru.net/swarm1/1_melt.htm" }
+    };
+
     const referenceDetails = {
       "effective-accelerationism": {
         core: "技术加速本身被视为道德和文明任务；监管、暂停和安全话语常被看作更大的风险。",
@@ -1759,6 +1813,10 @@
     const nearestPerson = document.querySelector("#nearestPerson");
     const nearestPersonText = document.querySelector("#nearestPersonText");
     const nearestPersonSection = document.querySelector("#nearestPersonSection");
+    const nearestSourceLine = document.querySelector("#nearestSourceLine");
+    const nearestSourceLink = document.querySelector("#nearestSourceLink");
+    const classificationConfidence = document.querySelector("#classificationConfidence");
+    const classificationConfidenceText = document.querySelector("#classificationConfidenceText");
     const submitStatus = document.querySelector("#submitStatus");
     const resetBtn = document.querySelector("#resetBtn");
     const editLastBtn = document.querySelector("#editLastBtn");
@@ -2104,22 +2162,97 @@
       addEvidence(scores, "POST", (0.9 * opportunity) + (1.4 * open) + (2.5 * posthuman));
     }
 
+    function selectedSelfProfileCodes() {
+      return selectedValues("closestStatement")
+        .map((statement) => statementProfiles[statements.indexOf(statement)])
+        .filter(Boolean);
+    }
+
+    function selectedScenarioProfileCodes() {
+      return scenarios.map((scenario) => {
+        const choice = selected(scenario.id);
+        const index = scenario.options.indexOf(choice);
+        return scenarioProfiles[scenario.id]?.[index] || "";
+      }).filter(Boolean);
+    }
+
     function profileEvidence(result) {
       const scores = Object.fromEntries(Object.keys(profiles).map((code) => [code, 0]));
       addCoreProfileEvidence(scores, result);
 
-      selectedValues("closestStatement").forEach((statement) => {
-        const index = statements.indexOf(statement);
-        addEvidence(scores, statementProfiles[index], 3);
-      });
-
-      scenarios.forEach((scenario) => {
-        const choice = selected(scenario.id);
-        const index = scenario.options.indexOf(choice);
-        addEvidence(scores, scenarioProfiles[scenario.id]?.[index], 1);
-      });
+      selectedSelfProfileCodes().forEach((code) => addEvidence(scores, code, 1.25));
+      selectedScenarioProfileCodes().forEach((code) => addEvidence(scores, code, 0.45));
 
       return scores;
+    }
+
+    function profileFamilyMatch(code, evidenceCode) {
+      if (!code || !evidenceCode) return false;
+      if (code === evidenceCode) return true;
+      const families = {
+        STOP: ["SAFE"],
+        SAFE: ["STOP", "AUDT"],
+        AUDT: ["SAFE", "NORM", "SKEP"],
+        NORM: ["AUDT", "SKEP", "BOOM"],
+        SKEP: ["NORM", "AUDT"],
+        GPUC: ["SING", "POST"],
+        BOOM: ["NORM", "SING", "EACC"],
+        SING: ["BOOM", "GPUC", "EACC"],
+        EACC: ["BOOM", "SING", "POST"],
+        POST: ["GPUC", "EACC"]
+      };
+      return families[code]?.includes(evidenceCode) || false;
+    }
+
+    function classificationDiagnostics(result, code) {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) {
+        return {
+          label: "--",
+          text: "答完后显示位置、场景和自我确认是否一致。",
+          level: "none"
+        };
+      }
+
+      const scores = profileEvidence(result);
+      const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      const margin = ranked.length > 1 ? ranked[0][1] - ranked[1][1] : ranked[0]?.[1] || 0;
+      const positionCode = nearestProfileFor(result.x, result.y);
+      const selfCodes = selectedSelfProfileCodes();
+      const scenarioCodes = selectedScenarioProfileCodes();
+      const selfMatch = selfCodes.some((item) => profileFamilyMatch(code, item));
+      const scenarioMatches = scenarioCodes.filter((item) => profileFamilyMatch(code, item)).length;
+      const scenarioRatio = scenarioCodes.length ? scenarioMatches / scenarioCodes.length : 0;
+      const selfSpreadPenalty = new Set(selfCodes).size >= 3 ? 1 : 0;
+
+      let support = 0;
+      if (profileFamilyMatch(code, positionCode)) support += 1;
+      if (margin >= 1.2) support += 1;
+      if (selfCodes.length) support += selfMatch ? 1 : -1;
+      if (scenarioCodes.length) {
+        if (scenarioRatio >= 0.5) support += 1;
+        if (scenarioMatches === 0) support -= 1;
+      }
+      support -= selfSpreadPenalty;
+
+      if (support >= 3) {
+        return {
+          label: "高",
+          text: "位置、场景和自我确认大体一致；这个画像可以作为主要解释。",
+          level: "high"
+        };
+      }
+      if (support >= 1) {
+        return {
+          label: "中",
+          text: "主要位置清楚，但场景选择或自我确认带有条件性；适合按相邻谱系一起读。",
+          level: "medium"
+        };
+      }
+      return {
+        label: "低",
+        text: "位置、场景和自我确认有明显分歧；更适合读作混合型或条件型结果。",
+        level: "low"
+      };
     }
 
     function nearestProfileFor(x, y, candidates = Object.keys(profileAnchors)) {
@@ -2313,12 +2446,12 @@
       return Number.isFinite(value) ? Number(value.toFixed(4)) : "";
     }
 
-    function buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel) {
+    function buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics) {
       const abilityScore = abilityNarrativeScore();
       const nearest = nearestReferenceFor(result, code);
       return {
         quiz_id: "ai-ideology-quiz",
-        quiz_version: "2026-05-24",
+        quiz_version: "2026-05-28",
         locale: "zh-CN",
         completed_at: new Date().toISOString(),
         profile_code: code,
@@ -2342,12 +2475,20 @@
           risk: riskLabel,
           governance: responseLabel,
           value: valueLabel,
+          classification_confidence: diagnostics.label,
+          classification_confidence_note: diagnostics.text,
           quadrant: quadrantFor(result.x, result.y),
           nearest_reference: nearest ? nearest.name : ""
         },
         answers: Object.fromEntries(questions.map((question) => [question.id, selected(question.id)])),
         scenarios: Object.fromEntries(scenarios.map((scenario) => [scenario.id, selected(scenario.id)])),
         closest_statement: selectedValues("closestStatement"),
+        diagnostics: {
+          classification_confidence: diagnostics.level,
+          position_profile: nearestProfileFor(result.x, result.y),
+          self_profile_codes: selectedSelfProfileCodes(),
+          scenario_profile_codes: selectedScenarioProfileCodes()
+        },
         summary: ""
       };
     }
@@ -2379,7 +2520,7 @@
       }
     }
 
-    function maybeSubmitResult(result, complete, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel) {
+    function maybeSubmitResult(result, complete, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics) {
       if (!submitStatus) return;
       if (!complete) {
         submitStatus.textContent = "";
@@ -2387,7 +2528,7 @@
       }
       if (!canSubmitResults()) return;
 
-      const payload = buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
+      const payload = buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics);
       const fingerprint = resultFingerprint(payload);
       if (fingerprint === lastSubmittedFingerprint) return;
       lastSubmittedFingerprint = fingerprint;
@@ -2405,6 +2546,9 @@
       const abilityScore = abilityNarrativeScore();
       const abilityLabel = complete ? abilityNarrativeLabel(abilityScore) : "--";
       const nearest = complete ? nearestReferenceFor(result, code) : null;
+      const diagnostics = complete
+        ? classificationDiagnostics(result, code)
+        : classificationDiagnostics({ x: NaN, y: NaN }, code);
       const displayCode = displayProfileCode(code);
 
       abilityNarrative.textContent = abilityLabel;
@@ -2437,6 +2581,22 @@
       nearestPersonText.textContent = nearest
         ? `这是你在图谱上最近的参考点。相似的是整体坐标，不代表你完整赞同 TA。`
         : "答完后显示最接近的图谱参照。";
+      const nearestSource = nearest ? referenceSources[nearest.id] : null;
+      if (nearestSourceLine && nearestSourceLink) {
+        if (nearestSource) {
+          nearestSourceLine.hidden = false;
+          nearestSourceLink.href = nearestSource.url;
+          nearestSourceLink.textContent = nearestSource.title;
+          nearestSourceLink.setAttribute("aria-label", `打开参考资料：${nearestSource.title}`);
+        } else {
+          nearestSourceLine.hidden = true;
+          nearestSourceLink.href = "#";
+          nearestSourceLink.textContent = "--";
+          nearestSourceLink.removeAttribute("aria-label");
+        }
+      }
+      if (classificationConfidence) classificationConfidence.textContent = diagnostics.label;
+      if (classificationConfidenceText) classificationConfidenceText.textContent = diagnostics.text;
       if (nearestPersonSection) {
         if (nearest) {
           nearestPersonSection.dataset.referenceId = nearest.id;
@@ -2449,7 +2609,7 @@
         }
       }
 
-      maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
+      maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics);
     }
 
     function drawRoundedRect(ctx, x, y, width, height, radius) {
@@ -2786,6 +2946,11 @@
         event.preventDefault();
         openReferenceById(nearestPersonSection.dataset.referenceId);
       });
+    }
+
+    if (nearestSourceLink) {
+      nearestSourceLink.addEventListener("click", (event) => event.stopPropagation());
+      nearestSourceLink.addEventListener("keydown", (event) => event.stopPropagation());
     }
 
     referenceModal.addEventListener("click", (event) => {
