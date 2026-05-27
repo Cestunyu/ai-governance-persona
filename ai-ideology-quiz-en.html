@@ -71,6 +71,10 @@
       line-height: 1.2;
     }
 
+    .brand-progress {
+      display: none;
+    }
+
     .brand span {
       color: var(--muted);
       font-size: 11px;
@@ -773,6 +777,51 @@
       line-height: 1.5;
     }
 
+    .reference-score-card {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .reference-score-card > span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 820;
+    }
+
+    .reference-score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .reference-score-grid div {
+      min-width: 0;
+      border-radius: 6px;
+      background: var(--soft);
+      padding: 8px;
+    }
+
+    .reference-score-grid small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 780;
+      line-height: 1.2;
+    }
+
+    .reference-score-grid b {
+      display: block;
+      margin-top: 4px;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
     .profile {
       margin-top: 12px;
       border: 1px solid var(--line);
@@ -840,9 +889,7 @@
     }
 
     .plain-result {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      display: block;
       margin-top: 12px;
     }
 
@@ -851,6 +898,26 @@
       border-radius: 8px;
       background: #fff;
       padding: 12px;
+    }
+
+    .plain-card.combined {
+      display: grid;
+      gap: 12px;
+    }
+
+    .plain-card-section + .plain-card-section {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .reference-section {
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .reference-section:focus-visible {
+      outline: 3px solid rgba(15, 118, 110, 0.24);
+      outline-offset: 3px;
     }
 
     .plain-card span {
@@ -924,42 +991,96 @@
 
     @media (max-width: 760px) {
       .topbar-inner {
-        align-items: flex-start;
+        align-items: center;
+        padding: 5px 10px;
+      }
+
+      .topbar-actions {
+        display: none;
+      }
+
+      .brand strong {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 760;
+      }
+
+      .brand-title {
+        display: none;
+      }
+
+      .brand-progress {
+        display: block;
+      }
+
+      .brand span {
+        display: none;
       }
 
       .wrap {
-        padding: 12px 10px 34px;
+        padding: 6px 8px 34px;
       }
 
-      .hero,
+      .hero {
+        display: none;
+      }
+
       .panel-body,
       .result {
-        padding: 12px;
+        padding: 8px;
+      }
+
+      .panel {
+        margin-bottom: 8px;
+      }
+
+      .panel-head {
+        padding: 6px 10px;
+      }
+
+      .panel-head small {
+        display: none;
+      }
+
+      .panel-head .btn {
+        min-height: 28px;
+        padding: 5px 9px;
+        font-size: 11px;
+      }
+
+      .progress-row {
+        margin-bottom: 8px;
       }
 
       .result-topline {
         grid-template-columns: 1fr;
       }
 
-      .plain-result {
-        grid-template-columns: 1fr;
-      }
-
       .profile-head {
-        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 8px;
+        padding: 16px 12px;
+        text-align: center;
       }
 
       .profile-avatar {
-        grid-row: span 2;
+        width: 136px;
+        height: 136px;
       }
 
       .profile-head .code {
-        min-width: 60px;
-        height: 42px;
+        display: none;
       }
 
       .page-card {
-        min-height: 340px;
+        min-height: auto;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .reference-score-grid {
+        grid-template-columns: 1fr;
       }
 
       .page-prompt {
@@ -997,7 +1118,8 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <strong>What Are Your AI Stance Coordinates?</strong>
+        <strong class="brand-title">What Are Your AI Stance Coordinates?</strong>
+        <strong class="brand-progress" id="brandProgress">Question 1 / 14</strong>
         <span>14 questions to see where you stand on AI risk, governance, openness, and human control.</span>
       </div>
       <div class="topbar-actions">
@@ -1059,15 +1181,17 @@
       </div>
 
       <div class="plain-result">
-        <div class="plain-card">
-          <span>Your label</span>
-          <strong id="plainLabel">--</strong>
-          <p id="plainLabelText">A plain-language explanation appears after completion.</p>
-        </div>
-        <div class="plain-card">
-          <span>Closest reference</span>
-          <strong id="nearestPerson">--</strong>
-          <p id="nearestPersonText">The nearest map reference appears after completion.</p>
+        <div class="plain-card combined">
+          <div class="plain-card-section">
+            <span>Result summary</span>
+            <strong id="plainLabel">--</strong>
+            <p id="plainLabelText">A plain-language explanation appears after completion.</p>
+          </div>
+          <div class="plain-card-section reference-section" id="nearestPersonSection" role="button" tabindex="0">
+            <span>Closest reference</span>
+            <strong id="nearestPerson">--</strong>
+            <p id="nearestPersonText">The nearest map reference appears after completion.</p>
+          </div>
         </div>
       </div>
 
@@ -1312,13 +1436,13 @@
       "None of these fit."
     ];
 
-    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "VROM", "POST", ""];
+    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST", ""];
 
     const scenarioProfiles = {
-      V1: ["STOP", "SAFE", "BOOM", "VROM"],
+      V1: ["STOP", "SAFE", "BOOM", "EACC"],
       V2: ["AUDT", "SAFE", "NORM", "BOOM"],
       V3: ["STOP", "SAFE", "BOOM", "SING"],
-      V4: ["STOP", "SAFE", "NORM", "VROM"]
+      V4: ["STOP", "SAFE", "NORM", "EACC"]
     };
 
     const profiles = {
@@ -1330,7 +1454,7 @@
       GPUC: ["Compute Cultist", "Closest kin: Rich Sutton / The Bitter Lesson", "You are not doing AI politics; you just think human knowledge should stop overestimating itself.", "The Bitter Lesson", "When others say common sense and expert priors, you say scale, compute, search, learning."],
       BOOM: ["Abundance Builder", "Closest kin: Andrew Ng / Dario Amodei optimism", "You think the biggest AI problem is not that it is too strong, but that it is not plugged into enough real systems yet.", "Machines of Loving Grace, AI is the New Electricity", "High-frequency words: productivity, health, education, deployment."],
       SING: ["Cyber Ascender", "Closest kin: Kurzweil / singularity optimism", "You do not see AI as a tool; you see it as civilization changing bodies.", "The Singularity Is Near, The Intelligence Age", "Often talks about abundance, longevity, human-machine merger."],
-      VROM: ["Throttle-Welded Builder", "Closest kin: e/acc / effective accelerationism", "If the steering wheel is still being debated, at least the accelerator can be pressed.", "Effective Accelerationism manifestos", "Often says accelerate, permissionless, build, decentralize."],
+      EACC: ["Throttle-Welded Builder", "Closest kin: e/acc / effective accelerationism", "If the steering wheel is still being debated, at least the accelerator can be pressed.", "Effective Accelerationism manifestos", "Often says accelerate, permissionless, build, decentralize."],
       POST: ["Carbon-Based Transitional Form", "Closest kin: Nick Land / posthuman accelerationist edge", "While others debate whether AI should serve humans, you are wondering whether humans are scaffolding for technocapital.", "Meltdown, Dark Enlightenment", "Often says posthuman, technocapital, autonomy."]
     };
 
@@ -1343,7 +1467,7 @@
       GPUC: { x: 0.6, y: -1 },
       BOOM: { x: 1.05, y: 0.9 },
       SING: { x: 1.45, y: -0.35 },
-      VROM: { x: 1.85, y: -0.8 },
+      EACC: { x: 1.85, y: -0.8 },
       POST: { x: 1.8, y: -1.8 }
     };
 
@@ -1356,7 +1480,7 @@
       GPUC: ["rich-sutton"],
       BOOM: ["andrew-ng", "dario-amodei-anthropic", "marc-andreessen"],
       SING: ["ray-kurzweil"],
-      VROM: ["marc-andreessen", "effective-accelerationism"],
+      EACC: ["marc-andreessen", "effective-accelerationism"],
       POST: ["benjamin-bratton", "nick-land"]
     };
 
@@ -1369,7 +1493,7 @@
       GPUC: "assets/profile-pictures/gpuc-wojak.png",
       BOOM: "assets/profile-pictures/boom-wojak.png",
       SING: "assets/profile-pictures/sing-wojak.png",
-      VROM: "assets/profile-pictures/vrom-wojak.png",
+      EACC: "assets/profile-pictures/eacc-wojak.png",
       POST: "assets/profile-pictures/post-wojak.png"
     };
 
@@ -1511,6 +1635,7 @@
     let shareImageUrl = "";
 
     const form = document.querySelector("#quizForm");
+    const brandProgress = document.querySelector("#brandProgress");
     const heroSection = document.querySelector("#heroSection");
     const quizPager = document.querySelector("#quizPager");
     const resultPanel = document.querySelector("#resultPanel");
@@ -1547,6 +1672,7 @@
     const plainLabelText = document.querySelector("#plainLabelText");
     const nearestPerson = document.querySelector("#nearestPerson");
     const nearestPersonText = document.querySelector("#nearestPersonText");
+    const nearestPersonSection = document.querySelector("#nearestPersonSection");
     const summaryBox = document.querySelector("#summaryBox");
     const submitStatus = document.querySelector("#submitStatus");
     const resetBtn = document.querySelector("#resetBtn");
@@ -1570,6 +1696,10 @@
 
     function profileAvatarFor(code) {
       return profileAvatarByCode[code] || profileAvatarByCode.NORM;
+    }
+
+    function displayProfileCode(code) {
+      return code === "EACC" ? "E/ACC" : code;
     }
 
     function selected(name) {
@@ -1727,6 +1857,7 @@
       const isLast = currentIndex === pages.length - 1;
       progressFill.style.width = `${Math.round((done / pages.length) * 100)}%`;
       progressText.textContent = `${done}/${pages.length}`;
+      if (brandProgress) brandProgress.textContent = `Question ${currentIndex + 1} / ${pages.length} · Done ${done}/${pages.length}`;
       prevBtn.disabled = currentIndex === 0;
       if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
       nextBtn.hidden = !isMulti;
@@ -1780,6 +1911,7 @@
         if (heroSection) heroSection.hidden = true;
         quizPager.hidden = true;
         resultPanel.hidden = false;
+        if (brandProgress) brandProgress.textContent = `Complete ${answeredPages()}/${pages.length}`;
         update();
         if (shouldScroll) scrollToElement(resultPanel);
         return;
@@ -1842,7 +1974,7 @@
     function baseProfileFor(x, y) {
       if (!Number.isFinite(x) || !Number.isFinite(y)) return "";
       if (x >= 1.5 && y <= -1.5) return "POST";
-      if (x >= 1.25 && y <= -0.75) return "VROM";
+      if (x >= 1.25 && y <= -0.75) return "EACC";
       if (x <= -1.25 && y >= 0) return "STOP";
       if (x >= 1.25 && y >= -0.75 && y <= 0.75) return "SING";
       if (x >= 0.15 && y <= 0.15) return "GPUC";
@@ -1884,7 +2016,7 @@
       addEvidence(scores, "GPUC", (0.8 * normal) + (0.8 * open) + (1.4 * posthuman));
       addEvidence(scores, "BOOM", (2.4 * opportunity) + (1.1 * open) + (1.0 * human));
       addEvidence(scores, "SING", (1.5 * opportunity) + (1.1 * open) + (1.2 * posthuman));
-      addEvidence(scores, "VROM", (1.6 * opportunity) + (2.2 * open) + (0.7 * posthuman));
+      addEvidence(scores, "EACC", (1.6 * opportunity) + (2.2 * open) + (0.7 * posthuman));
       addEvidence(scores, "POST", (0.9 * opportunity) + (1.4 * open) + (2.5 * posthuman));
     }
 
@@ -2029,12 +2161,22 @@
       const category = categoryForPoint(point);
       const info = categoryInfo[category];
       const stance = referenceProfiles[point.id] || point.cluster;
+      const horizontalLabel = point.x < -0.35 ? "control / thresholds" : point.x > 0.35 ? "open / deploy" : "response middle";
+      const verticalLabel = point.y > 0.35 ? "human/social structure" : point.y < -0.35 ? "intelligence/posthuman" : "value middle";
       referenceDetail.innerHTML = `
         <div class="reference-detail-head">
           <b id="referenceModalTitle">${escapeHTML(point.name)}</b>
           <span class="reference-detail-badge" style="--color:${info.color}">${escapeHTML(info.label)}</span>
         </div>
         <p>${escapeHTML(stance)}</p>
+        <div class="reference-score-card">
+          <span>Quiz-like result</span>
+          <div class="reference-score-grid">
+            <div><small>Horizontal</small><b>${escapeHTML(formatScore(point.x))} · ${escapeHTML(horizontalLabel)}</b></div>
+            <div><small>Vertical</small><b>${escapeHTML(formatScore(point.y))} · ${escapeHTML(verticalLabel)}</b></div>
+            <div><small>Influence</small><b>${escapeHTML(point.influence)}/5</b></div>
+          </div>
+        </div>
         <p><b>Lineage:</b> ${escapeHTML(point.cluster)} · <b>Map position:</b> ${escapeHTML(quadrantFor(point.x, point.y))} · <b>Influence:</b> ${escapeHTML(point.influence)}/5</p>
       `;
       referenceModal.hidden = false;
@@ -2042,7 +2184,7 @@
 
     function updateMap(result, complete, code) {
       mapDot.hidden = !complete;
-      mapDotCode.textContent = complete ? code : "----";
+      mapDotCode.textContent = complete ? displayProfileCode(code) : "----";
       mapQuadrant.textContent = complete ? quadrantFor(result.x, result.y) : "Position appears after completion";
       if (!complete) return;
       mapDot.style.left = `${coordToPercent(result.x)}%`;
@@ -2069,6 +2211,7 @@
         locale: "en",
         completed_at: new Date().toISOString(),
         profile_code: code,
+        profile_display_code: displayProfileCode(code),
         profile_name: profile[0],
         profile_lineage: profile[1],
         scores: {
@@ -2151,6 +2294,7 @@
       const abilityScore = abilityNarrativeScore();
       const abilityLabel = complete ? abilityNarrativeLabel(abilityScore) : "--";
       const nearest = complete ? nearestReferenceFor(result, code) : null;
+      const displayCode = displayProfileCode(code);
 
       abilityNarrative.textContent = abilityLabel;
       dimensionR.textContent = riskLabel;
@@ -2165,20 +2309,20 @@
         if (complete) {
           const avatarSrc = profileAvatarFor(code);
           if (profileAvatar.getAttribute("src") !== avatarSrc) profileAvatar.src = avatarSrc;
-          profileAvatar.alt = `${profile[0]} ${code} avatar`;
+          profileAvatar.alt = `${profile[0]} ${displayCode} avatar`;
           profileAvatar.hidden = false;
         } else {
           profileAvatar.hidden = true;
           profileAvatar.removeAttribute("src");
         }
       }
-      profileCode.textContent = complete ? code : "----";
-      profileName.textContent = complete ? `${profile[0]} ${code}` : "Waiting for profile";
+      profileCode.textContent = complete ? displayCode : "----";
+      profileName.textContent = complete ? `${profile[0]} ${displayCode}` : "Waiting for profile";
       profileLineage.textContent = complete ? profile[1] : "Complete the core items to generate a type.";
       profileRoast.textContent = complete ? profile[2] : "Complete all 9 core items for a stable result.";
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
-      plainLabel.textContent = complete ? `${code} · ${profile[0]}` : "--";
+      plainLabel.textContent = complete ? `${displayCode} · ${profile[0]}` : "--";
       plainLabelText.textContent = complete
         ? `${riskPlainText(result)} ${governancePlainText(result.c)}`
         : "A plain-language explanation appears after completion.";
@@ -2186,13 +2330,22 @@
       nearestPersonText.textContent = nearest
         ? "This is the nearest reference point on the map. It means the coordinates are similar, not that you fully agree with them."
         : "The nearest map reference appears after completion.";
+      if (nearestPersonSection) {
+        if (nearest) {
+          nearestPersonSection.dataset.referenceId = nearest.id;
+          nearestPersonSection.setAttribute("aria-label", `Open map notes for ${nearest.name}`);
+        } else {
+          nearestPersonSection.dataset.referenceId = "";
+          nearestPersonSection.setAttribute("aria-label", "Closest reference appears after completion");
+        }
+      }
 
       const scenarioSummary = scenarios.map((s) => selected(s.id) ? `${s.id}: ${selected(s.id)}` : "").filter(Boolean).join(" | ");
       const statement = selectedValues("closestStatement").join(" | ");
 
       summaryBox.textContent = complete
         ? [
-            `Label: ${code} · ${profile[0]}`,
+            `Label: ${displayCode} · ${profile[0]}`,
             nearest ? `Closest reference: ${nearest.name}` : "",
             `${riskPlainText(result)} ${governancePlainText(result.c)}`,
             statement ? `Overall stance: ${statement}` : "",
@@ -2304,6 +2457,7 @@
 
       const code = profileFor(result);
       const profile = profiles[code];
+      const displayCode = displayProfileCode(code);
       const abilityScore = abilityNarrativeScore();
       const abilityLabel = abilityNarrativeLabel(abilityScore);
       const riskLabel = riskSpectrumLabel(result);
@@ -2339,7 +2493,7 @@
       ctx.fillStyle = "#ffffff";
       ctx.font = "900 30px Inter, Arial, sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText(code, 124, 193);
+      ctx.fillText(displayCode, 124, 193);
       ctx.textAlign = "left";
       drawAvatar(ctx, avatarImage, 546, 142, 116);
 
@@ -2515,15 +2669,28 @@
       renderPage(true);
     });
 
-    referenceLayer.addEventListener("click", (event) => {
-      const target = event.target.closest(".reference-point");
-      if (!target) return;
-      const point = referencePoints.find((item) => item.id === target.dataset.id);
+    function openReferenceById(id) {
+      const point = referencePoints.find((item) => item.id === id);
       if (!point) return;
       activeReferenceId = point.id;
       renderReferencePoints();
       renderReferenceDetail(point);
+    }
+
+    referenceLayer.addEventListener("click", (event) => {
+      const target = event.target.closest(".reference-point");
+      if (!target) return;
+      openReferenceById(target.dataset.id);
     });
+
+    if (nearestPersonSection) {
+      nearestPersonSection.addEventListener("click", () => openReferenceById(nearestPersonSection.dataset.referenceId));
+      nearestPersonSection.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        openReferenceById(nearestPersonSection.dataset.referenceId);
+      });
+    }
 
     referenceModal.addEventListener("click", (event) => {
       if (!event.target.matches("[data-reference-close]")) return;
