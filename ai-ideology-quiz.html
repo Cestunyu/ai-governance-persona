@@ -327,12 +327,6 @@
       margin-top: 14px;
     }
 
-    .pager-note {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
     .submit-status {
       min-height: 18px;
       margin-top: 10px;
@@ -915,9 +909,48 @@
       cursor: pointer;
     }
 
+    .reference-section[data-ready="true"] strong {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
     .reference-section:focus-visible {
       outline: 3px solid rgba(15, 118, 110, 0.24);
       outline-offset: 3px;
+    }
+
+    .reference-note-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .reference-note {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .reference-note span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 820;
+      line-height: 1.2;
+    }
+
+    .reference-note p,
+    .reference-note ul {
+      margin: 6px 0 0;
+    }
+
+    .reference-note ul {
+      padding-left: 17px;
+      color: #3a4454;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .plain-card span {
@@ -1156,7 +1189,6 @@
 
           <div class="pager-actions">
             <button class="btn" id="prevBtn" type="button">上一题</button>
-            <span class="pager-note" id="pagerNote">请选择一个选项继续</span>
             <button class="btn primary" id="nextBtn" type="button">下一题</button>
           </div>
         </div>
@@ -1185,7 +1217,6 @@
           <div class="plain-card-section">
             <span>结果摘要</span>
             <strong id="plainLabel">--</strong>
-            <p id="plainLabelText">答完后显示一句话解释。</p>
           </div>
           <div class="plain-card-section reference-section" id="nearestPersonSection" role="button" tabindex="0">
             <span>接近的人</span>
@@ -1248,7 +1279,6 @@
         <div class="map-legend" id="mapLegend" aria-label="思想谱系图例"></div>
       </div>
 
-      <div class="summary" id="summaryBox">答完后这里会生成结构化摘要。</div>
       <div class="result-actions">
         <button class="btn" id="editLastBtn" type="button">修改上一题</button>
         <button class="btn" id="shareBtn" type="button">生成长图分享</button>
@@ -1590,6 +1620,18 @@
       "nick-land": "资本、技术和智能被想象成超过人类主义控制的自主失控过程。"
     };
 
+    const referenceDetails = {
+      "effective-accelerationism": {
+        core: "技术加速本身被视为道德和文明任务；监管、暂停和安全话语常被看作更大的风险。",
+        placement: "横轴最右，因为它把加速和开放扩散推到核心；纵轴偏下，因为它弱化人类中心治理，更强调技术演化、市场和去中心化。",
+        focus: "读时要注意它更多是 memetic / political movement，而不是严密学术体系；不同自称 e/acc 的人内部差异很大。",
+        counter: "安全派认为它把风险外部性浪漫化；critical AI 认为它把权力和伤害当成发展成本。",
+        works: [
+          "Effective Accelerationism · 2022 · manifesto / movement text"
+        ]
+      }
+    };
+
     const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "C04", "H03", "H04", "R01"];
 
     const pages = [
@@ -1609,7 +1651,7 @@
         title: "情境选择",
         subtitle: "不进入坐标计算，用于复查分类",
         tag: s.id,
-        instruction: "选择你最支持的处理方式",
+        instruction: "",
         prompt: s.prompt,
         options: s.options.map((option, i) => [option, String.fromCharCode(65 + i), option])
       })),
@@ -1649,7 +1691,7 @@
     const prevTopBtn = document.querySelector("#prevTopBtn");
     const prevBtn = document.querySelector("#prevBtn");
     const nextBtn = document.querySelector("#nextBtn");
-    const pagerNote = document.querySelector("#pagerNote");
+    const pagerActions = document.querySelector(".pager-actions");
     const abilityNarrative = document.querySelector("#abilityNarrative");
     const dimensionR = document.querySelector("#dimensionR");
     const dimensionC = document.querySelector("#dimensionC");
@@ -1669,11 +1711,9 @@
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
     const plainLabel = document.querySelector("#plainLabel");
-    const plainLabelText = document.querySelector("#plainLabelText");
     const nearestPerson = document.querySelector("#nearestPerson");
     const nearestPersonText = document.querySelector("#nearestPersonText");
     const nearestPersonSection = document.querySelector("#nearestPersonSection");
-    const summaryBox = document.querySelector("#summaryBox");
     const submitStatus = document.querySelector("#submitStatus");
     const resetBtn = document.querySelector("#resetBtn");
     const editLastBtn = document.querySelector("#editLastBtn");
@@ -1858,14 +1898,12 @@
       progressFill.style.width = `${Math.round((done / pages.length) * 100)}%`;
       progressText.textContent = `${done}/${pages.length}`;
       if (brandProgress) brandProgress.textContent = `第 ${currentIndex + 1} / ${pages.length} 题 · 已答 ${done}/${pages.length}`;
+      if (pagerActions) pagerActions.hidden = !isMulti;
       prevBtn.disabled = currentIndex === 0;
       if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
       nextBtn.hidden = !isMulti;
       nextBtn.disabled = !answered;
       nextBtn.textContent = isLast ? "查看结果" : "下一题";
-      pagerNote.textContent = answered
-        ? isMulti ? "选完后点击查看结果" : "需要修改就点另一项；回退用上一题"
-        : isMulti ? "请选择至少一个选项继续" : "点选后会自动进入下一题";
     }
 
     function scrollToElement(element) {
@@ -1924,6 +1962,7 @@
       pageCount.textContent = `第 ${currentIndex + 1} / ${pages.length} 题`;
       pageTag.textContent = page.multiple ? `${page.tag} · 多选` : page.tag;
       pageInstruction.textContent = page.instruction;
+      pageInstruction.hidden = !page.instruction;
       pagePrompt.textContent = page.prompt;
       const inputType = page.multiple ? "checkbox" : "radio";
       pageOptions.innerHTML = page.options.map(([value, key, label]) => `
@@ -2151,6 +2190,32 @@
       referenceModal.hidden = true;
     }
 
+    function renderReferenceNotes(point, detail, stance) {
+      const core = detail?.core || stance;
+      const placement = detail?.placement || `这个参考点位于${quadrantFor(point.x, point.y)}，因为其公开论证最接近「${point.cluster}」。`;
+      const focus = detail?.focus || "把它当作相邻参照，而不是把同一区域里的所有观点都看成完全一致。";
+      const counter = detail?.counter || "";
+      const works = detail?.works || [];
+      return `
+        <div class="reference-note-grid">
+          <div class="reference-note">
+            <span>核心思想</span>
+            <p>${escapeHTML(core)}</p>
+          </div>
+          <div class="reference-note">
+            <span>为什么放在这里</span>
+            <p>${escapeHTML(placement)}</p>
+          </div>
+          <div class="reference-note">
+            <span>阅读重点</span>
+            <p>${escapeHTML(focus)}</p>
+          </div>
+          ${counter ? `<div class="reference-note"><span>有用对照</span><p>${escapeHTML(counter)}</p></div>` : ""}
+          ${works.length ? `<div class="reference-note"><span>代表文本</span><ul>${works.map((work) => `<li>${escapeHTML(work)}</li>`).join("")}</ul></div>` : ""}
+        </div>
+      `;
+    }
+
     function renderReferenceDetail(point) {
       if (!point) {
         referenceDetail.innerHTML = "";
@@ -2161,6 +2226,7 @@
       const category = categoryForPoint(point);
       const info = categoryInfo[category];
       const stance = referenceProfiles[point.id] || point.cluster;
+      const detail = referenceDetails[point.id];
       const horizontalLabel = point.x < -0.35 ? "控制 / 门槛" : point.x > 0.35 ? "开放 / 部署" : "响应中间";
       const verticalLabel = point.y > 0.35 ? "人类/社会结构中心" : point.y < -0.35 ? "智能/后人类" : "价值中间";
       referenceDetail.innerHTML = `
@@ -2168,7 +2234,6 @@
           <b id="referenceModalTitle">${escapeHTML(point.name)}</b>
           <span class="reference-detail-badge" style="--color:${info.color}">${escapeHTML(info.label)}</span>
         </div>
-        <p>${escapeHTML(stance)}</p>
         <div class="reference-score-card">
           <span>类似问卷结果</span>
           <div class="reference-score-grid">
@@ -2177,6 +2242,7 @@
             <div><small>影响力</small><b>${escapeHTML(point.influence)}/5</b></div>
           </div>
         </div>
+        ${renderReferenceNotes(point, detail, stance)}
         <p><b>谱系：</b>${escapeHTML(point.cluster)} · <b>图谱位置：</b>${escapeHTML(quadrantFor(point.x, point.y))} · <b>影响力：</b>${escapeHTML(point.influence)}/5</p>
       `;
       referenceModal.hidden = false;
@@ -2237,7 +2303,7 @@
         answers: Object.fromEntries(questions.map((question) => [question.id, selected(question.id)])),
         scenarios: Object.fromEntries(scenarios.map((scenario) => [scenario.id, selected(scenario.id)])),
         closest_statement: selectedValues("closestStatement"),
-        summary: summaryBox.textContent
+        summary: ""
       };
     }
 
@@ -2317,15 +2383,12 @@
         }
       }
       profileCode.textContent = complete ? displayCode : "----";
-      profileName.textContent = complete ? `${profile[0]} ${displayCode}` : "等待生成画像";
+      profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "等待生成画像";
       profileLineage.textContent = complete ? profile[1] : "答完核心题后生成类型。";
       profileRoast.textContent = complete ? profile[2] : "至少完成 9 道核心题，结果会更稳。";
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
-      plainLabel.textContent = complete ? `${displayCode} · ${profile[0]}` : "--";
-      plainLabelText.textContent = complete
-        ? `${riskPlainText(result)} ${governancePlainText(result.c)}`
-        : "答完后显示一句话解释。";
+      plainLabel.textContent = complete ? `${displayCode}: ${profile[0]}` : "--";
       nearestPerson.textContent = nearest ? nearest.name : "--";
       nearestPersonText.textContent = nearest
         ? `这是你在图谱上最近的参考点。相似的是整体坐标，不代表你完整赞同 TA。`
@@ -2333,26 +2396,15 @@
       if (nearestPersonSection) {
         if (nearest) {
           nearestPersonSection.dataset.referenceId = nearest.id;
+          nearestPersonSection.dataset.ready = "true";
           nearestPersonSection.setAttribute("aria-label", `打开 ${nearest.name} 的图谱说明`);
         } else {
           nearestPersonSection.dataset.referenceId = "";
+          nearestPersonSection.dataset.ready = "false";
           nearestPersonSection.setAttribute("aria-label", "接近的人会在答完后显示");
         }
       }
 
-      const scenarioSummary = scenarios.map((s) => selected(s.id) ? `${s.id}: ${selected(s.id)}` : "").filter(Boolean).join(" | ");
-      const statement = selectedValues("closestStatement").join(" | ");
-
-      summaryBox.textContent = complete
-        ? [
-            `标签：${displayCode} · ${profile[0]}`,
-            nearest ? `接近的人：${nearest.name}` : "",
-            `${riskPlainText(result)} ${governancePlainText(result.c)}`,
-            statement ? `总体立场：${statement}` : "",
-            `补充：能力判断=${abilityLabel}；风险判断=${riskLabel}；治理位置=${responseLabel}；价值位置=${valueLabel}`,
-            scenarioSummary ? `情境选择：${scenarioSummary}` : ""
-          ].filter(Boolean).join("\n")
-        : "答完 9 道核心题后，这里会生成结构化摘要。";
       maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
     }
 

@@ -327,12 +327,6 @@
       margin-top: 14px;
     }
 
-    .pager-note {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
     .submit-status {
       min-height: 18px;
       margin-top: 10px;
@@ -915,9 +909,49 @@
       cursor: pointer;
     }
 
+    .reference-section[data-ready="true"] strong {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
     .reference-section:focus-visible {
       outline: 3px solid rgba(15, 118, 110, 0.24);
       outline-offset: 3px;
+    }
+
+    .reference-note-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .reference-note {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .reference-note span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 820;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .reference-note p,
+    .reference-note ul {
+      margin: 6px 0 0;
+    }
+
+    .reference-note ul {
+      padding-left: 17px;
+      color: #3a4454;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .plain-card span {
@@ -1156,7 +1190,6 @@
 
           <div class="pager-actions">
             <button class="btn" id="prevBtn" type="button">Back</button>
-            <span class="pager-note" id="pagerNote">Choose one option to continue</span>
             <button class="btn primary" id="nextBtn" type="button">Next</button>
           </div>
         </div>
@@ -1185,7 +1218,6 @@
           <div class="plain-card-section">
             <span>Result summary</span>
             <strong id="plainLabel">--</strong>
-            <p id="plainLabelText">A plain-language explanation appears after completion.</p>
           </div>
           <div class="plain-card-section reference-section" id="nearestPersonSection" role="button" tabindex="0">
             <span>Closest reference</span>
@@ -1248,7 +1280,6 @@
         <div class="map-legend" id="mapLegend" aria-label="Map legend"></div>
       </div>
 
-      <div class="summary" id="summaryBox">A structured summary will appear here after completion.</div>
       <div class="result-actions">
         <button class="btn" id="editLastBtn" type="button">Edit Last Answer</button>
         <button class="btn" id="shareBtn" type="button">Generate Share Image</button>
@@ -1590,6 +1621,18 @@
       "nick-land": "Capital, technology, and intelligence are imagined as autonomous runaway processes that exceed humanist control."
     };
 
+    const referenceDetails = {
+      "effective-accelerationism": {
+        core: "Technological acceleration is treated as a moral and civilizational task; regulation, pauses, and safety narratives are often treated as the larger risk.",
+        placement: "Far right because acceleration and open diffusion are central; lower half because it weakens human-centered governance and gives more weight to technological evolution, markets, and decentralization.",
+        focus: "Read it as a memetic and political movement rather than a tight academic theory. People who use e/acc language can differ a lot internally.",
+        counter: "Safety advocates think it romanticizes externalized risk; critical AI thinkers see power and harm being treated as development costs.",
+        works: [
+          "Effective Accelerationism · 2022 · manifesto / movement text"
+        ]
+      }
+    };
+
     const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "C04", "H03", "H04", "R01"];
 
     const pages = [
@@ -1609,7 +1652,7 @@
         title: "Scenario Choice",
         subtitle: "Not included in coordinate scoring; used as a cross-check",
         tag: s.id,
-        instruction: "Choose the response you support most",
+        instruction: "",
         prompt: s.prompt,
         options: s.options.map((option, i) => [option, String.fromCharCode(65 + i), option])
       })),
@@ -1649,7 +1692,7 @@
     const prevTopBtn = document.querySelector("#prevTopBtn");
     const prevBtn = document.querySelector("#prevBtn");
     const nextBtn = document.querySelector("#nextBtn");
-    const pagerNote = document.querySelector("#pagerNote");
+    const pagerActions = document.querySelector(".pager-actions");
     const abilityNarrative = document.querySelector("#abilityNarrative");
     const dimensionR = document.querySelector("#dimensionR");
     const dimensionC = document.querySelector("#dimensionC");
@@ -1669,11 +1712,9 @@
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
     const plainLabel = document.querySelector("#plainLabel");
-    const plainLabelText = document.querySelector("#plainLabelText");
     const nearestPerson = document.querySelector("#nearestPerson");
     const nearestPersonText = document.querySelector("#nearestPersonText");
     const nearestPersonSection = document.querySelector("#nearestPersonSection");
-    const summaryBox = document.querySelector("#summaryBox");
     const submitStatus = document.querySelector("#submitStatus");
     const resetBtn = document.querySelector("#resetBtn");
     const editLastBtn = document.querySelector("#editLastBtn");
@@ -1858,14 +1899,12 @@
       progressFill.style.width = `${Math.round((done / pages.length) * 100)}%`;
       progressText.textContent = `${done}/${pages.length}`;
       if (brandProgress) brandProgress.textContent = `Question ${currentIndex + 1} / ${pages.length} · Done ${done}/${pages.length}`;
+      if (pagerActions) pagerActions.hidden = !isMulti;
       prevBtn.disabled = currentIndex === 0;
       if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
       nextBtn.hidden = !isMulti;
       nextBtn.disabled = !answered;
       nextBtn.textContent = isLast ? "See Result" : "Next";
-      pagerNote.textContent = answered
-        ? isMulti ? "Click See Result when you are done." : "Choose another option to change it; use Back to return."
-        : isMulti ? "Choose at least one option to continue." : "Selecting an option moves to the next question.";
     }
 
     function scrollToElement(element) {
@@ -1924,6 +1963,7 @@
       pageCount.textContent = `Question ${currentIndex + 1} / ${pages.length}`;
       pageTag.textContent = page.multiple ? `${page.tag} · MULTI` : page.tag;
       pageInstruction.textContent = page.instruction;
+      pageInstruction.hidden = !page.instruction;
       pagePrompt.textContent = page.prompt;
       const inputType = page.multiple ? "checkbox" : "radio";
       pageOptions.innerHTML = page.options.map(([value, key, label]) => `
@@ -2151,6 +2191,32 @@
       referenceModal.hidden = true;
     }
 
+    function renderReferenceNotes(point, detail, stance) {
+      const core = detail?.core || stance;
+      const placement = detail?.placement || `This reference sits in ${quadrantFor(point.x, point.y)} because its public argument is closest to ${point.cluster}.`;
+      const focus = detail?.focus || "Use this point as a nearby reference, not as a claim that every view in the cluster is identical.";
+      const counter = detail?.counter || "";
+      const works = detail?.works || [];
+      return `
+        <div class="reference-note-grid">
+          <div class="reference-note">
+            <span>Core idea</span>
+            <p>${escapeHTML(core)}</p>
+          </div>
+          <div class="reference-note">
+            <span>Why here</span>
+            <p>${escapeHTML(placement)}</p>
+          </div>
+          <div class="reference-note">
+            <span>Reading focus</span>
+            <p>${escapeHTML(focus)}</p>
+          </div>
+          ${counter ? `<div class="reference-note"><span>Useful contrast</span><p>${escapeHTML(counter)}</p></div>` : ""}
+          ${works.length ? `<div class="reference-note"><span>Representative work</span><ul>${works.map((work) => `<li>${escapeHTML(work)}</li>`).join("")}</ul></div>` : ""}
+        </div>
+      `;
+    }
+
     function renderReferenceDetail(point) {
       if (!point) {
         referenceDetail.innerHTML = "";
@@ -2161,6 +2227,7 @@
       const category = categoryForPoint(point);
       const info = categoryInfo[category];
       const stance = referenceProfiles[point.id] || point.cluster;
+      const detail = referenceDetails[point.id];
       const horizontalLabel = point.x < -0.35 ? "control / thresholds" : point.x > 0.35 ? "open / deploy" : "response middle";
       const verticalLabel = point.y > 0.35 ? "human/social structure" : point.y < -0.35 ? "intelligence/posthuman" : "value middle";
       referenceDetail.innerHTML = `
@@ -2168,7 +2235,6 @@
           <b id="referenceModalTitle">${escapeHTML(point.name)}</b>
           <span class="reference-detail-badge" style="--color:${info.color}">${escapeHTML(info.label)}</span>
         </div>
-        <p>${escapeHTML(stance)}</p>
         <div class="reference-score-card">
           <span>Quiz-like result</span>
           <div class="reference-score-grid">
@@ -2177,6 +2243,7 @@
             <div><small>Influence</small><b>${escapeHTML(point.influence)}/5</b></div>
           </div>
         </div>
+        ${renderReferenceNotes(point, detail, stance)}
         <p><b>Lineage:</b> ${escapeHTML(point.cluster)} · <b>Map position:</b> ${escapeHTML(quadrantFor(point.x, point.y))} · <b>Influence:</b> ${escapeHTML(point.influence)}/5</p>
       `;
       referenceModal.hidden = false;
@@ -2237,7 +2304,7 @@
         answers: Object.fromEntries(questions.map((question) => [question.id, selected(question.id)])),
         scenarios: Object.fromEntries(scenarios.map((scenario) => [scenario.id, selected(scenario.id)])),
         closest_statement: selectedValues("closestStatement"),
-        summary: summaryBox.textContent
+        summary: ""
       };
     }
 
@@ -2317,15 +2384,12 @@
         }
       }
       profileCode.textContent = complete ? displayCode : "----";
-      profileName.textContent = complete ? `${profile[0]} ${displayCode}` : "Waiting for profile";
+      profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "Waiting for profile";
       profileLineage.textContent = complete ? profile[1] : "Complete the core items to generate a type.";
       profileRoast.textContent = complete ? profile[2] : "Complete all 9 core items for a stable result.";
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
-      plainLabel.textContent = complete ? `${displayCode} · ${profile[0]}` : "--";
-      plainLabelText.textContent = complete
-        ? `${riskPlainText(result)} ${governancePlainText(result.c)}`
-        : "A plain-language explanation appears after completion.";
+      plainLabel.textContent = complete ? `${displayCode}: ${profile[0]}` : "--";
       nearestPerson.textContent = nearest ? nearest.name : "--";
       nearestPersonText.textContent = nearest
         ? "This is the nearest reference point on the map. It means the coordinates are similar, not that you fully agree with them."
@@ -2333,26 +2397,15 @@
       if (nearestPersonSection) {
         if (nearest) {
           nearestPersonSection.dataset.referenceId = nearest.id;
+          nearestPersonSection.dataset.ready = "true";
           nearestPersonSection.setAttribute("aria-label", `Open map notes for ${nearest.name}`);
         } else {
           nearestPersonSection.dataset.referenceId = "";
+          nearestPersonSection.dataset.ready = "false";
           nearestPersonSection.setAttribute("aria-label", "Closest reference appears after completion");
         }
       }
 
-      const scenarioSummary = scenarios.map((s) => selected(s.id) ? `${s.id}: ${selected(s.id)}` : "").filter(Boolean).join(" | ");
-      const statement = selectedValues("closestStatement").join(" | ");
-
-      summaryBox.textContent = complete
-        ? [
-            `Label: ${displayCode} · ${profile[0]}`,
-            nearest ? `Closest reference: ${nearest.name}` : "",
-            `${riskPlainText(result)} ${governancePlainText(result.c)}`,
-            statement ? `Overall stance: ${statement}` : "",
-            `Details: AI capability belief=${abilityLabel}; risk judgment=${riskLabel}; governance position=${responseLabel}; value position=${valueLabel}`,
-            scenarioSummary ? `Scenario choices: ${scenarioSummary}` : ""
-          ].filter(Boolean).join("\n")
-        : "A structured summary will appear here after all 9 core items are complete.";
       maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel);
     }
 
