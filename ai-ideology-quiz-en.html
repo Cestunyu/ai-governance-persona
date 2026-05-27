@@ -787,12 +787,26 @@
 
     .profile-head {
       display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      gap: 10px;
+      grid-template-columns: auto auto minmax(0, 1fr);
+      gap: 12px;
       align-items: center;
       padding: 12px;
       border-bottom: 1px solid var(--line);
       background: #fbfcfe;
+    }
+
+    .profile-avatar {
+      width: clamp(76px, 18vw, 104px);
+      height: clamp(76px, 18vw, 104px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      object-fit: cover;
+      box-shadow: 0 8px 18px rgba(20, 31, 52, 0.10);
+    }
+
+    .profile-avatar[hidden] {
+      display: none;
     }
 
     .code {
@@ -931,6 +945,19 @@
         grid-template-columns: 1fr;
       }
 
+      .profile-head {
+        grid-template-columns: auto minmax(0, 1fr);
+      }
+
+      .profile-avatar {
+        grid-row: span 2;
+      }
+
+      .profile-head .code {
+        min-width: 60px;
+        height: 42px;
+      }
+
       .page-card {
         min-height: 340px;
       }
@@ -1017,6 +1044,7 @@
     <section class="result" id="resultPanel" aria-live="polite" hidden>
       <div class="profile">
         <div class="profile-head">
+          <img class="profile-avatar" id="profileAvatar" alt="Your AI stance avatar" hidden>
           <div class="code" id="profileCode">----</div>
           <div>
             <h3 id="profileName">Waiting for profile</h3>
@@ -1332,6 +1360,19 @@
       POST: ["benjamin-bratton", "nick-land"]
     };
 
+    const profileAvatarByCode = {
+      STOP: "assets/profile-pictures/stop-wojak.png",
+      SAFE: "assets/profile-pictures/safe-wojak.png",
+      AUDT: "assets/profile-pictures/audt-wojak.png",
+      NORM: "assets/profile-pictures/norm-wojak.png",
+      SKEP: "assets/profile-pictures/hype-wojak.png",
+      GPUC: "assets/profile-pictures/gpuc-wojak.png",
+      BOOM: "assets/profile-pictures/boom-wojak.png",
+      SING: "assets/profile-pictures/sing-wojak.png",
+      VROM: "assets/profile-pictures/vrom-wojak.png",
+      POST: "assets/profile-pictures/post-wojak.png"
+    };
+
     const referencePoints = [
       { id: "eliezer-yudkowsky", label: "Yudkowsky", name: "Eliezer Yudkowsky", cluster: "Rationalist AI x-risk / MIRI", x: -2, y: 1, influence: 5, dx: "-18px", dy: "-12px" },
       { id: "nick-bostrom", label: "Bostrom", name: "Nick Bostrom", cluster: "Superintelligence / philosophical x-risk", x: -1.68, y: 1, influence: 5, dx: "16px", dy: "10px" },
@@ -1495,6 +1536,7 @@
     const referenceLayer = document.querySelector("#referenceLayer");
     const referenceDetail = document.querySelector("#referenceDetail");
     const referenceModal = document.querySelector("#referenceModal");
+    const profileAvatar = document.querySelector("#profileAvatar");
     const profileCode = document.querySelector("#profileCode");
     const profileName = document.querySelector("#profileName");
     const profileLineage = document.querySelector("#profileLineage");
@@ -1524,6 +1566,10 @@
         "\"": "&quot;",
         "'": "&#39;"
       })[char]);
+    }
+
+    function profileAvatarFor(code) {
+      return profileAvatarByCode[code] || profileAvatarByCode.NORM;
     }
 
     function selected(name) {
@@ -2115,6 +2161,17 @@
       updateSpectrumMarker("governanceSpectrumMarker", result.c, -2, 2);
       updateSpectrumMarker("valueSpectrumMarker", result.h, -2, 2);
       updateMap(result, complete, code);
+      if (profileAvatar) {
+        if (complete) {
+          const avatarSrc = profileAvatarFor(code);
+          if (profileAvatar.getAttribute("src") !== avatarSrc) profileAvatar.src = avatarSrc;
+          profileAvatar.alt = `${profile[0]} ${code} avatar`;
+          profileAvatar.hidden = false;
+        } else {
+          profileAvatar.hidden = true;
+          profileAvatar.removeAttribute("src");
+        }
+      }
       profileCode.textContent = complete ? code : "----";
       profileName.textContent = complete ? `${profile[0]} ${code}` : "Waiting for profile";
       profileLineage.textContent = complete ? profile[1] : "Complete the core items to generate a type.";
@@ -2197,6 +2254,49 @@
       return new Promise((resolve) => canvas.toBlob(resolve, "image/png", 0.95));
     }
 
+    function loadImage(src) {
+      return new Promise((resolve) => {
+        if (!src) {
+          resolve(null);
+          return;
+        }
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => resolve(null);
+        image.src = src;
+      });
+    }
+
+    function drawImageCover(ctx, image, x, y, width, height) {
+      const sourceRatio = image.width / image.height;
+      const targetRatio = width / height;
+      let sourceWidth = image.width;
+      let sourceHeight = image.height;
+      let sourceX = 0;
+      let sourceY = 0;
+      if (sourceRatio > targetRatio) {
+        sourceWidth = image.height * targetRatio;
+        sourceX = (image.width - sourceWidth) / 2;
+      } else {
+        sourceHeight = image.width / targetRatio;
+        sourceY = (image.height - sourceHeight) / 2;
+      }
+      ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+    }
+
+    function drawAvatar(ctx, image, x, y, size) {
+      if (!image) return;
+      ctx.save();
+      drawRoundedRect(ctx, x, y, size, size, 14);
+      ctx.clip();
+      drawImageCover(ctx, image, x, y, size, size);
+      ctx.restore();
+      ctx.strokeStyle = "#d8dee8";
+      ctx.lineWidth = 1;
+      drawRoundedRect(ctx, x, y, size, size, 14);
+      ctx.stroke();
+    }
+
     async function generateShareImage() {
       const result = calculate();
       const complete = Number.isFinite(result.x) && Number.isFinite(result.y);
@@ -2210,6 +2310,7 @@
       const responseLabel = responseSpectrumLabel(result.c);
       const valueLabel = valueSpectrumLabel(result.h);
       const nearest = nearestReferenceFor(result, code);
+      const avatarImage = window.location.protocol === "file:" ? null : await loadImage(profileAvatarFor(code));
       const canvas = document.createElement("canvas");
       const width = 720;
       const height = 1280;
@@ -2240,13 +2341,14 @@
       ctx.textAlign = "center";
       ctx.fillText(code, 124, 193);
       ctx.textAlign = "left";
+      drawAvatar(ctx, avatarImage, 546, 142, 116);
 
       ctx.fillStyle = "#17202a";
       ctx.font = "850 30px Inter, Arial, sans-serif";
       ctx.fillText(profile[0], 204, 178);
       ctx.fillStyle = "#475467";
       ctx.font = "600 16px Inter, Arial, sans-serif";
-      drawWrappedText(ctx, profile[1], 204, 206, 430, 23, 2);
+      drawWrappedText(ctx, profile[1], 204, 206, 320, 23, 2);
 
       ctx.fillStyle = "#344054";
       ctx.font = "700 20px Inter, Arial, sans-serif";
