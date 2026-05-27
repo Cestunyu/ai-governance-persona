@@ -834,6 +834,8 @@
     }
 
     .profile {
+      display: grid;
+      grid-template-columns: clamp(168px, 22vw, 212px) minmax(0, 1fr);
       margin-top: 12px;
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -845,19 +847,29 @@
       margin-top: 0;
     }
 
-    .profile-head {
+    .profile-visual {
+      grid-row: 1 / span 2;
       display: grid;
-      grid-template-columns: auto auto minmax(0, 1fr);
-      gap: 12px;
-      align-items: center;
-      padding: 12px;
-      border-bottom: 1px solid var(--line);
+      align-content: start;
+      gap: 10px;
+      padding: 14px;
+      border-right: 1px solid var(--line);
       background: #fbfcfe;
     }
 
+    .profile-head {
+      display: grid;
+      gap: 8px;
+      align-content: start;
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
     .profile-avatar {
-      width: clamp(76px, 18vw, 104px);
-      height: clamp(76px, 18vw, 104px);
+      width: 100%;
+      aspect-ratio: 1;
+      height: auto;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
@@ -872,8 +884,8 @@
     .code {
       display: grid;
       place-items: center;
-      min-width: 68px;
-      height: 48px;
+      width: 100%;
+      min-height: 42px;
       border-radius: 7px;
       background: #17202a;
       color: #fff;
@@ -896,34 +908,43 @@
     .profile-body {
       display: grid;
       gap: 8px;
-      padding: 12px;
-    }
-
-    .plain-result {
-      display: block;
-      margin-top: 12px;
-    }
-
-    .plain-card {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      padding: 12px;
-    }
-
-    .plain-card.combined {
-      display: grid;
-      gap: 12px;
-    }
-
-    .plain-card-section + .plain-card-section {
-      border-top: 1px solid var(--line);
-      padding-top: 12px;
+      padding: 12px 14px 14px;
     }
 
     .reference-section {
       border-radius: 7px;
       cursor: pointer;
+    }
+
+    .profile-reference {
+      margin-top: 2px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fbfcfe;
+      padding: 10px;
+    }
+
+    .profile-reference span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 760;
+      line-height: 1.2;
+    }
+
+    .profile-reference strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .profile-reference p {
+      margin-top: 4px;
+      color: #3a4454;
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     .reference-section[data-ready="true"] strong {
@@ -969,27 +990,6 @@
       color: #3a4454;
       font-size: 12px;
       line-height: 1.5;
-    }
-
-    .plain-card span {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .plain-card strong {
-      display: block;
-      margin-top: 5px;
-      font-size: 18px;
-      line-height: 1.25;
-    }
-
-    .plain-card p {
-      margin: 7px 0 0;
-      color: #3a4454;
-      font-size: 13px;
-      line-height: 1.55;
     }
 
     .summary {
@@ -1106,21 +1106,32 @@
         grid-template-columns: 1fr;
       }
 
+      .profile {
+        grid-template-columns: 184px minmax(0, 1fr);
+      }
+
+      .profile-visual {
+        grid-row: 1 / span 2;
+        padding: 10px;
+        border-right: 1px solid var(--line);
+        border-bottom: 0;
+      }
+
       .profile-head {
         grid-template-columns: 1fr;
-        justify-items: center;
         gap: 8px;
-        padding: 16px 12px;
-        text-align: center;
+        padding: 10px;
       }
 
       .profile-avatar {
-        width: 136px;
-        height: 136px;
+        width: 100%;
+        height: auto;
       }
 
-      .profile-head .code {
-        display: none;
+      .profile-visual .code {
+        width: 100%;
+        min-height: 36px;
+        font-size: 16px;
       }
 
       .page-card {
@@ -1160,6 +1171,34 @@
 
       .pager-actions .btn {
         flex: 1 1 120px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .profile {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-visual {
+        grid-row: auto;
+        justify-items: center;
+        padding: 14px 12px 10px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .profile-head {
+        justify-items: start;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .profile-avatar {
+        width: min(58vw, 168px);
+      }
+
+      .profile-visual .code {
+        width: min(58vw, 168px);
       }
     }
   </style>
@@ -1214,32 +1253,23 @@
 
     <section class="result" id="resultPanel" aria-live="polite" hidden>
       <div class="profile">
-        <div class="profile-head">
+        <div class="profile-visual">
           <img class="profile-avatar" id="profileAvatar" alt="Your AI stance avatar" hidden>
           <div class="code" id="profileCode">----</div>
-          <div>
-            <h3 id="profileName">Waiting for profile</h3>
-            <p id="profileLineage">Complete the core items to generate a type.</p>
+        </div>
+        <div class="profile-head">
+          <h3 id="profileName">Waiting for profile</h3>
+          <p id="profileLineage">Complete the core items to generate a type.</p>
+          <div class="profile-reference reference-section" id="nearestPersonSection" role="button" tabindex="0">
+            <span>Closest reference</span>
+            <strong id="nearestPerson">--</strong>
+            <p id="nearestPersonText">The nearest map reference appears after completion.</p>
           </div>
         </div>
         <div class="profile-body">
           <p id="profileRoast">Complete all 9 core items for a stable result.</p>
           <p><b>Representative texts:</b> <span id="profileTexts">--</span></p>
           <p><b>Social tell:</b> <span id="profileTell">--</span></p>
-        </div>
-      </div>
-
-      <div class="plain-result">
-        <div class="plain-card combined">
-          <div class="plain-card-section">
-            <span>Result summary</span>
-            <strong id="plainLabel">--</strong>
-          </div>
-          <div class="plain-card-section reference-section" id="nearestPersonSection" role="button" tabindex="0">
-            <span>Closest reference</span>
-            <strong id="nearestPerson">--</strong>
-            <p id="nearestPersonText">The nearest map reference appears after completion.</p>
-          </div>
         </div>
       </div>
 
@@ -1727,7 +1757,6 @@
     const profileRoast = document.querySelector("#profileRoast");
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
-    const plainLabel = document.querySelector("#plainLabel");
     const nearestPerson = document.querySelector("#nearestPerson");
     const nearestPersonText = document.querySelector("#nearestPersonText");
     const nearestPersonSection = document.querySelector("#nearestPersonSection");
@@ -2405,7 +2434,6 @@
       profileRoast.textContent = complete ? profile[2] : "Complete all 9 core items for a stable result.";
       profileTexts.textContent = complete ? profile[3] : "--";
       profileTell.textContent = complete ? profile[4] : "--";
-      plainLabel.textContent = complete ? `${displayCode}: ${profile[0]}` : "--";
       nearestPerson.textContent = nearest ? nearest.name : "--";
       nearestPersonText.textContent = nearest
         ? "This is the nearest reference point on the map. It means the coordinates are similar, not that you fully agree with them."
