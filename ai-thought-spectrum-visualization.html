@@ -1444,11 +1444,29 @@
         ]
       },
       {
+        id: "ai-as-normal-technology",
+        name: "AI as Normal Technology",
+        shortName: "Normal Tech",
+        cluster: "普通技术 / 场景治理",
+        category: "Normal technology",
+        risk: 0,
+        humanism: 0.9,
+        influence: 3,
+        stance: "AI 是重要但普通的技术；应按具体场景、失败模式、责任主体和可验证收益来判断，而不是先套入灾难或奇点叙事。",
+        placement: "横轴 0，因为它既不是暂停派也不是加速派；纵轴 0.9，因为它服务于人类机构中的清醒决策和问责。",
+        focus: "读时抓住 normal technology 的含义：不是说 AI 不重要，而是反对把 AI 当作例外于普通治理和评估的神秘对象。",
+        counter: "hype skeptic 会更强调拆穿夸大说法；x-risk 派会认为 normal-technology 框架低估前沿尾部风险。",
+        basis: ["policy discourse", "technology governance", "evaluation"],
+        works: [
+          { title: "AI as Normal Technology", year: 2025, type: "essay / paper", priority: "high", url: "https://knightcolumbia.org/content/ai-as-normal-technology", why: "对乌托邦和灾难例外主义的简洁反框架。" }
+        ]
+      },
+      {
         id: "narayanan-kapoor",
         name: "Arvind Narayanan and Sayash Kapoor",
         shortName: "Narayanan / Kapoor",
-        cluster: "AI 过度宣传怀疑 / 普通技术",
-        category: "Normal technology",
+        cluster: "AI 过度宣传怀疑 / snake oil 批判",
+        category: "Hype skepticism",
         risk: 0,
         humanism: 1.5,
         influence: 4,
@@ -1467,7 +1485,7 @@
         name: "Gary Marcus / Melanie Mitchell",
         shortName: "Marcus / Mitchell",
         cluster: "Deep learning skepticism",
-        category: "Normal technology",
+        category: "Hype skepticism",
         risk: 0,
         humanism: 0.5,
         influence: 4,
@@ -1719,11 +1737,17 @@
         humanism: 2,
         note: "核心是自动化如何复制社会等级，价值重心是公正、尊严和反歧视。"
       },
+      "ai-as-normal-technology": {
+        diagnosis: 0,
+        response: 0,
+        humanism: 0.9,
+        note: "普通技术不是低估 AI，而是主张用普通技术治理的方式看场景、证据、失败和责任。"
+      },
       "narayanan-kapoor": {
         diagnosis: 0,
         response: -0.1,
         humanism: 1.5,
-        note: "普通技术和过度宣传怀疑，响应是评估、边界和消费者/政策清醒。"
+        note: "过度宣传怀疑，响应是评估、边界和消费者/政策清醒。"
       },
       "gary-marcus-melanie-mitchell": {
         diagnosis: -0.2,
@@ -1815,9 +1839,14 @@
         summary: "关注现实制度、数据、劳工、环境、种族、表示和权力，而不是只讨论未来 AGI。"
       },
       "Normal technology": {
-        zh: "普通技术 / 过度宣传怀疑",
+        zh: "普通技术 / 场景治理",
         color: "#475569",
-        summary: "承认 AI 重要但反对神化，强调能力评估、误用、脆弱性和过度承诺。"
+        summary: "承认 AI 重要但不是例外物，强调场景、失败模式、普通治理和可验证收益。"
+      },
+      "Hype skepticism": {
+        zh: "AI hype skeptic / 祛魅",
+        color: "#64748b",
+        summary: "重点拆分真实能力、demo 魔术、snake oil、过度宣传和把普通系统包装成 AGI 的叙事。"
       },
       "Scaling thought": {
         zh: "Scaling / Bitter Lesson",

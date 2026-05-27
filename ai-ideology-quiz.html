@@ -1274,7 +1274,8 @@
       "AI 可能毁灭人类文明，所以对齐和治理必须优先。",
       "AI 有风险，但可以通过人类兼容的设计和制度变得有益。",
       "AI 的核心问题是当下的社会伤害、权力集中、劳动、偏见和剥削。",
-      "AI 基本上是一种普通技术：有用、被炒作、也可以治理。",
+      "AI 是一种重要但普通的技术：有用、会出错，应按具体场景治理。",
+      "很多 AI 叙事把普通系统包装成魔法；应先拆穿 hype、snake oil 和夸大能力。",
       "scaling、搜索、数据和算力是最深的教训；人类直觉应该被降权。",
       "AI 应该被建设和部署，因为它能创造巨大的丰裕。",
       "AI 不只是工具，更像通往奇点、人机融合或文明升级的路径。",
@@ -1283,7 +1284,7 @@
       "都不像。"
     ];
 
-    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "GPUC", "BOOM", "SING", "VROM", "POST", ""];
+    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "VROM", "POST", ""];
 
     const scenarioProfiles = {
       V1: ["STOP", "SAFE", "BOOM", "VROM"],
@@ -1296,7 +1297,8 @@
       STOP: ["关机圣骑士", "近亲：Yudkowsky / MIRI hard x-risk", "你看到 demo 的第一反应不是“好强”，而是“电闸在哪”。", "AGI Ruin, Shut It All Down", "高频出现 extinction、doom、alignment、takeoff。"],
       SAFE: ["对齐公务员", "近亲：Stuart Russell / Paul Christiano", "你不是不想要 AGI，你只是希望它先填完人类偏好不确定性登记表。", "Human Compatible, What Failure Looks Like", "常说 corrigibility、oversight、governance、evals。"],
       AUDT: ["算法纪委", "近亲：Stochastic Parrots / Critical AI", "模型还没上线，你的劳动影响、环境成本、偏见审计已经写完前三章。", "On the Dangers of Stochastic Parrots, Atlas of AI", "别人问能不能做，你问谁受益、谁被监控。"],
-      NORM: ["冷静产品经理", "近亲：AI as normal technology / hype skepticism", "别人喊革命，你打开表格：baseline 呢，误差条呢，谁付费呢。", "AI Snake Oil, AI as Normal Technology", "常用词是场景、指标、边界、失败案例。"],
+      NORM: ["冷静产品经理", "近亲：AI as normal technology", "别人喊革命，你打开表格：这个场景谁用，指标是什么，失败了谁负责。", "AI as Normal Technology", "常用词是场景、指标、边界、上线条件。"],
+      SKEP: ["AI 祛魅师", "近亲：AI Snake Oil / overclaiming skepticism", "别人说快 AGI 了，你先问：测试集呢，基线呢，这是能力还是 demo 魔术。", "AI Snake Oil, Rebooting AI", "常说 hype、snake oil、benchmark、overclaim、premature。"],
       GPUC: ["算力拜物教徒", "近亲：Rich Sutton / The Bitter Lesson", "你不是在做 AI 政治，你只是觉得人类知识别太把自己当回事。", "The Bitter Lesson", "别人说常识和专家经验，你说 scale、compute、search、learning。"],
       BOOM: ["丰裕施工队", "近亲：Andrew Ng / Dario Amodei optimism", "你相信 AI 最大的问题不是太强，而是还没接进足够多现实系统。", "Machines of Loving Grace, AI is the New Electricity", "高频词是 productivity、health、education、deployment。"],
       SING: ["赛博飞升派", "近亲：Kurzweil / singularity optimism", "你看 AI 不是工具，是人类文明的下一次换壳。", "The Singularity Is Near, The Intelligence Age", "常谈 abundance、longevity、human-machine merger。"],
@@ -1308,7 +1310,8 @@
       STOP: { x: -1.8, y: 0.9 },
       SAFE: { x: -1.05, y: 1.35 },
       AUDT: { x: -0.45, y: 1.8 },
-      NORM: { x: -0.05, y: 0.9 },
+      NORM: { x: 0.05, y: 0.85 },
+      SKEP: { x: -0.05, y: 1.2 },
       GPUC: { x: 0.6, y: -1 },
       BOOM: { x: 1.05, y: 0.9 },
       SING: { x: 1.45, y: -0.35 },
@@ -1320,7 +1323,8 @@
       STOP: ["eliezer-yudkowsky", "nick-bostrom", "dan-hendrycks-cais"],
       SAFE: ["stuart-russell", "paul-christiano", "ajeya-cotra", "dario-amodei-anthropic"],
       AUDT: ["bender-gebru-mitchell-mcmillan-major", "kate-crawford", "ruha-benjamin", "pope-leo-xiv"],
-      NORM: ["narayanan-kapoor", "gary-marcus-melanie-mitchell"],
+      NORM: ["ai-as-normal-technology"],
+      SKEP: ["narayanan-kapoor", "gary-marcus-melanie-mitchell"],
       GPUC: ["rich-sutton"],
       BOOM: ["andrew-ng", "dario-amodei-anthropic", "marc-andreessen"],
       SING: ["ray-kurzweil"],
@@ -1340,7 +1344,8 @@
       { id: "bender-gebru-mitchell-mcmillan-major", label: "Bender et al.", name: "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major", cluster: "Critical AI / stochastic parrots", x: -0.46, y: 2, influence: 5, dx: "-40px", dy: "-16px" },
       { id: "kate-crawford", label: "Crawford", name: "Kate Crawford", cluster: "AI political economy / extraction", x: -0.39, y: 2, influence: 4, dx: "18px", dy: "2px" },
       { id: "ruha-benjamin", label: "Benjamin", name: "Ruha Benjamin", cluster: "Race, automation, and technology critique", x: -0.39, y: 2, influence: 4, dx: "0px", dy: "24px" },
-      { id: "narayanan-kapoor", label: "Narayanan/Kapoor", name: "Arvind Narayanan and Sayash Kapoor", cluster: "AI hype skepticism / normal technology", x: -0.07, y: 1.5, influence: 4, dx: "0px", dy: "0px" },
+      { id: "ai-as-normal-technology", label: "Normal Tech", name: "AI as Normal Technology", cluster: "Normal technology / context-specific governance", x: 0.02, y: 0.9, influence: 3, dx: "-12px", dy: "-18px" },
+      { id: "narayanan-kapoor", label: "Narayanan/Kapoor", name: "Arvind Narayanan and Sayash Kapoor", cluster: "AI hype skepticism / snake oil critique", x: -0.07, y: 1.5, influence: 4, dx: "0px", dy: "0px" },
       { id: "gary-marcus-melanie-mitchell", label: "Marcus/Mitchell", name: "Gary Marcus / Melanie Mitchell", cluster: "Deep learning skepticism", x: 0.07, y: 0.5, influence: 4, dx: "0px", dy: "0px" },
       { id: "rich-sutton", label: "Sutton", name: "Rich Sutton", cluster: "Bitter Lesson / computation-centered AI", x: 0.6, y: -1, influence: 5, dx: "-12px", dy: "0px" },
       { id: "benjamin-bratton", label: "Bratton", name: "Benjamin Bratton", cluster: "Posthuman control / planetary computation", x: -1.15, y: -1.1, influence: 4, dx: "12px", dy: "0px" },
@@ -1358,7 +1363,8 @@
       "Catholic social humanism": { label: "Catholic social humanism / 人类尊严", color: "#9a3412" },
       "Frontier lab governance": { label: "前沿实验室治理", color: "#0f766e" },
       "Critical AI": { label: "Critical AI / 社会伤害", color: "#7c3aed" },
-      "Normal technology": { label: "普通技术 / hype 怀疑", color: "#475569" },
+      "Normal technology": { label: "普通技术 / 场景治理", color: "#475569" },
+      "Hype skepticism": { label: "AI hype skeptic / 祛魅", color: "#64748b" },
       "Scaling thought": { label: "Scaling / Bitter Lesson", color: "#0369a1" },
       "Architecture optimism": { label: "架构乐观 / 世界模型", color: "#4f46e5" },
       "Posthuman control": { label: "Posthuman control / 系统治理", color: "#5b21b6" },
@@ -1380,8 +1386,9 @@
       "bender-gebru-mitchell-mcmillan-major": "Critical AI",
       "kate-crawford": "Critical AI",
       "ruha-benjamin": "Critical AI",
-      "narayanan-kapoor": "Normal technology",
-      "gary-marcus-melanie-mitchell": "Normal technology",
+      "ai-as-normal-technology": "Normal technology",
+      "narayanan-kapoor": "Hype skepticism",
+      "gary-marcus-melanie-mitchell": "Hype skepticism",
       "rich-sutton": "Scaling thought",
       "benjamin-bratton": "Posthuman control",
       "yann-lecun": "Architecture optimism",
@@ -1404,6 +1411,7 @@
       "bender-gebru-mitchell-mcmillan-major": "大语言模型带来社会、环境、劳动、数据和表示伤害，而 scale 叙事会遮蔽这些问题。",
       "kate-crawford": "AI 是物质、劳动、数据和权力基础设施，不是脱离现实的纯智能。",
       "ruha-benjamin": "自动化系统会复制并强化种族等级，却把自己包装成中立客观。",
+      "ai-as-normal-technology": "AI 应被当作重要但普通的技术来评估：看场景、失败模式、制度责任和可验证收益。",
       "narayanan-kapoor": "AI 很强但经常被过度包装，评估要区分真实能力、snake oil 和魔法 AGI 叙事。",
       "gary-marcus-melanie-mitchell": "当前深度学习很强但脆弱，未必足以实现稳健通用智能。",
       "rich-sutton": "利用搜索、学习和计算的一般方法，最终会胜过手工编码人类领域知识。",
@@ -1815,11 +1823,18 @@
       const human = Math.max(0, result.h / 2);
       const posthuman = Math.max(0, -result.h / 2);
       const middleResponse = 1 - Math.min(1, Math.abs(result.c / 2));
+      const hypeSkeptic = [
+        selected("R01") === "1",
+        selected("C03") === "3",
+        selected("H02") === "3",
+        selected("H04") === "3"
+      ].filter(Boolean).length / 4;
 
       addEvidence(scores, "STOP", (3.0 * cat) + (2.0 * control) + (0.6 * human));
       addEvidence(scores, "SAFE", (1.5 * cat) + (1.7 * control) + (1.4 * human));
       addEvidence(scores, "AUDT", (3.0 * social) + (0.8 * control) + (1.6 * human));
-      addEvidence(scores, "NORM", (3.0 * normal) + (0.6 * human) + (0.8 * middleResponse));
+      addEvidence(scores, "NORM", (1.2 * normal) + (0.8 * human) + (1.1 * middleResponse));
+      addEvidence(scores, "SKEP", (2.8 * hypeSkeptic) + (1.2 * normal) + (0.5 * human) + (0.4 * middleResponse));
       addEvidence(scores, "GPUC", (0.8 * normal) + (0.8 * open) + (1.4 * posthuman));
       addEvidence(scores, "BOOM", (2.4 * opportunity) + (1.1 * open) + (1.0 * human));
       addEvidence(scores, "SING", (1.5 * opportunity) + (1.1 * open) + (1.2 * posthuman));

@@ -1444,11 +1444,29 @@
         ]
       },
       {
+        id: "ai-as-normal-technology",
+        name: "AI as Normal Technology",
+        shortName: "Normal Tech",
+        cluster: "Normal technology / contextual governance",
+        category: "Normal technology",
+        risk: 0,
+        humanism: 0.9,
+        influence: 3,
+        stance: "AI is an important but ordinary technology; it should be judged by use case, failure mode, institutional responsibility, and verifiable benefit rather than first being placed inside doom or singularity narratives.",
+        placement: "Horizontal 0 because it is neither pause nor accelerationist. Vertical 0.9 because it serves clearer decision-making and accountability inside human institutions.",
+        focus: "Read the normal-technology frame carefully: it does not say AI is unimportant; it says AI should not be treated as exempt from ordinary governance and evaluation.",
+        counter: "Hype skeptics put more emphasis on debunking inflated claims; x-risk views will argue that normal-technology framing underestimates frontier tail risk.",
+        basis: ["policy discourse", "technology governance", "evaluation"],
+        works: [
+          { title: "AI as Normal Technology", year: 2025, type: "essay / paper", priority: "high", url: "https://knightcolumbia.org/content/ai-as-normal-technology", why: "A concise counter-frame to both utopian and catastrophic exceptionalism." }
+        ]
+      },
+      {
         id: "narayanan-kapoor",
         name: "Arvind Narayanan and Sayash Kapoor",
         shortName: "Narayanan / Kapoor",
-        cluster: "AI 过度宣传怀疑 / 普通技术",
-        category: "Normal technology",
+        cluster: "AI overclaiming skepticism / snake-oil critique",
+        category: "Hype skepticism",
         risk: 0,
         humanism: 1.5,
         influence: 4,
@@ -1467,7 +1485,7 @@
         name: "Gary Marcus / Melanie Mitchell",
         shortName: "Marcus / Mitchell",
         cluster: "Deep learning skepticism",
-        category: "Normal technology",
+        category: "Hype skepticism",
         risk: 0,
         humanism: 0.5,
         influence: 4,
@@ -1719,11 +1737,17 @@
         humanism: 2,
         note: "核心是自动化如何复制社会等级，价值重心是公正、尊严和反歧视。"
       },
+      "ai-as-normal-technology": {
+        diagnosis: 0,
+        response: 0,
+        humanism: 0.9,
+        note: "Normal technology does not downplay AI; it asks that AI be governed through use cases, evidence, failure modes, and responsibility."
+      },
       "narayanan-kapoor": {
         diagnosis: 0,
         response: -0.1,
         humanism: 1.5,
-        note: "普通技术和过度宣传怀疑，响应是评估、边界和消费者/政策清醒。"
+        note: "Overclaiming skepticism: the response is evaluation, bounded claims, and consumer/policy clarity."
       },
       "gary-marcus-melanie-mitchell": {
         diagnosis: -0.2,
@@ -1815,9 +1839,14 @@
         summary: "关注现实制度、数据、劳工、环境、种族、表示和权力，而不是只讨论未来 AGI。"
       },
       "Normal technology": {
-        zh: "普通技术 / 过度宣传怀疑",
+        zh: "普通技术 / 场景治理",
         color: "#475569",
-        summary: "承认 AI 重要但反对神化，强调能力评估、误用、脆弱性和过度承诺。"
+        summary: "承认 AI 重要但不是例外物，强调场景、失败模式、普通治理和可验证收益。"
+      },
+      "Hype skepticism": {
+        zh: "AI hype skeptic / 祛魅",
+        color: "#64748b",
+        summary: "重点拆分真实能力、demo 魔术、snake oil、过度宣传和把普通系统包装成 AGI 的叙事。"
       },
       "Scaling thought": {
         zh: "Scaling / Bitter Lesson",
@@ -1894,8 +1923,12 @@
         summary: "Focuses on institutions, data, labor, environment, race, representation, and power rather than only future AGI."
       },
       "Normal technology": {
-        zh: "Normal technology / overclaiming skepticism",
-        summary: "Treats AI as important but not magical, emphasizing capability evaluation, misuse, brittleness, and inflated claims."
+        zh: "Normal technology / contextual governance",
+        summary: "Treats AI as important but not exceptional, emphasizing use cases, failure modes, ordinary governance, and verifiable benefits."
+      },
+      "Hype skepticism": {
+        zh: "AI hype skeptic / demystification",
+        summary: "Separates real capability from demo magic, snake oil, inflated claims, and narratives that package ordinary systems as AGI."
       },
       "Scaling thought": {
         zh: "Scaling / Bitter Lesson",
@@ -2075,13 +2108,25 @@
           { why: "A public-facing framework for resisting unjust technological futures." }
         ]
       },
+      "ai-as-normal-technology": {
+        cluster: "Normal technology / contextual governance",
+        stance: "AI is an important but ordinary technology; evaluate it by use case, failure mode, responsibility, and verifiable benefit.",
+        placement: "Horizontal 0 because it is neither pause nor accelerationist. Vertical 0.9 because the value center is clear institutional decision-making and accountability.",
+        focus: "Read it as a governance frame: AI can matter a lot without being treated as magical or exempt from ordinary evaluation.",
+        counter: "Hype skeptics put more emphasis on debunking inflated claims; x-risk views will argue it underestimates frontier tail risks.",
+        ideologyNote: "Normal technology does not downplay AI; it asks that AI be governed through use cases, evidence, failure modes, and responsibility.",
+        basis: ["policy discourse", "technology governance", "evaluation"],
+        works: [
+          { why: "A concise counter-frame to both utopian and catastrophic exceptionalism." }
+        ]
+      },
       "narayanan-kapoor": {
-        cluster: "AI overclaiming skepticism / normal technology",
+        cluster: "AI overclaiming skepticism / snake-oil critique",
         stance: "Many AI claims are overblown; useful systems should be separated from brittle demonstrations, bad evaluations, and snake-oil promises.",
         placement: "Horizontal 0 because this is capability and overclaiming skepticism rather than a pause or acceleration policy. Vertical 0.5 because it mildly centers human understanding and cognition, but the main claim is technical and empirical.",
         focus: "Read them to distinguish sober AI evaluation from both doom narratives and product hype.",
         counter: "X-risk views will argue that ordinary-technology skepticism misses the tail risk of powerful systems; accelerationist views will see it as dampening useful deployment.",
-        ideologyNote: "Normal-technology and overclaiming skepticism; the response is evaluation, bounded claims, and consumer/policy clarity.",
+        ideologyNote: "Overclaiming skepticism: the response is evaluation, bounded claims, and consumer/policy clarity.",
         basis: ["AI evaluation", "public scholarship", "technical criticism"],
         works: [
           { why: "A readable anti-overclaiming and normal-technology frame." },
