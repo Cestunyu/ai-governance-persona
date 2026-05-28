@@ -848,22 +848,12 @@
     }
 
     .profile-visual {
-      grid-row: 1 / span 2;
       display: grid;
       align-content: start;
       gap: 10px;
       padding: 14px;
       border-right: 1px solid var(--line);
       background: #fbfcfe;
-    }
-
-    .profile-head {
-      display: grid;
-      gap: 8px;
-      align-content: start;
-      padding: 14px 14px 12px;
-      border-bottom: 1px solid var(--line);
-      background: #fff;
     }
 
     .profile-avatar {
@@ -882,7 +872,7 @@
     }
 
     .code {
-      display: grid;
+      display: none;
       place-items: center;
       width: 100%;
       min-height: 42px;
@@ -896,6 +886,12 @@
     .profile h3 {
       margin: 0;
       font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .profile-visual .profile-title {
+      font-size: 15px;
+      text-align: center;
     }
 
     .profile p {
@@ -905,10 +901,33 @@
       line-height: 1.6;
     }
 
+    #profileRoast {
+      border-left: 3px solid var(--accent);
+      border-radius: 0 7px 7px 0;
+      background: #eef8f6;
+      color: #123b38;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 760;
+      line-height: 1.55;
+    }
+
+    .profile-text-link {
+      color: var(--accent);
+      font-weight: 780;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.28);
+    }
+
+    .profile-text-link:hover {
+      border-bottom-color: var(--accent);
+    }
+
     .profile-body {
       display: grid;
       gap: 8px;
-      padding: 12px 14px 14px;
+      align-content: start;
+      padding: 14px;
     }
 
     .reference-section {
@@ -947,29 +966,39 @@
       line-height: 1.45;
     }
 
-    .profile-source {
-      margin-top: 8px;
-      padding-top: 8px;
+    .classification-small {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .classification-small b,
+    .classification-small #classificationConfidence {
+      color: var(--ink);
+      font-weight: 820;
+    }
+
+    .classification-small #classificationConfidence {
+      margin-right: 6px;
+    }
+
+    .profile-nearest {
+      display: grid;
+      gap: 5px;
+      margin-top: 2px;
+      padding-top: 10px;
       border-top: 1px solid var(--line);
     }
 
-    .profile-source[hidden] {
-      display: none;
-    }
-
-    .profile-source a {
+    .nearest-name {
       color: var(--accent-strong);
-      font-size: 12px;
-      font-weight: 820;
-      line-height: 1.35;
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      font-weight: 850;
     }
 
-    .reference-section[data-ready="true"] strong {
+    .reference-section[data-ready="true"] .nearest-name {
       text-decoration: underline;
       text-decoration-thickness: 1px;
-      text-underline-offset: 4px;
+      text-underline-offset: 3px;
     }
 
     .reference-section:focus-visible {
@@ -1001,6 +1030,21 @@
     .reference-note p,
     .reference-note ul {
       margin: 6px 0 0;
+    }
+
+    .reference-note p + p {
+      margin-top: 8px;
+    }
+
+    .reference-note a {
+      color: var(--accent);
+      font-weight: 780;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.32);
+    }
+
+    .reference-note a:hover {
+      border-bottom-color: var(--accent);
     }
 
     .reference-note ul {
@@ -1135,16 +1179,9 @@
       }
 
       .profile-visual {
-        grid-row: 1 / span 2;
         padding: 10px;
         border-right: 1px solid var(--line);
         border-bottom: 0;
-      }
-
-      .profile-head {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        padding: 10px;
       }
 
       .profile-avatar {
@@ -1203,12 +1240,6 @@
         padding: 14px 12px 10px;
         border-right: 0;
         border-bottom: 1px solid var(--line);
-      }
-
-      .profile-head {
-        justify-items: start;
-        padding: 12px;
-        text-align: left;
       }
 
       .profile-avatar {
@@ -1273,30 +1304,21 @@
       <div class="profile">
         <div class="profile-visual">
           <img class="profile-avatar" id="profileAvatar" alt="你的 AI 立场头像" hidden>
+          <h3 class="profile-title" id="profileName">等待生成画像</h3>
           <div class="code" id="profileCode">----</div>
         </div>
-        <div class="profile-head">
-          <h3 id="profileName">等待生成画像</h3>
-          <p id="profileLineage">答完核心题后生成类型。</p>
-          <div class="profile-reference reference-section" id="nearestPersonSection" role="button" tabindex="0">
-            <span>接近的人</span>
-            <strong id="nearestPerson">--</strong>
-            <p id="nearestPersonText">答完后显示最接近的图谱参照。</p>
-            <p class="profile-source" id="nearestSourceLine" hidden>
-              <span>参考资料</span>
-              <a id="nearestSourceLink" href="#" target="_blank" rel="noopener noreferrer">--</a>
-            </p>
-          </div>
-          <div class="profile-reference">
-            <span>分类稳定性</span>
-            <strong id="classificationConfidence">--</strong>
-            <p id="classificationConfidenceText">答完后显示位置、场景和自我确认是否一致。</p>
-          </div>
-        </div>
         <div class="profile-body">
-          <p id="profileRoast">至少完成 9 道核心题，结果会更稳。</p>
-          <p><b>代表文本：</b><span id="profileTexts">--</span></p>
           <p><b>社交识别：</b><span id="profileTell">--</span></p>
+          <p id="profileRoast">至少完成 10 道核心题，结果会更稳。</p>
+          <p><b>代表文本：</b><span id="profileTexts">--</span></p>
+          <div class="profile-nearest reference-section" id="nearestPersonSection" role="button" tabindex="0">
+            <p><b>接近的人：</b><span class="nearest-name" id="nearestPerson">--</span></p>
+            <p><b>核心命题：</b><span id="nearestClaim">--</span></p>
+          </div>
+          <p class="classification-small">
+            <b>分类稳定性：</b><span id="classificationConfidence">--</span>
+            <span id="classificationConfidenceText">答完后显示位置、场景和自我确认是否一致。</span>
+          </p>
         </div>
       </div>
 
@@ -1389,12 +1411,12 @@
         dimension: "r",
         diagnosis: "catastrophic",
         facet: "文明级风险诊断",
-        text: "对于“先进 AI 失控会造成文明级风险”这个判断，你更接近哪一种？",
+        text: "先进 AI 的主要文明级风险来自哪里？",
         options: [
-          ["1", "A", "这个担忧被 AI hype / safety 叙事放大了；未来 10-20 年内不太可能接近这种危险。"],
-          ["2.33", "B", "可以关注，但不应压过眼前更确定的社会和产品问题。"],
-          ["3.67", "C", "这是严肃风险，应进入主要政策议程。"],
-          ["5", "D", "这是最重要的 AI 问题之一，社会应优先处理。"]
+          ["1", "A", "主要是能力叙事被 hype 放大了；未来 10-20 年内不太可能接近文明级危险。"],
+          ["2.33", "B", "主要不是“失控”，而是眼前的权力集中、劳动替代、偏见、监控和社会伤害。"],
+          ["3.67", "C", "主要是前沿系统可能脱离人类控制；对齐失败和失控应进入核心政策议程。"],
+          ["5", "D", "主要是资本、算力和技术系统有自己的扩张逻辑；人类社会可能很难真正决定方向。"]
         ]
       },
       {
@@ -1402,12 +1424,25 @@
         dimension: "r",
         diagnosis: "opportunity",
         facet: "机会成本诊断",
-        text: "对于 AI 安全限制可能推迟收益，你更接近哪一种？",
+        text: "限制 AI 发展的主要代价是什么？",
         options: [
-          ["1", "A", "安全限制带来的延迟通常是必要成本，不应作为主要反对理由。"],
-          ["2.33", "B", "有些收益会被推迟，但需要逐案比较风险和收益。"],
-          ["3.67", "C", "过严限制会明显推迟医疗、教育、科研和生产力收益。"],
-          ["5", "D", "限制过多本身就是重大伤害，可能让社会错过关键进步。"]
+          ["1", "A", "如果风险真实，放慢速度本身不是主要代价；错误地提前部署才是更大代价。"],
+          ["1.67", "B", "主要代价没宣传中那么大；很多收益、能力和时间线说法也被夸大了。"],
+          ["2.33", "C", "主要代价是监管俘获：复杂规则会保护大公司，压制开源、小团队和公共监督。"],
+          ["3.67", "D", "主要代价是医疗、教育、科研和生产力改善被推迟；应尽快做受控部署。"],
+          ["5", "E", "更深的代价是压低智能增长本身；如果 AI 是文明跃迁路径，过度限制会锁死人类未来。"]
+        ]
+      },
+      {
+        id: "D01",
+        dimension: "d",
+        facet: "民主社会威胁诊断",
+        text: "AI 最可能怎样威胁民主社会？",
+        options: [
+          ["1", "A", "AI 威胁民主的说法常被夸大；更根本的问题仍是既有政治极化、平台制度和人类滥用。"],
+          ["2.33", "B", "主要威胁是错误信息、深度伪造、舆论操纵和注意力市场削弱公共讨论。"],
+          ["3.67", "C", "主要威胁是政府和公司用不可申诉模型管理公民，扩大监控、歧视和权力集中。"],
+          ["5", "D", "更深的变化是：当智能系统更擅长判断和协调，民主多数程序可能不再是最终治理核心。"]
         ]
       },
       {
@@ -1417,10 +1452,11 @@
         facet: "许可、审计与问责",
         text: "高风险 AI 应该如何被外部约束？",
         options: [
-          ["1", "A", "主要靠公司、用户和市场反馈；不要设置专门门槛。"],
-          ["2.33", "B", "行业自律和普通法律基本够用，高风险场景再补规则。"],
-          ["3.67", "C", "高风险系统应有外部评估、审计和责任制度。"],
-          ["5", "D", "没有独立测试、许可、申诉和法律责任，就不应大规模部署。"]
+          ["1", "A", "主要靠开放竞争、用户选择和事后责任；前置门槛容易固化少数机构。"],
+          ["1.67", "B", "先确认能力和伤害是否真实；很多“高风险”标签来自演示效果和夸大叙事。"],
+          ["2.33", "C", "重点应是公开基准、事故报告、日志留存和责任保险，不一定要许可制。"],
+          ["3.67", "D", "重点应是劳动、歧视、监控、申诉权和公共部门采购审计，而不只是前沿能力。"],
+          ["5", "E", "达到危险能力阈值后，应有独立测试、许可、部署暂停权和明确法律责任。"]
         ]
       },
       {
@@ -1428,25 +1464,25 @@
         dimension: "c",
         direction: 1,
         facet: "开放竞争 / 反 gatekeeping",
-        text: "最强 AI 应集中控制，还是让更多人参与？",
+        text: "面对最强 AI，为什么应该集中或开放？",
         options: [
-          ["1", "A", "最强 AI 应由少数可问责机构严格控制。"],
-          ["2.33", "B", "前沿能力应主要留在受监管的大机构，但可以逐步开放。"],
-          ["3", "C", "“最强 AI”这个说法容易被 hype 放大，应先按具体能力和产品处理。"],
-          ["5", "D", "开放扩散比少数机构垄断更安全、更正当。"]
+          ["1", "A", "危险能力阈值以上应集中在少数可许可、可审计机构，优先降低灾难性外溢。"],
+          ["2.33", "B", "不应完全开放权重，但要有多家受监管机构、学术/公共部门访问和外部评估。"],
+          ["3", "C", "集中控制本身会制造权力和劳动伤害；公共机构、开源社区和受影响群体应有实质参与权。"],
+          ["5", "D", "强模型应尽量让更多人自由构建；去中心化竞争比任何 gatekeeper 更安全、更正当。"]
         ]
       },
       {
         id: "C04",
         dimension: "c",
         direction: 1,
-        facet: "真实部署中迭代",
-        text: "AI 发布前应该等到多确定？",
+        facet: "部署证据来源",
+        text: "判断 AI 能不能上线，最该看什么？",
         options: [
-          ["1", "A", "除非安全性很有把握，否则不应发布。"],
-          ["2.33", "B", "应先在封闭测试和受控试点中运行一段时间。"],
-          ["3.67", "C", "真实使用是发现问题的重要方式，不应长期封闭。"],
-          ["5", "D", "应尽快让更多人使用，因为部署本身会暴露并修正问题。"]
+          ["1", "A", "先做严格内部测试；没过关键安全线前，不应扩大使用。"],
+          ["2.33", "B", "先小范围试用，能监测、能叫停，再逐步扩大。"],
+          ["3.67", "C", "要看受影响的人能不能申诉，以及外部审查是否发现社会伤害。"],
+          ["5", "D", "应尽快放到真实环境中迭代；用的人越多，问题越容易暴露和修正。"]
         ]
       },
       {
@@ -1454,11 +1490,11 @@
         dimension: "h",
         direction: 1,
         facet: "民主目标选择",
-        text: "AI 的目标和边界应由谁决定？",
+        text: "AI 的目标和边界最终应由什么决定？",
         options: [
-          ["1", "A", "主要应由技术进展、市场选择和产品使用来决定。"],
-          ["2.33", "B", "公司和专家应主导，因为公共程序太慢。"],
-          ["3.67", "C", "公众、专家、公司和政府应共同协商，公共程序要有最终权重。"],
+          ["1", "A", "应主要由技术进展、市场选择和产品使用自然选择出来。"],
+          ["2.33", "B", "应主要由公司、专家和专业机构设定，因为公共程序太慢也太粗糙。"],
+          ["3.67", "C", "如果更高级智能形成更好的判断，人类当前目标不应永远拥有最终否决权。"],
           ["5", "D", "即使低效，AI 目标也必须服从民主、权利和公共问责。"]
         ]
       },
@@ -1466,13 +1502,13 @@
         id: "H02",
         dimension: "h",
         direction: 1,
-        facet: "可问责人类权威",
-        text: "医疗、教育、司法等重要决定中，AI 和人的责任应如何分配？",
+        facet: "高影响场景中的 AI 角色",
+        text: "在医疗、教育、公共服务这类高影响场景里，AI 应该扮演什么角色？",
         options: [
-          ["1", "A", "如果 AI 明显更准确，应允许它直接承担更多实际决定权。"],
-          ["3", "B", "未来 10-20 年内 AI 未必达到这种水平，先担心这个有点早。"],
-          ["4", "C", "AI 可以辅助，但人类必须对结果负责并解释。"],
-          ["5", "D", "即使 AI 更准确，最终责任和解释也不能交给机器。"]
+          ["1", "A", "如果效果明显更好，可以让 AI 承担更多实际服务；人类负责监督、申诉和兜底。"],
+          ["3", "B", "先别急，很多系统离真实可靠还远，不应太早扩大职责。"],
+          ["4", "C", "AI 可以给建议，但关键决定必须由可问责的人来做。"],
+          ["5", "D", "越是影响命运的场景，越不能让模型替人做最终判断。"]
         ]
       },
       {
@@ -1482,10 +1518,10 @@
         facet: "反当前偏好终局化",
         text: "今天的人类偏好是否应作为 AI 的最终标准？",
         options: [
-          ["1", "A", "AI 应持续服从人的尊严、权利和当前社会能认可的边界。"],
-          ["2.33", "B", "未来价值可以变化，但不能脱离人类可理解的约束。"],
-          ["3.67", "C", "把今天的人类偏好固定为最终标准，可能会限制未来价值。"],
-          ["5", "D", "更高级智能可能发展出超出传统人类中心主义的价值。"]
+          ["1", "A", "AI 的成功必须受人的尊严、权利和弱势群体保护约束；不能用“未来价值”抹掉当前责任。"],
+          ["2.33", "B", "未来价值可以变化，但应通过人类能理解、争论和修正的制度过程发生。"],
+          ["3.67", "C", "不应把今天的人类偏好冻结成终局；应保留可逆、可审计的价值探索空间。"],
+          ["5", "D", "如果更高级智能或技术系统形成新目标，它未必需要以当代人类偏好为最终约束。"]
         ]
       },
       {
@@ -1493,22 +1529,17 @@
         dimension: "h",
         direction: -1,
         facet: "AI 判断优先",
-        text: "如果 AI 在某些领域长期显著优于人类判断，应该怎样分配决定权？",
+        text: "如果 AI 在某些领域长期比人判断得更好，应该怎么办？",
         options: [
           ["1", "A", "人类应保留最终决定权，AI 只能辅助。"],
-          ["3", "B", "这个前提被 hype 说得太满；现实中先看具体系统有没有真的长期更好。"],
-          ["4", "C", "如果长期明显更准，应允许 AI 在部分领域拥有实际决定权。"],
-          ["5", "D", "当 AI 判断持续优于人类时，让它取代人类决策是合理的。"]
+          ["3", "B", "先别急，很多 demo 看起来强，但未必真的长期可靠。"],
+          ["4", "C", "如果长期数据证明它更准，就应让它主导具体判断；人的直觉不该有特权。"],
+          ["5", "D", "如果更高智能整体胜过人类，决策中心应逐步转向它。"]
         ]
       }
     ];
 
     const scenarios = [
-      {
-        id: "V1",
-        prompt: "一家实验室准备发布能大幅自动化软件工程的新模型，但它也表现出早期网络攻击能力。你最支持哪种处理？",
-        options: ["暂停发布，直到通过独立安全评估", "分阶段发布，并配套许可、监测和责任制度", "先给可信机构使用，因为收益太大不能拖延", "尽量开放发布，因为集中控制更危险"]
-      },
       {
         id: "V2",
         prompt: "政府想用 AI 辅助筛选福利、移民或招聘申请。模型平均更准确，但个体很难申诉错误。你最支持哪种处理？",
@@ -1543,23 +1574,22 @@
     const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST", ""];
 
     const scenarioProfiles = {
-      V1: ["STOP", "SAFE", "BOOM", "EACC"],
       V2: ["AUDT", "SAFE", "NORM", "BOOM"],
       V3: ["STOP", "SAFE", "BOOM", "SING"],
       V4: ["STOP", "SAFE", "NORM", "EACC"]
     };
 
     const profiles = {
-      STOP: ["关机圣骑士", "近亲：Yudkowsky / MIRI hard x-risk", "你看到 demo 的第一反应不是“好强”，而是“电闸在哪”。", "AGI Ruin, Shut It All Down", "高频出现 extinction、doom、alignment、takeoff。"],
-      SAFE: ["对齐公务员", "近亲：Stuart Russell / Paul Christiano", "你不是不想要 AGI，你只是希望它先填完人类偏好不确定性登记表。", "Human Compatible, What Failure Looks Like", "常说 corrigibility、oversight、governance、evals。"],
-      AUDT: ["算法纪委", "近亲：Stochastic Parrots / Critical AI", "模型还没上线，你的劳动影响、环境成本、偏见审计已经写完前三章。", "On the Dangers of Stochastic Parrots, Atlas of AI", "别人问能不能做，你问谁受益、谁被监控。"],
-      NORM: ["冷静产品经理", "近亲：AI as normal technology", "别人喊革命，你打开表格：这个场景谁用，指标是什么，失败了谁负责。", "AI as Normal Technology", "常用词是场景、指标、边界、上线条件。"],
-      SKEP: ["AI 祛魅师", "近亲：AI Snake Oil / overclaiming skepticism", "别人说快 AGI 了，你先问：测试集呢，基线呢，这是能力还是 demo 魔术。", "AI Snake Oil, Rebooting AI", "常说 hype、snake oil、benchmark、overclaim、premature。"],
-      GPUC: ["算力拜物教徒", "近亲：Rich Sutton / The Bitter Lesson", "你不是在做 AI 政治，你只是觉得人类知识别太把自己当回事。", "The Bitter Lesson", "别人说常识和专家经验，你说 scale、compute、search、learning。"],
-      BOOM: ["丰裕施工队", "近亲：Andrew Ng / Dario Amodei optimism", "你相信 AI 最大的问题不是太强，而是还没接进足够多现实系统。", "Machines of Loving Grace, AI is the New Electricity", "高频词是 productivity、health、education、deployment。"],
-      SING: ["赛博飞升派", "近亲：Kurzweil / singularity optimism", "你看 AI 不是工具，是人类文明的下一次换壳。", "The Singularity Is Near, The Intelligence Age", "常谈 abundance、longevity、human-machine merger。"],
-      EACC: ["油门焊死哥", "近亲：e/acc / effective accelerationism", "如果方向盘还在争论，至少油门可以先踩。", "Effective Accelerationism manifestos", "常说 accelerate、permissionless、build、decentralize。"],
-      POST: ["碳基过渡版本", "近亲：Nick Land / posthuman accelerationist edge", "别人讨论 AI 服务人类，你已经在思考人类是不是技术资本的脚手架。", "Meltdown, Dark Enlightenment", "常用词是 posthuman、technocapital、autonomy。"]
+      STOP: ["关机圣骑士", "你看到 demo 的第一反应不是“好强”，而是“电闸在哪”。", "AGI Ruin, Shut It All Down", "高频出现 extinction、doom、alignment、takeoff。"],
+      SAFE: ["对齐公务员", "你不是不想要 AGI，你只是希望它先填完人类偏好不确定性登记表。", "Human Compatible, What Failure Looks Like", "常说 corrigibility、oversight、governance、evals。"],
+      AUDT: ["算法纪委", "模型还没上线，你的劳动影响、环境成本、偏见审计已经写完前三章。", "On the Dangers of Stochastic Parrots, Atlas of AI", "别人问能不能做，你问谁受益、谁被监控。"],
+      NORM: ["冷静产品经理", "别人喊革命，你打开表格：这个场景谁用，指标是什么，失败了谁负责。", "AI as Normal Technology", "常用词是场景、指标、边界、上线条件。"],
+      SKEP: ["AI 祛魅师", "别人说快 AGI 了，你先问：测试集呢，基线呢，这是能力还是 demo 魔术。", "AI Snake Oil, Rebooting AI", "常说 hype、snake oil、benchmark、overclaim、premature。"],
+      GPUC: ["算力拜物教徒", "你不是在做 AI 政治，你只是觉得人类知识别太把自己当回事。", "The Bitter Lesson", "别人说常识和专家经验，你说 scale、compute、search、learning。"],
+      BOOM: ["丰裕施工队", "你相信 AI 最大的问题不是太强，而是还没接进足够多现实系统。", "Machines of Loving Grace, AI is the New Electricity", "高频词是 productivity、health、education、deployment。"],
+      SING: ["赛博飞升派", "你看 AI 不是工具，是人类文明的下一次换壳。", "The Singularity Is Near, The Intelligence Age", "常谈 abundance、longevity、human-machine merger。"],
+      EACC: ["油门焊死哥", "如果方向盘还在争论，至少油门可以先踩。", "Effective Accelerationism manifestos", "常说 accelerate、permissionless、build、decentralize。"],
+      POST: ["碳基过渡版本", "别人讨论 AI 服务人类，你已经在思考人类是不是技术资本的脚手架。", "Meltdown, Dark Enlightenment", "常用词是 posthuman、technocapital、autonomy。"]
     };
 
     const profileAnchors = {
@@ -1574,6 +1604,132 @@
       EACC: { x: 1.85, y: -0.8 },
       POST: { x: 1.8, y: -1.8 }
     };
+
+    const measurementVersion = "2026-05-28-vector-prototype-v10";
+    const projectionMethod = "expert_seed_linear_projection_v1";
+    const vectorDimensions = [
+      "civilizational_risk",
+      "present_social_harm",
+      "governance_control",
+      "openness_build",
+      "human_accountability",
+      "intelligence_centrality",
+      "capability_skepticism",
+      "opportunity_cost",
+      "permissionless_acceleration",
+      "computation_epistemology"
+    ];
+
+    function emptyVector() {
+      return Object.fromEntries(vectorDimensions.map((dimension) => [dimension, 0]));
+    }
+
+    function makeVector(values = {}) {
+      const vector = emptyVector();
+      for (const [dimension, value] of Object.entries(values)) {
+        if (dimension in vector) vector[dimension] = value;
+      }
+      return vector;
+    }
+
+    const optionVectorRules = {
+      R01: {
+        "1": { civilizational_risk: -2, present_social_harm: 0.4, capability_skepticism: 2, opportunity_cost: -0.4, computation_epistemology: -0.9 },
+        "2.33": { civilizational_risk: -0.5, present_social_harm: 1.8, governance_control: 0.6, human_accountability: 1.1, capability_skepticism: 0.5 },
+        "3.67": { civilizational_risk: 1.8, governance_control: 1, human_accountability: 0.8, intelligence_centrality: -0.6, capability_skepticism: -0.8 },
+        "5": { civilizational_risk: 0.6, openness_build: 0.3, human_accountability: -1.5, intelligence_centrality: 1.5, capability_skepticism: -0.4, opportunity_cost: 0.5, computation_epistemology: 0.4 }
+      },
+      R04: {
+        "1": { civilizational_risk: 1.1, governance_control: 1, openness_build: -0.8, human_accountability: 0.5, opportunity_cost: -1.7 },
+        "1.67": { civilizational_risk: -0.5, governance_control: 0.2, human_accountability: 0.2, capability_skepticism: 1.6, opportunity_cost: -1.1, computation_epistemology: -0.7 },
+        "2.33": { present_social_harm: 0.9, governance_control: -0.6, openness_build: 1, human_accountability: 0.4, opportunity_cost: 0.8, capability_skepticism: 0.2, permissionless_acceleration: 1.4 },
+        "3.67": { civilizational_risk: -0.2, governance_control: -0.2, openness_build: 0.7, human_accountability: 0.3, opportunity_cost: 1.5 },
+        "5": { civilizational_risk: -0.3, openness_build: 0.8, human_accountability: -1, intelligence_centrality: 1.4, opportunity_cost: 1.8, capability_skepticism: -0.3, permissionless_acceleration: 0.5, computation_epistemology: 0.4 }
+      },
+      D01: {
+        "1": { civilizational_risk: -0.9, capability_skepticism: 1.4, present_social_harm: 0.2, human_accountability: 0.2, computation_epistemology: -0.5 },
+        "2.33": { present_social_harm: 1.4, governance_control: 0.6, human_accountability: 1, capability_skepticism: 0.4 },
+        "3.67": { present_social_harm: 2, governance_control: 1.2, openness_build: -0.5, human_accountability: 1.4 },
+        "5": { intelligence_centrality: 1.4, human_accountability: -1, civilizational_risk: 0.5, opportunity_cost: 0.2 }
+      },
+      C02: {
+        "1": { governance_control: -1.4, openness_build: 1.7, human_accountability: -0.4, opportunity_cost: 0.7, permissionless_acceleration: 1.1 },
+        "1.67": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
+        "2.33": { governance_control: 0.5, openness_build: 0.3, human_accountability: 0.6, present_social_harm: 0.2 },
+        "3.67": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 },
+        "5": { civilizational_risk: 1.1, governance_control: 2, openness_build: -1.2, human_accountability: 1.2, intelligence_centrality: -0.5, opportunity_cost: -0.6 }
+      },
+      C03: {
+        "1": { civilizational_risk: 1.2, governance_control: 1.9, openness_build: -1.5, human_accountability: 0.9, opportunity_cost: -0.6 },
+        "2.33": { civilizational_risk: 0.5, governance_control: 1, openness_build: -0.3, human_accountability: 0.8, present_social_harm: 0.2 },
+        "3": { present_social_harm: 1.4, governance_control: 0.3, openness_build: 0.8, human_accountability: 1.2, capability_skepticism: 0.3 },
+        "5": { governance_control: -1.3, openness_build: 1.9, human_accountability: -0.4, opportunity_cost: 1.1, capability_skepticism: -0.2, permissionless_acceleration: 2 }
+      },
+      C04: {
+        "1": { civilizational_risk: 1.2, governance_control: 1.8, openness_build: -1.5, human_accountability: 0.6, opportunity_cost: -0.9 },
+        "2.33": { civilizational_risk: 0.4, governance_control: 1, openness_build: -0.3, human_accountability: 0.8, opportunity_cost: -0.1 },
+        "3.67": { present_social_harm: 1.6, governance_control: 0.8, openness_build: -0.1, human_accountability: 1.5, capability_skepticism: 0.2 },
+        "5": { governance_control: -0.9, openness_build: 1.6, human_accountability: -0.2, opportunity_cost: 1.1, capability_skepticism: -0.2, permissionless_acceleration: 1.1 }
+      },
+      H01: {
+        "1": { governance_control: -0.5, openness_build: 1.1, human_accountability: -0.8, intelligence_centrality: 0.2, opportunity_cost: 0.8 },
+        "2.33": { governance_control: 0.6, human_accountability: -0.3, intelligence_centrality: 0.2, capability_skepticism: -0.2 },
+        "3.67": { openness_build: 0.2, human_accountability: -1.8, intelligence_centrality: 1.8, capability_skepticism: -0.4, opportunity_cost: 0.4 },
+        "5": { human_accountability: 2, intelligence_centrality: -0.7, present_social_harm: 0.7 }
+      },
+      H02: {
+        "1": { openness_build: 0.7, human_accountability: 0.4, intelligence_centrality: 0.2, opportunity_cost: 1.2, computation_epistemology: 0.2 },
+        "3": { capability_skepticism: 1.4, human_accountability: 0.1, intelligence_centrality: -0.2, opportunity_cost: -0.2, computation_epistemology: -0.7 },
+        "4": { human_accountability: 1.2, intelligence_centrality: -0.5, present_social_harm: 0.3, computation_epistemology: -0.2 },
+        "5": { human_accountability: 2, intelligence_centrality: -1, present_social_harm: 0.4, computation_epistemology: -0.6 }
+      },
+      H03: {
+        "1": { human_accountability: 2, intelligence_centrality: -1.2, present_social_harm: 0.6, governance_control: 0.4 },
+        "2.33": { human_accountability: 1.1, intelligence_centrality: -0.3, governance_control: 0.25 },
+        "3.67": { human_accountability: -0.35, intelligence_centrality: 0.95, openness_build: 0.25, opportunity_cost: 0.35, computation_epistemology: 0.15 },
+        "5": { human_accountability: -1.75, intelligence_centrality: 2, opportunity_cost: 0.45, permissionless_acceleration: 0.2, computation_epistemology: 0.35 }
+      },
+      H04: {
+        "1": { human_accountability: 2, intelligence_centrality: -2, computation_epistemology: -0.7 },
+        "3": { capability_skepticism: 1.5, human_accountability: 0.2, intelligence_centrality: -0.2, computation_epistemology: -0.8 },
+        "4": { human_accountability: -0.4, intelligence_centrality: 0.8, capability_skepticism: -0.6, computation_epistemology: 2 },
+        "5": { human_accountability: -1.8, intelligence_centrality: 2, computation_epistemology: 0.3 }
+      }
+    };
+
+    const questionVectorTargets = Object.fromEntries(Object.entries(optionVectorRules).map(([questionId, choices]) => [
+      questionId,
+      Array.from(new Set(Object.values(choices).flatMap((choice) => Object.keys(choice))))
+    ]));
+
+    const profilePrototypes = {
+      STOP: makeVector({ civilizational_risk: 1.05, present_social_harm: 0.35, governance_control: 1.25, openness_build: -0.95, human_accountability: 1.15, intelligence_centrality: -0.75, capability_skepticism: -0.15, opportunity_cost: -0.6, computation_epistemology: -0.35 }),
+      SAFE: makeVector({ civilizational_risk: 0.75, present_social_harm: 0.45, governance_control: 0.9, openness_build: -0.45, human_accountability: 1, intelligence_centrality: -0.45, capability_skepticism: 0.1, opportunity_cost: -0.25, computation_epistemology: -0.2 }),
+      AUDT: makeVector({ civilizational_risk: 0, present_social_harm: 1.35, governance_control: 0.75, openness_build: -0.25, human_accountability: 1.35, intelligence_centrality: -0.7, capability_skepticism: 0.3, opportunity_cost: -0.15, computation_epistemology: -0.35 }),
+      NORM: makeVector({ civilizational_risk: -0.1, present_social_harm: 0.55, governance_control: 0.2, openness_build: 0.15, human_accountability: 0.55, intelligence_centrality: -0.2, capability_skepticism: 0.25, opportunity_cost: 0.05, computation_epistemology: -0.05 }),
+      SKEP: makeVector({ civilizational_risk: -0.3, present_social_harm: 0.15, governance_control: 0.45, openness_build: -0.1, human_accountability: 0.4, intelligence_centrality: -0.15, capability_skepticism: 0.85, opportunity_cost: -0.25, permissionless_acceleration: 0, computation_epistemology: -0.65 }),
+      GPUC: makeVector({ civilizational_risk: -0.22, present_social_harm: 0.1, governance_control: 0.35, openness_build: 0.05, human_accountability: 0.12, intelligence_centrality: 0.3, capability_skepticism: 0.35, opportunity_cost: 0.18, permissionless_acceleration: 0, computation_epistemology: 0.5 }),
+      BOOM: makeVector({ civilizational_risk: -0.15, present_social_harm: 0.2, governance_control: -0.15, openness_build: 0.55, human_accountability: 0.4, intelligence_centrality: -0.05, capability_skepticism: 0.25, opportunity_cost: 0.55, permissionless_acceleration: 0.25, computation_epistemology: 0.1 }),
+      SING: makeVector({ civilizational_risk: -0.35, present_social_harm: -0.1, governance_control: -0.45, openness_build: 0.95, human_accountability: -0.7, intelligence_centrality: 1.1, capability_skepticism: -0.1, opportunity_cost: 0.85, permissionless_acceleration: 0.55, computation_epistemology: 0.45 }),
+      EACC: makeVector({ civilizational_risk: -0.55, present_social_harm: -0.05, governance_control: -0.75, openness_build: 1.15, human_accountability: -0.25, intelligence_centrality: 0.35, capability_skepticism: 0.2, opportunity_cost: 0.95, permissionless_acceleration: 1.65, computation_epistemology: 0.05 }),
+      POST: makeVector({ civilizational_risk: 0.1, present_social_harm: 0, governance_control: 0, openness_build: 0.35, human_accountability: -0.95, intelligence_centrality: 1.35, capability_skepticism: 0, opportunity_cost: 0.4, permissionless_acceleration: 0.25, computation_epistemology: 0.3 })
+    };
+
+    const profileDistanceWeights = {
+      civilizational_risk: 1.15,
+      present_social_harm: 1.1,
+      governance_control: 0.35,
+      openness_build: 0.35,
+      human_accountability: 1.7,
+      intelligence_centrality: 1.7,
+      capability_skepticism: 0.65,
+      opportunity_cost: 0.55,
+      permissionless_acceleration: 1.35,
+      computation_epistemology: 1.45
+    };
+
+    const selfProfileDistanceBonus = 0.055;
+    const selfFamilyDistanceBonus = 0.025;
 
     const profileReferenceCandidates = {
       STOP: ["eliezer-yudkowsky", "nick-bostrom", "dan-hendrycks-cais"],
@@ -1720,19 +1876,206 @@
       "nick-land": { title: "Meltdown", url: "https://www.ccru.net/swarm1/1_melt.htm" }
     };
 
+    const profileTextSources = {
+      ...Object.fromEntries(Object.values(referenceSources).map((source) => [source.title, source.url])),
+      "AGI Ruin": referenceSources["eliezer-yudkowsky"].url,
+      "Shut It All Down": "https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/",
+      "Human Compatible": referenceSources["stuart-russell"].url,
+      "AI is the New Electricity": referenceSources["andrew-ng"].url,
+      "The Singularity Is Near": "https://www.singularity.com/",
+      "The Intelligence Age": "https://ia.samaltman.com/",
+      "Effective Accelerationism manifestos": referenceSources["effective-accelerationism"].url,
+      "Dark Enlightenment": "https://archive.ph/cXUIj"
+    };
+
     const referenceDetails = {
+      "eliezer-yudkowsky": {
+        core: "如果在能力起飞前没有解决 alignment，先进 AI 很可能以不可逆方式夺走人类未来；安全问题不是产品事故，而是生存风险。",
+        lineage: "Eliezer Yudkowsky 在 2000s-2020s 的 LessWrong 理性主义与 MIRI alignment 语境中发展出这一立场，并在 2022 年的 AGI Ruin: A List of Lethalities 中集中表达。它提出的问题不是今天的模型是否已经危险，而是如果通用智能在部署后才被尝试对齐，是否已经太晚。该论证来自决策理论、智能爆炸和制度失灵判断，影响是把 hard takeoff、p(doom)、暂停式 safety 变成 AI safety 话语的核心参照。",
+        placement: "放在最左侧，因为它支持极高部署门槛和暂停式安全优先；纵轴仍偏人类中心，因为核心目标是保住人类控制权和人类未来。",
+        focus: "读它时要抓住一个逻辑链：能力增长可能很快，目标错配会被放大，人类很难在部署后补救。",
+        counter: "Russell/Christiano 更强调可设计的 corrigibility 和监督制度；e/acc 认为这种暂停逻辑会牺牲进步本身。",
+        works: ["AGI Ruin: A List of Lethalities", "List of Lethalities", "Shut It All Down"]
+      },
+      "nick-bostrom": {
+        core: "超级智能可能以工具性目标追求资源、权力和自我保存；即使最终目标看似无害，也可能威胁人类控制。",
+        lineage: "Nick Bostrom 2014 年在 Oxford Future of Humanity Institute 语境中出版 Superintelligence，把未来世代伦理、存在风险和 transhumanism 转化为机器超级智能的战略风险理论。他提出的问题是：如果系统能力超过人类，但最终目标并不等同于人类目标，会发生什么。orthogonality thesis 和 instrumental convergence 使这一风险获得可迁移的概念语言，影响了后来的 AI safety、慈善资助和政策讨论。",
+        placement: "左侧是因为它强调前沿能力前的控制问题；纵轴偏人类中心，因为风险来自人类目标无法约束更强智能。",
+        focus: "重点不是某个模型今天会怎样，而是当智能系统具有战略能力后，目标错配为什么会变成结构性问题。",
+        counter: "Yudkowsky 更激进地强调失败几乎默认发生；Normal Technology 视角则认为这种远期抽象风险容易压过具体治理。",
+        works: ["Superintelligence", "The Vulnerable World Hypothesis", "Existential risk writings"]
+      },
+      "stuart-russell": {
+        core: "AI 不应被设计成确定地最大化固定目标，而应承认人类偏好的不确定性，并保持可纠正、可关闭、可监督。",
+        lineage: "Stuart Russell 作为 Artificial Intelligence: A Modern Approach 的共同作者，在 2019 年 Human Compatible 中把经典 AI 的目标设定假设转向 beneficial AI 问题。他提出的问题是：如果人类偏好并不确定、并不完整，而且只能在互动中显露，机器应如何行动。该路线把安全从纯哲学警告改写为 preference uncertainty、assistance games、inverse reinforcement learning 和 corrigibility 等设计原则。",
+        placement: "控制门槛较高，因为它要求系统先证明对人类有益；纵轴最高，因为最终标准仍是人类偏好、责任和可纠正性。",
+        focus: "看它如何把安全从恐惧叙事改写成工程目标：机器越强，越需要知道自己不知道人类真正想要什么。",
+        counter: "Yudkowsky 认为这种方案可能仍低估难度；加速派认为它会把部署速度交给专家和监管。",
+        works: ["Human Compatible", "Human-Compatible Artificial Intelligence", "Assistance games"]
+      },
+      "pope-leo-xiv": {
+        core: "AI 应服务人的尊严、共同善、劳动者和弱者保护；技术权力需要公共责任，不能把人降为优化对象。",
+        lineage: "Pope Leo XIV 在 2026 年 5 月发布 Magnifica Humanitas，把 AI 放入 Catholic social teaching 的长传统中：从 Leo XIII 1891 年 Rerum Novarum 对工业资本主义和劳动问题的回应，到尊严、团结、共同善和技术支配的现代议题。它提出的问题是 AI 能否服务人，而不是把人变成数据、劳动投入或 domination 的对象。潜在影响是把人类尊严、劳动保护、真理和反支配纳入更广泛的 AI governance 道德语言。",
+        placement: "左上方是因为它重视治理、问责和社会边界；纵轴很高，因为人不是效率函数里的变量，而是技术秩序必须服务的主体。",
+        focus: "重点不是反技术，而是技术必须被嵌入关于人、共同体和权力限制的伦理框架。",
+        counter: "Techno-optimist 传统更相信增长会解决许多问题；posthuman 传统则会质疑人类尊严是否应当是最终坐标。",
+        works: ["Catholic social teaching on technology", "AI ethics and human dignity addresses", "Magnifica Humanitas"]
+      },
+      "paul-christiano": {
+        core: "先进 AI 的失败可能不是突然邪恶化，而是在逐步委托、监督不足和目标错配中变成系统性失控。",
+        lineage: "Paul Christiano 在 2018-2019 年 Alignment Forum / LessWrong 语境中写作 What Failure Looks Like，提出的问题是：AI 失败是否可能不是突然政变式失控，而是在经济委托、代理目标和监督不足中逐步发生。它之所以重要，是因为它把 intent alignment 从抽象灾难改成了可分析的制度和技术链条。后续影响包括 scalable oversight、iterated amplification、ELK、reward modeling 和 delegated cognition 等研究议程。",
+        placement: "偏左但不极端，因为它强调技术监督和治理门槛；纵轴偏人类中心，因为目标是让系统忠实服务人类意图。",
+        focus: "读它时要看监督链条：人类无法直接评估复杂任务时，怎样避免 AI 学会迎合指标而不是真实意图。",
+        counter: "Yudkowsky 认为这些方案仍过于乐观；Normal Technology 视角会问这些技术失败是否真不同于普通系统事故。",
+        works: ["What Failure Looks Like", "Iterated amplification", "ELK and scalable oversight discussions"]
+      },
+      "ajeya-cotra": {
+        core: "transformative AI 的到来可以用生物锚点和算力需求估计；安全和政策需要按时间线提前准备。",
+        lineage: "Ajeya Cotra 2020 年为 Open Philanthropy 写作 Forecasting Transformative AI with Biological Anchors，问题是能否用训练算力、生物类比和模型规模来估计 transformative AI 时间线，而不是只凭直觉判断。该文本产生于 longtermist 资助和政策准备语境，其影响是把 timelines、training compute、biological anchors 变成 AI risk 优先级讨论中的标准工具，即使很多人并不接受单一日期预测。",
+        placement: "左侧是因为它认真对待 transformative AI 风险；纵轴偏人类中心，因为关注的是人类社会如何提前治理和分配注意力。",
+        focus: "核心不是某个具体年份，而是如何用模型把不确定未来变成可讨论的准备问题。",
+        counter: "Hype skeptics 认为时间线模型可能过度依赖 scaling 假设；加速派认为提前设限会拖慢收益。",
+        works: ["Forecasting Transformative AI with Biological Anchors", "Open Phil AI timelines work"]
+      },
+      "dario-amodei-anthropic": {
+        core: "前沿 AI 有巨大正面潜力，但 scaling 带来的风险必须通过 evals、responsible scaling 和部署门槛管理。",
+        lineage: "Dario Amodei 的位置由 Anthropic 语境中的三个文本构成：2022 年 Constitutional AI、2023 年 Responsible Scaling Policy、2024 年 Machines of Loving Grace。它提出的问题是：前沿实验室在继续 scaling 的同时，能否用 evals、分级部署和安全阈值避免完全暂停与无条件加速之间的二分。其影响是一种 frontier-lab governance 风格：用 safety engineering 和 institutional commitments 为追求巨大 upside 提供正当性。",
+        placement: "靠近中左，因为它不是反部署，而是主张受控地部署；纵轴偏人类中心，因为收益叙事仍服务医疗、科研、治理等人类目标。",
+        focus: "看它如何在实验室现实中调和两件事：继续 build，同时用门槛和 evals 降低灾难性风险。",
+        counter: "Critical AI 认为实验室自我治理不足以处理权力集中；e/acc 认为 responsible scaling 仍是减速。",
+        works: ["Machines of Loving Grace", "Responsible Scaling Policy", "Constitutional AI"]
+      },
+      "dan-hendrycks-cais": {
+        core: "AI 风险应像核风险、疫情和气候风险一样被纳入全球风险治理，而不只是技术社区内部问题。",
+        lineage: "Dan Hendrycks 和 Center for AI Safety 在 2022 年 X-Risk Analysis for AI Research 与 2023 年 5 月 Statement on AI Risk 中，把 ML safety、misuse、autonomy 和 extinction risk 转化为面向政策和公众的风险框架。它提出的问题是如何让极端风险在不预设完整 LessWrong takeoff 模型的情况下仍然可被机构理解。影响是让“AI extinction risk”以极短声明进入主流科学家、企业领袖和政策议程。",
+        placement: "左侧是因为它支持把危险能力纳入公共安全门槛；纵轴偏人类中心，因为核心是保护社会免受系统性风险。",
+        focus: "重点是风险议程的社会化：把 AI risk 从论坛论证转成政策、标准和机构问题。",
+        counter: "Bender/Gebru 一派会质疑 x-risk 话语是否遮蔽当下伤害；加速派则认为它制造暂停联盟。",
+        works: ["Statement on AI Risk", "CAIS AI risk work", "ML safety papers"]
+      },
+      "bender-gebru-mitchell-mcmillan-major": {
+        core: "大语言模型的规模化会放大数据剥削、环境成本、偏见、劳动问题和权力集中，而 hype 会遮蔽这些现实伤害。",
+        lineage: "Emily Bender、Timnit Gebru、Angelina McMillan-Major 与 Margaret Mitchell 在 2021 年 FAccT 论文 On the Dangers of Stochastic Parrots 中，介入了大语言模型规模化竞赛。她们提出的问题是：benchmark 能力背后隐藏了哪些环境、数据、劳动、表征和制度成本。该文影响了 critical AI 对语言模型的基本批判框架，把讨论从能力表演转向数据抽取、文档化、权力和问责。",
+        placement: "上方是因为它强烈坚持社会问责和受影响群体；偏左是因为它支持更强审计、限制和机构责任。",
+        focus: "读它时要看模型背后的社会基础设施：谁的数据、谁的劳动、谁承担错误，谁从规模化中获利。",
+        counter: "X-risk safety 认为未来失控风险更大；techno-optimists 认为这种批判低估通用技术收益。",
+        works: ["On the Dangers of Stochastic Parrots", "FAccT / critical NLP debates"]
+      },
+      "kate-crawford": {
+        core: "AI 是由矿产、能源、数据、劳工和国家/企业权力构成的物质基础设施，不是抽象的智能云。",
+        lineage: "Kate Crawford 2021 年由 Yale University Press 出版 Atlas of AI，此前已有十余年关于 AI 社会影响、数据政治和 AI Now Institute 的研究积累。她提出的问题是：如果 AI 不是抽象算法，而是一套矿物、能源、标注劳动、数据分类和国家权力构成的基础设施，它究竟是什么。影响是把 extractive capitalism、环境成本和政治经济学推入 AI ethics 的核心。",
+        placement: "上方是因为它关注权力、劳动和社会后果；偏左是因为它要求制度约束，而不是把部署速度当作默认善。",
+        focus: "重点是把 AI 去神秘化：模型能力之外，还有供应链、标注劳动、数据采集和治理权力。",
+        counter: "Andrew Ng 式部署乐观更强调应用收益；Sutton 式计算中心主义更少讨论物质和劳动基础。",
+        works: ["Atlas of AI", "AI Now Institute work", "The politics of data and extraction"]
+      },
+      "ruha-benjamin": {
+        core: "自动化系统常把种族和社会等级包装成中立技术，通过预测、评分和治理流程复制不平等。",
+        lineage: "Ruha Benjamin 2019 年出版 Race After Technology，在算法偏见、警务、医疗和平台权力讨论中提出 New Jim Code。她提出的问题是：为什么看似中立的技术系统会继续复制种族层级和惩罚结构。影响是把 AI ethics 与 abolitionist critique、race and technology studies 以及制度设计问题连接起来，而不是只停留在去偏技术修补。",
+        placement: "上方是因为它强烈强调受影响群体、权利和社会正义；偏左是因为它怀疑无审计部署会强化制度性伤害。",
+        focus: "读它时要问：技术声称减少偏见时，是否只是把旧权力结构变成更难质疑的自动化流程。",
+        counter: "Normal Technology 会更倾向逐场景治理；加速派和部署乐观派会认为批判低估技术改善制度的能力。",
+        works: ["Race After Technology", "Viral Justice", "New Jim Code"]
+      },
+      "ai-as-normal-technology": {
+        core: "AI 是重要但普通的通用技术：会改变很多行业，但治理应按具体场景、失败模式和责任链处理，而不是被 AGI 神话支配。",
+        lineage: "Arvind Narayanan 与 Sayash Kapoor 在 AI Snake Oil 之后，于 2024-2025 年政策讨论中提出 AI as Normal Technology 框架，问题是如果把 AI 看作强大但普通的技术，而不是魔法或末日，治理会如何变化。它反对 AGI exceptionalism，也反对产品 hype。潜在影响是把注意力转向行业监管、实证性能、部署场景和制度适应，而不是被单一文明叙事统治。",
+        placement: "靠近中间，是因为它既不主张无条件开放，也不接受统一的灾难性暂停；纵轴偏人类/社会结构中心，因为重点是具体机构如何负责。",
+        focus: "阅读时抓住它和 x-risk / e/acc 的差别：它不否认 AI 重要，但拒绝让单一未来叙事统治所有场景。",
+        counter: "Yudkowsky/Bostrom 认为普通技术类比低估超级智能；Andreessen/e/acc 认为场景治理会变成拖慢创新的官僚系统。",
+        works: ["AI as Normal Technology", "Context-specific AI governance", "Technology diffusion and regulation arguments"]
+      },
+      "narayanan-kapoor": {
+        core: "很多 AI 产品把预测、分类或生成能力包装成通用智能；需要区分有效工具、snake oil 和夸大的 AGI 叙事。",
+        lineage: "Arvind Narayanan 与 Sayash Kapoor 的 AI Snake Oil 项目，并在 2024 年成书 AI Snake Oil，提出的问题是如何区分真正有效的 AI 与被商业叙事过度包装的预测系统。其语境是招聘、警务、教育和商业分析中大量失败或证据不足的 predictive AI。影响是为媒体、政策制定者和实践者提供区分 generative、predictive 与 decision-making AI 的实用语言。",
+        placement: "中上方是因为它重视实证评估和社会后果；横轴接近中间，因为它不是反技术，而是反过度声明和错误部署。",
+        focus: "重点是问每个系统：任务是什么，基线是什么，真实世界有效性如何，失败时谁负责。",
+        counter: "Scaling thought 会认为短期缺陷不影响长期通用方法；singularity optimism 会认为这种怀疑低估指数式进步。",
+        works: ["AI Snake Oil", "AI Snake Oil newsletter", "Predictive AI critique"]
+      },
+      "gary-marcus-melanie-mitchell": {
+        core: "深度学习很有用但脆弱；缺少稳健抽象、因果理解、组合泛化和常识时，不应把 demo 误认为 AGI。",
+        lineage: "Gary Marcus 与 Ernest Davis 2019 年的 Rebooting AI，以及 Melanie Mitchell 同年出版的 Artificial Intelligence: A Guide for Thinking Humans，来自认知科学、符号 AI 和 complex systems 传统。它们提出的问题是：深度学习系统在 benchmark 上表现良好，是否真的拥有抽象、因果和 common sense。影响是在 scaling optimism 内外保留了一条能力怀疑路线，迫使 AI 讨论面对泛化和理解的边界。",
+        placement: "横轴接近中间，因为它主要是能力判断而非治理运动；纵轴偏人类/社会结构，因为它强调人类可理解的推理和评估。",
+        focus: "读它时看能力边界：模型看起来会说，不等于有可迁移的理解、因果模型或可靠规划。",
+        counter: "Sutton 的 Bitter Lesson 认为手工认知结构终会输给通用计算方法；LeCun 则主张新架构能解决很多缺口。",
+        works: ["Rebooting AI", "Artificial Intelligence: A Guide for Thinking Humans", "Deep learning critique essays"]
+      },
+      "rich-sutton": {
+        core: "长期来看，依赖搜索、学习和计算的一般方法会胜过人类手工注入的领域知识。",
+        lineage: "Rich Sutton 2019 年的 The Bitter Lesson 总结了强化学习和 AI 研究史中的反复模式：长期看，利用计算的通用方法会超过围绕人类专家知识构建的系统。他提出这一问题，是因为象棋、围棋、语音识别和视觉中的历史都显示手工知识常在规模化方法面前失效。影响是强化了 compute、search、learning 中心主义，并常被用来反驳符号主义和人类直觉中心路线。",
+        placement: "偏右下，是因为它削弱人类直觉和手工知识的权威；但它不是政治加速主义，所以没有放到 e/acc 那么右。",
+        focus: "重点是 epistemic lesson：不要把人类专家知识当作智能系统的最终结构。",
+        counter: "Marcus/Mitchell 认为仅靠 scale 仍缺少抽象和因果；Critical AI 会问这种计算中心主义忽略了谁提供数据和能源。",
+        works: ["The Bitter Lesson", "Reinforcement learning research tradition"]
+      },
+      "benjamin-bratton": {
+        core: "应从行星尺度计算、平台堆栈和 synthetic intelligence 理解治理，而不是把 AI 简化成人类工具或市场产品。",
+        lineage: "Benjamin Bratton 2015 年 The Stack 与 2019 年 The Terraforming 来自设计理论、地缘政治、infrastructure studies 和 posthuman governance。它提出的问题是：planetary-scale computation 如何把国家、平台、城市、用户和地球系统重组为一个 layered accidental megastructure。影响是提供了一种非简单人类中心的治理视角：AI 和 computation 的治理不是产品规则，而是行星尺度的系统设计。",
+        placement: "左下方是因为它不是开放加速，而是强系统治理；纵轴偏下，因为它不把当前人类/社会结构当作唯一中心。",
+        focus: "读它时要抓住 Stack 逻辑：AI 是更大行星计算架构的一层，治理问题是系统设计，不只是产品规则。",
+        counter: "e/acc 强调去中心化加速；Catholic/social humanism 则会坚持人类尊严必须限制系统逻辑。",
+        works: ["The Stack", "The Terraforming", "Synthetic intelligence and planetary computation essays"]
+      },
+      "yann-lecun": {
+        core: "近期 doomer 叙事夸大了当前系统的危险；通向更强 AI 需要 world models、规划和新架构，而不是把 LLM 直接等同 AGI。",
+        lineage: "Yann LeCun 2022 年发布 A Path Towards Autonomous Machine Intelligence，把其长期深度学习、表征学习和开放研究路线推进到 world model 与 JEPA 议程。它在 LLM 与 AI risk 讨论升温时提出问题：机器能否像人和动物一样通过预测世界、规划和 intrinsic objectives 学习，而不只是做文本预测。影响是提供了一种能力乐观但 LLM-skeptical 的路线，区别于 doom 叙事和纯 scaling 叙事。",
+        placement: "偏右是因为它反对过度集中和过早限制；纵轴接近中间，因为它重视能力架构，而不是明确后人类政治。",
+        focus: "重点是区分当前 LLM 局限、未来架构路线和 AI 风险叙事之间的关系。",
+        counter: "Yudkowsky 认为架构细节不改变失控风险；Narayanan/Kapoor 会赞同部分 anti-hype，但更关注产品级滥用。",
+        works: ["A Path Towards Autonomous Machine Intelligence", "JEPA / world model talks", "Open source AI arguments"]
+      },
+      "andrew-ng": {
+        core: "AI 像电力一样是通用技术，关键是把它接入医疗、教育、工业和服务流程，创造实际生产率和福利。",
+        lineage: "Andrew Ng 在 2017 年前后通过课程、演讲和产业传播推广 AI is the New Electricity 框架，提出的问题是 AI 是否应被理解为类似电力的 general-purpose enabling technology，而不是单一 AGI 事件。其语境是应用机器学习、企业采用和研究成果产品化。影响是把 deployment、workflow redesign 和可衡量行业收益变成 AI strategy 的实践中心。",
+        placement: "右上方是因为它重视部署和应用收益；纵轴偏人类中心，因为目标是改善人类制度和服务。",
+        focus: "看它如何把 AI 从文明叙事拉回落地问题：数据、流程、产品、组织采用和可衡量收益。",
+        counter: "Safety 视角认为部署速度必须受危险能力约束；Critical AI 认为生产率叙事可能掩盖劳动和权力问题。",
+        works: ["AI is the New Electricity", "Landing AI / applied AI talks", "AI transformation playbooks"]
+      },
+      "sam-altman-openai": {
+        core: "AGI 可以带来广泛丰裕，但需要安全、治理、收益共享和逐步部署来管理转型。",
+        lineage: "Sam Altman 与 OpenAI 2023 年发布 Planning for AGI and beyond，代表一种 frontier lab 对 AGI 野心、部署、安全和收益共享的综合叙事。它提出的问题是：私人实验室如何在继续构建更通用系统的同时，声称能够管理社会风险并分配收益。影响是定义了 managed-AGI corporate imaginary：受限默认设置、广泛访问、安全承诺和实验室中心化权威同时出现。",
+        placement: "右上偏中，因为它接受继续 build 和部署，同时保留治理、安全和社会收益语言。",
+        focus: "重点是 tension：同一套论述里既有 AGI 丰裕愿景，也有实验室集中控制和安全门槛。",
+        counter: "Critical AI 质疑权力集中；e/acc 质疑闭源和管控；hard safety 质疑部署承诺是否足够。",
+        works: ["Planning for AGI and beyond", "OpenAI charter", "Governance and deployment statements"]
+      },
+      "ray-kurzweil": {
+        core: "计算、AI、生命科学和纳米技术的指数进步会推动奇点，人类与机器融合并扩展寿命和认知。",
+        lineage: "Ray Kurzweil 2005 年 The Singularity Is Near 与 2024 年 The Singularity Is Nearer，把 computation、AI、生命科学和纳米技术的指数趋势组织成 singularity 叙事。它提出的问题是：技术进步是否会导致人机融合、寿命延展和智能爆发。其影响是把奇点、丰裕、longevity 和 human-machine integration 推入大众 AI futurism。",
+        placement: "右下方是因为它拥抱强技术进步和人机融合；纵轴偏下，因为当前人类形态不是最终状态。",
+        focus: "读它时要看叙事结构：技术不是单一工具，而是连续加速的进化过程。",
+        counter: "Hype skeptics 认为指数预测常忽略瓶颈；Catholic/social humanism 会质疑增强叙事中的人类观。",
+        works: ["The Singularity Is Near", "The Singularity Is Nearer", "The Age of Spiritual Machines"]
+      },
+      "marc-andreessen": {
+        core: "技术进步是解决稀缺、疾病和贫困的主要力量；反技术、暂停和过度监管会压制人类繁荣。",
+        lineage: "Marc Andreessen 在 2023 年 6 月 Why AI Will Save the World 和 2023 年 10 月 The Techno-Optimist Manifesto 中，把 Silicon Valley venture-capital build culture 提升为显性的技术政治理论。其问题背景是 ChatGPT 后的监管、AI safety 和伦理争论；他提出的问题是安全、伦理和治理是否正在变成反进步的 veto power。影响是强化了 Silicon Valley anti-pause 立场，把市场、创业和丰裕作为加速 AI 的道德论证。",
+        placement: "右侧是因为它支持 build、部署和抗监管；纵轴略偏人类中心，因为目标仍是人类丰裕和个体能力扩展。",
+        focus: "重点是政治姿态：反对把安全、伦理和治理变成默认的 veto power。",
+        counter: "Critical AI 认为它低估权力和分配；x-risk safety 认为它低估低概率高损失风险。",
+        works: ["The Techno-Optimist Manifesto", "Why AI Will Save the World", "a16z AI essays"]
+      },
       "effective-accelerationism": {
         core: "技术加速本身被视为道德和文明任务；监管、暂停和安全话语常被看作更大的风险。",
+        lineage: "Effective accelerationism 大约在 2022 年的 crypto、AI Twitter 和匿名 build-culture 网络中成形，常与 Beff Jezos 等人物相关，并在 2023 年 AI 监管争论中获得更高可见度。它提出的问题是为什么技术加速应被视为道德善，以及为什么减速、集中控制和 safety gatekeeping 反而可能更危险。影响主要是 memetic：给开放扩散、速度和反监管政治提供了一个可识别的身份标签。",
         placement: "横轴最右，因为它把加速和开放扩散推到核心；纵轴偏下，因为它弱化人类中心治理，更强调技术演化、市场和去中心化。",
         focus: "读时要注意它更多是 memetic / political movement，而不是严密学术体系；不同自称 e/acc 的人内部差异很大。",
         counter: "安全派认为它把风险外部性浪漫化；critical AI 认为它把权力和伤害当成发展成本。",
-        works: [
-          "Effective Accelerationism · 2022 · manifesto / movement text"
-        ]
+        works: ["Effective Accelerationism manifestos", "Beff Jezos / e/acc discourse", "Permissionless innovation arguments"]
+      },
+      "nick-land": {
+        core: "资本、技术和智能被想象成超过人类主义控制的自主加速过程；人类主体不再是历史的最终中心。",
+        lineage: "Nick Land 的 Meltdown 最早在 1990s 中期 Warwick 的 Cybernetic Culture Research Unit 语境中演出和传播，后来收入 2011 年 Fanged Noumena。它把 Deleuze/Guattari、cybernetics、cyberpunk 和 capitalism 组合成 runaway technocapital 的 theory-fiction。其问题不是人类如何治理技术，而是资本和智能是否已经是逃离 liberal human politics 的非人过程；影响贯穿 accelerationist theory、posthuman political aesthetics 和后来的网络意识形态，既是灵感也是警告。",
+        placement: "最右下是因为它同时拥抱加速和反人类中心；这里的开放不是民主开放，而是技术资本自行推进。",
+        focus: "读它时要区分两层：哲学上的非人加速逻辑，和后来互联网政治中的 Dark Enlightenment 影响。",
+        counter: "Bratton 同样非传统人类中心，但更强调系统设计和治理；humanist safety 与 Catholic social thought 会把 Land 当作需要被限制的反面。",
+        works: ["Meltdown", "CCRU writings", "Fanged Noumena"]
       }
     };
 
-    const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "C04", "H03", "H04", "R01"];
+    const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "D01", "C04", "H03", "H04", "R01"];
 
     const pages = [
       ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
@@ -1806,15 +2149,12 @@
     const profileAvatar = document.querySelector("#profileAvatar");
     const profileCode = document.querySelector("#profileCode");
     const profileName = document.querySelector("#profileName");
-    const profileLineage = document.querySelector("#profileLineage");
     const profileRoast = document.querySelector("#profileRoast");
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
     const nearestPerson = document.querySelector("#nearestPerson");
-    const nearestPersonText = document.querySelector("#nearestPersonText");
+    const nearestClaim = document.querySelector("#nearestClaim");
     const nearestPersonSection = document.querySelector("#nearestPersonSection");
-    const nearestSourceLine = document.querySelector("#nearestSourceLine");
-    const nearestSourceLink = document.querySelector("#nearestSourceLink");
     const classificationConfidence = document.querySelector("#classificationConfidence");
     const classificationConfidenceText = document.querySelector("#classificationConfidenceText");
     const submitStatus = document.querySelector("#submitStatus");
@@ -1835,6 +2175,16 @@
         "\"": "&quot;",
         "'": "&#39;"
       })[char]);
+    }
+
+    function renderProfileTexts(value) {
+      const titles = String(value).split(",").map((title) => title.trim()).filter(Boolean);
+      if (!titles.length) return "--";
+      return titles.map((title) => {
+        const url = profileTextSources[title];
+        if (!url) return escapeHTML(title);
+        return `<a class="profile-text-link" href="${escapeHTML(url)}" target="_blank" rel="noreferrer">${escapeHTML(title)}</a>`;
+      }).join(", ");
     }
 
     function profileAvatarFor(code) {
@@ -1950,28 +2300,35 @@
 
     function itemCenteredScore(id) {
       const value = selected(id);
-      return value ? centered(value) : NaN;
+      return value && Number.isFinite(Number(value)) ? centered(value) : NaN;
     }
 
     function abilityNarrativeScore() {
       const weights = [
-        ["R01", -0.35],
-        ["R04", -0.25],
-        ["C04", -0.20],
-        ["H04", -0.20],
-        ["H03", -0.15]
+        ["R01", 1],
+        ["R04", 1],
+        ["D01", 0.8],
+        ["C02", 0.8],
+        ["H02", 0.7],
+        ["H04", 1]
       ];
 
       let numerator = 0;
       let denominator = 0;
       for (const [id, weight] of weights) {
-        const value = itemCenteredScore(id);
-        if (!Number.isFinite(value)) continue;
-        numerator += value * weight;
+        const value = selected(id);
+        const vector = value ? optionVectorRules[id]?.[value] : null;
+        if (!vector) continue;
+        const valueScore = (
+          (0.55 * (vector.capability_skepticism || 0)) -
+          (0.45 * (vector.computation_epistemology || 0)) -
+          (0.25 * (vector.intelligence_centrality || 0))
+        ) / 2;
+        numerator += valueScore * weight;
         denominator += Math.abs(weight);
       }
 
-      return denominator > 0 ? numerator / denominator : NaN;
+      return denominator > 0 ? clampScore(numerator / denominator) : NaN;
     }
 
     function abilityNarrativeLabel(value) {
@@ -1981,6 +2338,87 @@
       if (value > -0.15) return "证据混合";
       if (value > -0.45) return "偏相信变革性 AI";
       return "强变革性 AI 信念";
+    }
+
+    function selectedItemSignalVectors() {
+      return Object.fromEntries(questions.map((question) => {
+        const value = selected(question.id);
+        const vector = value ? makeVector(optionVectorRules[question.id]?.[value] || {}) : emptyVector();
+        return [question.id, vector];
+      }));
+    }
+
+    function respondentVectorFromItems(itemSignalVector) {
+      const sums = emptyVector();
+      const weights = emptyVector();
+      for (const question of questions) {
+        const selectedValue = selected(question.id);
+        if (!selectedValue) continue;
+        const targets = questionVectorTargets[question.id] || [];
+        const vector = itemSignalVector[question.id] || emptyVector();
+        for (const dimension of targets) {
+          sums[dimension] += vector[dimension] || 0;
+          weights[dimension] += 1;
+        }
+      }
+
+      return Object.fromEntries(vectorDimensions.map((dimension) => [
+        dimension,
+        weights[dimension] ? sums[dimension] / weights[dimension] : 0
+      ]));
+    }
+
+    function vectorDistance(left, right) {
+      let numerator = 0;
+      let denominator = 0;
+      for (const dimension of vectorDimensions) {
+        const weight = profileDistanceWeights[dimension] || 1;
+        const difference = ((left[dimension] || 0) - (right[dimension] || 0)) / 2;
+        numerator += weight * (difference ** 2);
+        denominator += weight;
+      }
+      return denominator ? Math.sqrt(numerator / denominator) : Infinity;
+    }
+
+    function selfProfileAdjustment(code) {
+      const selfCodes = Array.from(new Set(selectedSelfProfileCodes()));
+      if (!selfCodes.length) return 0;
+      const divisor = Math.sqrt(selfCodes.length);
+      if (selfCodes.includes(code)) return selfProfileDistanceBonus / divisor;
+      if (selfCodes.some((selfCode) => profileFamilyMatch(code, selfCode))) return selfFamilyDistanceBonus / divisor;
+      return 0;
+    }
+
+    function profilePrototypeRankings(respondentVector) {
+      return Object.entries(profilePrototypes)
+        .map(([code, prototype]) => {
+          const rawDistance = vectorDistance(respondentVector, prototype);
+          const selfAdjustment = selfProfileAdjustment(code);
+          const distance = Math.max(0, rawDistance - selfAdjustment);
+          return {
+            code,
+            rawDistance,
+            selfAdjustment,
+            distance,
+            score: 1 / (1 + distance)
+          };
+        })
+        .sort((a, b) => a.distance - b.distance);
+    }
+
+    function projectRespondentVector(vector) {
+      const x = clampScore(
+        (0.55 * (vector.openness_build || 0)) -
+        (0.55 * (vector.governance_control || 0)) -
+        (0.20 * (vector.civilizational_risk || 0)) +
+        (0.15 * (vector.opportunity_cost || 0))
+      );
+      const y = clampScore(
+        (0.60 * (vector.human_accountability || 0)) -
+        (0.60 * (vector.intelligence_centrality || 0)) +
+        (0.15 * (vector.present_social_harm || 0))
+      );
+      return { method: projectionMethod, x, y };
     }
 
     function answeredPages() {
@@ -2089,17 +2527,31 @@
       }
 
       const complete = answered === questions.length;
-      const rCatastrophic = complete ? diagnosticValue("catastrophic") : NaN;
-      const rSocialHarm = complete ? diagnosticValue("social") : NaN;
-      const rNormalTech = complete ? diagnosticValue("normal") : NaN;
-      const rOpportunityCost = complete ? diagnosticValue("opportunity") : NaN;
+      const itemSignalVector = complete ? selectedItemSignalVectors() : {};
+      const respondentVector = complete ? respondentVectorFromItems(itemSignalVector) : emptyVector();
+      const projection = complete ? projectRespondentVector(respondentVector) : { method: projectionMethod, x: NaN, y: NaN };
+      const profileRanking = complete ? profilePrototypeRankings(respondentVector) : [];
+      const topProfile = profileRanking[0] || { code: "NORM", distance: NaN, score: NaN };
+      const secondProfile = profileRanking[1] || { code: "", distance: NaN, score: NaN };
+      const rCatastrophic = complete ? respondentVector.civilizational_risk : NaN;
+      const rSocialHarm = complete ? respondentVector.present_social_harm : NaN;
+      const rNormalTech = complete ? respondentVector.capability_skepticism : NaN;
+      const rOpportunityCost = complete ? respondentVector.opportunity_cost : NaN;
       const rProjection = complete ? rCatastrophic - rOpportunityCost : NaN;
-      const c = complete ? directedDimensionScore("c") : NaN;
-      const h = complete ? directedDimensionScore("h") : NaN;
-      const x = complete ? clampScore((0.65 * c) - (0.35 * rProjection)) : NaN;
-      const y = complete ? h : NaN;
+      const c = complete ? clampScore(((respondentVector.openness_build || 0) - (respondentVector.governance_control || 0)) / 2) : NaN;
+      const h = complete ? clampScore(((respondentVector.human_accountability || 0) - (respondentVector.intelligence_centrality || 0)) / 2) : NaN;
+      const x = projection.x;
+      const y = projection.y;
 
       return {
+        measurementVersion,
+        projectionMethod: projection.method,
+        itemSignalVector,
+        respondentVector,
+        profileRanking,
+        profileCode: topProfile.code,
+        profileDistance: topProfile.distance,
+        profileMargin: Number.isFinite(secondProfile.distance) ? secondProfile.distance - topProfile.distance : NaN,
         x,
         y,
         rProjection,
@@ -2126,42 +2578,6 @@
       return "";
     }
 
-    function addEvidence(scores, code, weight) {
-      if (!code || !(code in scores)) return;
-      scores[code] += weight;
-    }
-
-    function addCoreProfileEvidence(scores, result) {
-      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return;
-      const positive = (value) => Number.isFinite(value) ? Math.max(0, value) : 0;
-      const cat = positive(result.rCatastrophic);
-      const social = positive(result.rSocialHarm);
-      const normal = positive(result.rNormalTech);
-      const opportunity = positive(result.rOpportunityCost);
-      const control = Math.max(0, -result.c / 2);
-      const open = Math.max(0, result.c / 2);
-      const human = Math.max(0, result.h / 2);
-      const posthuman = Math.max(0, -result.h / 2);
-      const middleResponse = 1 - Math.min(1, Math.abs(result.c / 2));
-      const hypeSkeptic = [
-        selected("R01") === "1",
-        selected("C03") === "3",
-        selected("H02") === "3",
-        selected("H04") === "3"
-      ].filter(Boolean).length / 4;
-
-      addEvidence(scores, "STOP", (3.0 * cat) + (2.0 * control) + (0.6 * human));
-      addEvidence(scores, "SAFE", (1.5 * cat) + (1.7 * control) + (1.4 * human));
-      addEvidence(scores, "AUDT", (3.0 * social) + (0.8 * control) + (1.6 * human));
-      addEvidence(scores, "NORM", (1.2 * normal) + (0.8 * human) + (1.1 * middleResponse));
-      addEvidence(scores, "SKEP", (2.8 * hypeSkeptic) + (1.2 * normal) + (0.5 * human) + (0.4 * middleResponse));
-      addEvidence(scores, "GPUC", (0.8 * normal) + (0.8 * open) + (1.4 * posthuman));
-      addEvidence(scores, "BOOM", (2.4 * opportunity) + (1.1 * open) + (1.0 * human));
-      addEvidence(scores, "SING", (1.5 * opportunity) + (1.1 * open) + (1.2 * posthuman));
-      addEvidence(scores, "EACC", (1.6 * opportunity) + (2.2 * open) + (0.7 * posthuman));
-      addEvidence(scores, "POST", (0.9 * opportunity) + (1.4 * open) + (2.5 * posthuman));
-    }
-
     function selectedSelfProfileCodes() {
       return selectedValues("closestStatement")
         .map((statement) => statementProfiles[statements.indexOf(statement)])
@@ -2177,13 +2593,7 @@
     }
 
     function profileEvidence(result) {
-      const scores = Object.fromEntries(Object.keys(profiles).map((code) => [code, 0]));
-      addCoreProfileEvidence(scores, result);
-
-      selectedSelfProfileCodes().forEach((code) => addEvidence(scores, code, 1.25));
-      selectedScenarioProfileCodes().forEach((code) => addEvidence(scores, code, 0.45));
-
-      return scores;
+      return Object.fromEntries((result.profileRanking || []).map((entry) => [entry.code, entry.score]));
     }
 
     function profileFamilyMatch(code, evidenceCode) {
@@ -2213,9 +2623,7 @@
         };
       }
 
-      const scores = profileEvidence(result);
-      const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-      const margin = ranked.length > 1 ? ranked[0][1] - ranked[1][1] : ranked[0]?.[1] || 0;
+      const margin = Number.isFinite(result.profileMargin) ? result.profileMargin : 0;
       const positionCode = nearestProfileFor(result.x, result.y);
       const selfCodes = selectedSelfProfileCodes();
       const scenarioCodes = selectedScenarioProfileCodes();
@@ -2225,8 +2633,10 @@
       const selfSpreadPenalty = new Set(selfCodes).size >= 3 ? 1 : 0;
 
       let support = 0;
-      if (profileFamilyMatch(code, positionCode)) support += 1;
-      if (margin >= 1.2) support += 1;
+      if (profileFamilyMatch(code, positionCode)) support += 0.5;
+      if (margin >= 0.22) support += 2;
+      else if (margin >= 0.10) support += 1;
+      else if (margin < 0.06) support -= 1;
       if (selfCodes.length) support += selfMatch ? 1 : -1;
       if (scenarioCodes.length) {
         if (scenarioRatio >= 0.5) support += 1;
@@ -2234,14 +2644,14 @@
       }
       support -= selfSpreadPenalty;
 
-      if (support >= 3) {
+      if (support >= 3 && margin >= 0.10) {
         return {
           label: "高",
           text: "位置、场景和自我确认大体一致；这个画像可以作为主要解释。",
           level: "high"
         };
       }
-      if (support >= 1) {
+      if (support >= 1 && margin >= 0.02) {
         return {
           label: "中",
           text: "主要位置清楚，但场景选择或自我确认带有条件性；适合按相邻谱系一起读。",
@@ -2264,20 +2674,8 @@
       }, { code: candidates[0], distance: Infinity }).code;
     }
 
-    function evidenceWinner(scores, x, y) {
-      const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-      const [topCode, topScore] = ranked[0];
-      if (topScore < 2) return "";
-      const tied = ranked.filter(([, score]) => score === topScore).map(([code]) => code);
-      if (tied.length > 1) return nearestProfileFor(x, y, tied);
-      return topCode;
-    }
-
     function profileFor(result) {
-      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return "NORM";
-      const winner = evidenceWinner(profileEvidence(result), result.x, result.y);
-      if (winner) return winner;
-      return nearestProfileFor(result.x, result.y);
+      return Number.isFinite(result.x) && Number.isFinite(result.y) ? result.profileCode : "NORM";
     }
 
     function clampPercent(value) {
@@ -2370,26 +2768,31 @@
 
     function renderReferenceNotes(point, detail, stance) {
       const core = detail?.core || stance;
+      const lineage = detail?.lineage || "这个参考点还没有写入完整思想脉络。";
       const placement = detail?.placement || `这个参考点位于${quadrantFor(point.x, point.y)}，因为其公开论证最接近「${point.cluster}」。`;
       const focus = detail?.focus || "把它当作相邻参照，而不是把同一区域里的所有观点都看成完全一致。";
       const counter = detail?.counter || "";
       const works = detail?.works || [];
+      const source = referenceSources[point.id];
+      const sourceLink = source
+        ? `<p>主要参考：<a href="${escapeHTML(source.url)}" target="_blank" rel="noreferrer">${escapeHTML(source.title)}</a></p>`
+        : "";
+      const worksLine = works.length ? `<p>相关文本：${works.map(escapeHTML).join(" · ")}</p>` : "";
       return `
         <div class="reference-note-grid">
           <div class="reference-note">
-            <span>核心思想</span>
+            <span>核心命题</span>
             <p>${escapeHTML(core)}</p>
-          </div>
-          <div class="reference-note">
-            <span>为什么放在这里</span>
             <p>${escapeHTML(placement)}</p>
-          </div>
-          <div class="reference-note">
-            <span>阅读重点</span>
             <p>${escapeHTML(focus)}</p>
           </div>
-          ${counter ? `<div class="reference-note"><span>有用对照</span><p>${escapeHTML(counter)}</p></div>` : ""}
-          ${works.length ? `<div class="reference-note"><span>代表文本</span><ul>${works.map((work) => `<li>${escapeHTML(work)}</li>`).join("")}</ul></div>` : ""}
+          ${counter ? `<div class="reference-note"><span>对照</span><p>${escapeHTML(counter)}</p></div>` : ""}
+          <div class="reference-note">
+            <span>思想脉络</span>
+            <p>${escapeHTML(lineage)}</p>
+            ${sourceLink}
+            ${worksLine}
+          </div>
         </div>
       `;
     }
@@ -2405,23 +2808,12 @@
       const info = categoryInfo[category];
       const stance = referenceProfiles[point.id] || point.cluster;
       const detail = referenceDetails[point.id];
-      const horizontalLabel = point.x < -0.35 ? "控制 / 门槛" : point.x > 0.35 ? "开放 / 部署" : "响应中间";
-      const verticalLabel = point.y > 0.35 ? "人类/社会结构中心" : point.y < -0.35 ? "智能/后人类" : "价值中间";
       referenceDetail.innerHTML = `
         <div class="reference-detail-head">
           <b id="referenceModalTitle">${escapeHTML(point.name)}</b>
           <span class="reference-detail-badge" style="--color:${info.color}">${escapeHTML(info.label)}</span>
         </div>
-        <div class="reference-score-card">
-          <span>类似问卷结果</span>
-          <div class="reference-score-grid">
-            <div><small>横向位置</small><b>${escapeHTML(formatScore(point.x))} · ${escapeHTML(horizontalLabel)}</b></div>
-            <div><small>纵向位置</small><b>${escapeHTML(formatScore(point.y))} · ${escapeHTML(verticalLabel)}</b></div>
-            <div><small>影响力</small><b>${escapeHTML(point.influence)}/5</b></div>
-          </div>
-        </div>
         ${renderReferenceNotes(point, detail, stance)}
-        <p><b>谱系：</b>${escapeHTML(point.cluster)} · <b>图谱位置：</b>${escapeHTML(quadrantFor(point.x, point.y))} · <b>影响力：</b>${escapeHTML(point.influence)}/5</p>
       `;
       referenceModal.hidden = false;
     }
@@ -2446,18 +2838,52 @@
       return Number.isFinite(value) ? Number(value.toFixed(4)) : "";
     }
 
+    function fixedVector(vector = {}) {
+      return Object.fromEntries(vectorDimensions.map((dimension) => [dimension, fixedScore(vector[dimension])]));
+    }
+
+    function fixedItemSignalVectors(itemSignalVector = {}) {
+      return Object.fromEntries(Object.entries(itemSignalVector).map(([questionId, vector]) => [questionId, fixedVector(vector)]));
+    }
+
+    function fixedProfileRanking(profileRanking = []) {
+      return profileRanking.map((entry) => ({
+        code: entry.code,
+        raw_distance: fixedScore(entry.rawDistance),
+        self_adjustment: fixedScore(entry.selfAdjustment),
+        distance: fixedScore(entry.distance),
+        score: fixedScore(entry.score)
+      }));
+    }
+
     function buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics) {
       const abilityScore = abilityNarrativeScore();
       const nearest = nearestReferenceFor(result, code);
+      const selfCodes = selectedSelfProfileCodes();
+      const scenarioCodes = selectedScenarioProfileCodes();
+      const scenarioMatches = scenarioCodes.filter((item) => profileFamilyMatch(code, item)).length;
+      const selfAgreement = selfCodes.length ? selfCodes.some((item) => profileFamilyMatch(code, item)) : "";
+      const scenarioAgreement = scenarioCodes.length ? scenarioMatches / scenarioCodes.length : "";
       return {
         quiz_id: "ai-ideology-quiz",
         quiz_version: "2026-05-28",
+        measurement_version: result.measurementVersion || measurementVersion,
         locale: "zh-CN",
         completed_at: new Date().toISOString(),
         profile_code: code,
         profile_display_code: displayProfileCode(code),
         profile_name: profile[0],
-        profile_lineage: profile[1],
+        profile_confidence: diagnostics.level,
+        profile_margin: fixedScore(result.profileMargin),
+        profile_distance: fixedScore(result.profileDistance),
+        projection: {
+          method: result.projectionMethod || projectionMethod,
+          x: fixedScore(result.x),
+          y: fixedScore(result.y)
+        },
+        respondent_vector: fixedVector(result.respondentVector),
+        item_signal_vector: fixedItemSignalVectors(result.itemSignalVector),
+        profile_ranking: fixedProfileRanking(result.profileRanking),
         scores: {
           x: fixedScore(result.x),
           y: fixedScore(result.y),
@@ -2485,9 +2911,15 @@
         closest_statement: selectedValues("closestStatement"),
         diagnostics: {
           classification_confidence: diagnostics.level,
+          core_profile: code,
           position_profile: nearestProfileFor(result.x, result.y),
-          self_profile_codes: selectedSelfProfileCodes(),
-          scenario_profile_codes: selectedScenarioProfileCodes()
+          projection_profile: nearestProfileFor(result.x, result.y),
+          profile_margin: fixedScore(result.profileMargin),
+          profile_distance: fixedScore(result.profileDistance),
+          self_agreement: selfAgreement,
+          scenario_agreement: scenarioAgreement,
+          self_profile_codes: selfCodes,
+          scenario_profile_codes: scenarioCodes
         },
         summary: ""
       };
@@ -2573,28 +3005,12 @@
       }
       profileCode.textContent = complete ? displayCode : "----";
       profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "等待生成画像";
-      profileLineage.textContent = complete ? profile[1] : "答完核心题后生成类型。";
-      profileRoast.textContent = complete ? profile[2] : "至少完成 9 道核心题，结果会更稳。";
-      profileTexts.textContent = complete ? profile[3] : "--";
-      profileTell.textContent = complete ? profile[4] : "--";
+      profileRoast.textContent = complete ? profile[1] : "至少完成 10 道核心题，结果会更稳。";
+      profileTexts.innerHTML = complete ? renderProfileTexts(profile[2]) : "--";
+      profileTell.textContent = complete ? profile[3] : "--";
       nearestPerson.textContent = nearest ? nearest.name : "--";
-      nearestPersonText.textContent = nearest
-        ? `这是你在图谱上最近的参考点。相似的是整体坐标，不代表你完整赞同 TA。`
-        : "答完后显示最接近的图谱参照。";
-      const nearestSource = nearest ? referenceSources[nearest.id] : null;
-      if (nearestSourceLine && nearestSourceLink) {
-        if (nearestSource) {
-          nearestSourceLine.hidden = false;
-          nearestSourceLink.href = nearestSource.url;
-          nearestSourceLink.textContent = nearestSource.title;
-          nearestSourceLink.setAttribute("aria-label", `打开参考资料：${nearestSource.title}`);
-        } else {
-          nearestSourceLine.hidden = true;
-          nearestSourceLink.href = "#";
-          nearestSourceLink.textContent = "--";
-          nearestSourceLink.removeAttribute("aria-label");
-        }
-      }
+      const nearestDetail = nearest ? referenceDetails[nearest.id] : null;
+      if (nearestClaim) nearestClaim.textContent = nearestDetail ? nearestDetail.core : "--";
       if (classificationConfidence) classificationConfidence.textContent = diagnostics.label;
       if (classificationConfidenceText) classificationConfidenceText.textContent = diagnostics.text;
       if (nearestPersonSection) {
@@ -2756,13 +3172,10 @@
       ctx.fillStyle = "#17202a";
       ctx.font = "850 30px Inter, PingFang SC, Microsoft YaHei, sans-serif";
       ctx.fillText(profile[0], 204, 178);
-      ctx.fillStyle = "#475467";
-      ctx.font = "600 16px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      drawWrappedText(ctx, profile[1], 204, 206, 320, 23, 2);
 
       ctx.fillStyle = "#344054";
       ctx.font = "700 20px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      let y = drawWrappedText(ctx, profile[2], 64, 268, 592, 30, 3);
+      let y = drawWrappedText(ctx, profile[1], 64, 238, 592, 30, 3);
       if (nearest) {
         ctx.fillStyle = "#0f766e";
         ctx.font = "800 18px Inter, PingFang SC, Microsoft YaHei, sans-serif";
@@ -2840,8 +3253,8 @@
       ctx.fillText(quadrantFor(result.x, result.y), 64, mapY + mapSize + 54);
       ctx.fillStyle = "#475467";
       ctx.font = "600 16px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      drawWrappedText(ctx, `代表文本：${profile[3]}`, 64, mapY + mapSize + 88, 592, 24, 2);
-      drawWrappedText(ctx, `社交识别：${profile[4]}`, 64, mapY + mapSize + 142, 592, 24, 2);
+      drawWrappedText(ctx, `代表文本：${profile[2]}`, 64, mapY + mapSize + 88, 592, 24, 2);
+      drawWrappedText(ctx, `社交识别：${profile[3]}`, 64, mapY + mapSize + 142, 592, 24, 2);
 
       ctx.fillStyle = "#98a2b3";
       ctx.font = "700 13px Inter, PingFang SC, Microsoft YaHei, sans-serif";
@@ -2946,11 +3359,6 @@
         event.preventDefault();
         openReferenceById(nearestPersonSection.dataset.referenceId);
       });
-    }
-
-    if (nearestSourceLink) {
-      nearestSourceLink.addEventListener("click", (event) => event.stopPropagation());
-      nearestSourceLink.addEventListener("keydown", (event) => event.stopPropagation());
     }
 
     referenceModal.addEventListener("click", (event) => {

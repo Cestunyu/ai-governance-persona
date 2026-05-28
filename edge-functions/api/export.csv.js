@@ -7,10 +7,15 @@ const csvFields = [
   "created_at",
   "id",
   "quiz_version",
+  "measurement_version",
   "locale",
   "profile_code",
   "profile_name",
   "profile_lineage",
+  "profile_confidence",
+  "profile_margin",
+  "profile_distance",
+  "projection_method",
   "x",
   "y",
   "r_projection",
@@ -28,7 +33,6 @@ const csvFields = [
   "quadrant",
   "warmup_reaction",
   "closest_statement",
-  "scenario_v1",
   "scenario_v2",
   "scenario_v3",
   "scenario_v4",
@@ -36,6 +40,7 @@ const csvFields = [
   "R02",
   "R03",
   "R04",
+  "D01",
   "C01",
   "C02",
   "C03",
@@ -44,6 +49,12 @@ const csvFields = [
   "H02",
   "H03",
   "H04",
+  "self_agreement",
+  "scenario_agreement",
+  "respondent_vector_json",
+  "item_signal_vector_json",
+  "profile_ranking_json",
+  "projection_json",
   "answers_json",
   "scenarios_json",
   "summary"
@@ -104,6 +115,8 @@ function flattenRecord(record) {
   const labels = payload.labels || {};
   const answers = payload.answers || {};
   const scenarios = payload.scenarios || {};
+  const diagnostics = payload.diagnostics || {};
+  const projection = payload.projection || {};
   const closestStatement = Array.isArray(payload.closest_statement)
     ? payload.closest_statement.join(" | ")
     : payload.closest_statement || "";
@@ -112,10 +125,15 @@ function flattenRecord(record) {
     created_at: record?.created_at || payload.completed_at || "",
     id: record?.id || "",
     quiz_version: payload.quiz_version || "",
+    measurement_version: payload.measurement_version || "",
     locale: payload.locale || "",
     profile_code: payload.profile_code || "",
     profile_name: payload.profile_name || "",
     profile_lineage: payload.profile_lineage || "",
+    profile_confidence: payload.profile_confidence || diagnostics.classification_confidence || "",
+    profile_margin: payload.profile_margin || diagnostics.profile_margin || "",
+    profile_distance: payload.profile_distance || diagnostics.profile_distance || "",
+    projection_method: projection.method || "",
     x: scores.x,
     y: scores.y,
     r_projection: scores.r_projection,
@@ -133,7 +151,6 @@ function flattenRecord(record) {
     quadrant: labels.quadrant || "",
     warmup_reaction: payload.warmup_reaction || "",
     closest_statement: closestStatement,
-    scenario_v1: scenarios.V1 || "",
     scenario_v2: scenarios.V2 || "",
     scenario_v3: scenarios.V3 || "",
     scenario_v4: scenarios.V4 || "",
@@ -141,6 +158,7 @@ function flattenRecord(record) {
     R02: answers.R02 || "",
     R03: answers.R03 || "",
     R04: answers.R04 || "",
+    D01: answers.D01 || "",
     C01: answers.C01 || "",
     C02: answers.C02 || "",
     C03: answers.C03 || "",
@@ -149,6 +167,12 @@ function flattenRecord(record) {
     H02: answers.H02 || "",
     H03: answers.H03 || "",
     H04: answers.H04 || "",
+    self_agreement: diagnostics.self_agreement,
+    scenario_agreement: diagnostics.scenario_agreement,
+    respondent_vector_json: safeJSON(payload.respondent_vector),
+    item_signal_vector_json: safeJSON(payload.item_signal_vector),
+    profile_ranking_json: safeJSON(payload.profile_ranking),
+    projection_json: safeJSON(projection),
     answers_json: safeJSON(answers),
     scenarios_json: safeJSON(scenarios),
     summary: payload.summary || ""

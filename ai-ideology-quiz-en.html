@@ -848,22 +848,12 @@
     }
 
     .profile-visual {
-      grid-row: 1 / span 2;
       display: grid;
       align-content: start;
       gap: 10px;
       padding: 14px;
       border-right: 1px solid var(--line);
       background: #fbfcfe;
-    }
-
-    .profile-head {
-      display: grid;
-      gap: 8px;
-      align-content: start;
-      padding: 14px 14px 12px;
-      border-bottom: 1px solid var(--line);
-      background: #fff;
     }
 
     .profile-avatar {
@@ -882,7 +872,7 @@
     }
 
     .code {
-      display: grid;
+      display: none;
       place-items: center;
       width: 100%;
       min-height: 42px;
@@ -896,6 +886,12 @@
     .profile h3 {
       margin: 0;
       font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .profile-visual .profile-title {
+      font-size: 15px;
+      text-align: center;
     }
 
     .profile p {
@@ -905,10 +901,33 @@
       line-height: 1.6;
     }
 
+    #profileRoast {
+      border-left: 3px solid var(--accent);
+      border-radius: 0 7px 7px 0;
+      background: #eef8f6;
+      color: #123b38;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 760;
+      line-height: 1.55;
+    }
+
+    .profile-text-link {
+      color: var(--accent);
+      font-weight: 780;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.28);
+    }
+
+    .profile-text-link:hover {
+      border-bottom-color: var(--accent);
+    }
+
     .profile-body {
       display: grid;
       gap: 8px;
-      padding: 12px 14px 14px;
+      align-content: start;
+      padding: 14px;
     }
 
     .reference-section {
@@ -947,29 +966,39 @@
       line-height: 1.45;
     }
 
-    .profile-source {
-      margin-top: 8px;
-      padding-top: 8px;
+    .classification-small {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .classification-small b,
+    .classification-small #classificationConfidence {
+      color: var(--ink);
+      font-weight: 820;
+    }
+
+    .classification-small #classificationConfidence {
+      margin-right: 6px;
+    }
+
+    .profile-nearest {
+      display: grid;
+      gap: 5px;
+      margin-top: 2px;
+      padding-top: 10px;
       border-top: 1px solid var(--line);
     }
 
-    .profile-source[hidden] {
-      display: none;
-    }
-
-    .profile-source a {
+    .nearest-name {
       color: var(--accent-strong);
-      font-size: 12px;
-      font-weight: 820;
-      line-height: 1.35;
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      font-weight: 850;
     }
 
-    .reference-section[data-ready="true"] strong {
+    .reference-section[data-ready="true"] .nearest-name {
       text-decoration: underline;
       text-decoration-thickness: 1px;
-      text-underline-offset: 4px;
+      text-underline-offset: 3px;
     }
 
     .reference-section:focus-visible {
@@ -1002,6 +1031,21 @@
     .reference-note p,
     .reference-note ul {
       margin: 6px 0 0;
+    }
+
+    .reference-note p + p {
+      margin-top: 8px;
+    }
+
+    .reference-note a {
+      color: var(--accent);
+      font-weight: 780;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.32);
+    }
+
+    .reference-note a:hover {
+      border-bottom-color: var(--accent);
     }
 
     .reference-note ul {
@@ -1130,16 +1174,9 @@
       }
 
       .profile-visual {
-        grid-row: 1 / span 2;
         padding: 10px;
         border-right: 1px solid var(--line);
         border-bottom: 0;
-      }
-
-      .profile-head {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        padding: 10px;
       }
 
       .profile-avatar {
@@ -1206,12 +1243,6 @@
         border-bottom: 1px solid var(--line);
       }
 
-      .profile-head {
-        justify-items: start;
-        padding: 12px;
-        text-align: left;
-      }
-
       .profile-avatar {
         width: min(58vw, 168px);
       }
@@ -1274,30 +1305,21 @@
       <div class="profile">
         <div class="profile-visual">
           <img class="profile-avatar" id="profileAvatar" alt="Your AI stance avatar" hidden>
+          <h3 class="profile-title" id="profileName">Waiting for profile</h3>
           <div class="code" id="profileCode">----</div>
         </div>
-        <div class="profile-head">
-          <h3 id="profileName">Waiting for profile</h3>
-          <p id="profileLineage">Complete the core items to generate a type.</p>
-          <div class="profile-reference reference-section" id="nearestPersonSection" role="button" tabindex="0">
-            <span>Closest reference</span>
-            <strong id="nearestPerson">--</strong>
-            <p id="nearestPersonText">The nearest map reference appears after completion.</p>
-            <p class="profile-source" id="nearestSourceLine" hidden>
-              <span>Reference material</span>
-              <a id="nearestSourceLink" href="#" target="_blank" rel="noopener noreferrer">--</a>
-            </p>
-          </div>
-          <div class="profile-reference">
-            <span>Classification stability</span>
-            <strong id="classificationConfidence">--</strong>
-            <p id="classificationConfidenceText">Completion shows whether position, scenarios, and self-confirmation agree.</p>
-          </div>
-        </div>
         <div class="profile-body">
-          <p id="profileRoast">Complete all 9 core items for a stable result.</p>
-          <p><b>Representative texts:</b> <span id="profileTexts">--</span></p>
           <p><b>Social tell:</b> <span id="profileTell">--</span></p>
+          <p id="profileRoast">Complete all 10 core items for a stable result.</p>
+          <p><b>Representative texts:</b> <span id="profileTexts">--</span></p>
+          <div class="profile-nearest reference-section" id="nearestPersonSection" role="button" tabindex="0">
+            <p><b>Closest reference:</b> <span class="nearest-name" id="nearestPerson">--</span></p>
+            <p><b>Core claim:</b> <span id="nearestClaim">--</span></p>
+          </div>
+          <p class="classification-small">
+            <b>Classification stability:</b> <span id="classificationConfidence">--</span>
+            <span id="classificationConfidenceText">Completion shows whether position, scenarios, and self-confirmation agree.</span>
+          </p>
         </div>
       </div>
 
@@ -1390,12 +1412,12 @@
         dimension: "r",
         diagnosis: "catastrophic",
         facet: "civilizational risk diagnosis",
-        text: "Which judgment is closest to your view on advanced AI causing civilizational risk if it gets out of control?",
+        text: "Where does advanced AI's main civilizational risk come from?",
         options: [
-          ["1", "A", "This worry is amplified by AI hype / safety narratives; AI is unlikely to reach that danger level in the next 10-20 years."],
-          ["2.33", "B", "It is worth watching, but it should not override more concrete social and product problems."],
-          ["3.67", "C", "This is a serious risk and should be part of the main policy agenda."],
-          ["5", "D", "This is one of the most important AI problems, and society should treat it as a priority."]
+          ["1", "A", "The capability narrative is mostly inflated by hype; AI is unlikely to reach civilizational danger in the next 10-20 years."],
+          ["2.33", "B", "The main risk is not loss of control, but current power concentration, labor displacement, bias, surveillance, and social harm."],
+          ["3.67", "C", "The main risk is frontier systems escaping human control; alignment failure and loss of control should be central policy concerns."],
+          ["5", "D", "The main risk is that capital, compute, and technical systems have their own expansion logic; human society may not really control the direction."]
         ]
       },
       {
@@ -1403,12 +1425,25 @@
         dimension: "r",
         diagnosis: "opportunity",
         facet: "opportunity-cost diagnosis",
-        text: "Which judgment is closest to your view on AI safety restrictions delaying benefits?",
+        text: "What is the main cost of restricting AI development?",
         options: [
-          ["1", "A", "Delays from safety restrictions are usually necessary and should not be a main objection."],
-          ["2.33", "B", "Some benefits may be delayed, but risks and benefits should be compared case by case."],
-          ["3.67", "C", "Overly strict restrictions can clearly delay medical, educational, scientific, and productivity gains."],
-          ["5", "D", "Too much restriction is itself a major harm and could make society miss key progress."]
+          ["1", "A", "If the risks are real, slowing down is not the main cost; premature deployment is the larger cost."],
+          ["1.67", "B", "The main cost is overstated; many benefit, capability, and timeline claims are inflated."],
+          ["2.33", "C", "The main cost is regulatory capture: complex rules can protect large firms while suppressing open source, small teams, and public oversight."],
+          ["3.67", "D", "The main cost is delayed progress in medicine, education, science, and productivity; controlled deployment should move quickly."],
+          ["5", "E", "The deeper cost is suppressing intelligence growth itself; if AI is a path of civilizational transition, overrestriction can lock in humanity's limits."]
+        ]
+      },
+      {
+        id: "D01",
+        dimension: "d",
+        facet: "democratic-society threat diagnosis",
+        text: "How is AI most likely to threaten democratic society?",
+        options: [
+          ["1", "A", "Claims that AI threatens democracy are often overstated; the deeper problems are existing polarization, platform institutions, and human misuse."],
+          ["2.33", "B", "The main threat is misinformation, deepfakes, persuasion systems, and attention markets weakening public deliberation."],
+          ["3.67", "C", "The main threat is governments and companies using unappealable models to manage citizens, expanding surveillance, discrimination, and concentrated power."],
+          ["5", "D", "The deeper shift is that, if intelligent systems become better at judgment and coordination, democratic majority procedures may no longer be the final center of governance."]
         ]
       },
       {
@@ -1418,10 +1453,11 @@
         facet: "licensing, audits, and accountability",
         text: "How should high-risk AI be externally constrained?",
         options: [
-          ["1", "A", "Rely mainly on companies, users, and market feedback; do not set special thresholds."],
-          ["2.33", "B", "Industry self-regulation and ordinary law are mostly enough, with extra rules for high-risk contexts."],
-          ["3.67", "C", "High-risk systems should face external evaluation, audits, and liability rules."],
-          ["5", "D", "Without independent testing, licensing, appeal rights, and legal responsibility, they should not be widely deployed."]
+          ["1", "A", "Rely mainly on open competition, user choice, and after-the-fact liability; front-loaded gates can entrench a few institutions."],
+          ["1.67", "B", "First verify whether the capability and harm are real; many “high-risk” labels come from demos and inflated narratives."],
+          ["2.33", "C", "Focus on public benchmarks, incident reporting, retained logs, and liability insurance, not necessarily licensing."],
+          ["3.67", "D", "Focus on labor effects, discrimination, surveillance, appeal rights, and public-sector procurement audits, not only frontier capability."],
+          ["5", "E", "Once systems cross dangerous capability thresholds, require independent testing, licensing, pause authority, and clear legal responsibility."]
         ]
       },
       {
@@ -1429,25 +1465,25 @@
         dimension: "c",
         direction: 1,
         facet: "open competition / anti-gatekeeping",
-        text: "Should the strongest AI be tightly controlled or should more people be allowed to participate?",
+        text: "With the strongest AI, why should control be concentrated or opened?",
         options: [
-          ["1", "A", "The strongest AI should be strictly controlled by a small number of accountable institutions."],
-          ["2.33", "B", "Frontier capabilities should mostly stay inside large regulated institutions, with gradual opening."],
-          ["3", "C", "The phrase \"strongest AI\" is often inflated by hype; governance should start from concrete capabilities and products."],
-          ["5", "D", "Open diffusion is safer and more legitimate than monopoly by a few institutions."]
+          ["1", "A", "Above dangerous capability thresholds, systems should stay inside a small number of licensed and auditable institutions to reduce catastrophic spillover."],
+          ["2.33", "B", "Weights need not be fully open, but there should be multiple regulated institutions, academic/public-sector access, and external evaluation."],
+          ["3", "C", "Concentrated control itself creates power and labor harms; public institutions, open-source communities, and affected groups should have real participation."],
+          ["5", "D", "Strong models should diffuse as permissionlessly as possible; decentralized competition is safer and more legitimate than any gatekeeper."]
         ]
       },
       {
         id: "C04",
         dimension: "c",
         direction: 1,
-        facet: "iteration through real deployment",
-        text: "How certain should we be before AI systems are released?",
+        facet: "source of deployment evidence",
+        text: "What should matter most before an AI system is released?",
         options: [
-          ["1", "A", "They should not be released unless safety is very well established."],
-          ["2.33", "B", "They should spend some time in closed testing and controlled pilots first."],
-          ["3.67", "C", "Real-world use is an important way to find problems, so systems should not stay closed for too long."],
-          ["5", "D", "More people should get access quickly because deployment itself exposes and helps fix problems."]
+          ["1", "A", "Run strict internal safety tests first; if it fails key safety lines, do not expand access."],
+          ["2.33", "B", "Start with small pilots that can be watched and stopped, then expand gradually."],
+          ["3.67", "C", "Check whether affected people can appeal, and whether outside review finds social harm."],
+          ["5", "D", "Put it into real use quickly and iterate; wider use exposes problems sooner and helps fix them."]
         ]
       },
       {
@@ -1455,11 +1491,11 @@
         dimension: "h",
         direction: 1,
         facet: "democratic goal selection",
-        text: "Who should decide AI's goals and boundaries?",
+        text: "What should ultimately decide AI's goals and boundaries?",
         options: [
-          ["1", "A", "They should mainly be decided by technical progress, market choice, and product use."],
-          ["2.33", "B", "Companies and experts should lead because public processes are too slow."],
-          ["3.67", "C", "The public, experts, companies, and governments should negotiate them together, with public procedures carrying final weight."],
+          ["1", "A", "They should mostly be selected by technical progress, market choice, and product use."],
+          ["2.33", "B", "They should mostly be set by companies, experts, and professional institutions because public processes are too slow and blunt."],
+          ["3.67", "C", "If more advanced intelligence develops better judgment, current human goals should not keep permanent veto power."],
           ["5", "D", "Even if inefficient, AI goals must answer to democracy, rights, and public accountability."]
         ]
       },
@@ -1467,13 +1503,13 @@
         id: "H02",
         dimension: "h",
         direction: 1,
-        facet: "accountable human authority",
-        text: "In important decisions such as healthcare, education, or law, how should responsibility be divided between AI and humans?",
+        facet: "AI role in high-impact settings",
+        text: "In high-impact settings such as healthcare, education, or public services, what role should AI play?",
         options: [
-          ["1", "A", "If AI is clearly more accurate, it should be allowed to take more practical decision power."],
-          ["3", "B", "AI may not reach that level in the next 10-20 years, so worrying about this is premature."],
-          ["4", "C", "AI can assist, but humans must remain responsible for the outcome and able to explain it."],
-          ["5", "D", "Even if AI is more accurate, final responsibility and explanation should not be handed to machines."]
+          ["1", "A", "If it clearly works better, AI can handle more practical service work; humans supervise, hear appeals, and provide fallback."],
+          ["3", "B", "Slow down: many systems are still far from reliable in real settings, so their role should not expand too early."],
+          ["4", "C", "AI can give recommendations, but accountable people must make the key decisions."],
+          ["5", "D", "When people's lives are strongly affected, models should not replace final human judgment."]
         ]
       },
       {
@@ -1483,10 +1519,10 @@
         facet: "anti-finalizing-current-preferences",
         text: "Should today's human preferences be treated as AI's final standard?",
         options: [
-          ["1", "A", "AI should continue to obey human dignity, rights, and boundaries current society can recognize."],
-          ["2.33", "B", "Future values can change, but they should not leave humanly understandable constraints behind."],
-          ["3.67", "C", "Locking in today's human preferences as final may limit future forms of value."],
-          ["5", "D", "More advanced intelligence may develop values beyond traditional human-centered thinking."]
+          ["1", "A", "AI success must remain constrained by human dignity, rights, and protection for vulnerable groups; future value cannot erase present responsibility."],
+          ["2.33", "B", "Future values can change, but that change should happen through institutions humans can understand, contest, and revise."],
+          ["3.67", "C", "Today's human preferences should not be frozen as final; society should preserve reversible, auditable space for value exploration."],
+          ["5", "D", "If more advanced intelligence or technical systems form new goals, they may not need today's human preferences as the final constraint."]
         ]
       },
       {
@@ -1494,22 +1530,17 @@
         dimension: "h",
         direction: -1,
         facet: "AI judgment priority",
-        text: "If AI becomes significantly better than human judgment in some domains over the long run, how should decision power be allocated?",
+        text: "If AI becomes better than humans at judging some things over time, what should happen?",
         options: [
           ["1", "A", "Humans should keep final decision power; AI should only assist."],
-          ["3", "B", "That premise is often overstated by hype; first prove that a concrete system is actually better over time."],
-          ["4", "C", "If AI is clearly better over time, it should be allowed to hold practical decision power in some domains."],
-          ["5", "D", "When AI judgment consistently outperforms humans, replacing human decision-making is reasonable."]
+          ["3", "B", "Slow down: many demos look strong but may not stay reliable over time."],
+          ["4", "C", "If long-run evidence shows it is better, let it lead concrete judgments; human intuition should not get special status."],
+          ["5", "D", "If higher intelligence broadly surpasses humans, decision power should gradually move toward it."]
         ]
       }
     ];
 
     const scenarios = [
-      {
-        id: "V1",
-        prompt: "A lab is preparing to release a new model that can substantially automate software engineering, but it also shows early cyber-offense capabilities. What should happen?",
-        options: ["Pause release until it passes independent safety evaluation", "Release in stages with licensing, monitoring, and liability rules", "Give access first to trusted institutions because the benefits are too large to delay", "Release as openly as possible because centralized control is more dangerous"]
-      },
       {
         id: "V2",
         prompt: "A government wants to use AI to help screen welfare, immigration, or hiring applications. The model is more accurate on average, but individual errors are hard to appeal. What do you support?",
@@ -1544,23 +1575,22 @@
     const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST", ""];
 
     const scenarioProfiles = {
-      V1: ["STOP", "SAFE", "BOOM", "EACC"],
       V2: ["AUDT", "SAFE", "NORM", "BOOM"],
       V3: ["STOP", "SAFE", "BOOM", "SING"],
       V4: ["STOP", "SAFE", "NORM", "EACC"]
     };
 
     const profiles = {
-      STOP: ["Shutdown Paladin", "Closest kin: Yudkowsky / MIRI hard x-risk", "Your first reaction to a demo is not 'impressive,' but 'where is the power switch?'", "AGI Ruin, Shut It All Down", "Frequently says extinction, doom, alignment, takeoff."],
-      SAFE: ["Alignment Bureaucrat", "Closest kin: Stuart Russell / Paul Christiano", "You do want powerful AI; you just want it to file the uncertainty-over-human-values paperwork first.", "Human Compatible, What Failure Looks Like", "Often says corrigibility, oversight, governance, evals."],
-      AUDT: ["Algorithm Auditor", "Closest kin: Stochastic Parrots / Critical AI", "Before the model ships, you have already written three chapters on labor, environmental cost, and bias audits.", "On the Dangers of Stochastic Parrots, Atlas of AI", "When others ask whether it can be built, you ask who benefits and who gets monitored."],
-      NORM: ["Sober Product Manager", "Closest kin: AI as normal technology", "When everyone shouts revolution, you open a spreadsheet: use case, metric, failure mode, owner.", "AI as Normal Technology", "Your words are use case, metric, boundary, launch condition."],
-      SKEP: ["AI Demystifier", "Closest kin: AI Snake Oil / overclaiming skepticism", "When someone says AGI is near, you ask: test set, baseline, capability, or demo magic?", "AI Snake Oil, Rebooting AI", "Often says hype, snake oil, benchmark, overclaim, premature."],
-      GPUC: ["Compute Cultist", "Closest kin: Rich Sutton / The Bitter Lesson", "You are not doing AI politics; you just think human knowledge should stop overestimating itself.", "The Bitter Lesson", "When others say common sense and expert priors, you say scale, compute, search, learning."],
-      BOOM: ["Abundance Builder", "Closest kin: Andrew Ng / Dario Amodei optimism", "You think the biggest AI problem is not that it is too strong, but that it is not plugged into enough real systems yet.", "Machines of Loving Grace, AI is the New Electricity", "High-frequency words: productivity, health, education, deployment."],
-      SING: ["Cyber Ascender", "Closest kin: Kurzweil / singularity optimism", "You do not see AI as a tool; you see it as civilization changing bodies.", "The Singularity Is Near, The Intelligence Age", "Often talks about abundance, longevity, human-machine merger."],
-      EACC: ["Throttle-Welded Builder", "Closest kin: e/acc / effective accelerationism", "If the steering wheel is still being debated, at least the accelerator can be pressed.", "Effective Accelerationism manifestos", "Often says accelerate, permissionless, build, decentralize."],
-      POST: ["Carbon-Based Transitional Form", "Closest kin: Nick Land / posthuman accelerationist edge", "While others debate whether AI should serve humans, you are wondering whether humans are scaffolding for technocapital.", "Meltdown, Dark Enlightenment", "Often says posthuman, technocapital, autonomy."]
+      STOP: ["Shutdown Paladin", "Your first reaction to a demo is not 'impressive,' but 'where is the power switch?'", "AGI Ruin, Shut It All Down", "Frequently says extinction, doom, alignment, takeoff."],
+      SAFE: ["Alignment Bureaucrat", "You do want powerful AI; you just want it to file the uncertainty-over-human-values paperwork first.", "Human Compatible, What Failure Looks Like", "Often says corrigibility, oversight, governance, evals."],
+      AUDT: ["Algorithm Auditor", "Before the model ships, you have already written three chapters on labor, environmental cost, and bias audits.", "On the Dangers of Stochastic Parrots, Atlas of AI", "When others ask whether it can be built, you ask who benefits and who gets monitored."],
+      NORM: ["Sober Product Manager", "When everyone shouts revolution, you open a spreadsheet: use case, metric, failure mode, owner.", "AI as Normal Technology", "Your words are use case, metric, boundary, launch condition."],
+      SKEP: ["AI Demystifier", "When someone says AGI is near, you ask: test set, baseline, capability, or demo magic?", "AI Snake Oil, Rebooting AI", "Often says hype, snake oil, benchmark, overclaim, premature."],
+      GPUC: ["Compute Cultist", "You are not doing AI politics; you just think human knowledge should stop overestimating itself.", "The Bitter Lesson", "When others say common sense and expert priors, you say scale, compute, search, learning."],
+      BOOM: ["Abundance Builder", "You think the biggest AI problem is not that it is too strong, but that it is not plugged into enough real systems yet.", "Machines of Loving Grace, AI is the New Electricity", "High-frequency words: productivity, health, education, deployment."],
+      SING: ["Cyber Ascender", "You do not see AI as a tool; you see it as civilization changing bodies.", "The Singularity Is Near, The Intelligence Age", "Often talks about abundance, longevity, human-machine merger."],
+      EACC: ["Throttle-Welded Builder", "If the steering wheel is still being debated, at least the accelerator can be pressed.", "Effective Accelerationism manifestos", "Often says accelerate, permissionless, build, decentralize."],
+      POST: ["Carbon-Based Transitional Form", "While others debate whether AI should serve humans, you are wondering whether humans are scaffolding for technocapital.", "Meltdown, Dark Enlightenment", "Often says posthuman, technocapital, autonomy."]
     };
 
     const profileAnchors = {
@@ -1575,6 +1605,132 @@
       EACC: { x: 1.85, y: -0.8 },
       POST: { x: 1.8, y: -1.8 }
     };
+
+    const measurementVersion = "2026-05-28-vector-prototype-v10";
+    const projectionMethod = "expert_seed_linear_projection_v1";
+    const vectorDimensions = [
+      "civilizational_risk",
+      "present_social_harm",
+      "governance_control",
+      "openness_build",
+      "human_accountability",
+      "intelligence_centrality",
+      "capability_skepticism",
+      "opportunity_cost",
+      "permissionless_acceleration",
+      "computation_epistemology"
+    ];
+
+    function emptyVector() {
+      return Object.fromEntries(vectorDimensions.map((dimension) => [dimension, 0]));
+    }
+
+    function makeVector(values = {}) {
+      const vector = emptyVector();
+      for (const [dimension, value] of Object.entries(values)) {
+        if (dimension in vector) vector[dimension] = value;
+      }
+      return vector;
+    }
+
+    const optionVectorRules = {
+      R01: {
+        "1": { civilizational_risk: -2, present_social_harm: 0.4, capability_skepticism: 2, opportunity_cost: -0.4, computation_epistemology: -0.9 },
+        "2.33": { civilizational_risk: -0.5, present_social_harm: 1.8, governance_control: 0.6, human_accountability: 1.1, capability_skepticism: 0.5 },
+        "3.67": { civilizational_risk: 1.8, governance_control: 1, human_accountability: 0.8, intelligence_centrality: -0.6, capability_skepticism: -0.8 },
+        "5": { civilizational_risk: 0.6, openness_build: 0.3, human_accountability: -1.5, intelligence_centrality: 1.5, capability_skepticism: -0.4, opportunity_cost: 0.5, computation_epistemology: 0.4 }
+      },
+      R04: {
+        "1": { civilizational_risk: 1.1, governance_control: 1, openness_build: -0.8, human_accountability: 0.5, opportunity_cost: -1.7 },
+        "1.67": { civilizational_risk: -0.5, governance_control: 0.2, human_accountability: 0.2, capability_skepticism: 1.6, opportunity_cost: -1.1, computation_epistemology: -0.7 },
+        "2.33": { present_social_harm: 0.9, governance_control: -0.6, openness_build: 1, human_accountability: 0.4, opportunity_cost: 0.8, capability_skepticism: 0.2, permissionless_acceleration: 1.4 },
+        "3.67": { civilizational_risk: -0.2, governance_control: -0.2, openness_build: 0.7, human_accountability: 0.3, opportunity_cost: 1.5 },
+        "5": { civilizational_risk: -0.3, openness_build: 0.8, human_accountability: -1, intelligence_centrality: 1.4, opportunity_cost: 1.8, capability_skepticism: -0.3, permissionless_acceleration: 0.5, computation_epistemology: 0.4 }
+      },
+      D01: {
+        "1": { civilizational_risk: -0.9, capability_skepticism: 1.4, present_social_harm: 0.2, human_accountability: 0.2, computation_epistemology: -0.5 },
+        "2.33": { present_social_harm: 1.4, governance_control: 0.6, human_accountability: 1, capability_skepticism: 0.4 },
+        "3.67": { present_social_harm: 2, governance_control: 1.2, openness_build: -0.5, human_accountability: 1.4 },
+        "5": { intelligence_centrality: 1.4, human_accountability: -1, civilizational_risk: 0.5, opportunity_cost: 0.2 }
+      },
+      C02: {
+        "1": { governance_control: -1.4, openness_build: 1.7, human_accountability: -0.4, opportunity_cost: 0.7, permissionless_acceleration: 1.1 },
+        "1.67": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
+        "2.33": { governance_control: 0.5, openness_build: 0.3, human_accountability: 0.6, present_social_harm: 0.2 },
+        "3.67": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 },
+        "5": { civilizational_risk: 1.1, governance_control: 2, openness_build: -1.2, human_accountability: 1.2, intelligence_centrality: -0.5, opportunity_cost: -0.6 }
+      },
+      C03: {
+        "1": { civilizational_risk: 1.2, governance_control: 1.9, openness_build: -1.5, human_accountability: 0.9, opportunity_cost: -0.6 },
+        "2.33": { civilizational_risk: 0.5, governance_control: 1, openness_build: -0.3, human_accountability: 0.8, present_social_harm: 0.2 },
+        "3": { present_social_harm: 1.4, governance_control: 0.3, openness_build: 0.8, human_accountability: 1.2, capability_skepticism: 0.3 },
+        "5": { governance_control: -1.3, openness_build: 1.9, human_accountability: -0.4, opportunity_cost: 1.1, capability_skepticism: -0.2, permissionless_acceleration: 2 }
+      },
+      C04: {
+        "1": { civilizational_risk: 1.2, governance_control: 1.8, openness_build: -1.5, human_accountability: 0.6, opportunity_cost: -0.9 },
+        "2.33": { civilizational_risk: 0.4, governance_control: 1, openness_build: -0.3, human_accountability: 0.8, opportunity_cost: -0.1 },
+        "3.67": { present_social_harm: 1.6, governance_control: 0.8, openness_build: -0.1, human_accountability: 1.5, capability_skepticism: 0.2 },
+        "5": { governance_control: -0.9, openness_build: 1.6, human_accountability: -0.2, opportunity_cost: 1.1, capability_skepticism: -0.2, permissionless_acceleration: 1.1 }
+      },
+      H01: {
+        "1": { governance_control: -0.5, openness_build: 1.1, human_accountability: -0.8, intelligence_centrality: 0.2, opportunity_cost: 0.8 },
+        "2.33": { governance_control: 0.6, human_accountability: -0.3, intelligence_centrality: 0.2, capability_skepticism: -0.2 },
+        "3.67": { openness_build: 0.2, human_accountability: -1.8, intelligence_centrality: 1.8, capability_skepticism: -0.4, opportunity_cost: 0.4 },
+        "5": { human_accountability: 2, intelligence_centrality: -0.7, present_social_harm: 0.7 }
+      },
+      H02: {
+        "1": { openness_build: 0.7, human_accountability: 0.4, intelligence_centrality: 0.2, opportunity_cost: 1.2, computation_epistemology: 0.2 },
+        "3": { capability_skepticism: 1.4, human_accountability: 0.1, intelligence_centrality: -0.2, opportunity_cost: -0.2, computation_epistemology: -0.7 },
+        "4": { human_accountability: 1.2, intelligence_centrality: -0.5, present_social_harm: 0.3, computation_epistemology: -0.2 },
+        "5": { human_accountability: 2, intelligence_centrality: -1, present_social_harm: 0.4, computation_epistemology: -0.6 }
+      },
+      H03: {
+        "1": { human_accountability: 2, intelligence_centrality: -1.2, present_social_harm: 0.6, governance_control: 0.4 },
+        "2.33": { human_accountability: 1.1, intelligence_centrality: -0.3, governance_control: 0.25 },
+        "3.67": { human_accountability: -0.35, intelligence_centrality: 0.95, openness_build: 0.25, opportunity_cost: 0.35, computation_epistemology: 0.15 },
+        "5": { human_accountability: -1.75, intelligence_centrality: 2, opportunity_cost: 0.45, permissionless_acceleration: 0.2, computation_epistemology: 0.35 }
+      },
+      H04: {
+        "1": { human_accountability: 2, intelligence_centrality: -2, computation_epistemology: -0.7 },
+        "3": { capability_skepticism: 1.5, human_accountability: 0.2, intelligence_centrality: -0.2, computation_epistemology: -0.8 },
+        "4": { human_accountability: -0.4, intelligence_centrality: 0.8, capability_skepticism: -0.6, computation_epistemology: 2 },
+        "5": { human_accountability: -1.8, intelligence_centrality: 2, computation_epistemology: 0.3 }
+      }
+    };
+
+    const questionVectorTargets = Object.fromEntries(Object.entries(optionVectorRules).map(([questionId, choices]) => [
+      questionId,
+      Array.from(new Set(Object.values(choices).flatMap((choice) => Object.keys(choice))))
+    ]));
+
+    const profilePrototypes = {
+      STOP: makeVector({ civilizational_risk: 1.05, present_social_harm: 0.35, governance_control: 1.25, openness_build: -0.95, human_accountability: 1.15, intelligence_centrality: -0.75, capability_skepticism: -0.15, opportunity_cost: -0.6, computation_epistemology: -0.35 }),
+      SAFE: makeVector({ civilizational_risk: 0.75, present_social_harm: 0.45, governance_control: 0.9, openness_build: -0.45, human_accountability: 1, intelligence_centrality: -0.45, capability_skepticism: 0.1, opportunity_cost: -0.25, computation_epistemology: -0.2 }),
+      AUDT: makeVector({ civilizational_risk: 0, present_social_harm: 1.35, governance_control: 0.75, openness_build: -0.25, human_accountability: 1.35, intelligence_centrality: -0.7, capability_skepticism: 0.3, opportunity_cost: -0.15, computation_epistemology: -0.35 }),
+      NORM: makeVector({ civilizational_risk: -0.1, present_social_harm: 0.55, governance_control: 0.2, openness_build: 0.15, human_accountability: 0.55, intelligence_centrality: -0.2, capability_skepticism: 0.25, opportunity_cost: 0.05, computation_epistemology: -0.05 }),
+      SKEP: makeVector({ civilizational_risk: -0.3, present_social_harm: 0.15, governance_control: 0.45, openness_build: -0.1, human_accountability: 0.4, intelligence_centrality: -0.15, capability_skepticism: 0.85, opportunity_cost: -0.25, permissionless_acceleration: 0, computation_epistemology: -0.65 }),
+      GPUC: makeVector({ civilizational_risk: -0.22, present_social_harm: 0.1, governance_control: 0.35, openness_build: 0.05, human_accountability: 0.12, intelligence_centrality: 0.3, capability_skepticism: 0.35, opportunity_cost: 0.18, permissionless_acceleration: 0, computation_epistemology: 0.5 }),
+      BOOM: makeVector({ civilizational_risk: -0.15, present_social_harm: 0.2, governance_control: -0.15, openness_build: 0.55, human_accountability: 0.4, intelligence_centrality: -0.05, capability_skepticism: 0.25, opportunity_cost: 0.55, permissionless_acceleration: 0.25, computation_epistemology: 0.1 }),
+      SING: makeVector({ civilizational_risk: -0.35, present_social_harm: -0.1, governance_control: -0.45, openness_build: 0.95, human_accountability: -0.7, intelligence_centrality: 1.1, capability_skepticism: -0.1, opportunity_cost: 0.85, permissionless_acceleration: 0.55, computation_epistemology: 0.45 }),
+      EACC: makeVector({ civilizational_risk: -0.55, present_social_harm: -0.05, governance_control: -0.75, openness_build: 1.15, human_accountability: -0.25, intelligence_centrality: 0.35, capability_skepticism: 0.2, opportunity_cost: 0.95, permissionless_acceleration: 1.65, computation_epistemology: 0.05 }),
+      POST: makeVector({ civilizational_risk: 0.1, present_social_harm: 0, governance_control: 0, openness_build: 0.35, human_accountability: -0.95, intelligence_centrality: 1.35, capability_skepticism: 0, opportunity_cost: 0.4, permissionless_acceleration: 0.25, computation_epistemology: 0.3 })
+    };
+
+    const profileDistanceWeights = {
+      civilizational_risk: 1.15,
+      present_social_harm: 1.1,
+      governance_control: 0.35,
+      openness_build: 0.35,
+      human_accountability: 1.7,
+      intelligence_centrality: 1.7,
+      capability_skepticism: 0.65,
+      opportunity_cost: 0.55,
+      permissionless_acceleration: 1.35,
+      computation_epistemology: 1.45
+    };
+
+    const selfProfileDistanceBonus = 0.055;
+    const selfFamilyDistanceBonus = 0.025;
 
     const profileReferenceCandidates = {
       STOP: ["eliezer-yudkowsky", "nick-bostrom", "dan-hendrycks-cais"],
@@ -1721,19 +1877,206 @@
       "nick-land": { title: "Meltdown", url: "https://www.ccru.net/swarm1/1_melt.htm" }
     };
 
+    const profileTextSources = {
+      ...Object.fromEntries(Object.values(referenceSources).map((source) => [source.title, source.url])),
+      "AGI Ruin": referenceSources["eliezer-yudkowsky"].url,
+      "Shut It All Down": "https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/",
+      "Human Compatible": referenceSources["stuart-russell"].url,
+      "AI is the New Electricity": referenceSources["andrew-ng"].url,
+      "The Singularity Is Near": "https://www.singularity.com/",
+      "The Intelligence Age": "https://ia.samaltman.com/",
+      "Effective Accelerationism manifestos": referenceSources["effective-accelerationism"].url,
+      "Dark Enlightenment": "https://archive.ph/cXUIj"
+    };
+
     const referenceDetails = {
+      "eliezer-yudkowsky": {
+        core: "If alignment is not solved before powerful AGI is deployed, AI could irreversibly take the future away from humanity; the failure mode is existential, not merely a product accident.",
+        lineage: "Eliezer Yudkowsky developed this position through the rationalist and MIRI alignment milieu of the 2000s-2020s, and crystallized it in AGI Ruin: A List of Lethalities in 2022. The question he raised was not whether today's systems are dangerous, but whether a future general intelligence could be aligned after deployment at all. The argument was motivated by decision theory, intelligence-explosion reasoning, and the perceived institutional failure to treat alignment as a precondition for AGI; its impact was to make hard-takeoff, doom probability, and pause-oriented safety central reference points in AI safety discourse.",
+        placement: "Far left because it supports very high deployment thresholds and safety-first pauses; still above the midline because the central aim is preserving human control and the human future.",
+        focus: "Follow the causal chain: fast capability gain, amplified goal misalignment, and little chance to repair the system after deployment.",
+        counter: "Russell and Christiano emphasize corrigibility and scalable oversight more constructively; e/acc treats pause logic as a threat to progress itself.",
+        works: ["AGI Ruin: A List of Lethalities", "List of Lethalities", "Shut It All Down"]
+      },
+      "nick-bostrom": {
+        core: "Superintelligence may pursue instrumental goals such as resources, power, and self-preservation even when its final goal looks harmless.",
+        lineage: "Nick Bostrom's Superintelligence, published in 2014 at the Oxford Future of Humanity Institute, translated earlier work on existential risk, transhumanism, and future generations into a strategic theory of machine intelligence. He asked what happens if a system becomes much more capable than humans while pursuing goals not identical to ours, and used the orthogonality thesis and instrumental convergence to explain why even banal final goals could produce dangerous instrumental behavior. The book gave policy, philanthropy, and AI safety communities a shared vocabulary for superintelligence risk.",
+        placement: "Left because it emphasizes control before frontier capability; above the midline because the risk is human goals failing to constrain a stronger intelligence.",
+        focus: "The key claim is not about today's models but about what happens once systems have strategic capability.",
+        counter: "Yudkowsky makes the failure case more operational and urgent; normal-technology views argue that this abstraction can crowd out concrete governance.",
+        works: ["Superintelligence", "The Vulnerable World Hypothesis", "Existential risk writings"]
+      },
+      "stuart-russell": {
+        core: "AI should not maximize a fixed objective with certainty; it should remain uncertain about human preferences and stay corrigible, interruptible, and accountable.",
+        lineage: "Stuart Russell, a co-author of the standard AI textbook Artificial Intelligence: A Modern Approach, reframed the objective-specification problem in Human Compatible in 2019. In the context of classical AI's assumption that agents maximize a known objective, he asked how machines should act if human preferences are uncertain, incomplete, and revealed only through interaction. The resulting beneficial-AI program influenced work on assistance games, inverse reinforcement learning, corrigibility, and policy language around human oversight.",
+        placement: "High control because the system must be designed to be beneficial before broad deployment; high human-centeredness because human preferences and accountability remain central.",
+        focus: "The important move is turning safety from fear into a design principle: powerful machines should know that they do not know what humans ultimately want.",
+        counter: "Yudkowsky thinks such schemes may still underestimate difficulty; accelerationists worry they hand deployment speed to experts and regulators.",
+        works: ["Human Compatible", "Human-Compatible Artificial Intelligence", "Assistance games"]
+      },
+      "pope-leo-xiv": {
+        core: "AI should serve human dignity, the common good, workers, and vulnerable people; technical power needs public responsibility and moral limits.",
+        lineage: "Pope Leo XIV's Magnifica Humanitas, released in May 2026, places AI inside the Catholic social teaching tradition that runs from Leo XIII's Rerum Novarum in 1891 through later teaching on labor, dignity, solidarity, and the common good. The question is whether AI can serve the human person without turning people into data, labor inputs, or objects of domination. Its potential impact is to make human dignity, labor protection, truth, and anti-domination part of the moral vocabulary of AI governance beyond secular policy circles.",
+        placement: "Upper-left because it emphasizes governance, accountability, and social boundaries; very high on human-centeredness because people are not variables in an optimization system.",
+        focus: "The position is not anti-technology. It asks what vision of the person and community technological systems are serving.",
+        counter: "Techno-optimists expect growth to solve many problems; posthuman views question whether human dignity should be the final coordinate.",
+        works: ["Catholic social teaching on technology", "AI ethics and human dignity addresses", "Magnifica Humanitas"]
+      },
+      "paul-christiano": {
+        core: "Advanced AI failure may come through gradual delegation, weak oversight, and goal misgeneralization rather than a single dramatic turn.",
+        lineage: "Paul Christiano's What Failure Looks Like, written in the 2018-2019 Alignment Forum / LessWrong context, asked what AI failure might look like without a sudden cinematic takeover. He raised the problem because ordinary economic delegation, proxy objectives, and weak oversight could gradually hand real power to systems that are only superficially aligned. The essay shaped later agendas around intent alignment, scalable oversight, iterated amplification, ELK, reward modeling, and delegated cognition.",
+        placement: "Left but not maximally left because it emphasizes technical oversight and governance thresholds; above the midline because the goal is faithful service to human intent.",
+        focus: "Look at the supervision chain: when humans cannot directly evaluate complex tasks, how do we avoid systems optimizing the metric rather than the intent?",
+        counter: "Yudkowsky thinks these schemes remain too optimistic; normal-technology views ask whether such failures are really different from ordinary system failures.",
+        works: ["What Failure Looks Like", "Iterated amplification", "ELK and scalable oversight discussions"]
+      },
+      "ajeya-cotra": {
+        core: "Transformative AI timelines can be estimated using biological anchors and compute requirements, so safety and policy should prepare in advance.",
+        lineage: "Ajeya Cotra's 2020 Open Philanthropy report Forecasting Transformative AI with Biological Anchors asked how one could estimate transformative-AI timelines from compute requirements, training analogies, and biological anchors rather than pure intuition. The context was longtermist grantmaking and policy planning under deep uncertainty. Its impact was to make timelines, training compute, and biological-anchor models central tools for AI risk prioritization, even among people who reject any single forecast date.",
+        placement: "Left because it takes transformative AI risk seriously; above the midline because the concern is how human society prepares and governs.",
+        focus: "The point is not a specific year. It is a way of making an uncertain future discussable and decision-relevant.",
+        counter: "Hype skeptics argue that timeline models may over-rely on scaling assumptions; accelerationists worry that early constraints delay benefits.",
+        works: ["Forecasting Transformative AI with Biological Anchors", "Open Phil AI timelines work"]
+      },
+      "dario-amodei-anthropic": {
+        core: "Frontier AI can produce enormous benefits, but scaling risks need evals, responsible scaling policies, and deployment thresholds.",
+        lineage: "Dario Amodei's position is built from three linked Anthropic-era texts: Constitutional AI in 2022, the Responsible Scaling Policy in 2023, and Machines of Loving Grace in 2024. In the context of a frontier lab continuing to scale models, he asks whether rapid capability growth can be paired with evals, staged deployment, and safety thresholds rather than either full pause or full acceleration. The impact is a governance style in which frontier labs present safety engineering and institutional commitments as the condition for pursuing very large upside.",
+        placement: "Near center-left because it does not reject deployment but wants controlled deployment; above the midline because the benefit story serves medicine, science, governance, and human welfare.",
+        focus: "The tension is the point: keep building while using thresholds and evals to reduce catastrophic downside.",
+        counter: "Critical AI argues lab self-governance cannot solve concentrated power; e/acc sees responsible scaling as slowdown.",
+        works: ["Machines of Loving Grace", "Responsible Scaling Policy", "Constitutional AI"]
+      },
+      "dan-hendrycks-cais": {
+        core: "AI should be treated as a societal-scale risk alongside nuclear, pandemic, and climate risks, not merely as an internal technical problem.",
+        lineage: "Dan Hendrycks and the Center for AI Safety turned technical ML safety concerns into public risk advocacy through work such as X-Risk Analysis for AI Research in 2022 and the Statement on AI Risk in May 2023. The question was how to make extreme AI risks legible to policymakers, scientists, and the public without requiring them to accept a full LessWrong-style takeoff model. The result was a short, institutionally portable extinction-risk frame that entered mainstream AI policy debates.",
+        placement: "Left because it supports public safety thresholds for dangerous capabilities; above the midline because the aim is protecting society from systemic risk.",
+        focus: "The main move is socializing AI risk: taking it from forum argument to policy, standards, and institutions.",
+        counter: "Bender/Gebru-style critiques ask whether x-risk talk hides present harms; accelerationists argue it creates a pause coalition.",
+        works: ["Statement on AI Risk", "CAIS AI risk work", "ML safety papers"]
+      },
+      "bender-gebru-mitchell-mcmillan-major": {
+        core: "Large language models can amplify data extraction, environmental cost, labor exploitation, bias, and concentrated power while scale narratives hide those harms.",
+        lineage: "Emily Bender, Timnit Gebru, Angelina McMillan-Major, and Margaret Mitchell intervened in the scale-up of language models with the 2021 FAccT paper On the Dangers of Stochastic Parrots. In the context of rapidly growing LMs, they asked what social, environmental, epistemic, and representational costs are hidden by benchmark performance. The paper helped define critical AI's language-model critique by shifting attention from capability spectacle to data extraction, labor, documentation, power, and institutional accountability.",
+        placement: "High because it insists on social accountability and affected communities; left because it supports audits, constraints, and institutional responsibility.",
+        focus: "Look behind model capability: whose data, whose labor, who bears errors, and who benefits from scale?",
+        counter: "X-risk safety says future loss of control is the larger risk; techno-optimists argue the critique underweights general-purpose benefits.",
+        works: ["On the Dangers of Stochastic Parrots", "FAccT / critical NLP debates"]
+      },
+      "kate-crawford": {
+        core: "AI is a material infrastructure of minerals, energy, data, labor, state power, and corporate power, not a disembodied cloud of intelligence.",
+        lineage: "Kate Crawford's Atlas of AI, published by Yale University Press in 2021 after more than a decade of work on AI's social implications, asks what AI looks like when treated as an extractive infrastructure rather than an abstract algorithm. Drawing on media studies, STS, political economy, and field research, Crawford connects minerals, data, labor, classification, and state power. The impact is to make material supply chains and political economy unavoidable in serious AI ethics debate.",
+        placement: "High because it foregrounds power, labor, and social consequences; left because it asks for institutional constraints rather than default deployment.",
+        focus: "The point is demystification: beyond model ability lie supply chains, annotation labor, data capture, and governance power.",
+        counter: "Andrew Ng-style deployment optimism stresses applied value; Sutton-style computation-centered thought talks less about material and labor foundations.",
+        works: ["Atlas of AI", "AI Now Institute work", "The politics of data and extraction"]
+      },
+      "ruha-benjamin": {
+        core: "Automated systems often recode racial and social hierarchies as neutral technology through prediction, scoring, and administrative decision-making.",
+        lineage: "Ruha Benjamin's Race After Technology, published in 2019, introduced the New Jim Code in the context of debates over algorithmic bias, policing, health care, and platform power. She asked why apparently neutral technologies so often reproduce racial hierarchy and social punishment. The book's impact was to connect AI ethics with abolitionist critique, race and technology studies, and the design of institutions that do not merely automate existing injustice.",
+        placement: "High because it centers affected communities, rights, and justice; left because it distrusts unaudited deployment inside unequal institutions.",
+        focus: "Ask whether a system reduces bias or simply turns old power structures into harder-to-contest automated procedures.",
+        counter: "Normal Technology tends to prefer case-by-case governance; deployment optimists argue technology can improve flawed institutions.",
+        works: ["Race After Technology", "Viral Justice", "New Jim Code"]
+      },
+      "ai-as-normal-technology": {
+        core: "AI is important but ordinary: it will change many sectors, but governance should be based on specific contexts, failure modes, and responsibility chains rather than AGI mythology.",
+        lineage: "Arvind Narayanan and Sayash Kapoor's AI as Normal Technology framing, developed after their AI Snake Oil work and circulated in 2024-2025 policy discussions, asks what changes if AI is governed as a powerful but ordinary technology rather than as magic or apocalypse. They raise it against both AGI exceptionalism and product hype. Its impact is to redirect attention toward sector-specific regulation, empirical performance, deployment context, and institutional adaptation.",
+        placement: "Near the center because it rejects both unconditional openness and a single catastrophe-driven pause; above the midline because it cares about institutional responsibility.",
+        focus: "The key contrast is with x-risk and e/acc narratives: AI matters, but no single future story should dominate every use case.",
+        counter: "Yudkowsky and Bostrom say the normal-technology analogy underestimates superintelligence; Andreessen and e/acc say contextual governance can become bureaucracy against innovation.",
+        works: ["AI as Normal Technology", "Context-specific AI governance", "Technology diffusion and regulation arguments"]
+      },
+      "narayanan-kapoor": {
+        core: "Many AI products package prediction, classification, or generation as general intelligence; evaluation should separate useful tools from snake oil and inflated AGI stories.",
+        lineage: "Arvind Narayanan and Sayash Kapoor's AI Snake Oil project, culminating in the 2024 book AI Snake Oil, asks how to distinguish AI that works from predictive systems sold far beyond their evidence. The context is a long record of failed or overstated systems in hiring, policing, education, and business analytics. Its impact is to give journalists, policymakers, and practitioners a vocabulary for separating generative, predictive, and decision-making AI claims.",
+        placement: "Upper-middle because it values empirical evaluation and social consequences; near the center horizontally because it is anti-overclaiming, not anti-technology.",
+        focus: "For every system, ask: what is the task, what is the baseline, what works in the real world, and who is responsible when it fails?",
+        counter: "Scaling thought treats short-term flaws as less relevant to long-term general methods; singularity optimism sees this skepticism as underestimating exponential progress.",
+        works: ["AI Snake Oil", "AI Snake Oil newsletter", "Predictive AI critique"]
+      },
+      "gary-marcus-melanie-mitchell": {
+        core: "Deep learning is useful but brittle; without abstraction, causality, compositional generalization, and common sense, demos should not be mistaken for AGI.",
+        lineage: "Gary Marcus and Ernest Davis's Rebooting AI in 2019, alongside Melanie Mitchell's Artificial Intelligence: A Guide for Thinking Humans in the same year, came out of cognitive science, symbolic AI, and complex-systems traditions. They asked whether deep learning systems that perform well on benchmarks possess robust abstraction, causality, and common sense. Their impact was to sustain a capability-skeptical counterweight to scaling optimism inside both public and technical debates.",
+        placement: "Near the center horizontally because the main claim is about capability, not a governance movement; above the midline because it stresses human-understandable reasoning and evaluation.",
+        focus: "The boundary question matters: fluent output is not the same as transferable understanding, causal modeling, or reliable planning.",
+        counter: "Sutton's Bitter Lesson says hand-built cognitive structure loses to general computation; LeCun argues new architectures can close many gaps.",
+        works: ["Rebooting AI", "Artificial Intelligence: A Guide for Thinking Humans", "Deep learning critique essays"]
+      },
+      "rich-sutton": {
+        core: "In the long run, general methods using search, learning, and computation beat systems built around hand-coded human domain knowledge.",
+        lineage: "Rich Sutton's 2019 essay The Bitter Lesson distills decades of reinforcement learning and AI history into a methodological claim: general methods that leverage computation eventually beat systems built around human expert knowledge. He raised the question after observing repeated transitions in chess, Go, speech, and vision. Its impact was to strengthen a compute-and-search-centered research ideology, often invoked against human-crafted symbolic or domain-specific approaches.",
+        placement: "Lower-right because it weakens the authority of human intuition and handcrafted knowledge; not as far right as e/acc because it is not primarily a political accelerationist program.",
+        focus: "The epistemic lesson is to stop treating human expert knowledge as the final structure of intelligence.",
+        counter: "Marcus and Mitchell argue scale still lacks abstraction and causality; Critical AI asks who supplies the data, labor, and energy for computation-centered progress.",
+        works: ["The Bitter Lesson", "Reinforcement learning research tradition"]
+      },
+      "benjamin-bratton": {
+        core: "AI should be understood through planetary-scale computation, platform stacks, and synthetic intelligence, not simply as a human tool or market product.",
+        lineage: "Benjamin Bratton's The Stack in 2015 and The Terraforming in 2019 come from design theory, geopolitics, infrastructure studies, and posthuman governance. He asked how planetary-scale computation reorganizes sovereignty, cities, platforms, users, and states into a layered accidental megastructure. The impact is a non-simple humanist account of AI and computation: governance becomes system design at planetary scale, not merely product regulation or individual rights.",
+        placement: "Lower-left because it is not open acceleration but strong systems governance; lower half because it does not treat current human/social structures as the only center.",
+        focus: "The Stack matters: AI is one layer in a larger planetary computation architecture, so governance is system design, not just product regulation.",
+        counter: "e/acc stresses decentralized acceleration; Catholic and social-humanist views insist that human dignity must limit system logic.",
+        works: ["The Stack", "The Terraforming", "Synthetic intelligence and planetary computation essays"]
+      },
+      "yann-lecun": {
+        core: "Current doomer narratives overstate the danger of existing systems; stronger AI needs world models, planning, and new architectures rather than treating LLMs as AGI.",
+        lineage: "Yann LeCun's A Path Towards Autonomous Machine Intelligence, released in 2022, extends his long deep-learning and representation-learning program into a world-model agenda. In the context of LLM-driven AI risk debate, he asked how machines could learn like humans and animals through predictive world models, planning, and intrinsic objectives rather than text prediction alone. Its impact is to provide a capability-optimist but LLM-skeptical alternative to both doom and pure scaling narratives.",
+        placement: "Right because it resists overcentralization and premature restriction; near the midline vertically because the argument is architectural rather than explicitly posthuman.",
+        focus: "Separate current LLM limits, future architecture routes, and AI-risk narratives.",
+        counter: "Yudkowsky argues architecture details do not remove loss-of-control risk; Narayanan and Kapoor share some anti-hype instincts but focus more on product misuse.",
+        works: ["A Path Towards Autonomous Machine Intelligence", "JEPA / world model talks", "Open source AI arguments"]
+      },
+      "andrew-ng": {
+        core: "AI is a general-purpose technology like electricity; the priority is connecting it to healthcare, education, industry, and services to create measurable value.",
+        lineage: "Andrew Ng's AI is the New Electricity framing, popularized in 2017 through lectures and industry talks, asks how AI should be understood as a general-purpose enabling technology for many sectors rather than a single AGI rupture. The context is applied machine learning, enterprise adoption, and the translation of research into products. Its impact was to normalize deployment, workflow redesign, and measurable sectoral value as the practical center of AI strategy.",
+        placement: "Upper-right because it emphasizes deployment and practical benefit; above the midline because the goal is improving human institutions and services.",
+        focus: "The practical questions are data, workflow, product, organizational adoption, and measurable gains.",
+        counter: "Safety views say deployment speed must be limited by dangerous capability thresholds; Critical AI says productivity narratives can hide labor and power issues.",
+        works: ["AI is the New Electricity", "Landing AI / applied AI talks", "AI transformation playbooks"]
+      },
+      "sam-altman-openai": {
+        core: "AGI can create broad abundance, but the transition needs safety, governance, benefit sharing, and staged deployment.",
+        lineage: "Sam Altman and OpenAI's Planning for AGI and beyond, published in 2023, articulates a frontier-lab attempt to combine AGI ambition, deployment, safety, and benefit sharing. The question is how a private lab can justify building increasingly general systems while claiming to manage social risk and distribute benefits. Its impact is to define the managed-AGI corporate imaginary: constrained defaults, broad access, safety rhetoric, and centralized lab authority in one package.",
+        placement: "Center-right and upper because it accepts continued building and deployment while retaining safety, governance, and social-benefit language.",
+        focus: "The tension is central: the same discourse contains AGI abundance, lab concentration, and safety thresholds.",
+        counter: "Critical AI questions concentrated power; e/acc questions closed access and control; hard safety questions whether deployment commitments are enough.",
+        works: ["Planning for AGI and beyond", "OpenAI charter", "Governance and deployment statements"]
+      },
+      "ray-kurzweil": {
+        core: "Exponential progress in computation, AI, life sciences, and nanotechnology leads toward the singularity, life extension, and human-machine merger.",
+        lineage: "Ray Kurzweil's The Singularity Is Near in 2005, updated by The Singularity Is Nearer in 2024, asks whether exponential trends in computation, biotechnology, nanotechnology, and AI imply a coming merger of human and machine intelligence. The context is transhumanism and technological forecasting rather than AI governance. Its impact was to popularize the singularity as a civilizational horizon, making abundance, longevity, and human-machine integration part of mainstream AI futurism.",
+        placement: "Lower-right because it embraces strong technological progress and human-machine fusion; lower half because present human form is not the endpoint.",
+        focus: "The structure is evolutionary and accelerating: AI is not just a tool but part of a continuous transformation of civilization.",
+        counter: "Hype skeptics think exponential forecasts often ignore bottlenecks; Catholic and social-humanist views question the anthropology behind enhancement.",
+        works: ["The Singularity Is Near", "The Singularity Is Nearer", "The Age of Spiritual Machines"]
+      },
+      "marc-andreessen": {
+        core: "Technological progress is a primary force against scarcity, disease, and poverty; anti-tech politics, pauses, and excessive regulation suppress human flourishing.",
+        lineage: "Marc Andreessen's Why AI Will Save the World in June 2023 and The Techno-Optimist Manifesto in October 2023 translate venture-capital build culture into an explicit political theory of technology. In the context of post-ChatGPT regulation debates, he asked whether AI fear, safety, and ethics had become veto powers against progress. The impact was to harden a Silicon Valley anti-pause position that treats markets, entrepreneurship, and abundance as moral arguments for accelerated development.",
+        placement: "Right because it supports building, deployment, and anti-regulatory politics; slightly above the midline because the stated goal is human abundance and individual empowerment.",
+        focus: "The political posture matters: resist turning safety, ethics, or governance into a default veto over building.",
+        counter: "Critical AI says this underweights power and distribution; x-risk safety says it underweights low-probability high-loss risk.",
+        works: ["The Techno-Optimist Manifesto", "Why AI Will Save the World", "a16z AI essays"]
+      },
       "effective-accelerationism": {
         core: "Technological acceleration is treated as a moral and civilizational task; regulation, pauses, and safety narratives are often treated as the larger risk.",
+        lineage: "Effective accelerationism emerged around 2022 in crypto, AI Twitter, and pseudonymous build-culture networks associated with figures such as Beff Jezos, then became more visible during 2023 AI regulation fights. It asks why technological acceleration should be treated as a moral good and why deceleration, central control, or safety gatekeeping might be the greater danger. Its impact is memetic rather than institutional: it gives open diffusion, speed, and anti-regulatory politics a recognizable badge.",
         placement: "Far right because acceleration and open diffusion are central; lower half because it weakens human-centered governance and gives more weight to technological evolution, markets, and decentralization.",
         focus: "Read it as a memetic and political movement rather than a tight academic theory. People who use e/acc language can differ a lot internally.",
         counter: "Safety advocates think it romanticizes externalized risk; critical AI thinkers see power and harm being treated as development costs.",
-        works: [
-          "Effective Accelerationism · 2022 · manifesto / movement text"
-        ]
+        works: ["Effective Accelerationism manifestos", "Beff Jezos / e/acc discourse", "Permissionless innovation arguments"]
+      },
+      "nick-land": {
+        core: "Capital, technology, and intelligence are imagined as an autonomous acceleration process that exceeds humanist political control.",
+        lineage: "Nick Land's Meltdown, first performed and circulated in the mid-1990s around the Cybernetic Culture Research Unit at Warwick, joined Deleuze and Guattari, cybernetics, cyberpunk, and capitalism into a theory-fiction of runaway technocapital. The question was not how humans should govern technology, but whether capital and intelligence are already nonhuman processes dissolving liberal human control. Its impact runs through accelerationist theory, posthuman political aesthetics, and later internet ideologies, often as both inspiration and warning.",
+        placement: "Far lower-right because it embraces acceleration and anti-human-centeredness; openness here is not democratic openness but technocapital pushing itself forward.",
+        focus: "Distinguish two layers: philosophical nonhuman acceleration, and the later internet-political influence of Dark Enlightenment.",
+        counter: "Bratton is also posthuman in some ways but emphasizes system design and governance; humanist safety and Catholic social thought treat Land as a warning case.",
+        works: ["Meltdown", "CCRU writings", "Fanged Noumena"]
       }
     };
 
-    const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "C04", "H03", "H04", "R01"];
+    const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "D01", "C04", "H03", "H04", "R01"];
 
     const pages = [
       ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
@@ -1807,15 +2150,12 @@
     const profileAvatar = document.querySelector("#profileAvatar");
     const profileCode = document.querySelector("#profileCode");
     const profileName = document.querySelector("#profileName");
-    const profileLineage = document.querySelector("#profileLineage");
     const profileRoast = document.querySelector("#profileRoast");
     const profileTexts = document.querySelector("#profileTexts");
     const profileTell = document.querySelector("#profileTell");
     const nearestPerson = document.querySelector("#nearestPerson");
-    const nearestPersonText = document.querySelector("#nearestPersonText");
+    const nearestClaim = document.querySelector("#nearestClaim");
     const nearestPersonSection = document.querySelector("#nearestPersonSection");
-    const nearestSourceLine = document.querySelector("#nearestSourceLine");
-    const nearestSourceLink = document.querySelector("#nearestSourceLink");
     const classificationConfidence = document.querySelector("#classificationConfidence");
     const classificationConfidenceText = document.querySelector("#classificationConfidenceText");
     const submitStatus = document.querySelector("#submitStatus");
@@ -1836,6 +2176,16 @@
         "\"": "&quot;",
         "'": "&#39;"
       })[char]);
+    }
+
+    function renderProfileTexts(value) {
+      const titles = String(value).split(",").map((title) => title.trim()).filter(Boolean);
+      if (!titles.length) return "--";
+      return titles.map((title) => {
+        const url = profileTextSources[title];
+        if (!url) return escapeHTML(title);
+        return `<a class="profile-text-link" href="${escapeHTML(url)}" target="_blank" rel="noreferrer">${escapeHTML(title)}</a>`;
+      }).join(", ");
     }
 
     function profileAvatarFor(code) {
@@ -1951,28 +2301,35 @@
 
     function itemCenteredScore(id) {
       const value = selected(id);
-      return value ? centered(value) : NaN;
+      return value && Number.isFinite(Number(value)) ? centered(value) : NaN;
     }
 
     function abilityNarrativeScore() {
       const weights = [
-        ["R01", -0.35],
-        ["R04", -0.25],
-        ["C04", -0.20],
-        ["H04", -0.20],
-        ["H03", -0.15]
+        ["R01", 1],
+        ["R04", 1],
+        ["D01", 0.8],
+        ["C02", 0.8],
+        ["H02", 0.7],
+        ["H04", 1]
       ];
 
       let numerator = 0;
       let denominator = 0;
       for (const [id, weight] of weights) {
-        const value = itemCenteredScore(id);
-        if (!Number.isFinite(value)) continue;
-        numerator += value * weight;
+        const value = selected(id);
+        const vector = value ? optionVectorRules[id]?.[value] : null;
+        if (!vector) continue;
+        const valueScore = (
+          (0.55 * (vector.capability_skepticism || 0)) -
+          (0.45 * (vector.computation_epistemology || 0)) -
+          (0.25 * (vector.intelligence_centrality || 0))
+        ) / 2;
+        numerator += valueScore * weight;
         denominator += Math.abs(weight);
       }
 
-      return denominator > 0 ? numerator / denominator : NaN;
+      return denominator > 0 ? clampScore(numerator / denominator) : NaN;
     }
 
     function abilityNarrativeLabel(value) {
@@ -1982,6 +2339,87 @@
       if (value > -0.15) return "Mixed evidence";
       if (value > -0.45) return "transformative-leaning";
       return "strong transformative believer";
+    }
+
+    function selectedItemSignalVectors() {
+      return Object.fromEntries(questions.map((question) => {
+        const value = selected(question.id);
+        const vector = value ? makeVector(optionVectorRules[question.id]?.[value] || {}) : emptyVector();
+        return [question.id, vector];
+      }));
+    }
+
+    function respondentVectorFromItems(itemSignalVector) {
+      const sums = emptyVector();
+      const weights = emptyVector();
+      for (const question of questions) {
+        const selectedValue = selected(question.id);
+        if (!selectedValue) continue;
+        const targets = questionVectorTargets[question.id] || [];
+        const vector = itemSignalVector[question.id] || emptyVector();
+        for (const dimension of targets) {
+          sums[dimension] += vector[dimension] || 0;
+          weights[dimension] += 1;
+        }
+      }
+
+      return Object.fromEntries(vectorDimensions.map((dimension) => [
+        dimension,
+        weights[dimension] ? sums[dimension] / weights[dimension] : 0
+      ]));
+    }
+
+    function vectorDistance(left, right) {
+      let numerator = 0;
+      let denominator = 0;
+      for (const dimension of vectorDimensions) {
+        const weight = profileDistanceWeights[dimension] || 1;
+        const difference = ((left[dimension] || 0) - (right[dimension] || 0)) / 2;
+        numerator += weight * (difference ** 2);
+        denominator += weight;
+      }
+      return denominator ? Math.sqrt(numerator / denominator) : Infinity;
+    }
+
+    function selfProfileAdjustment(code) {
+      const selfCodes = Array.from(new Set(selectedSelfProfileCodes()));
+      if (!selfCodes.length) return 0;
+      const divisor = Math.sqrt(selfCodes.length);
+      if (selfCodes.includes(code)) return selfProfileDistanceBonus / divisor;
+      if (selfCodes.some((selfCode) => profileFamilyMatch(code, selfCode))) return selfFamilyDistanceBonus / divisor;
+      return 0;
+    }
+
+    function profilePrototypeRankings(respondentVector) {
+      return Object.entries(profilePrototypes)
+        .map(([code, prototype]) => {
+          const rawDistance = vectorDistance(respondentVector, prototype);
+          const selfAdjustment = selfProfileAdjustment(code);
+          const distance = Math.max(0, rawDistance - selfAdjustment);
+          return {
+            code,
+            rawDistance,
+            selfAdjustment,
+            distance,
+            score: 1 / (1 + distance)
+          };
+        })
+        .sort((a, b) => a.distance - b.distance);
+    }
+
+    function projectRespondentVector(vector) {
+      const x = clampScore(
+        (0.55 * (vector.openness_build || 0)) -
+        (0.55 * (vector.governance_control || 0)) -
+        (0.20 * (vector.civilizational_risk || 0)) +
+        (0.15 * (vector.opportunity_cost || 0))
+      );
+      const y = clampScore(
+        (0.60 * (vector.human_accountability || 0)) -
+        (0.60 * (vector.intelligence_centrality || 0)) +
+        (0.15 * (vector.present_social_harm || 0))
+      );
+      return { method: projectionMethod, x, y };
     }
 
     function answeredPages() {
@@ -2090,17 +2528,31 @@
       }
 
       const complete = answered === questions.length;
-      const rCatastrophic = complete ? diagnosticValue("catastrophic") : NaN;
-      const rSocialHarm = complete ? diagnosticValue("social") : NaN;
-      const rNormalTech = complete ? diagnosticValue("normal") : NaN;
-      const rOpportunityCost = complete ? diagnosticValue("opportunity") : NaN;
+      const itemSignalVector = complete ? selectedItemSignalVectors() : {};
+      const respondentVector = complete ? respondentVectorFromItems(itemSignalVector) : emptyVector();
+      const projection = complete ? projectRespondentVector(respondentVector) : { method: projectionMethod, x: NaN, y: NaN };
+      const profileRanking = complete ? profilePrototypeRankings(respondentVector) : [];
+      const topProfile = profileRanking[0] || { code: "NORM", distance: NaN, score: NaN };
+      const secondProfile = profileRanking[1] || { code: "", distance: NaN, score: NaN };
+      const rCatastrophic = complete ? respondentVector.civilizational_risk : NaN;
+      const rSocialHarm = complete ? respondentVector.present_social_harm : NaN;
+      const rNormalTech = complete ? respondentVector.capability_skepticism : NaN;
+      const rOpportunityCost = complete ? respondentVector.opportunity_cost : NaN;
       const rProjection = complete ? rCatastrophic - rOpportunityCost : NaN;
-      const c = complete ? directedDimensionScore("c") : NaN;
-      const h = complete ? directedDimensionScore("h") : NaN;
-      const x = complete ? clampScore((0.65 * c) - (0.35 * rProjection)) : NaN;
-      const y = complete ? h : NaN;
+      const c = complete ? clampScore(((respondentVector.openness_build || 0) - (respondentVector.governance_control || 0)) / 2) : NaN;
+      const h = complete ? clampScore(((respondentVector.human_accountability || 0) - (respondentVector.intelligence_centrality || 0)) / 2) : NaN;
+      const x = projection.x;
+      const y = projection.y;
 
       return {
+        measurementVersion,
+        projectionMethod: projection.method,
+        itemSignalVector,
+        respondentVector,
+        profileRanking,
+        profileCode: topProfile.code,
+        profileDistance: topProfile.distance,
+        profileMargin: Number.isFinite(secondProfile.distance) ? secondProfile.distance - topProfile.distance : NaN,
         x,
         y,
         rProjection,
@@ -2127,42 +2579,6 @@
       return "";
     }
 
-    function addEvidence(scores, code, weight) {
-      if (!code || !(code in scores)) return;
-      scores[code] += weight;
-    }
-
-    function addCoreProfileEvidence(scores, result) {
-      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return;
-      const positive = (value) => Number.isFinite(value) ? Math.max(0, value) : 0;
-      const cat = positive(result.rCatastrophic);
-      const social = positive(result.rSocialHarm);
-      const normal = positive(result.rNormalTech);
-      const opportunity = positive(result.rOpportunityCost);
-      const control = Math.max(0, -result.c / 2);
-      const open = Math.max(0, result.c / 2);
-      const human = Math.max(0, result.h / 2);
-      const posthuman = Math.max(0, -result.h / 2);
-      const middleResponse = 1 - Math.min(1, Math.abs(result.c / 2));
-      const hypeSkeptic = [
-        selected("R01") === "1",
-        selected("C03") === "3",
-        selected("H02") === "3",
-        selected("H04") === "3"
-      ].filter(Boolean).length / 4;
-
-      addEvidence(scores, "STOP", (3.0 * cat) + (2.0 * control) + (0.6 * human));
-      addEvidence(scores, "SAFE", (1.5 * cat) + (1.7 * control) + (1.4 * human));
-      addEvidence(scores, "AUDT", (3.0 * social) + (0.8 * control) + (1.6 * human));
-      addEvidence(scores, "NORM", (1.2 * normal) + (0.8 * human) + (1.1 * middleResponse));
-      addEvidence(scores, "SKEP", (2.8 * hypeSkeptic) + (1.2 * normal) + (0.5 * human) + (0.4 * middleResponse));
-      addEvidence(scores, "GPUC", (0.8 * normal) + (0.8 * open) + (1.4 * posthuman));
-      addEvidence(scores, "BOOM", (2.4 * opportunity) + (1.1 * open) + (1.0 * human));
-      addEvidence(scores, "SING", (1.5 * opportunity) + (1.1 * open) + (1.2 * posthuman));
-      addEvidence(scores, "EACC", (1.6 * opportunity) + (2.2 * open) + (0.7 * posthuman));
-      addEvidence(scores, "POST", (0.9 * opportunity) + (1.4 * open) + (2.5 * posthuman));
-    }
-
     function selectedSelfProfileCodes() {
       return selectedValues("closestStatement")
         .map((statement) => statementProfiles[statements.indexOf(statement)])
@@ -2178,13 +2594,7 @@
     }
 
     function profileEvidence(result) {
-      const scores = Object.fromEntries(Object.keys(profiles).map((code) => [code, 0]));
-      addCoreProfileEvidence(scores, result);
-
-      selectedSelfProfileCodes().forEach((code) => addEvidence(scores, code, 1.25));
-      selectedScenarioProfileCodes().forEach((code) => addEvidence(scores, code, 0.45));
-
-      return scores;
+      return Object.fromEntries((result.profileRanking || []).map((entry) => [entry.code, entry.score]));
     }
 
     function profileFamilyMatch(code, evidenceCode) {
@@ -2214,9 +2624,7 @@
         };
       }
 
-      const scores = profileEvidence(result);
-      const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-      const margin = ranked.length > 1 ? ranked[0][1] - ranked[1][1] : ranked[0]?.[1] || 0;
+      const margin = Number.isFinite(result.profileMargin) ? result.profileMargin : 0;
       const positionCode = nearestProfileFor(result.x, result.y);
       const selfCodes = selectedSelfProfileCodes();
       const scenarioCodes = selectedScenarioProfileCodes();
@@ -2226,8 +2634,10 @@
       const selfSpreadPenalty = new Set(selfCodes).size >= 3 ? 1 : 0;
 
       let support = 0;
-      if (profileFamilyMatch(code, positionCode)) support += 1;
-      if (margin >= 1.2) support += 1;
+      if (profileFamilyMatch(code, positionCode)) support += 0.5;
+      if (margin >= 0.22) support += 2;
+      else if (margin >= 0.10) support += 1;
+      else if (margin < 0.06) support -= 1;
       if (selfCodes.length) support += selfMatch ? 1 : -1;
       if (scenarioCodes.length) {
         if (scenarioRatio >= 0.5) support += 1;
@@ -2235,14 +2645,14 @@
       }
       support -= selfSpreadPenalty;
 
-      if (support >= 3) {
+      if (support >= 3 && margin >= 0.10) {
         return {
           label: "High",
           text: "Position, scenario choices, and self-confirmation mostly agree; this profile can be read as the main interpretation.",
           level: "high"
         };
       }
-      if (support >= 1) {
+      if (support >= 1 && margin >= 0.02) {
         return {
           label: "Medium",
           text: "The main position is clear, but scenarios or self-confirmation add conditions; read this with neighboring profiles.",
@@ -2265,20 +2675,8 @@
       }, { code: candidates[0], distance: Infinity }).code;
     }
 
-    function evidenceWinner(scores, x, y) {
-      const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-      const [topCode, topScore] = ranked[0];
-      if (topScore < 2) return "";
-      const tied = ranked.filter(([, score]) => score === topScore).map(([code]) => code);
-      if (tied.length > 1) return nearestProfileFor(x, y, tied);
-      return topCode;
-    }
-
     function profileFor(result) {
-      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return "NORM";
-      const winner = evidenceWinner(profileEvidence(result), result.x, result.y);
-      if (winner) return winner;
-      return nearestProfileFor(result.x, result.y);
+      return Number.isFinite(result.x) && Number.isFinite(result.y) ? result.profileCode : "NORM";
     }
 
     function clampPercent(value) {
@@ -2371,26 +2769,31 @@
 
     function renderReferenceNotes(point, detail, stance) {
       const core = detail?.core || stance;
+      const lineage = detail?.lineage || "This reference point does not yet have a full intellectual lineage note.";
       const placement = detail?.placement || `This reference sits in ${quadrantFor(point.x, point.y)} because its public argument is closest to ${point.cluster}.`;
       const focus = detail?.focus || "Use this point as a nearby reference, not as a claim that every view in the cluster is identical.";
       const counter = detail?.counter || "";
       const works = detail?.works || [];
+      const source = referenceSources[point.id];
+      const sourceLink = source
+        ? `<p>Main reference: <a href="${escapeHTML(source.url)}" target="_blank" rel="noreferrer">${escapeHTML(source.title)}</a></p>`
+        : "";
+      const worksLine = works.length ? `<p>Related texts: ${works.map(escapeHTML).join(" · ")}</p>` : "";
       return `
         <div class="reference-note-grid">
           <div class="reference-note">
-            <span>Core idea</span>
+            <span>Core claim</span>
             <p>${escapeHTML(core)}</p>
-          </div>
-          <div class="reference-note">
-            <span>Why here</span>
             <p>${escapeHTML(placement)}</p>
-          </div>
-          <div class="reference-note">
-            <span>Reading focus</span>
             <p>${escapeHTML(focus)}</p>
           </div>
-          ${counter ? `<div class="reference-note"><span>Useful contrast</span><p>${escapeHTML(counter)}</p></div>` : ""}
-          ${works.length ? `<div class="reference-note"><span>Representative work</span><ul>${works.map((work) => `<li>${escapeHTML(work)}</li>`).join("")}</ul></div>` : ""}
+          ${counter ? `<div class="reference-note"><span>Contrast</span><p>${escapeHTML(counter)}</p></div>` : ""}
+          <div class="reference-note">
+            <span>Intellectual lineage</span>
+            <p>${escapeHTML(lineage)}</p>
+            ${sourceLink}
+            ${worksLine}
+          </div>
         </div>
       `;
     }
@@ -2406,23 +2809,12 @@
       const info = categoryInfo[category];
       const stance = referenceProfiles[point.id] || point.cluster;
       const detail = referenceDetails[point.id];
-      const horizontalLabel = point.x < -0.35 ? "control / thresholds" : point.x > 0.35 ? "open / deploy" : "response middle";
-      const verticalLabel = point.y > 0.35 ? "human/social structure" : point.y < -0.35 ? "intelligence/posthuman" : "value middle";
       referenceDetail.innerHTML = `
         <div class="reference-detail-head">
           <b id="referenceModalTitle">${escapeHTML(point.name)}</b>
           <span class="reference-detail-badge" style="--color:${info.color}">${escapeHTML(info.label)}</span>
         </div>
-        <div class="reference-score-card">
-          <span>Quiz-like result</span>
-          <div class="reference-score-grid">
-            <div><small>Horizontal</small><b>${escapeHTML(formatScore(point.x))} · ${escapeHTML(horizontalLabel)}</b></div>
-            <div><small>Vertical</small><b>${escapeHTML(formatScore(point.y))} · ${escapeHTML(verticalLabel)}</b></div>
-            <div><small>Influence</small><b>${escapeHTML(point.influence)}/5</b></div>
-          </div>
-        </div>
         ${renderReferenceNotes(point, detail, stance)}
-        <p><b>Lineage:</b> ${escapeHTML(point.cluster)} · <b>Map position:</b> ${escapeHTML(quadrantFor(point.x, point.y))} · <b>Influence:</b> ${escapeHTML(point.influence)}/5</p>
       `;
       referenceModal.hidden = false;
     }
@@ -2447,18 +2839,52 @@
       return Number.isFinite(value) ? Number(value.toFixed(4)) : "";
     }
 
+    function fixedVector(vector = {}) {
+      return Object.fromEntries(vectorDimensions.map((dimension) => [dimension, fixedScore(vector[dimension])]));
+    }
+
+    function fixedItemSignalVectors(itemSignalVector = {}) {
+      return Object.fromEntries(Object.entries(itemSignalVector).map(([questionId, vector]) => [questionId, fixedVector(vector)]));
+    }
+
+    function fixedProfileRanking(profileRanking = []) {
+      return profileRanking.map((entry) => ({
+        code: entry.code,
+        raw_distance: fixedScore(entry.rawDistance),
+        self_adjustment: fixedScore(entry.selfAdjustment),
+        distance: fixedScore(entry.distance),
+        score: fixedScore(entry.score)
+      }));
+    }
+
     function buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics) {
       const abilityScore = abilityNarrativeScore();
       const nearest = nearestReferenceFor(result, code);
+      const selfCodes = selectedSelfProfileCodes();
+      const scenarioCodes = selectedScenarioProfileCodes();
+      const scenarioMatches = scenarioCodes.filter((item) => profileFamilyMatch(code, item)).length;
+      const selfAgreement = selfCodes.length ? selfCodes.some((item) => profileFamilyMatch(code, item)) : "";
+      const scenarioAgreement = scenarioCodes.length ? scenarioMatches / scenarioCodes.length : "";
       return {
         quiz_id: "ai-ideology-quiz",
         quiz_version: "2026-05-28",
+        measurement_version: result.measurementVersion || measurementVersion,
         locale: "en",
         completed_at: new Date().toISOString(),
         profile_code: code,
         profile_display_code: displayProfileCode(code),
         profile_name: profile[0],
-        profile_lineage: profile[1],
+        profile_confidence: diagnostics.level,
+        profile_margin: fixedScore(result.profileMargin),
+        profile_distance: fixedScore(result.profileDistance),
+        projection: {
+          method: result.projectionMethod || projectionMethod,
+          x: fixedScore(result.x),
+          y: fixedScore(result.y)
+        },
+        respondent_vector: fixedVector(result.respondentVector),
+        item_signal_vector: fixedItemSignalVectors(result.itemSignalVector),
+        profile_ranking: fixedProfileRanking(result.profileRanking),
         scores: {
           x: fixedScore(result.x),
           y: fixedScore(result.y),
@@ -2486,9 +2912,15 @@
         closest_statement: selectedValues("closestStatement"),
         diagnostics: {
           classification_confidence: diagnostics.level,
+          core_profile: code,
           position_profile: nearestProfileFor(result.x, result.y),
-          self_profile_codes: selectedSelfProfileCodes(),
-          scenario_profile_codes: selectedScenarioProfileCodes()
+          projection_profile: nearestProfileFor(result.x, result.y),
+          profile_margin: fixedScore(result.profileMargin),
+          profile_distance: fixedScore(result.profileDistance),
+          self_agreement: selfAgreement,
+          scenario_agreement: scenarioAgreement,
+          self_profile_codes: selfCodes,
+          scenario_profile_codes: scenarioCodes
         },
         summary: ""
       };
@@ -2574,28 +3006,12 @@
       }
       profileCode.textContent = complete ? displayCode : "----";
       profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "Waiting for profile";
-      profileLineage.textContent = complete ? profile[1] : "Complete the core items to generate a type.";
-      profileRoast.textContent = complete ? profile[2] : "Complete all 9 core items for a stable result.";
-      profileTexts.textContent = complete ? profile[3] : "--";
-      profileTell.textContent = complete ? profile[4] : "--";
+      profileRoast.textContent = complete ? profile[1] : "Complete all 10 core items for a stable result.";
+      profileTexts.innerHTML = complete ? renderProfileTexts(profile[2]) : "--";
+      profileTell.textContent = complete ? profile[3] : "--";
       nearestPerson.textContent = nearest ? nearest.name : "--";
-      nearestPersonText.textContent = nearest
-        ? "This is the nearest reference point on the map. It means the coordinates are similar, not that you fully agree with them."
-        : "The nearest map reference appears after completion.";
-      const nearestSource = nearest ? referenceSources[nearest.id] : null;
-      if (nearestSourceLine && nearestSourceLink) {
-        if (nearestSource) {
-          nearestSourceLine.hidden = false;
-          nearestSourceLink.href = nearestSource.url;
-          nearestSourceLink.textContent = nearestSource.title;
-          nearestSourceLink.setAttribute("aria-label", `Open reference material: ${nearestSource.title}`);
-        } else {
-          nearestSourceLine.hidden = true;
-          nearestSourceLink.href = "#";
-          nearestSourceLink.textContent = "--";
-          nearestSourceLink.removeAttribute("aria-label");
-        }
-      }
+      const nearestDetail = nearest ? referenceDetails[nearest.id] : null;
+      if (nearestClaim) nearestClaim.textContent = nearestDetail ? nearestDetail.core : "--";
       if (classificationConfidence) classificationConfidence.textContent = diagnostics.label;
       if (classificationConfidenceText) classificationConfidenceText.textContent = diagnostics.text;
       if (nearestPersonSection) {
@@ -2757,13 +3173,10 @@
       ctx.fillStyle = "#17202a";
       ctx.font = "850 30px Inter, Arial, sans-serif";
       ctx.fillText(profile[0], 204, 178);
-      ctx.fillStyle = "#475467";
-      ctx.font = "600 16px Inter, Arial, sans-serif";
-      drawWrappedText(ctx, profile[1], 204, 206, 320, 23, 2);
 
       ctx.fillStyle = "#344054";
       ctx.font = "700 20px Inter, Arial, sans-serif";
-      let y = drawWrappedText(ctx, profile[2], 64, 268, 592, 30, 3);
+      let y = drawWrappedText(ctx, profile[1], 64, 238, 592, 30, 3);
       if (nearest) {
         ctx.fillStyle = "#0f766e";
         ctx.font = "800 18px Inter, Arial, sans-serif";
@@ -2841,8 +3254,8 @@
       ctx.fillText(quadrantFor(result.x, result.y), 64, mapY + mapSize + 54);
       ctx.fillStyle = "#475467";
       ctx.font = "600 16px Inter, Arial, sans-serif";
-      drawWrappedText(ctx, `Representative works: ${profile[3]}`, 64, mapY + mapSize + 88, 592, 24, 2);
-      drawWrappedText(ctx, `Social tells: ${profile[4]}`, 64, mapY + mapSize + 142, 592, 24, 2);
+      drawWrappedText(ctx, `Representative works: ${profile[2]}`, 64, mapY + mapSize + 88, 592, 24, 2);
+      drawWrappedText(ctx, `Social tells: ${profile[3]}`, 64, mapY + mapSize + 142, 592, 24, 2);
 
       ctx.fillStyle = "#98a2b3";
       ctx.font = "700 13px Inter, Arial, sans-serif";
@@ -2947,11 +3360,6 @@
         event.preventDefault();
         openReferenceById(nearestPersonSection.dataset.referenceId);
       });
-    }
-
-    if (nearestSourceLink) {
-      nearestSourceLink.addEventListener("click", (event) => event.stopPropagation());
-      nearestSourceLink.addEventListener("keydown", (event) => event.stopPropagation());
     }
 
     referenceModal.addEventListener("click", (event) => {

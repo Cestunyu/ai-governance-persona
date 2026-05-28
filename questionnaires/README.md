@@ -13,11 +13,15 @@ This folder contains the survey instruments and profile copy for the AI ideology
 
 - `2026-05-20-ai-ideology-scoring-rubric.md`
   - Active scoring rubric for the Chinese and English standalone quiz pages.
-  - Documents each core item's semantic facet, X/Y weights, and known limitations.
+  - Documents the option-vector schema, prototype classifier, projection layer, and known limitations.
 
 - `2026-05-20-ideology-classification-method-review.md`
   - Review of relevant ideology classification and psychometric practice.
   - Use as the methodological benchmark when deciding whether to add items, revise scoring, or call the instrument "scientific."
+
+- `2026-05-28-ai-ideology-methodology-critique.md`
+  - Branch-level critique under the current item-count constraint.
+  - Reframes scientific improvement around position scoring, scenario consistency, self-confirmation, and external AI narrative clustering evidence.
 
 - `2026-05-19-ai-ideology-short-locator-zh.md`
   - Earlier Chinese short locator.
