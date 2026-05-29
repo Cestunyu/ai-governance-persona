@@ -1524,7 +1524,7 @@
         options: [
           ["1", "A", "我基本不用 AI，是被朋友、同事或这个问卷拉来看看。"],
           ["2.33", "B", "我会用 AI 聊天、搜索、写作、翻译或总结。"],
-          ["3.67", "C", "我会让 AI 帮我写代码、整理材料或分析复杂问题，但还不是每天重度依赖。（比如 agentic coding）"],
+          ["3.67", "C", "我会让 AI 帮我写代码、整理材料或分析复杂问题，但还不是每天重度依赖。"],
           ["5", "D", "我每天高度依赖 AI 完成工作，经常和它连续来回修改、生成和推进任务。"]
         ]
       },
@@ -1768,9 +1768,9 @@
       NORM: ["ai-as-normal-technology"],
       SKEP: ["narayanan-kapoor", "gary-marcus-melanie-mitchell"],
       GPUC: ["rich-sutton"],
-      BOOM: ["andrew-ng", "dario-amodei-anthropic", "marc-andreessen"],
+      BOOM: ["andrew-ng", "dario-amodei-anthropic", "elon-musk-xai", "marc-andreessen"],
       SING: ["ray-kurzweil"],
-      EACC: ["marc-andreessen", "effective-accelerationism"],
+      EACC: ["marc-andreessen", "peter-thiel", "effective-accelerationism"],
       POST: ["benjamin-bratton", "nick-land"]
     };
 
@@ -1791,7 +1791,7 @@
       { id: "eliezer-yudkowsky", label: "Yudkowsky", name: "Eliezer Yudkowsky", cluster: "Rationalist AI x-risk / MIRI", x: -2, y: 1, influence: 5, dx: "-18px", dy: "-12px" },
       { id: "nick-bostrom", label: "Bostrom", name: "Nick Bostrom", cluster: "Superintelligence / philosophical x-risk", x: -1.68, y: 1, influence: 5, dx: "16px", dy: "10px" },
       { id: "stuart-russell", label: "Russell", name: "Stuart Russell", cluster: "Beneficial AI / human-compatible AI", x: -1, y: 2, influence: 5, dx: "0px", dy: "0px" },
-      { id: "pope-leo-xiv", label: "Leo XIV", name: "Pope Leo XIV / Magnifica Humanitas", cluster: "Catholic social humanism / AI governance", x: -0.9, y: 1.9, influence: 4, dx: "28px", dy: "-26px" },
+      { id: "pope-leo-xiv", label: "Leo XIV", name: "Pope Leo XIV / Magnifica Humanitas", cluster: "Catholic social humanism / AI governance", x: -1.18, y: 1.72, influence: 4, dx: "30px", dy: "-20px" },
       { id: "paul-christiano", label: "Christiano", name: "Paul Christiano", cluster: "Scalable alignment / technical safety", x: -0.87, y: 1.2, influence: 4, dx: "-18px", dy: "8px" },
       { id: "ajeya-cotra", label: "Cotra", name: "Ajeya Cotra", cluster: "AI timelines / Open Philanthropy", x: -0.87, y: 1, influence: 4, dx: "16px", dy: "-10px" },
       { id: "dario-amodei-anthropic", label: "Amodei", name: "Dario Amodei / Anthropic", cluster: "Frontier-lab safety optimism", x: -0.22, y: 1.1, influence: 5, dx: "12px", dy: "8px" },
@@ -1807,6 +1807,8 @@
       { id: "yann-lecun", label: "LeCun", name: "Yann LeCun", cluster: "Open-source / architecture optimism / anti-doom", x: 1.03, y: 0, influence: 5, dx: "12px", dy: "4px" },
       { id: "andrew-ng", label: "Andrew Ng", name: "Andrew Ng", cluster: "Pragmatic AI optimism", x: 1.07, y: 1, influence: 4, dx: "-15px", dy: "-11px" },
       { id: "sam-altman-openai", label: "Altman/OpenAI", name: "Sam Altman / OpenAI", cluster: "Managed AGI optimism", x: 0.84, y: 1, influence: 5, dx: "16px", dy: "11px" },
+      { id: "elon-musk-xai", label: "Musk/xAI", name: "Elon Musk / xAI", cluster: "Risk-aware techno-optimism / open-weight frontier build", x: 1.2, y: -0.28, influence: 5, dx: "-24px", dy: "18px" },
+      { id: "peter-thiel", label: "Thiel", name: "Peter Thiel / Founders Fund", cluster: "Techno-libertarian anti-stagnation / founder sovereignty", x: 1.32, y: -0.72, influence: 4, dx: "16px", dy: "-18px" },
       { id: "ray-kurzweil", label: "Kurzweil", name: "Ray Kurzweil", cluster: "Singularity / transhumanist optimism", x: 1.44, y: -0.4, influence: 5, dx: "-20px", dy: "10px" },
       { id: "marc-andreessen", label: "Andreessen", name: "Marc Andreessen", cluster: "Techno-optimism / anti-pause politics", x: 1.64, y: 0.4, influence: 4, dx: "15px", dy: "-8px" },
       { id: "effective-accelerationism", label: "e/acc", name: "e/acc / effective accelerationism", cluster: "Accelerationist AI politics", x: 1.93, y: -0.8, influence: 3, dx: "0px", dy: "0px" },
@@ -1824,6 +1826,7 @@
       "Architecture optimism": { label: "架构乐观 / 世界模型", color: "#4f46e5" },
       "Posthuman control": { label: "Posthuman control / 系统治理", color: "#5b21b6" },
       "Pragmatic optimism": { label: "务实 AI 乐观", color: "#15803d" },
+      "Techno-libertarianism": { label: "技术自由意志 / 反停滞", color: "#a16207" },
       "Techno-optimism": { label: "技术乐观 / 奇点", color: "#c2410c" },
       "Accelerationism": { label: "加速主义 / 后人类边界", color: "#7f1d1d" }
     };
@@ -1848,6 +1851,8 @@
       "benjamin-bratton": "Posthuman control",
       "yann-lecun": "Architecture optimism",
       "andrew-ng": "Pragmatic optimism",
+      "elon-musk-xai": "Techno-optimism",
+      "peter-thiel": "Techno-libertarianism",
       "ray-kurzweil": "Techno-optimism",
       "marc-andreessen": "Techno-optimism",
       "effective-accelerationism": "Accelerationism",
@@ -1874,6 +1879,8 @@
       "yann-lecun": "先进 AI 需要新架构和 world models，近期 doomer 叙事被夸大了。",
       "andrew-ng": "AI 像电力一样是通用技术，应该广泛部署来创造价值。",
       "sam-altman-openai": "AGI 如果配合安全、治理和收益共享制度，可以带来广泛丰裕。",
+      "elon-musk-xai": "AI 可能带来极端风险，因此需要安全意识；但人类也应通过火星、Neuralink、xAI 和更强智能扩展自身边界。",
+      "peter-thiel": "现代社会最大问题是技术停滞；未来需要少数强创始人和深科技突破，而不是让风险治理、官僚和共识政治冻结进步。",
       "ray-kurzweil": "AI 与计算推动技术进步走向奇点，以及人机融合。",
       "marc-andreessen": "AI 应该积极发展，因为它能扩展丰裕、解决问题并赋能个体。",
       "effective-accelerationism": "技术加速具有道德紧迫性，监管本身常被视为更大的危险。",
@@ -1900,6 +1907,8 @@
       "yann-lecun": { title: "A Path Towards Autonomous Machine Intelligence", url: "https://openreview.net/pdf?id=BZ5a1r-kVsf" },
       "andrew-ng": { title: "Why AI Is the New Electricity", url: "https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity" },
       "sam-altman-openai": { title: "Planning for AGI and beyond", url: "https://openai.com/index/planning-for-agi-and-beyond/" },
+      "elon-musk-xai": { title: "Open Release of Grok-1", url: "https://x.ai/news/grok-os" },
+      "peter-thiel": { title: "What Happened to the Future?", url: "https://foundersfund.com/2017/01/manifesto/" },
       "ray-kurzweil": { title: "The Singularity Is Nearer", url: "https://www.thesingularityisnearer.com/" },
       "marc-andreessen": { title: "The Techno-Optimist Manifesto", url: "https://a16z.com/the-techno-optimist-manifesto/" },
       "effective-accelerationism": { title: "Effective Accelerationism", url: "https://wiki.p2pfoundation.net/Effective_Accelerationism" },
@@ -2070,6 +2079,22 @@
         focus: "重点是 tension：同一套论述里既有 AGI 丰裕愿景，也有实验室集中控制和安全门槛。",
         counter: "Critical AI 质疑权力集中；e/acc 质疑闭源和管控；hard safety 质疑部署承诺是否足够。",
         works: ["Planning for AGI and beyond", "OpenAI charter", "Governance and deployment statements"]
+      },
+      "elon-musk-xai": {
+        core: "Musk 的 AI 位置是混合型：一方面长期公开警告先进 AI 的生存风险，另一方面又把人类未来想象成火星、Neuralink、人机共生和 xAI 式更强智能的扩展。",
+        lineage: "Elon Musk 在 AI 话语中的位置来自两条线：早期参与 OpenAI 与后来的 AI safety / pause 警告，以及 SpaceX、Neuralink、2023 年后创立 xAI、推出 Grok、开放 Grok-1 权重和架构。它提出的问题不是单纯“暂停还是加速”，而是谁能构建一个被认为更 truth-seeking、较少受既有机构约束、同时又不会毁灭人类的 AI。影响是把 x-risk 警告、后人类式扩展想象、反大厂/反 OpenAI 政治、开源姿态和高强度 build culture 混在同一个公众形象里。",
+        placement: "放在右侧但不贴近 e/acc：右侧来自 xAI build、Grok 开放权重和竞争逻辑；纵轴放到中线下方，因为 Mars / Neuralink / human-AI symbiosis 已经明显超出普通人类中心框架，但仍没有落到 Land 式技术自治。",
+        focus: "读它时要抓住混合性：Musk 不是纯安全暂停派，也不是纯加速主义者，而是风险警告 + 后人类扩展 + 竞争式 build + 部分开放的组合。",
+        counter: "Andreessen 更少强调 x-risk；Yudkowsky 更强调暂停和对齐优先；Altman/OpenAI 更强调实验室治理和收益共享。",
+        works: ["Open Release of Grok-1", "Pause Giant AI Experiments open letter", "xAI / Grok public positioning"]
+      },
+      "peter-thiel": {
+        core: "Thiel 的核心不是单纯 AI 乐观，而是反停滞：现代社会被风险厌恶、官僚治理和低野心技术困住，需要重新押注深科技、创始人权力和垂直进步。",
+        lineage: "Peter Thiel 的技术政治来自 PayPal、Palantir、Founders Fund、Zero to One 与“we wanted flying cars, instead we got 140 characters”的反停滞叙事。它提出的问题是为什么 1970 年后西方不再产生足够多改变文明形态的技术，以及为什么大学、监管、共识政治和竞争市场会把真正的垂直创新压低为增量改良。放进 AI 语境后，这一路线倾向把 AI 看作打破停滞和重组权力的深科技，而不是普通消费软件。",
+        placement: "右下方是因为它反对停滞和过度风险治理，支持强创始人、深科技和突破性资本配置；纵轴偏下，因为它不太相信民主共识和现有人类制度能定义技术未来，更接近精英化、后自由主义和部分后人类的未来政治。",
+        focus: "读它时要抓住“反停滞”而不是“开源”：Thiel 更关心谁有权推动文明级技术突破，而不一定主张去中心化开放。",
+        counter: "Andreessen 更大众化地讲技术乐观；e/acc 更 memetic 地讲加速；Catholic/social humanism 会质疑这种未来政治是否牺牲共同善和人的尊严。",
+        works: ["What Happened to the Future?", "Zero to One", "Founders Fund / Palantir worldview"]
       },
       "ray-kurzweil": {
         core: "计算、AI、生命科学和纳米技术的指数进步会推动奇点，人类与机器融合并扩展寿命和认知。",

@@ -1525,7 +1525,7 @@
         options: [
           ["1", "A", "I rarely use AI products; someone pulled me into taking this quiz."],
           ["2.33", "B", "I use AI for chat, search, writing, translation, or summarizing."],
-          ["3.67", "C", "I use AI for coding, research, or complex work, but I am not a heavy daily user. (For example, agentic coding.)"],
+          ["3.67", "C", "I use AI for coding, research, or complex work, but I am not a heavy daily user."],
           ["5", "D", "I rely on AI heavily every workday, often iterating with it for long sessions."]
         ]
       },
@@ -1769,9 +1769,9 @@
       NORM: ["ai-as-normal-technology"],
       SKEP: ["narayanan-kapoor", "gary-marcus-melanie-mitchell"],
       GPUC: ["rich-sutton"],
-      BOOM: ["andrew-ng", "dario-amodei-anthropic", "marc-andreessen"],
+      BOOM: ["andrew-ng", "dario-amodei-anthropic", "elon-musk-xai", "marc-andreessen"],
       SING: ["ray-kurzweil"],
-      EACC: ["marc-andreessen", "effective-accelerationism"],
+      EACC: ["marc-andreessen", "peter-thiel", "effective-accelerationism"],
       POST: ["benjamin-bratton", "nick-land"]
     };
 
@@ -1792,7 +1792,7 @@
       { id: "eliezer-yudkowsky", label: "Yudkowsky", name: "Eliezer Yudkowsky", cluster: "Rationalist AI x-risk / MIRI", x: -2, y: 1, influence: 5, dx: "-18px", dy: "-12px" },
       { id: "nick-bostrom", label: "Bostrom", name: "Nick Bostrom", cluster: "Superintelligence / philosophical x-risk", x: -1.68, y: 1, influence: 5, dx: "16px", dy: "10px" },
       { id: "stuart-russell", label: "Russell", name: "Stuart Russell", cluster: "Beneficial AI / human-compatible AI", x: -1, y: 2, influence: 5, dx: "0px", dy: "0px" },
-      { id: "pope-leo-xiv", label: "Leo XIV", name: "Pope Leo XIV / Magnifica Humanitas", cluster: "Catholic social humanism / AI governance", x: -0.9, y: 1.9, influence: 4, dx: "28px", dy: "-26px" },
+      { id: "pope-leo-xiv", label: "Leo XIV", name: "Pope Leo XIV / Magnifica Humanitas", cluster: "Catholic social humanism / AI governance", x: -1.18, y: 1.72, influence: 4, dx: "30px", dy: "-20px" },
       { id: "paul-christiano", label: "Christiano", name: "Paul Christiano", cluster: "Scalable alignment / technical safety", x: -0.87, y: 1.2, influence: 4, dx: "-18px", dy: "8px" },
       { id: "ajeya-cotra", label: "Cotra", name: "Ajeya Cotra", cluster: "AI timelines / Open Philanthropy", x: -0.87, y: 1, influence: 4, dx: "16px", dy: "-10px" },
       { id: "dario-amodei-anthropic", label: "Amodei", name: "Dario Amodei / Anthropic", cluster: "Frontier-lab safety optimism", x: -0.22, y: 1.1, influence: 5, dx: "12px", dy: "8px" },
@@ -1808,6 +1808,8 @@
       { id: "yann-lecun", label: "LeCun", name: "Yann LeCun", cluster: "Open-source / architecture optimism / anti-doom", x: 1.03, y: 0, influence: 5, dx: "12px", dy: "4px" },
       { id: "andrew-ng", label: "Andrew Ng", name: "Andrew Ng", cluster: "Pragmatic AI optimism", x: 1.07, y: 1, influence: 4, dx: "-15px", dy: "-11px" },
       { id: "sam-altman-openai", label: "Altman/OpenAI", name: "Sam Altman / OpenAI", cluster: "Managed AGI optimism", x: 0.84, y: 1, influence: 5, dx: "16px", dy: "11px" },
+      { id: "elon-musk-xai", label: "Musk/xAI", name: "Elon Musk / xAI", cluster: "Risk-aware techno-optimism / open-weight frontier build", x: 1.2, y: -0.28, influence: 5, dx: "-24px", dy: "18px" },
+      { id: "peter-thiel", label: "Thiel", name: "Peter Thiel / Founders Fund", cluster: "Techno-libertarian anti-stagnation / founder sovereignty", x: 1.32, y: -0.72, influence: 4, dx: "16px", dy: "-18px" },
       { id: "ray-kurzweil", label: "Kurzweil", name: "Ray Kurzweil", cluster: "Singularity / transhumanist optimism", x: 1.44, y: -0.4, influence: 5, dx: "-20px", dy: "10px" },
       { id: "marc-andreessen", label: "Andreessen", name: "Marc Andreessen", cluster: "Techno-optimism / anti-pause politics", x: 1.64, y: 0.4, influence: 4, dx: "15px", dy: "-8px" },
       { id: "effective-accelerationism", label: "e/acc", name: "e/acc / effective accelerationism", cluster: "Accelerationist AI politics", x: 1.93, y: -0.8, influence: 3, dx: "0px", dy: "0px" },
@@ -1825,6 +1827,7 @@
       "Architecture optimism": { label: "Architecture optimism / world models", color: "#4f46e5" },
       "Posthuman control": { label: "Posthuman control / system governance", color: "#5b21b6" },
       "Pragmatic optimism": { label: "Pragmatic optimism", color: "#15803d" },
+      "Techno-libertarianism": { label: "Techno-libertarianism / anti-stagnation", color: "#a16207" },
       "Techno-optimism": { label: "Techno-optimism / singularity", color: "#c2410c" },
       "Accelerationism": { label: "Accelerationism / posthuman edge", color: "#7f1d1d" }
     };
@@ -1849,6 +1852,8 @@
       "benjamin-bratton": "Posthuman control",
       "yann-lecun": "Architecture optimism",
       "andrew-ng": "Pragmatic optimism",
+      "elon-musk-xai": "Techno-optimism",
+      "peter-thiel": "Techno-libertarianism",
       "ray-kurzweil": "Techno-optimism",
       "marc-andreessen": "Techno-optimism",
       "effective-accelerationism": "Accelerationism",
@@ -1875,6 +1880,8 @@
       "yann-lecun": "Advanced AI needs new architectures and world models; near-term doomer narratives are overstated.",
       "andrew-ng": "AI is a general-purpose technology like electricity, and should be deployed broadly to create value.",
       "sam-altman-openai": "AGI can produce broad abundance if developed with safety, governance, and benefit-sharing institutions.",
+      "elon-musk-xai": "AI could pose extreme risks, so safety matters; but humanity should also expand its boundaries through Mars, Neuralink, xAI, and stronger intelligence.",
+      "peter-thiel": "Modern society's core problem is technological stagnation; the future needs strong founders and deep-tech breakthroughs rather than risk governance, bureaucracy, and consensus politics freezing progress.",
       "ray-kurzweil": "Technological progress, especially AI and computing, points toward a singularity and human-machine merger.",
       "marc-andreessen": "AI should be developed aggressively because it can expand abundance, solve problems, and empower people.",
       "effective-accelerationism": "Technological acceleration is treated as morally urgent, while regulation is often treated as the larger danger.",
@@ -1901,6 +1908,8 @@
       "yann-lecun": { title: "A Path Towards Autonomous Machine Intelligence", url: "https://openreview.net/pdf?id=BZ5a1r-kVsf" },
       "andrew-ng": { title: "Why AI Is the New Electricity", url: "https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity" },
       "sam-altman-openai": { title: "Planning for AGI and beyond", url: "https://openai.com/index/planning-for-agi-and-beyond/" },
+      "elon-musk-xai": { title: "Open Release of Grok-1", url: "https://x.ai/news/grok-os" },
+      "peter-thiel": { title: "What Happened to the Future?", url: "https://foundersfund.com/2017/01/manifesto/" },
       "ray-kurzweil": { title: "The Singularity Is Nearer", url: "https://www.thesingularityisnearer.com/" },
       "marc-andreessen": { title: "The Techno-Optimist Manifesto", url: "https://a16z.com/the-techno-optimist-manifesto/" },
       "effective-accelerationism": { title: "Effective Accelerationism", url: "https://wiki.p2pfoundation.net/Effective_Accelerationism" },
@@ -2071,6 +2080,22 @@
         focus: "The tension is central: the same discourse contains AGI abundance, lab concentration, and safety thresholds.",
         counter: "Critical AI questions concentrated power; e/acc questions closed access and control; hard safety questions whether deployment commitments are enough.",
         works: ["Planning for AGI and beyond", "OpenAI charter", "Governance and deployment statements"]
+      },
+      "elon-musk-xai": {
+        core: "Musk's AI position is mixed: he has long warned about existential AI risk, while also imagining humanity's future through Mars, Neuralink, human-AI symbiosis, and xAI-style stronger intelligence.",
+        lineage: "Elon Musk's place in AI discourse comes from two strands: early involvement with OpenAI and later AI safety / pause warnings, plus SpaceX, Neuralink, the launch of xAI in 2023, Grok, and the release of Grok-1 weights and architecture. The question he raises is not simply pause versus acceleration, but who gets to build an AI that is framed as more truth-seeking, less captured by existing institutions, and still safe for humanity. The public effect is a hybrid of x-risk warning, posthuman expansion imagery, anti-OpenAI politics, open-weight signaling, and high-intensity build culture.",
+        placement: "Right but not all the way to e/acc: the rightward position comes from xAI building, Grok's open-weight release, and competitive deployment; the below-midline position reflects Mars / Neuralink / human-AI symbiosis moving beyond ordinary human-centered framing without becoming Land-style technological autonomy.",
+        focus: "Read it as a hybrid: not a pure safety-pause view and not pure accelerationism, but risk warning plus posthuman expansion plus competitive build plus partial openness.",
+        counter: "Andreessen emphasizes x-risk less; Yudkowsky emphasizes pause and alignment first; Altman/OpenAI emphasizes lab governance and benefit sharing.",
+        works: ["Open Release of Grok-1", "Pause Giant AI Experiments open letter", "xAI / Grok public positioning"]
+      },
+      "peter-thiel": {
+        core: "Thiel's core is not generic AI optimism but anti-stagnation: modern society is trapped by risk aversion, bureaucracy, and low-ambition technology, and needs deep tech, founder power, and vertical progress.",
+        lineage: "Peter Thiel's technology politics comes from PayPal, Palantir, Founders Fund, Zero to One, and the anti-stagnation line captured by 'we wanted flying cars, instead we got 140 characters.' The question is why the West stopped producing enough civilization-changing technologies after roughly the 1970s, and why universities, regulation, consensus politics, and competitive markets can turn real vertical innovation into incremental improvement. In AI discourse, this makes AI a deep technology that can break stagnation and reorganize power, not merely another software product.",
+        placement: "Lower-right because it resists stagnation and excessive risk governance, while backing strong founders, deep tech, and breakthrough capital allocation; lower half because it puts less faith in democratic consensus and existing human institutions as final arbiters of technological futures.",
+        focus: "Read it as anti-stagnation rather than open source: Thiel cares more about who has the power to drive civilization-scale technological breakthroughs than about decentralized openness.",
+        counter: "Andreessen gives techno-optimism a more public-facing abundance story; e/acc turns acceleration into a meme; Catholic and social-humanist views question whether this future politics sacrifices the common good and human dignity.",
+        works: ["What Happened to the Future?", "Zero to One", "Founders Fund / Palantir worldview"]
       },
       "ray-kurzweil": {
         core: "Exponential progress in computation, AI, life sciences, and nanotechnology leads toward the singularity, life extension, and human-machine merger.",

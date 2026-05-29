@@ -725,6 +725,57 @@
       line-height: 1.58;
     }
 
+    .reference-note-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .reference-note {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .reference-note span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 820;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .reference-note p {
+      margin-top: 6px;
+      color: #3d4655;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .reference-score-card {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .reference-score-card > span {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 820;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .reference-score-card .scores,
+    .reference-score-card .dimension-row {
+      margin-top: 0;
+    }
+
     .mini-work {
       margin: 0 0 10px;
       padding: 10px;
@@ -1037,37 +1088,56 @@
         <div class="detail-head">
           <h2 id="detailName">Select a point</h2>
           <div class="cluster" id="detailCluster">Click a thinker or movement to see its core idea, representative works, and reading focus.</div>
-          <div class="scores">
-            <div class="score">
-              <b>Horizontal</b>
-              <span id="riskScore">-</span>
-            </div>
-            <div class="score">
-              <b>Vertical</b>
-              <span id="humanismScore">-</span>
-            </div>
-            <div class="score">
-              <b>Influence</b>
-              <span id="influenceScore">-</span>
-            </div>
-          </div>
-          <div class="dimension-row">
-            <span><b>Risk Judgment</b><em id="diagnosisScore">-</em></span>
-            <span><b>Governance Position</b><em id="responseScore">-</em></span>
-            <span><b>Value Position</b><em id="valueScore">-</em></span>
-          </div>
         </div>
         <div class="detail-body">
-          <div class="section-title">Core idea</div>
-          <p id="stanceText">The map initially selects Rich Sutton because the Bitter Lesson is a technical-epistemic anchor for contemporary AI culture.</p>
-          <div class="section-title">Why placed here</div>
-          <p id="placementText">Coordinates help comparison; they are not final labels.</p>
+          <div class="reference-note-grid">
+            <div class="reference-note">
+              <span>Core claim</span>
+              <p id="stanceText">The map initially selects Rich Sutton because the Bitter Lesson is a technical-epistemic anchor for contemporary AI culture.</p>
+            </div>
+            <div class="reference-note">
+              <span>Intellectual lineage</span>
+              <p id="lineageText">Representative works and influence channels show how this position entered the AI discourse.</p>
+            </div>
+            <div class="reference-note">
+              <span>Why here</span>
+              <p id="placementText">Coordinates help comparison; they are not final labels.</p>
+            </div>
+            <div class="reference-note">
+              <span>Contrast</span>
+              <p id="counterText">Nearby positions are reference points, not claims of identical views.</p>
+            </div>
+            <div class="reference-note">
+              <span>Reading focus</span>
+              <p id="readingFocus"></p>
+            </div>
+          </div>
+          <div class="reference-score-card">
+            <span>Coordinate reading</span>
+            <div class="scores">
+              <div class="score">
+                <b>Horizontal</b>
+                <span id="riskScore">-</span>
+              </div>
+              <div class="score">
+                <b>Vertical</b>
+                <span id="humanismScore">-</span>
+              </div>
+              <div class="score">
+                <b>Influence</b>
+                <span id="influenceScore">-</span>
+              </div>
+            </div>
+            <div class="dimension-row">
+              <span><b>Risk Judgment</b><em id="diagnosisScore">-</em></span>
+              <span><b>Governance Position</b><em id="responseScore">-</em></span>
+              <span><b>Value Position</b><em id="valueScore">-</em></span>
+            </div>
+          </div>
           <div class="section-title">Representative works</div>
           <div id="worksMini"></div>
           <div class="section-title">Influence channels</div>
           <div class="pill-list" id="basis"></div>
-          <div class="section-title">Reading focus</div>
-          <p id="readingFocus"></p>
           <p class="footnote"><a id="profileJump" href="#profiles">Jump to the full profile card</a></p>
         </div>
       </aside>
@@ -1221,12 +1291,12 @@
         </div>
         <div class="example">
           <h3>Step 4: optimism and accelerationism</h3>
-          <p>Read Amodei, OpenAI, Ng, Andreessen, Kurzweil, e/acc, and Land. The point is not only who is right, but how each defines benefit, constraint, humanity, and the future.</p>
+          <p>Read Amodei, OpenAI, Ng, Musk/xAI, Thiel, Andreessen, Kurzweil, e/acc, and Land. The point is not only who is right, but how each defines benefit, constraint, humanity, and the future.</p>
         </div>
       </div>
       <p class="footnote">
         Note: this is an interpretive map, not a ranking. Some representative-work links point to author pages, institutional pages, publishers, arXiv, ACM, or public essays.
-        Last updated: 2026-05-26.
+        Last updated: 2026-05-29.
       </p>
     </section>
   </main>
@@ -1298,11 +1368,11 @@
         shortName: "Leo XIV",
         cluster: "Magnifica Humanitas / Catholic social humanism",
         category: "Catholic social humanism",
-        risk: -0.9,
-        humanism: 2,
+        risk: -1.18,
+        humanism: 1.72,
         influence: 4,
         stance: "AI 必须服务人的尊严、共同善、弱者保护和和平；技术权力不能以效率、利润或支配逻辑取代良知、责任和公共治理。",
-        placement: "左上偏上：响应上支持强公共责任、治理和多边约束，但不是关停派；价值轴接近 +2，因为核心是人类尊严、良知、关系和社会共同善。",
+        placement: "左上方但稍微离 Russell / critical-AI 簇更远：响应上支持强公共责任、治理和多边约束，但不是关停派；价值轴很高，因为核心是人类尊严、良知、关系和社会共同善。",
         focus: "读时看 Catholic Social Doctrine 如何把 AI 放进共同善、劳动、战争、平台权力、教育和人的不可替代性这些问题里。",
         counter: "x-risk safety 会觉得他不是技术 alignment 论证；critical AI 会更世俗化地谈权力和劳动；技术乐观派会认为他过于强调约束。",
         basis: ["Catholic social doctrine", "papal encyclical", "human dignity", "AI governance"],
@@ -1574,6 +1644,44 @@
         ]
       },
       {
+        id: "elon-musk-xai",
+        name: "Elon Musk / xAI",
+        shortName: "Musk / xAI",
+        cluster: "Risk-aware techno-optimism / open-weight frontier build",
+        category: "Techno-optimism",
+        risk: 1.2,
+        humanism: -0.28,
+        influence: 5,
+        stance: "AI 可能带来极端风险，因此需要安全意识；但人类也应通过火星、Neuralink、xAI 和更强智能扩展自身边界。",
+        placement: "右侧但不贴近 e/acc：右侧来自 xAI build、Grok 开放权重和竞争逻辑；价值轴在中线下方，因为 Mars / Neuralink / human-AI symbiosis 已经明显超出普通人类中心框架，但仍没有落到 Land 式技术自治。",
+        focus: "读它时要抓住混合性：Musk 不是纯安全暂停派，也不是纯加速主义者，而是风险警告 + 后人类扩展 + 竞争式 build + 部分开放的组合。",
+        counter: "Andreessen 更少强调 x-risk；Yudkowsky 更强调暂停和对齐优先；Altman/OpenAI 更强调实验室治理和收益共享。",
+        basis: ["xAI", "AI risk public discourse", "open-weight release", "posthuman expansion"],
+        works: [
+          { title: "Pause Giant AI Experiments: An Open Letter", year: 2023, type: "open letter", priority: "high", url: "https://futureoflife.org/open-letter/pause-giant-ai-experiments/", why: "Musk 参与签署的公开 AI 暂停与治理信号。" },
+          { title: "Open Release of Grok-1", year: 2024, type: "model release", priority: "highest", url: "https://x.ai/news/grok-os", why: "xAI 开放 Grok-1 权重和架构的关键实践信号。" }
+        ]
+      },
+      {
+        id: "peter-thiel",
+        name: "Peter Thiel / Founders Fund",
+        shortName: "Thiel",
+        cluster: "Techno-libertarian anti-stagnation / founder sovereignty",
+        category: "Techno-libertarianism",
+        risk: 1.32,
+        humanism: -0.72,
+        influence: 4,
+        stance: "现代社会最大问题是技术停滞；未来需要少数强创始人和深科技突破，而不是让风险治理、官僚和共识政治冻结进步。",
+        placement: "右下方：反对停滞和过度风险治理，支持强创始人、深科技和突破性资本配置；价值轴偏下，因为它不太相信民主共识和现有人类制度能定义技术未来。",
+        focus: "读它时要抓住“反停滞”而不是“开源”：Thiel 更关心谁有权推动文明级技术突破，而不一定主张去中心化开放。",
+        counter: "Andreessen 更大众化地讲技术乐观；e/acc 更 memetic 地讲加速；Catholic/social humanism 会质疑这种未来政治是否牺牲共同善和人的尊严。",
+        basis: ["venture capital", "anti-stagnation politics", "founder sovereignty", "deep tech"],
+        works: [
+          { title: "What Happened to the Future?", year: 2011, type: "manifesto", priority: "highest", url: "https://foundersfund.com/2017/01/manifesto/", why: "Founders Fund 反停滞和深科技投资叙事的核心文本。" },
+          { title: "Zero to One", year: 2014, type: "book", priority: "high", url: "https://www.penguinrandomhouse.com/books/221998/zero-to-one-by-peter-thiel-with-blake-masters/", why: "从竞争市场转向垄断、创始人和垂直创新的核心论述。" }
+        ]
+      },
+      {
         id: "ray-kurzweil",
         name: "Ray Kurzweil",
         shortName: "Kurzweil",
@@ -1690,9 +1798,9 @@
         note: "严肃控制问题加 human-compatible 设计，强人类中心但不是 hard shutdown。"
       },
       "pope-leo-xiv": {
-        diagnosis: 0.5,
-        response: -1.1,
-        humanism: 2,
+        diagnosis: 0.7,
+        response: -1.45,
+        humanism: 1.72,
         note: "AI 是重大社会和人类学挑战；响应偏公共治理、责任链和多边约束，价值核心是人的尊严与共同善。"
       },
       "paul-christiano": {
@@ -1778,6 +1886,18 @@
         response: 0.8,
         humanism: 1,
         note: "AGI 丰裕和 managed build，保留安全、治理和收益共享语言。"
+      },
+      "elon-musk-xai": {
+        diagnosis: 0.2,
+        response: 1.95,
+        humanism: -0.28,
+        note: "Hybrid position: AI risk warning, truth-seeking rhetoric, xAI building, open-weight release, and posthuman expansion imagery."
+      },
+      "peter-thiel": {
+        diagnosis: -0.8,
+        response: 1.6,
+        humanism: -0.72,
+        note: "Anti-stagnation and deep-tech breakthrough priority, with founder sovereignty, risk tolerance, and post-liberal future politics."
       },
       "ray-kurzweil": {
         diagnosis: -1.5,
@@ -1868,6 +1988,11 @@
         color: "#15803d",
         summary: "把 AI 当作生产力和应用平台，关注教育、产品、企业和产业落地。"
       },
+      "Techno-libertarianism": {
+        zh: "技术自由意志 / 反停滞",
+        color: "#a16207",
+        summary: "把停滞、官僚和低野心视为主要问题，强调深科技、强创始人和文明级突破。"
+      },
       "Techno-optimism": {
         zh: "技术乐观 / 奇点",
         color: "#c2410c",
@@ -1946,6 +2071,11 @@
         zh: "Pragmatic AI optimism",
         summary: "Treats AI as a productivity and application platform, with emphasis on education, products, enterprise use, and industry deployment."
       },
+      "Techno-libertarianism": {
+        zh: "Techno-libertarianism / anti-stagnation",
+        color: "#a16207",
+        summary: "Treats stagnation, bureaucracy, and low ambition as central problems; emphasizes deep tech, strong founders, and civilization-scale breakthroughs."
+      },
       "Techno-optimism": {
         zh: "Techno-optimism / singularity",
         summary: "Places AI inside narratives of abundance, singularity, market freedom, and civilizational progress."
@@ -2009,7 +2139,7 @@
       "pope-leo-xiv": {
         cluster: "Magnifica Humanitas / Catholic social humanism",
         stance: "AI must serve human dignity, the common good, protection of the vulnerable, and peace; technological power must not replace conscience, responsibility, and public governance with efficiency, profit, or domination.",
-        placement: "Upper-left: the response favors strong public responsibility, governance, and multilateral constraint without being a shutdown position. The value axis is near +2 because the core is human dignity, conscience, relationship, and the common good.",
+        placement: "Upper-left, but slightly separated from the Russell / critical-AI cluster: the response favors strong public responsibility, governance, and multilateral constraint without being a shutdown position. The value axis remains high because the core is human dignity, conscience, relationship, and the common good.",
         focus: "Read how Catholic Social Doctrine places AI inside the common good, labor, war, platform power, education, and the irreplaceability of persons.",
         counter: "X-risk safety will see that this is not a technical alignment argument; critical AI will make a more secular power-and-labor argument; technical optimists will see it as too constraint-heavy.",
         ideologyNote: "Strong human-dignity and common-good center with a governance-first response, but not a shutdown view.",
@@ -2194,6 +2324,32 @@
           { why: "OpenAI’s early public charter for AGI and benefit sharing." },
           { why: "A public statement of planning for superintelligence governance." },
           { why: "Altman’s abundance-oriented public vision." }
+        ]
+      },
+      "elon-musk-xai": {
+        cluster: "Risk-aware techno-optimism / open-weight frontier build",
+        stance: "AI could pose extreme risks, so safety matters; but humanity should also expand its boundaries through Mars, Neuralink, xAI, and stronger intelligence.",
+        placement: "Right but not all the way to e/acc: the rightward position comes from xAI building, Grok's open-weight release, and competitive deployment; the below-midline value position reflects Mars / Neuralink / human-AI symbiosis moving beyond ordinary human-centered framing without becoming Land-style technological autonomy.",
+        focus: "Read it as a hybrid: not a pure safety-pause view and not pure accelerationism, but risk warning plus posthuman expansion plus competitive build plus partial openness.",
+        counter: "Andreessen emphasizes x-risk less; Yudkowsky emphasizes pause and alignment first; Altman/OpenAI emphasizes lab governance and benefit sharing.",
+        ideologyNote: "Hybrid position: AI risk warning, truth-seeking rhetoric, xAI building, open-weight release, and posthuman expansion imagery.",
+        basis: ["xAI", "AI risk public discourse", "open-weight release", "posthuman expansion"],
+        works: [
+          { why: "A public pause and governance signal that Musk signed." },
+          { why: "The key xAI signal of open-weight frontier-model practice." }
+        ]
+      },
+      "peter-thiel": {
+        cluster: "Techno-libertarian anti-stagnation / founder sovereignty",
+        stance: "Modern society's core problem is technological stagnation; the future needs strong founders and deep-tech breakthroughs rather than risk governance, bureaucracy, and consensus politics freezing progress.",
+        placement: "Lower-right: it resists stagnation and excessive risk governance, while backing strong founders, deep tech, and breakthrough capital allocation; the value position sits below the midline because it puts less faith in democratic consensus and existing human institutions as final arbiters of technological futures.",
+        focus: "Read it as anti-stagnation rather than open source: Thiel cares more about who has the power to drive civilization-scale technological breakthroughs than about decentralized openness.",
+        counter: "Andreessen gives techno-optimism a more public-facing abundance story; e/acc turns acceleration into a meme; Catholic and social-humanist views question whether this future politics sacrifices the common good and human dignity.",
+        ideologyNote: "Anti-stagnation and deep-tech breakthrough priority, with founder sovereignty, risk tolerance, and post-liberal future politics.",
+        basis: ["venture capital", "anti-stagnation politics", "founder sovereignty", "deep tech"],
+        works: [
+          { why: "The core Founders Fund anti-stagnation and deep-tech investment text." },
+          { why: "The core argument for monopoly, founders, and vertical innovation over mere competition." }
         ]
       },
       "ray-kurzweil": {
@@ -2419,6 +2575,12 @@
       });
     }
 
+    function lineageSummary(item) {
+      const works = item.works.slice(0, 2).map(work => work.title).join(" / ");
+      const channels = item.basis.slice(0, 3).join(", ");
+      return `Start from ${works}. This position develops through ${channels}, and turns those texts and channels into the public argument summarized in this card.`;
+    }
+
     function selectItem(item, circle) {
       if (activePoint) activePoint.classList.remove("active");
       activePoint = circle || svg.querySelector(`[data-id="${item.id}"]`);
@@ -2433,7 +2595,9 @@
       document.getElementById("responseScore").textContent = fmt(item.ideology.response);
       document.getElementById("valueScore").textContent = fmt(item.ideology.humanism);
       document.getElementById("stanceText").textContent = item.stance;
-      document.getElementById("placementText").textContent = `${item.placement} Scoring note: ${item.ideology.note}`;
+      document.getElementById("lineageText").textContent = item.lineage || lineageSummary(item);
+      document.getElementById("placementText").textContent = item.placement;
+      document.getElementById("counterText").textContent = item.counter || "Nearby positions are reference points, not claims of identical views.";
       document.getElementById("readingFocus").textContent = item.focus;
       document.getElementById("profileJump").href = `#profile-${item.id}`;
 
