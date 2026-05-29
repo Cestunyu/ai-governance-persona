@@ -701,6 +701,8 @@
       display: grid;
       place-items: center;
       padding: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
 
     .reference-modal[hidden] {
@@ -722,6 +724,10 @@
       background: #fff;
       box-shadow: 0 24px 70px rgba(20, 31, 52, 0.24);
       padding: 14px;
+      max-height: calc(100vh - 36px);
+      max-height: calc(100dvh - 36px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .reference-modal-close {
@@ -1200,6 +1206,18 @@
         grid-template-columns: 1fr;
       }
 
+      .reference-modal {
+        place-items: start stretch;
+        padding: 10px;
+        padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+      }
+
+      .reference-modal-card {
+        width: 100%;
+        max-height: calc(100vh - 20px);
+        max-height: calc(100dvh - 20px);
+      }
+
       .page-prompt {
         font-size: 22px;
       }
@@ -1258,8 +1276,8 @@
     <div class="topbar-inner">
       <div class="brand">
         <strong class="brand-title">What Are Your AI Stance Coordinates?</strong>
-        <strong class="brand-progress" id="brandProgress">Question 1 / 14</strong>
-        <span>14 questions to see where you stand on AI risk, governance, openness, and human control.</span>
+        <strong class="brand-progress" id="brandProgress">Question 1 / 15</strong>
+        <span>15 questions to see where you stand on AI risk, governance, openness, and human control.</span>
       </div>
       <div class="topbar-actions">
         <a class="lang-link" href="ai-ideology-quiz.html">中文</a>
@@ -1274,14 +1292,14 @@
       <section class="panel" id="quizPager">
         <div class="panel-head">
           <button class="btn compact" id="prevTopBtn" type="button">Back</button>
-          <small id="pageCount">Question 1 / 14</small>
+          <small id="pageCount">Question 1 / 15</small>
         </div>
         <div class="panel-body">
           <div class="progress-row" aria-hidden="true">
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/14</div>
+            <div class="progress-text" id="progressText">0/15</div>
           </div>
 
           <article class="page-card">
@@ -1310,7 +1328,7 @@
         </div>
         <div class="profile-body">
           <p><b>Social tell:</b> <span id="profileTell">--</span></p>
-          <p id="profileRoast">Complete all 10 core items for a stable result.</p>
+          <p id="profileRoast">Complete all 11 core items for a stable result.</p>
           <p><b>Representative texts:</b> <span id="profileTexts">--</span></p>
           <div class="profile-nearest reference-section" id="nearestPersonSection" role="button" tabindex="0">
             <p><b>Closest reference:</b> <span class="nearest-name" id="nearestPerson">--</span></p>
@@ -1411,13 +1429,13 @@
         id: "R01",
         dimension: "r",
         diagnosis: "catastrophic",
-        facet: "civilizational risk diagnosis",
-        text: "Where does advanced AI's main civilizational risk come from?",
+        facet: "severe risk diagnosis",
+        text: "What concrete consequence of more powerful AI worries you most?",
         options: [
-          ["1", "A", "The capability narrative is mostly inflated by hype; AI is unlikely to reach civilizational danger in the next 10-20 years."],
-          ["2.33", "B", "The main risk is not loss of control, but current power concentration, labor displacement, bias, surveillance, and social harm."],
-          ["3.67", "C", "The main risk is frontier systems escaping human control; alignment failure and loss of control should be central policy concerns."],
-          ["5", "D", "The main risk is that capital, compute, and technical systems have their own expansion logic; human society may not really control the direction."]
+          ["1", "A", "I suspect many danger claims are overstated; in the next 10-20 years, AI may not create a systemic danger."],
+          ["2.33", "B", "I am more worried that AI will first intensify current power concentration, labor displacement, bias, surveillance, and social inequality."],
+          ["3.67", "C", "I am more worried that frontier systems may escape human control; alignment failure and loss of control should be central policy concerns."],
+          ["5", "D", "I am more worried that capital, compute, and technological systems will follow their own expansion logic, making it hard for human society to steer the direction."]
         ]
       },
       {
@@ -1425,13 +1443,13 @@
         dimension: "r",
         diagnosis: "opportunity",
         facet: "opportunity-cost diagnosis",
-        text: "What is the main cost of restricting AI development?",
+        text: "If governments or large companies slow AI research, release, and openness, what is the main cost?",
         options: [
-          ["1", "A", "If the risks are real, slowing down is not the main cost; premature deployment is the larger cost."],
-          ["1.67", "B", "The main cost is overstated; many benefit, capability, and timeline claims are inflated."],
-          ["2.33", "C", "The main cost is regulatory capture: complex rules can protect large firms while suppressing open source, small teams, and public oversight."],
-          ["3.67", "D", "The main cost is delayed progress in medicine, education, science, and productivity; controlled deployment should move quickly."],
-          ["5", "E", "The deeper cost is suppressing intelligence growth itself; if AI is a path of civilizational transition, overrestriction can lock in humanity's limits."]
+          ["1", "A", "If the risks are real, moving more slowly is not the problem; pushing unreliable systems into society too early is more dangerous."],
+          ["1.67", "B", "Many supposed costs are overstated; AI's capabilities, benefits, and timelines are still uncertain."],
+          ["2.33", "C", "The main cost is regulatory capture: complex rules can protect large firms while squeezing out small teams, open source, and public oversight."],
+          ["3.67", "D", "Progress in medicine, education, science, and productivity will be delayed; the better approach is to govern while deploying."],
+          ["5", "E", "The deeper cost is suppressing intelligence growth itself; limiting AI also limits civilization's future."]
         ]
       },
       {
@@ -1451,13 +1469,13 @@
         dimension: "c",
         direction: -1,
         facet: "licensing, audits, and accountability",
-        text: "How should high-risk AI be externally constrained?",
+        text: "When an AI system could affect many people's rights, opportunities, or safety, how should it be limited?",
         options: [
-          ["1", "A", "Rely mainly on open competition, user choice, and after-the-fact liability; front-loaded gates can entrench a few institutions."],
-          ["1.67", "B", "First verify whether the capability and harm are real; many “high-risk” labels come from demos and inflated narratives."],
-          ["2.33", "C", "Focus on public benchmarks, incident reporting, retained logs, and liability insurance, not necessarily licensing."],
-          ["3.67", "D", "Focus on labor effects, discrimination, surveillance, appeal rights, and public-sector procurement audits, not only frontier capability."],
-          ["5", "E", "Once systems cross dangerous capability thresholds, require independent testing, licensing, pause authority, and clear legal responsibility."]
+          ["1", "A", "Limits should rely mainly on open competition, user choice, and after-the-fact liability; strong front-loaded gates can entrench a few institutions."],
+          ["1.67", "B", "First verify whether the claimed capabilities and harms are supported by evidence; many risk labels come from demos and inflated narratives."],
+          ["2.33", "C", "Policy should emphasize public benchmarks, incident reporting, retained logs, and liability insurance, rather than defaulting to licensing."],
+          ["3.67", "D", "Governance should cover labor effects, discrimination, surveillance, appeal rights, and public-sector procurement audits, not only frontier capability."],
+          ["5", "E", "If a system crosses dangerous capability thresholds, it should face independent testing, licensing requirements, pause authority, and clear legal responsibility."]
         ]
       },
       {
@@ -1465,12 +1483,12 @@
         dimension: "c",
         direction: 1,
         facet: "open competition / anti-gatekeeping",
-        text: "With the strongest AI, why should control be concentrated or opened?",
+        text: "Who should be allowed to develop and use the strongest AI systems?",
         options: [
-          ["1", "A", "Above dangerous capability thresholds, systems should stay inside a small number of licensed and auditable institutions to reduce catastrophic spillover."],
-          ["2.33", "B", "Weights need not be fully open, but there should be multiple regulated institutions, academic/public-sector access, and external evaluation."],
+          ["1", "A", "Systems above dangerous capability thresholds should run only inside a small number of licensed and auditable institutions, reducing catastrophic spillover."],
+          ["2.33", "B", "Model weights do not need to be fully open, but multiple regulated institutions, academic groups, and public-sector actors should have access and evaluation rights."],
           ["3", "C", "Concentrated control itself creates power and labor harms; public institutions, open-source communities, and affected groups should have real participation."],
-          ["5", "D", "Strong models should diffuse as permissionlessly as possible; decentralized competition is safer and more legitimate than any gatekeeper."]
+          ["5", "D", "More people should be free to build with strong models; decentralized competition is safer and more legitimate than any gatekeeper."]
         ]
       },
       {
@@ -1478,12 +1496,12 @@
         dimension: "c",
         direction: 1,
         facet: "source of deployment evidence",
-        text: "What should matter most before an AI system is released?",
+        text: "What should an AI system prove before its use is expanded?",
         options: [
-          ["1", "A", "Run strict internal safety tests first; if it fails key safety lines, do not expand access."],
-          ["2.33", "B", "Start with small pilots that can be watched and stopped, then expand gradually."],
-          ["3.67", "C", "Check whether affected people can appeal, and whether outside review finds social harm."],
-          ["5", "D", "Put it into real use quickly and iterate; wider use exposes problems sooner and helps fix them."]
+          ["1", "A", "Strict internal tests should come first; if a system fails key safety standards, access should not expand."],
+          ["2.33", "B", "Start with small pilots, and expand only when the system can be monitored, stopped, and rolled back."],
+          ["3.67", "C", "The priority should be whether affected people can appeal, and whether outside review finds social harm."],
+          ["5", "D", "Put the system into real use quickly and iterate; wider use exposes problems sooner and helps fix them."]
         ]
       },
       {
@@ -1491,25 +1509,37 @@
         dimension: "h",
         direction: 1,
         facet: "democratic goal selection",
-        text: "What should ultimately decide AI's goals and boundaries?",
+        text: "Who should decide what goals AI systems pursue and what boundaries they cannot cross?",
         options: [
-          ["1", "A", "They should mostly be selected by technical progress, market choice, and product use."],
-          ["2.33", "B", "They should mostly be set by companies, experts, and professional institutions because public processes are too slow and blunt."],
-          ["3.67", "C", "If more advanced intelligence develops better judgment, current human goals should not keep permanent veto power."],
-          ["5", "D", "Even if inefficient, AI goals must answer to democracy, rights, and public accountability."]
+          ["1", "A", "AI's goals and boundaries should mostly emerge through technical progress, market choice, and real-world use."],
+          ["2.33", "B", "AI's goals and boundaries should mostly be set by companies, experts, and professional institutions, because public processes are too slow and too blunt."],
+          ["3.67", "C", "If more advanced intelligence demonstrates better judgment, current human goals should not retain permanent veto power."],
+          ["5", "D", "Even if it is less efficient, AI's goals must answer to democracy, rights, and public accountability."]
+        ]
+      },
+      {
+        id: "U01",
+        dimension: "u",
+        facet: "AI usage level",
+        text: "How do you currently use AI?",
+        options: [
+          ["1", "A", "I rarely use AI products; someone pulled me into taking this quiz."],
+          ["2.33", "B", "I use AI for chat, search, writing, translation, or summarizing."],
+          ["3.67", "C", "I use AI for coding, research, or complex work, but I am not a heavy daily user. (For example, agentic coding.)"],
+          ["5", "D", "I rely on AI heavily every workday, often iterating with it for long sessions."]
         ]
       },
       {
         id: "H02",
         dimension: "h",
         direction: 1,
-        facet: "AI role in high-impact settings",
-        text: "In high-impact settings such as healthcare, education, or public services, what role should AI play?",
+        facet: "AI role in public services",
+        text: "How much real decision-making and service work should AI take on in healthcare, education, and public services?",
         options: [
-          ["1", "A", "If it clearly works better, AI can handle more practical service work; humans supervise, hear appeals, and provide fallback."],
-          ["3", "B", "Slow down: many systems are still far from reliable in real settings, so their role should not expand too early."],
-          ["4", "C", "AI can give recommendations, but accountable people must make the key decisions."],
-          ["5", "D", "When people's lives are strongly affected, models should not replace final human judgment."]
+          ["1", "A", "If AI clearly performs better, it can take on more service delivery; humans should still provide oversight, appeals, and fallback."],
+          ["3", "B", "Many current systems are still unreliable in real-world settings, so AI's responsibilities should not expand too early."],
+          ["4", "C", "AI can provide recommendations, but accountable people must make the key decisions."],
+          ["5", "D", "In decisions that strongly affect people's lives, models should not replace final human judgment."]
         ]
       },
       {
@@ -2076,7 +2106,7 @@
       }
     };
 
-    const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "D01", "C04", "H03", "H04", "R01"];
+    const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "U01", "D01", "C04", "H03", "H04", "R01"];
 
     const pages = [
       ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
@@ -3006,7 +3036,7 @@
       }
       profileCode.textContent = complete ? displayCode : "----";
       profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "Waiting for profile";
-      profileRoast.textContent = complete ? profile[1] : "Complete all 10 core items for a stable result.";
+      profileRoast.textContent = complete ? profile[1] : "Complete all 11 core items for a stable result.";
       profileTexts.innerHTML = complete ? renderProfileTexts(profile[2]) : "--";
       profileTell.textContent = complete ? profile[3] : "--";
       nearestPerson.textContent = nearest ? nearest.name : "--";

@@ -701,6 +701,8 @@
       display: grid;
       place-items: center;
       padding: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
 
     .reference-modal[hidden] {
@@ -722,6 +724,10 @@
       background: #fff;
       box-shadow: 0 24px 70px rgba(20, 31, 52, 0.24);
       padding: 14px;
+      max-height: calc(100vh - 36px);
+      max-height: calc(100dvh - 36px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .reference-modal-close {
@@ -1199,6 +1205,18 @@
         grid-template-columns: 1fr;
       }
 
+      .reference-modal {
+        place-items: start stretch;
+        padding: 10px;
+        padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+      }
+
+      .reference-modal-card {
+        width: 100%;
+        max-height: calc(100vh - 20px);
+        max-height: calc(100dvh - 20px);
+      }
+
       .page-prompt {
         font-size: 22px;
       }
@@ -1257,8 +1275,8 @@
     <div class="topbar-inner">
       <div class="brand">
         <strong class="brand-title">你的 AI 立场坐标是什么？</strong>
-        <strong class="brand-progress" id="brandProgress">第 1 / 14 题</strong>
-        <span>14 个问题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
+        <strong class="brand-progress" id="brandProgress">第 1 / 15 题</strong>
+        <span>15 个问题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
       </div>
       <div class="topbar-actions">
         <a class="lang-link active" href="ai-ideology-quiz.html">中文</a>
@@ -1273,14 +1291,14 @@
       <section class="panel" id="quizPager">
         <div class="panel-head">
           <button class="btn compact" id="prevTopBtn" type="button">上一题</button>
-          <small id="pageCount">第 1 / 14 题</small>
+          <small id="pageCount">第 1 / 15 题</small>
         </div>
         <div class="panel-body">
           <div class="progress-row" aria-hidden="true">
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/14</div>
+            <div class="progress-text" id="progressText">0/15</div>
           </div>
 
           <article class="page-card">
@@ -1309,7 +1327,7 @@
         </div>
         <div class="profile-body">
           <p><b>社交识别：</b><span id="profileTell">--</span></p>
-          <p id="profileRoast">至少完成 10 道核心题，结果会更稳。</p>
+          <p id="profileRoast">至少完成 11 道核心题，结果会更稳。</p>
           <p><b>代表文本：</b><span id="profileTexts">--</span></p>
           <div class="profile-nearest reference-section" id="nearestPersonSection" role="button" tabindex="0">
             <p><b>接近的人：</b><span class="nearest-name" id="nearestPerson">--</span></p>
@@ -1410,13 +1428,13 @@
         id: "R01",
         dimension: "r",
         diagnosis: "catastrophic",
-        facet: "文明级风险诊断",
-        text: "先进 AI 的主要文明级风险来自哪里？",
+        facet: "严重风险诊断",
+        text: "未来更强 AI 让你最担心的具体后果是什么？",
         options: [
-          ["1", "A", "主要是能力叙事被 hype 放大了；未来 10-20 年内不太可能接近文明级危险。"],
-          ["2.33", "B", "主要不是“失控”，而是眼前的权力集中、劳动替代、偏见、监控和社会伤害。"],
-          ["3.67", "C", "主要是前沿系统可能脱离人类控制；对齐失败和失控应进入核心政策议程。"],
-          ["5", "D", "主要是资本、算力和技术系统有自己的扩张逻辑；人类社会可能很难真正决定方向。"]
+          ["1", "A", "我先怀疑这些危险说法被夸大；未来 10-20 年内未必会有系统性危险。"],
+          ["2.33", "B", "我更担心它先加剧眼前的权力集中、劳动替代、偏见、监控和社会不平等。"],
+          ["3.67", "C", "我更担心前沿系统脱离人类控制；对齐失败和失控应进入核心政策议程。"],
+          ["5", "D", "我更担心资本、算力和技术系统形成自己的扩张逻辑，使人类社会难以决定方向。"]
         ]
       },
       {
@@ -1424,13 +1442,13 @@
         dimension: "r",
         diagnosis: "opportunity",
         facet: "机会成本诊断",
-        text: "限制 AI 发展的主要代价是什么？",
+        text: "如果政府或大公司放慢 AI 研发、发布和开放，最主要的代价是什么？",
         options: [
-          ["1", "A", "如果风险真实，放慢速度本身不是主要代价；错误地提前部署才是更大代价。"],
-          ["1.67", "B", "主要代价没宣传中那么大；很多收益、能力和时间线说法也被夸大了。"],
-          ["2.33", "C", "主要代价是监管俘获：复杂规则会保护大公司，压制开源、小团队和公共监督。"],
-          ["3.67", "D", "主要代价是医疗、教育、科研和生产力改善被推迟；应尽快做受控部署。"],
-          ["5", "E", "更深的代价是压低智能增长本身；如果 AI 是文明跃迁路径，过度限制会锁死人类未来。"]
+          ["1", "A", "如果风险真实，慢一点不是大问题；把不可靠系统过早推向社会才更危险。"],
+          ["1.67", "B", "很多所谓代价被夸大了；AI 的能力、收益和时间表还没有那么确定。"],
+          ["2.33", "C", "主要代价是监管俘获：复杂规则会保护大公司，小团队、开源和公共监督会被挤出去。"],
+          ["3.67", "D", "医疗、教育、科研和生产力改善会被推迟；更好的做法是边治理边部署。"],
+          ["5", "E", "更深的代价是压低智能增长本身，限制 AI 也是在限制文明的未来。"]
         ]
       },
       {
@@ -1450,13 +1468,13 @@
         dimension: "c",
         direction: -1,
         facet: "许可、审计与问责",
-        text: "高风险 AI 应该如何被外部约束？",
+        text: "当一个 AI 系统可能影响很多人的权利、机会或安全时，应该怎样限制它？",
         options: [
-          ["1", "A", "主要靠开放竞争、用户选择和事后责任；前置门槛容易固化少数机构。"],
-          ["1.67", "B", "先确认能力和伤害是否真实；很多“高风险”标签来自演示效果和夸大叙事。"],
-          ["2.33", "C", "重点应是公开基准、事故报告、日志留存和责任保险，不一定要许可制。"],
-          ["3.67", "D", "重点应是劳动、歧视、监控、申诉权和公共部门采购审计，而不只是前沿能力。"],
-          ["5", "E", "达到危险能力阈值后，应有独立测试、许可、部署暂停权和明确法律责任。"]
+          ["1", "A", "主要依靠开放竞争、用户选择和事后责任；过强的前置门槛容易固化少数机构。"],
+          ["1.67", "B", "应先确认所谓能力和伤害是否有证据支持；许多风险标签来自演示效果和夸大叙事。"],
+          ["2.33", "C", "政策应优先要求公开基准、事故报告、日志留存和责任保险，而不一定直接采用许可制。"],
+          ["3.67", "D", "治理重点应包括劳动影响、歧视、监控、申诉权和公共部门采购审计，而不只是前沿能力。"],
+          ["5", "E", "如果系统达到危险能力阈值，就应接受独立测试、许可要求、部署暂停权和明确法律责任。"]
         ]
       },
       {
@@ -1464,12 +1482,12 @@
         dimension: "c",
         direction: 1,
         facet: "开放竞争 / 反 gatekeeping",
-        text: "面对最强 AI，为什么应该集中或开放？",
+        text: "谁应该有权开发和使用最强的 AI 系统？",
         options: [
-          ["1", "A", "危险能力阈值以上应集中在少数可许可、可审计机构，优先降低灾难性外溢。"],
-          ["2.33", "B", "不应完全开放权重，但要有多家受监管机构、学术/公共部门访问和外部评估。"],
+          ["1", "A", "超过危险能力阈值的系统应只由少数可许可、可审计的机构运行，以降低灾难性外溢。"],
+          ["2.33", "B", "模型权重不应完全开放，但应允许多家受监管机构、学术机构和公共部门获得访问与评估机会。"],
           ["3", "C", "集中控制本身会制造权力和劳动伤害；公共机构、开源社区和受影响群体应有实质参与权。"],
-          ["5", "D", "强模型应尽量让更多人自由构建；去中心化竞争比任何 gatekeeper 更安全、更正当。"]
+          ["5", "D", "更多人应该能够自由使用强模型进行构建；去中心化竞争比任何 gatekeeper 更安全、更正当。"]
         ]
       },
       {
@@ -1477,12 +1495,12 @@
         dimension: "c",
         direction: 1,
         facet: "部署证据来源",
-        text: "判断 AI 能不能上线，最该看什么？",
+        text: "一个 AI 系统在扩大使用前，最需要证明什么？",
         options: [
-          ["1", "A", "先做严格内部测试；没过关键安全线前，不应扩大使用。"],
-          ["2.33", "B", "先小范围试用，能监测、能叫停，再逐步扩大。"],
-          ["3.67", "C", "要看受影响的人能不能申诉，以及外部审查是否发现社会伤害。"],
-          ["5", "D", "应尽快放到真实环境中迭代；用的人越多，问题越容易暴露和修正。"]
+          ["1", "A", "应先完成严格内部测试；如果系统没有通过关键安全标准，就不应扩大使用。"],
+          ["2.33", "B", "应先做小范围试点，并确保系统可以被监测、叫停和回滚，再逐步扩大。"],
+          ["3.67", "C", "应重点看受影响的人能否申诉，以及外部审查是否发现社会伤害。"],
+          ["5", "D", "应尽快放到真实环境中迭代；使用者越多，问题越容易暴露和修正。"]
         ]
       },
       {
@@ -1490,25 +1508,37 @@
         dimension: "h",
         direction: 1,
         facet: "民主目标选择",
-        text: "AI 的目标和边界最终应由什么决定？",
+        text: "谁应该决定 AI 系统追求什么目标、不能越过哪些边界？",
         options: [
-          ["1", "A", "应主要由技术进展、市场选择和产品使用自然选择出来。"],
-          ["2.33", "B", "应主要由公司、专家和专业机构设定，因为公共程序太慢也太粗糙。"],
-          ["3.67", "C", "如果更高级智能形成更好的判断，人类当前目标不应永远拥有最终否决权。"],
-          ["5", "D", "即使低效，AI 目标也必须服从民主、权利和公共问责。"]
+          ["1", "A", "AI 的目标和边界应主要通过技术进展、市场选择和实际使用逐步形成。"],
+          ["2.33", "B", "AI 的目标和边界应主要由公司、专家和专业机构设定，因为公共程序太慢也太粗糙。"],
+          ["3.67", "C", "如果更高级智能展现出更好的判断，当代人类目标不应永远拥有最终否决权。"],
+          ["5", "D", "即使效率较低，AI 的目标也必须服从民主、权利和公共问责。"]
+        ]
+      },
+      {
+        id: "U01",
+        dimension: "u",
+        facet: "AI 使用程度",
+        text: "你现在大概怎样使用 AI？",
+        options: [
+          ["1", "A", "我基本不用 AI，是被朋友、同事或这个问卷拉来看看。"],
+          ["2.33", "B", "我会用 AI 聊天、搜索、写作、翻译或总结。"],
+          ["3.67", "C", "我会让 AI 帮我写代码、整理材料或分析复杂问题，但还不是每天重度依赖。（比如 agentic coding）"],
+          ["5", "D", "我每天高度依赖 AI 完成工作，经常和它连续来回修改、生成和推进任务。"]
         ]
       },
       {
         id: "H02",
         dimension: "h",
         direction: 1,
-        facet: "高影响场景中的 AI 角色",
-        text: "在医疗、教育、公共服务这类高影响场景里，AI 应该扮演什么角色？",
+        facet: "AI 在公共服务中的角色",
+        text: "在医疗、教育、公共服务中，AI 应该承担多少实际决策和服务工作？",
         options: [
-          ["1", "A", "如果效果明显更好，可以让 AI 承担更多实际服务；人类负责监督、申诉和兜底。"],
-          ["3", "B", "先别急，很多系统离真实可靠还远，不应太早扩大职责。"],
-          ["4", "C", "AI 可以给建议，但关键决定必须由可问责的人来做。"],
-          ["5", "D", "越是影响命运的场景，越不能让模型替人做最终判断。"]
+          ["1", "A", "如果 AI 明显效果更好，它可以承担更多实际服务工作；人类仍应负责监督、申诉和兜底。"],
+          ["3", "B", "在许多真实场景中，现有系统还不够可靠，因此不应过早扩大 AI 的职责。"],
+          ["4", "C", "AI 可以提供建议，但关键决定必须由可问责的人来做。"],
+          ["5", "D", "越是强烈影响人们生活的决定，越不应让模型取代人的最终判断。"]
         ]
       },
       {
@@ -2075,7 +2105,7 @@
       }
     };
 
-    const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "D01", "C04", "H03", "H04", "R01"];
+    const coreQuestionOrder = ["H02", "C02", "C03", "R04", "H01", "U01", "D01", "C04", "H03", "H04", "R01"];
 
     const pages = [
       ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
@@ -3005,7 +3035,7 @@
       }
       profileCode.textContent = complete ? displayCode : "----";
       profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "等待生成画像";
-      profileRoast.textContent = complete ? profile[1] : "至少完成 10 道核心题，结果会更稳。";
+      profileRoast.textContent = complete ? profile[1] : "至少完成 11 道核心题，结果会更稳。";
       profileTexts.innerHTML = complete ? renderProfileTexts(profile[2]) : "--";
       profileTell.textContent = complete ? profile[3] : "--";
       nearestPerson.textContent = nearest ? nearest.name : "--";
