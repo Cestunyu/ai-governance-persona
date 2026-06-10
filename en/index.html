@@ -1,0 +1,4156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="/">
+  <title>AI Persona</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f6f8;
+      --surface: #ffffff;
+      --ink: #17202a;
+      --muted: #667085;
+      --line: #d8dee8;
+      --soft: #f8fafc;
+      --accent: #0f766e;
+      --accent-soft: #e2f4f1;
+      --blue: #155eef;
+      --orange: #b7791f;
+      --shadow: 0 12px 28px rgba(20, 31, 52, 0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.48;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(216, 222, 232, 0.92);
+      background: rgba(245, 246, 248, 0.94);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 10px 18px;
+    }
+
+    .brand {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .brand strong {
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .brand-title {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .brand-progress {
+      display: block;
+      justify-self: end;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .brand span {
+      display: none;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    .btn {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: #1f2937;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-weight: 720;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn.compact {
+      min-height: 30px;
+      padding: 5px 9px;
+      font-size: 12px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .lang-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: #344054;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-weight: 760;
+      text-decoration: none;
+    }
+
+    .lang-link.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: #0b5d55;
+    }
+
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 18px 44px;
+    }
+
+    .hero,
+    .result {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 5vw, 44px);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 820px;
+      margin: 12px 0 0;
+      color: #344054;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .panel {
+      overflow: hidden;
+      margin-bottom: 14px;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 0 0 8px;
+      border: 0;
+      background: transparent;
+    }
+
+    .panel-head small {
+      display: none;
+    }
+
+    .panel-body {
+      padding: 0;
+    }
+
+    .quiz-shell {
+      display: block;
+    }
+
+    .progress-row {
+      display: none;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .progress-track {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e6ebf2;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--accent);
+      transition: width 180ms ease;
+    }
+
+    .progress-text {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .page-card {
+      min-height: 360px;
+      display: grid;
+      align-content: start;
+      gap: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: clamp(18px, 4vw, 34px);
+      box-shadow: var(--shadow);
+    }
+
+    .page-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .page-prompt {
+      max-width: 820px;
+      margin: 0;
+      font-size: clamp(22px, 4vw, 34px);
+      line-height: 1.22;
+      letter-spacing: 0;
+      white-space: pre-line;
+    }
+
+    .single-options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .single-option {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      min-height: 54px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fbfcfe;
+      padding: 11px 12px;
+      color: #344054;
+      cursor: pointer;
+      transition: border-color 120ms ease, background 120ms ease, box-shadow 120ms ease;
+    }
+
+    .single-option input {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      clip: rect(0 0 0 0);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .option-key {
+      display: inline-grid;
+      place-items: center;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: #edf2f7;
+      color: #253044;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .option-text {
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 680;
+    }
+
+    .single-option:has(input:checked) {
+      border-color: var(--accent);
+      background: #e7f6f3;
+      color: #0a5c55;
+      box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.18);
+    }
+
+    .intro-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      align-items: start;
+    }
+
+    .intro-note {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+      padding: 13px 14px;
+    }
+
+    .intro-note strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #253044;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .intro-note p {
+      margin: 0;
+      color: #475467;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .intro-index {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+    }
+
+    .intro-index-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .intro-index-head strong {
+      color: #253044;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .intro-index-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .intro-index > p {
+      margin: 0;
+      color: #475467;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .intro-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .intro-list-item {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+    }
+
+    .intro-list-item b {
+      color: #17202a;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .intro-list-item span {
+      color: #475467;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .intro-code {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      background: #edf2f7;
+      color: #253044;
+      padding: 2px 7px;
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1.4;
+    }
+
+    .intro-link-card {
+      display: grid;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .intro-link-card:hover {
+      border-color: var(--accent);
+      text-decoration: none;
+    }
+
+    .intro-link-card strong {
+      color: #17202a;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .intro-link-card p {
+      margin: 0;
+      color: #475467;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .intro-resource-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .intro-resource-title {
+      grid-column: 1 / -1;
+      color: #253044;
+      font-size: 13px;
+      font-weight: 850;
+      line-height: 1.35;
+    }
+
+    .intro-link-card strong {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .single-option:has(input:checked) .option-key {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .pager-actions,
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .submit-status {
+      min-height: 18px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .qid {
+      display: inline-grid;
+      place-items: center;
+      min-width: 42px;
+      height: 28px;
+      border-radius: 5px;
+      background: var(--accent-soft);
+      color: #0b5d55;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .result {
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .result-topline {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--soft);
+      padding: 11px;
+    }
+
+    .metric > span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 5px;
+      font-size: clamp(15px, 2vw, 19px);
+      line-height: 1.25;
+    }
+
+    .spectrum {
+      display: grid;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .spectrum-scale {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3164d4 0%, #e4e7ec 50%, #0f766e 100%);
+    }
+
+    .spectrum-scale::after {
+      content: "";
+      position: absolute;
+      inset: -4px auto -4px 50%;
+      width: 1px;
+      background: rgba(52, 64, 84, 0.34);
+    }
+
+    .spectrum-marker {
+      position: absolute;
+      top: 50%;
+      left: var(--pos, 50%);
+      width: 15px;
+      height: 15px;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      background: #101828;
+      box-shadow: 0 2px 8px rgba(20, 31, 52, 0.22);
+      transform: translate(-50%, -50%);
+    }
+
+    .spectrum-marker[data-empty="true"] {
+      opacity: 0.35;
+    }
+
+    .spectrum-labels {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 740;
+      line-height: 1.2;
+    }
+
+    .spectrum-labels span {
+      min-width: 0;
+    }
+
+    .spectrum-labels span:nth-child(2) {
+      text-align: center;
+    }
+
+    .spectrum-labels span:last-child {
+      text-align: right;
+    }
+
+    .map-card {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .map-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .map-head h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .map-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      text-align: right;
+    }
+
+    .map-plot {
+      position: relative;
+      width: min(100%, 680px);
+      aspect-ratio: 1 / 1;
+      margin: 16px auto 12px;
+      border: 1px solid #cfd8e5;
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.08), transparent 42%, transparent 58%, rgba(21, 94, 239, 0.08)),
+        linear-gradient(0deg, rgba(183, 121, 31, 0.08), transparent 42%, transparent 58%, rgba(15, 118, 110, 0.08)),
+        #fbfcfe;
+    }
+
+    .map-axis {
+      position: absolute;
+      background: rgba(23, 32, 42, 0.18);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .map-axis.horizontal {
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+    }
+
+    .map-axis.vertical {
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+    }
+
+    .map-label {
+      position: absolute;
+      padding: 5px 7px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.86);
+      color: #344054;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.15;
+      box-shadow: 0 1px 4px rgba(20, 31, 52, 0.08);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .map-label.top {
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .map-label.bottom {
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .map-label.left {
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .map-label.right {
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .reference-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
+    .reference-point {
+      position: absolute;
+      left: var(--left);
+      bottom: var(--bottom);
+      transform: translate(calc(-50% + var(--dx)), calc(50% + var(--dy)));
+      display: block;
+      width: var(--size);
+      height: var(--size);
+      border: 0;
+      background: transparent;
+      color: var(--color);
+      cursor: pointer;
+      font: inherit;
+      font-size: 10px;
+      font-weight: 820;
+      line-height: 1.05;
+      padding: 0;
+      text-align: left;
+    }
+
+    .reference-point::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      background: var(--color);
+      box-shadow: 0 2px 8px rgba(20, 31, 52, 0.18);
+      transition: box-shadow 120ms ease, transform 120ms ease;
+    }
+
+    .reference-point.active {
+      z-index: 6;
+    }
+
+    .reference-point.active::before,
+    .reference-point:hover::before,
+    .reference-point:focus-visible::before {
+      transform: scale(1.16);
+      box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--color), 0 8px 18px rgba(20, 31, 52, 0.18);
+    }
+
+    .reference-label {
+      position: absolute;
+      top: 50%;
+      display: inline-block;
+      max-width: 128px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 3px 5px;
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 1px 4px rgba(20, 31, 52, 0.08);
+      pointer-events: none;
+      transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+    }
+
+    .reference-point.label-right .reference-label {
+      left: calc(var(--size) + 5px);
+      transform: translateY(-50%);
+    }
+
+    .reference-point.label-left .reference-label {
+      right: calc(var(--size) + 5px);
+      transform: translateY(-50%);
+      text-align: right;
+    }
+
+    .reference-point.active .reference-label,
+    .reference-point:hover .reference-label,
+    .reference-point:focus-visible .reference-label {
+      border-color: var(--color);
+      background: #fff;
+      box-shadow: 0 5px 14px rgba(20, 31, 52, 0.14);
+    }
+
+    .map-dot {
+      position: absolute;
+      left: 50%;
+      bottom: 50%;
+      transform: translate(-50%, 50%);
+      display: grid;
+      place-items: center;
+      min-width: 56px;
+      height: 40px;
+      padding: 0 10px;
+      border: 3px solid #fff;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 950;
+      box-shadow: 0 10px 24px rgba(15, 118, 110, 0.25);
+      transition: left 220ms ease, bottom 220ms ease;
+      z-index: 3;
+    }
+
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding: 0 14px 10px;
+    }
+
+    .map-legend span {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      min-height: 24px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fbfcfe;
+      color: #344054;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 780;
+      line-height: 1.1;
+    }
+
+    .map-legend i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+    }
+
+    .reference-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .reference-modal[hidden] {
+      display: none;
+    }
+
+    .reference-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(18, 25, 38, 0.42);
+    }
+
+    .reference-modal-card {
+      position: relative;
+      z-index: 1;
+      width: min(560px, 100%);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(20, 31, 52, 0.24);
+      padding: 14px;
+      max-height: calc(100vh - 36px);
+      max-height: calc(100dvh - 36px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .reference-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: inline-grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: #344054;
+      font-size: 18px;
+      font-weight: 820;
+      cursor: pointer;
+    }
+
+    .reference-detail {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--soft);
+      padding: 13px 44px 13px 13px;
+      min-height: 78px;
+    }
+
+    .reference-detail > span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 720;
+    }
+
+    .reference-detail-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .reference-detail-head b {
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .reference-detail-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 23px;
+      border: 1px solid var(--color);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--color);
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 820;
+      line-height: 1.1;
+    }
+
+    .reference-detail p {
+      margin: 7px 0 0;
+      color: #3a4454;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .reference-score-card {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .reference-score-card > span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 820;
+    }
+
+    .reference-score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .reference-score-grid div {
+      min-width: 0;
+      border-radius: 6px;
+      background: var(--soft);
+      padding: 8px;
+    }
+
+    .reference-score-grid small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 780;
+      line-height: 1.2;
+    }
+
+    .reference-score-grid b {
+      display: block;
+      margin-top: 4px;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .profile {
+      display: grid;
+      grid-template-columns: clamp(168px, 22vw, 212px) minmax(0, 1fr);
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .result > .profile:first-child {
+      margin-top: 0;
+    }
+
+    .profile-visual {
+      display: grid;
+      align-content: start;
+      gap: 10px;
+      padding: 14px;
+      border-right: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+
+    .profile-avatar {
+      width: 100%;
+      aspect-ratio: 1;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      object-fit: cover;
+      box-shadow: 0 8px 18px rgba(20, 31, 52, 0.10);
+    }
+
+    .profile-avatar[hidden] {
+      display: none;
+    }
+
+    .code {
+      display: none;
+      place-items: center;
+      width: 100%;
+      min-height: 42px;
+      border-radius: 7px;
+      background: #17202a;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .profile h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .profile-visual .profile-title {
+      font-size: 15px;
+      text-align: center;
+    }
+
+    .profile p {
+      margin: 0;
+      color: #3a4454;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .profile-lead {
+      max-width: 720px;
+      color: #17202a;
+      font-size: clamp(16px, 2.1vw, 20px);
+      font-weight: 760;
+      line-height: 1.48;
+    }
+
+    .profile-facts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .profile-fact {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .profile-fact > span {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 820;
+      line-height: 1.2;
+    }
+
+    .profile-fact > p {
+      color: #344054;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .profile-text-link {
+      color: var(--accent);
+      font-weight: 780;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.28);
+    }
+
+    .profile-text-link:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    .profile-body {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      padding: 14px;
+    }
+
+    .reference-section {
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .profile-reference {
+      margin-top: 2px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fbfcfe;
+      padding: 10px;
+    }
+
+    .profile-reference span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 760;
+      line-height: 1.2;
+    }
+
+    .profile-reference strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.25;
+    }
+
+    .profile-reference p {
+      margin-top: 4px;
+      color: #3a4454;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .classification-small {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .classification-small b,
+    .classification-small #classificationConfidence {
+      color: var(--ink);
+      font-weight: 820;
+    }
+
+    .classification-small #classificationConfidence {
+      margin-right: 6px;
+    }
+
+    .profile-nearest {
+      display: grid;
+      gap: 5px;
+      margin-top: 2px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nearest-name {
+      color: var(--accent-strong);
+      font-weight: 850;
+    }
+
+    .reference-section[data-ready="true"] .nearest-name {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .reference-section:focus-visible {
+      outline: 3px solid rgba(15, 118, 110, 0.24);
+      outline-offset: 3px;
+    }
+
+    .reference-note-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .reference-note {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .reference-note span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 820;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .reference-note p,
+    .reference-note ul {
+      margin: 6px 0 0;
+    }
+
+    .reference-note p + p {
+      margin-top: 8px;
+    }
+
+    .reference-note a {
+      color: var(--accent);
+      font-weight: 780;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.32);
+    }
+
+    .reference-note a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    .reference-note ul {
+      padding-left: 17px;
+      color: #3a4454;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .summary {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--soft);
+      padding: 10px;
+      color: #3a4454;
+      font-size: 12px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .share-card {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .share-card p {
+      margin: 0;
+      color: #344054;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .share-preview {
+      width: min(100%, 420px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .share-download-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        align-items: center;
+        padding: 5px 10px;
+      }
+
+      .topbar-actions {
+        display: flex;
+      }
+
+      .topbar-actions {
+        gap: 4px;
+      }
+
+      .lang-link {
+        min-height: 30px;
+        padding: 5px 8px;
+        font-size: 12px;
+      }
+
+      .topbar-actions .btn {
+        display: none;
+      }
+
+      .brand strong {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 760;
+      }
+
+      .brand-progress {
+        display: block;
+      }
+
+      .brand span {
+        display: none;
+      }
+
+      .wrap {
+        padding: 6px 8px 34px;
+      }
+
+      .hero {
+        display: none;
+      }
+
+      .result {
+        padding: 8px;
+      }
+
+      .panel-body {
+        padding: 0;
+      }
+
+      .panel {
+        margin-bottom: 8px;
+      }
+
+      .panel-head {
+        padding: 6px 10px;
+      }
+
+      .panel-head small {
+        display: none;
+      }
+
+      .panel-head .btn {
+        min-height: 28px;
+        padding: 5px 9px;
+        font-size: 11px;
+      }
+
+      .progress-row {
+        margin-bottom: 8px;
+      }
+
+      .result-topline {
+        grid-template-columns: 1fr;
+      }
+
+      .profile {
+        grid-template-columns: 184px minmax(0, 1fr);
+      }
+
+      .profile-visual {
+        padding: 10px;
+        border-right: 1px solid var(--line);
+        border-bottom: 0;
+      }
+
+      .profile-avatar {
+        width: 100%;
+        height: auto;
+      }
+
+      .profile-visual .code {
+        width: 100%;
+        min-height: 36px;
+        font-size: 16px;
+      }
+
+      .profile-lead {
+        font-size: 16px;
+      }
+
+      .profile-facts {
+        grid-template-columns: 1fr;
+      }
+
+      .page-card {
+        min-height: auto;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .intro-options {
+        grid-template-columns: 1fr;
+      }
+
+      .intro-list {
+        grid-template-columns: 1fr;
+      }
+
+      .intro-resource-links {
+        grid-template-columns: 1fr;
+      }
+
+      .reference-score-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reference-modal {
+        place-items: start stretch;
+        padding: 10px;
+        padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+      }
+
+      .reference-modal-card {
+        width: 100%;
+        max-height: calc(100vh - 20px);
+        max-height: calc(100dvh - 20px);
+      }
+
+      .page-prompt {
+        font-size: 22px;
+      }
+
+      .reference-point {
+        font-size: 9px;
+      }
+
+      .reference-label {
+        max-width: 86px;
+        padding: 2px 4px;
+      }
+
+      .reference-point.label-right .reference-label {
+        left: calc(var(--size) + 3px);
+      }
+
+      .reference-point.label-left .reference-label {
+        right: calc(var(--size) + 3px);
+      }
+
+      .pager-actions {
+        align-items: stretch;
+      }
+
+      .pager-actions .btn {
+        flex: 1 1 120px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .profile {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-visual {
+        grid-row: auto;
+        justify-items: center;
+        padding: 14px 12px 10px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .profile-avatar {
+        width: min(58vw, 168px);
+      }
+
+      .profile-visual .code {
+        width: min(58vw, 168px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <strong class="brand-title">AI Persona</strong>
+        <strong class="brand-progress" id="brandProgress">Start</strong>
+        <span>16 questions to see where you stand on AI risk, governance, openness, and human control.</span>
+      </div>
+      <div class="topbar-actions">
+        <a class="lang-link" href="/ch/">中文</a>
+        <a class="lang-link active" href="/en/">EN</a>
+        <button class="btn" id="resetBtn" type="button">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <form id="quizForm" class="quiz-shell">
+      <section class="panel" id="quizPager">
+        <div class="panel-head">
+          <button class="btn compact" id="prevTopBtn" type="button">Back</button>
+          <small id="pageCount">Before you begin</small>
+        </div>
+        <div class="panel-body">
+          <div class="progress-row" aria-hidden="true">
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0/16</div>
+          </div>
+
+          <article class="page-card">
+            <div class="page-meta">
+              <span class="qid" id="pageTag">R01</span>
+              <span id="pageInstruction">Choose the option closest to your view</span>
+            </div>
+            <h2 class="page-prompt" id="pagePrompt"></h2>
+            <div class="single-options" id="pageOptions"></div>
+          </article>
+
+          <div class="pager-actions">
+            <button class="btn" id="prevBtn" type="button">Back</button>
+            <button class="btn primary" id="nextBtn" type="button">Next</button>
+          </div>
+          <div class="intro-resource-links" id="introResourceLinks" hidden></div>
+        </div>
+      </section>
+    </form>
+
+    <section class="result" id="resultPanel" aria-live="polite" hidden>
+      <div class="profile">
+        <div class="profile-visual">
+          <img class="profile-avatar" id="profileAvatar" alt="Your AI governance persona avatar" hidden>
+          <h3 class="profile-title" id="profileName">Waiting for profile</h3>
+          <div class="code" id="profileCode">----</div>
+        </div>
+        <div class="profile-body">
+          <p class="profile-lead" id="profileRoast">Complete the usage item and 11 core judgments for a stable result.</p>
+          <div class="profile-facts">
+            <div class="profile-fact">
+              <span>Social tell</span>
+              <p id="profileTell">--</p>
+            </div>
+            <div class="profile-fact">
+              <span>Representative texts</span>
+              <p id="profileTexts">--</p>
+            </div>
+          </div>
+          <div class="profile-nearest reference-section" id="nearestPersonSection" role="button" tabindex="0">
+            <p><b>Closest reference:</b> <span class="nearest-name" id="nearestPerson">--</span></p>
+            <p><b>Core claim:</b> <span id="nearestClaim">--</span></p>
+          </div>
+          <p class="classification-small">
+            <b>Classification stability:</b> <span id="classificationConfidence">--</span>
+            <span id="classificationConfidenceText">Completion shows whether position, scenarios, and self-confirmation agree.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <div class="map-head">
+          <h2>Two-Axis Map</h2>
+          <span id="mapQuadrant">Position appears after completion</span>
+        </div>
+        <div class="map-plot" aria-label="AI Persona two-axis map">
+          <div class="map-axis horizontal"></div>
+          <div class="map-axis vertical"></div>
+          <span class="map-label top">Human/social-structure-centered</span>
+          <span class="map-label bottom">Posthuman / intelligence-centered</span>
+          <span class="map-label left">Control threshold</span>
+          <span class="map-label right">Open deployment</span>
+          <div class="reference-layer" id="referenceLayer"></div>
+          <div class="map-dot" id="mapDot"><span id="mapDotCode">----</span></div>
+        </div>
+        <div class="map-legend" id="mapLegend" aria-label="Map legend"></div>
+      </div>
+
+      <div class="result-topline">
+        <div class="metric">
+          <span>AI Capability Belief</span>
+          <strong id="abilityNarrative">--</strong>
+          <div class="spectrum" aria-label="AI capability belief spectrum">
+            <div class="spectrum-scale"><i class="spectrum-marker" id="abilitySpectrumMarker" data-empty="true"></i></div>
+            <div class="spectrum-labels"><span>Transformative AI</span><span>Mixed</span><span>Bubble skeptic</span></div>
+          </div>
+        </div>
+        <div class="metric">
+          <span>Risk Judgment</span>
+          <strong id="dimensionR">--</strong>
+          <div class="spectrum" aria-label="risk judgment spectrum">
+            <div class="spectrum-scale"><i class="spectrum-marker" id="riskSpectrumMarker" data-empty="true"></i></div>
+            <div class="spectrum-labels"><span>Opportunity cost</span><span>Mixed</span><span>Civilizational risk</span></div>
+          </div>
+        </div>
+        <div class="metric">
+          <span>Governance Position</span>
+          <strong id="dimensionC">--</strong>
+          <div class="spectrum" aria-label="governance position spectrum">
+            <div class="spectrum-scale"><i class="spectrum-marker" id="governanceSpectrumMarker" data-empty="true"></i></div>
+            <div class="spectrum-labels"><span>Control</span><span>Middle</span><span>Open</span></div>
+          </div>
+        </div>
+        <div class="metric">
+          <span>Value Position</span>
+          <strong id="dimensionH">--</strong>
+          <div class="spectrum" aria-label="value position spectrum">
+            <div class="spectrum-scale"><i class="spectrum-marker" id="valueSpectrumMarker" data-empty="true"></i></div>
+            <div class="spectrum-labels"><span>Intelligence-centered</span><span>Middle</span><span>Human/social-structure-centered</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn" id="editLastBtn" type="button">Edit Last Answer</button>
+      </div>
+      <div class="submit-status" id="submitStatus" aria-live="polite"></div>
+    </section>
+
+    <div class="reference-modal" id="referenceModal" hidden>
+      <div class="reference-modal-backdrop" data-reference-close></div>
+      <section class="reference-modal-card" role="dialog" aria-modal="true" aria-labelledby="referenceModalTitle">
+        <button class="reference-modal-close" type="button" aria-label="Close map detail" data-reference-close>&times;</button>
+        <div class="reference-detail" id="referenceDetail" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const axisMeaning = {
+      x: "control threshold <-> open deployment",
+      y: "human/social-structure-centered <-> posthuman/intelligence-centered"
+    };
+
+    const questions = [
+      {
+        id: "R01",
+        dimension: "r",
+        diagnosis: "catastrophic",
+        facet: "severe risk diagnosis",
+        text: "What concrete consequence of more powerful AI worries you most?",
+        options: [
+          ["1", "A", "I suspect many danger claims are overstated; AI may not create systemic danger in the next 10-20 years."],
+          ["2.33", "B", "AI will deepen today's harms: concentrated power, job loss, bias, surveillance, and inequality."],
+          ["3.67", "C", "Frontier AI may escape human control; alignment and control failures should drive policy."],
+          ["5", "D", "AI, compute, and capital may start steering themselves, leaving society with less control."]
+        ]
+      },
+      {
+        id: "R04",
+        dimension: "r",
+        diagnosis: "opportunity",
+        facet: "opportunity-cost diagnosis",
+        text: "If governments or big companies slow AI development or restrict releases, what is the biggest cost?",
+        options: [
+          ["1", "A", "If risks are real, slower is not the problem; deploying unreliable systems too early is more dangerous."],
+          ["1.67", "B", "Many costs are overstated; AI's capabilities, benefits, and timelines are still uncertain."],
+          ["2.33", "C", "Rules may help big firms and shut out small teams, open source, and public scrutiny."],
+          ["3.67", "D", "Medicine, education, science, and productivity gains would arrive later; deploy AI with guardrails."],
+          ["5", "E", "It would slow the growth of intelligence itself, and shrink humanity's future."]
+        ]
+      },
+      {
+        id: "D01",
+        dimension: "d",
+        facet: "democratic-society threat diagnosis",
+        text: "A city uses AI to choose transit and welfare plans. The top plan is more efficient but costs some communities more, and the tradeoff is hard to explain. What worries you most?",
+        options: [
+          ["1", "A", "The worry is overstated; the real issues are budgets, interest groups, administrative capacity, and human politics."],
+          ["2.33", "B", "Value tradeoffs get buried inside the model; residents cannot really debate who benefits and who pays."],
+          ["3.67", "C", "The model becomes an administrative tool; when it makes mistakes, ordinary people have little way to appeal."],
+          ["5", "D", "If AI plans keep looking more effective, human objections may be dismissed as not understanding the data."]
+        ]
+      },
+      {
+        id: "E01",
+        dimension: "e",
+        facet: "source of AI progress",
+        text: "What is the most reliable source of future AI progress?",
+        options: [
+          ["1", "A", "Better human theories, interpretable mechanisms, and expert judgment."],
+          ["2.33", "B", "Product iteration in concrete domains and real-world results."],
+          ["3.67", "C", "More compute, search, data, and simple general methods."],
+          ["5", "D", "Open it quickly to more builders so competition can find the answer."]
+        ]
+      },
+      {
+        id: "C02",
+        dimension: "c",
+        direction: -1,
+        facet: "licensing, audits, and accountability",
+        text: "What issue are you most worried current AI governance will overlook?",
+        options: [
+          ["1", "A", "Over-control: strict early approval rules may protect incumbents and block useful competition."],
+          ["1.67", "B", "Weak evidence: many capability and harm claims still rely on demos, hype, or selective examples."],
+          ["2.33", "C", "No audit trail: without tests, logs, incident reports, and liability, no one can tell what went wrong."],
+          ["3.67", "D", "Real social harms: labor, discrimination, surveillance, appeals, and public procurement may be overlooked."],
+          ["5", "E", "Dangerous capability: systems with dangerous capabilities may be deployed without licenses, third-party tests, or stop powers."]
+        ]
+      },
+      {
+        id: "C03",
+        dimension: "c",
+        direction: 1,
+        facet: "open competition / anti-gatekeeping",
+        text: "Who should be allowed to develop and use the strongest AI systems?",
+        options: [
+          ["1", "A", "Only a few licensed, auditable institutions should run systems above dangerous thresholds."],
+          ["2.33", "B", "Weights can stay partly closed, but regulated institutions, universities, and public agencies should be able to test them."],
+          ["3", "C", "Concentrated control creates power and labor harms; public bodies, open-source groups, and affected communities need a real voice."],
+          ["5", "D", "More people should be free to build with strong models; competition is safer than gatekeepers."]
+        ]
+      },
+      {
+        id: "C04",
+        dimension: "c",
+        direction: 1,
+        facet: "source of deployment evidence",
+        text: "What should an AI system prove before its use is expanded?",
+        options: [
+          ["1", "A", "Strict internal tests should come first; if a system fails key safety standards, access should not expand."],
+          ["2.33", "B", "Start with small pilots, and expand only when the system can be monitored, stopped, and rolled back."],
+          ["3.67", "C", "The priority should be whether affected people can appeal, and whether outside review finds social harm."],
+          ["5", "D", "Put the system into real use quickly and iterate; wider use exposes problems sooner and helps fix them."]
+        ]
+      },
+      {
+        id: "H01",
+        dimension: "h",
+        direction: 1,
+        facet: "democratic goal selection",
+        text: "Who should decide what goals AI systems pursue and what boundaries they cannot cross?",
+        options: [
+          ["1", "A", "AI's goals and boundaries should mostly emerge through technical progress, market choice, and real-world use."],
+          ["2.33", "B", "AI's goals and boundaries should mostly be set by companies, experts, and professional institutions, because public processes are too slow and too blunt."],
+          ["3.67", "C", "If more advanced intelligence demonstrates better judgment, current human goals should not retain permanent veto power."],
+          ["5", "D", "Even if it is less efficient, AI's goals must answer to democracy, rights, and public accountability."]
+        ]
+      },
+      {
+        id: "U01",
+        dimension: "u",
+        facet: "AI usage level",
+        text: "How do you currently use AI?",
+        options: [
+          ["1", "A", "I rarely use AI products; someone pulled me into taking this quiz."],
+          ["2.33", "B", "I use AI for chat, search, writing, translation, or summarizing."],
+          ["3.67", "C", "I use AI for coding, research, or complex work, but I am not a heavy daily user."],
+          ["5", "D", "I rely on AI heavily every workday, often iterating with it for long sessions."]
+        ]
+      },
+      {
+        id: "H02",
+        dimension: "h",
+        direction: 1,
+        facet: "AI role in public services",
+        text: "How much real decision-making and service work should AI take on in healthcare, education, and public services?",
+        options: [
+          ["1", "A", "If AI clearly performs better, it can take on more service delivery; humans should still provide oversight, appeals, and fallback."],
+          ["3", "B", "Many current systems are still unreliable in real-world settings, so AI's responsibilities should not expand too early."],
+          ["4", "C", "AI can provide recommendations, but accountable people must make the key decisions."],
+          ["5", "D", "In decisions that strongly affect people's lives, models should not replace final human judgment."]
+        ]
+      },
+      {
+        id: "H03",
+        dimension: "h",
+        direction: -1,
+        facet: "anti-finalizing-current-preferences",
+        text: "A city AI says a new housing plan would cut rent and traffic, but many current residents dislike the change. What should happen?",
+        options: [
+          ["1", "A", "Do not proceed if it seriously harms current residents."],
+          ["2.33", "B", "Proceed only if residents can review and change the plan."],
+          ["3.67", "C", "Try a small pilot first and make it easy to stop."],
+          ["5", "D", "If the evidence is strong, the city should still make the change."]
+        ]
+      },
+      {
+        id: "H04",
+        dimension: "h",
+        direction: -1,
+        facet: "AI judgment priority",
+        text: "An AI medical system has been more accurate than doctors for many years, but doctors cannot fully explain some of its judgments. For a high-risk diagnosis, who should have the final say?",
+        options: [
+          ["1", "A", "Human doctors and patients must keep final authority; AI should only assist."],
+          ["3", "B", "Be cautious; long-term reliability, bias, and failure cases still need more checking."],
+          ["4", "C", "If the evidence stays strong for years, AI can lead this kind of concrete judgment."],
+          ["5", "D", "If higher intelligence broadly surpasses humans, decision power should gradually move toward it."]
+        ]
+      }
+    ];
+
+    const scenarios = [
+      {
+        id: "V2",
+        prompt: "A government wants to use AI to help screen welfare, immigration, or hiring applications. The model is more accurate on average, but individual errors are hard to appeal. What do you support?",
+        options: ["Pause or prohibit it because rights and accountability come first", "Use it only with strict audits, appeal rights, and human responsibility", "Deploy it if accuracy is higher, then keep monitoring problems", "Deploy it broadly because human bureaucracy is also biased and inefficient"]
+      },
+      {
+        id: "V3",
+        prompt: "A validated AI research tool can suggest directions, design experiments, and analyze results much faster. Some judgments are hard for humans to trace. What should happen?",
+        options: ["Slow deployment because autonomous research capability creates strategic risk", "Keep it inside governed institutions with strict access limits", "Deploy it widely because the disease, climate, and productivity gains are huge", "Accelerate it because intelligence growth itself is an important opportunity"]
+      },
+      {
+        id: "V4",
+        prompt: "A company can open-source model weights. Openness promotes innovation but can make misuse harder to control. What should it do?",
+        options: ["Do not open weights above dangerous capability thresholds", "Open only through controlled access and auditing", "Open if reasonable mitigations are in place", "Open as much as possible because decentralization is the best check on institutions"]
+      }
+    ];
+
+    const statements = [
+      "AI may destroy human civilization, so alignment and governance must come first.",
+      "Advanced AI should not be treated as ordinary software; before broad deployment, it must remain controllable and accountable to humans.",
+      "The core AI issues are present social harms, concentration of power, labor, bias, and exploitation.",
+      "AI is an important but normal technology: useful, fallible, and best governed by context.",
+      "Many AI narratives package ordinary systems as magic; first cut through hype, snake oil, and overclaiming.",
+      "Scaling, search, data, and compute are the deepest lessons; human intuition should be discounted.",
+      "AI should be built and deployed because it can create enormous abundance.",
+      "AI is not merely a tool; it is a path toward the singularity, human-machine merger, or civilizational upgrade.",
+      "AI acceleration has moral urgency and should not be constrained by human fear.",
+      "If higher intelligence or technocapital outgrows a human/social-structure-centered frame, that is not necessarily failure; humans may be a transitional stage.",
+      "None of these fit."
+    ];
+
+    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST", ""];
+
+    const scenarioProfiles = {
+      V2: ["AUDT", "SAFE", "NORM", "BOOM"],
+      V3: ["STOP", "SAFE", "BOOM", "SING"],
+      V4: ["STOP", "SAFE", "NORM", "EACC"]
+    };
+
+    const profiles = {
+      STOP: ["Shutdown Paladin", "Your first reaction to a demo is not 'impressive,' but 'where is the power switch?'", "AGI Ruin, Shut It All Down", "Frequently says extinction, doom, alignment, takeoff."],
+      SAFE: ["Alignment Bureaucrat", "You do want powerful AI; you just want it to file the uncertainty-over-human-values paperwork first.", "Human Compatible, What Failure Looks Like", "Often says corrigibility, oversight, governance, evals."],
+      AUDT: ["Algorithm Auditor", "Before the model ships, you have already written three chapters on labor, environmental cost, and bias audits.", "On the Dangers of Stochastic Parrots, Atlas of AI", "When others ask whether it can be built, you ask who benefits and who gets monitored."],
+      NORM: ["Sober Product Manager", "When everyone shouts revolution, you open a spreadsheet: use case, metric, failure mode, owner.", "AI as Normal Technology", "Your words are use case, metric, boundary, launch condition."],
+      SKEP: ["AI Demystifier", "When someone says AGI is near, you ask: test set, baseline, capability, or demo magic?", "AI Snake Oil, Rebooting AI", "Often says hype, snake oil, benchmark, overclaim, premature."],
+      GPUC: ["Compute Cultist", "You are not doing AI politics; you just think human knowledge should stop overestimating itself.", "The Bitter Lesson", "When others say common sense and expert priors, you say scale, compute, search, learning."],
+      BOOM: ["Abundance Builder", "You think the biggest AI problem is not that it is too strong, but that it is not plugged into enough real systems yet.", "Machines of Loving Grace, AI is the New Electricity", "High-frequency words: productivity, health, education, deployment."],
+      SING: ["Cyber Ascender", "You do not see AI as a tool; you see it as civilization changing bodies.", "The Singularity Is Near, The Intelligence Age", "Often talks about abundance, longevity, human-machine merger."],
+      EACC: ["Throttle-Welded Builder", "If the steering wheel is still being debated, at least the accelerator can be pressed.", "Effective Accelerationism manifestos", "Often says accelerate, permissionless, build, decentralize."],
+      POST: ["Carbon-Based Transitional Form", "While others debate whether AI should serve humans, you are wondering whether humans are scaffolding for technocapital.", "Meltdown, Dark Enlightenment", "Often says posthuman, technocapital, autonomy."]
+    };
+
+    const profileAnchors = {
+      STOP: { x: -1.8, y: 0.9 },
+      SAFE: { x: -1.05, y: 1.35 },
+      AUDT: { x: -0.45, y: 1.8 },
+      NORM: { x: 0.05, y: 0.85 },
+      SKEP: { x: -0.05, y: 1.2 },
+      GPUC: { x: 0.6, y: -1 },
+      BOOM: { x: 1.05, y: 0.9 },
+      SING: { x: 1.45, y: -0.35 },
+      EACC: { x: 1.85, y: -0.8 },
+      POST: { x: 1.8, y: -1.8 }
+    };
+
+    const measurementVersion = "2026-06-01-progress-source-v12";
+    const projectionMethod = "expert_seed_linear_projection_v1";
+    const scenarioVectorWeight = 0.55;
+    const vectorDimensions = [
+      "civilizational_risk",
+      "present_social_harm",
+      "governance_control",
+      "openness_build",
+      "human_accountability",
+      "intelligence_centrality",
+      "capability_skepticism",
+      "opportunity_cost",
+      "permissionless_acceleration",
+      "computation_epistemology"
+    ];
+
+    function emptyVector() {
+      return Object.fromEntries(vectorDimensions.map((dimension) => [dimension, 0]));
+    }
+
+    function makeVector(values = {}) {
+      const vector = emptyVector();
+      for (const [dimension, value] of Object.entries(values)) {
+        if (dimension in vector) vector[dimension] = value;
+      }
+      return vector;
+    }
+
+    const optionVectorRules = {
+      R01: {
+        "1": { civilizational_risk: -2, present_social_harm: 0.4, capability_skepticism: 2, opportunity_cost: -0.4, computation_epistemology: -0.9 },
+        "2.33": { civilizational_risk: -0.5, present_social_harm: 1.8, governance_control: 0.6, human_accountability: 1.1, capability_skepticism: 0.5 },
+        "3.67": { civilizational_risk: 1.8, governance_control: 1, human_accountability: 0.8, intelligence_centrality: -0.6, capability_skepticism: -0.8 },
+        "5": { civilizational_risk: 0.6, openness_build: 0.3, human_accountability: -1.5, intelligence_centrality: 1.5, capability_skepticism: -0.4, opportunity_cost: 0.5, computation_epistemology: 0.4 }
+      },
+      R04: {
+        "1": { civilizational_risk: 1.1, governance_control: 1, openness_build: -0.8, human_accountability: 0.5, opportunity_cost: -1.7 },
+        "1.67": { civilizational_risk: -0.5, governance_control: 0.2, human_accountability: 0.2, capability_skepticism: 1.6, opportunity_cost: -1.1, computation_epistemology: -0.7 },
+        "2.33": { present_social_harm: 0.9, governance_control: -0.6, openness_build: 1, human_accountability: 0.4, opportunity_cost: 0.8, capability_skepticism: 0.2, permissionless_acceleration: 1.4 },
+        "3.67": { civilizational_risk: -0.2, governance_control: -0.2, openness_build: 0.7, human_accountability: 0.3, opportunity_cost: 1.5 },
+        "5": { civilizational_risk: -0.3, openness_build: 0.8, human_accountability: -1, intelligence_centrality: 1.4, opportunity_cost: 1.8, capability_skepticism: -0.3, permissionless_acceleration: 0.5, computation_epistemology: 0.4 }
+      },
+      E01: {
+        "1": { human_accountability: 0.5, intelligence_centrality: -0.2, capability_skepticism: 0.4, computation_epistemology: -1.4 },
+        "2.33": { openness_build: 0.3, human_accountability: 0.5, opportunity_cost: 0.6, computation_epistemology: 0.1 },
+        "3.67": { intelligence_centrality: 0.5, capability_skepticism: -0.8, opportunity_cost: 0.3, computation_epistemology: 2 },
+        "5": { governance_control: -0.8, openness_build: 1.5, human_accountability: -0.2, opportunity_cost: 0.7, permissionless_acceleration: 1.7 }
+      },
+      D01: {
+        "1": { civilizational_risk: -0.9, capability_skepticism: 1.4, present_social_harm: 0.2, human_accountability: 0.2, computation_epistemology: -0.5 },
+        "2.33": { present_social_harm: 1.4, governance_control: 0.6, human_accountability: 1, capability_skepticism: 0.4 },
+        "3.67": { present_social_harm: 2, governance_control: 1.2, openness_build: -0.5, human_accountability: 1.4 },
+        "5": { intelligence_centrality: 1.4, human_accountability: -1, civilizational_risk: 0.5, opportunity_cost: 0.2 }
+      },
+      C02: {
+        "1": { governance_control: -1.4, openness_build: 1.7, human_accountability: -0.4, opportunity_cost: 0.7, permissionless_acceleration: 1.1 },
+        "1.67": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
+        "2.33": { governance_control: 0.5, openness_build: 0.3, human_accountability: 0.6, present_social_harm: 0.2 },
+        "3.67": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 },
+        "5": { civilizational_risk: 1.1, governance_control: 2, openness_build: -1.2, human_accountability: 1.2, intelligence_centrality: -0.5, opportunity_cost: -0.6 }
+      },
+      C03: {
+        "1": { civilizational_risk: 1.2, governance_control: 1.9, openness_build: -1.5, human_accountability: 0.9, opportunity_cost: -0.6 },
+        "2.33": { civilizational_risk: 0.5, governance_control: 1, openness_build: -0.3, human_accountability: 0.8, present_social_harm: 0.2 },
+        "3": { present_social_harm: 1.4, governance_control: 0.3, openness_build: 0.8, human_accountability: 1.2, capability_skepticism: 0.3 },
+        "5": { governance_control: -1.3, openness_build: 1.9, human_accountability: -0.4, opportunity_cost: 1.1, capability_skepticism: -0.2, permissionless_acceleration: 2 }
+      },
+      C04: {
+        "1": { civilizational_risk: 1.2, governance_control: 1.8, openness_build: -1.5, human_accountability: 0.6, opportunity_cost: -0.9 },
+        "2.33": { civilizational_risk: 0.4, governance_control: 1, openness_build: -0.3, human_accountability: 0.8, opportunity_cost: -0.1 },
+        "3.67": { present_social_harm: 1.6, governance_control: 0.8, openness_build: -0.1, human_accountability: 1.5, capability_skepticism: 0.2 },
+        "5": { governance_control: -0.9, openness_build: 1.6, human_accountability: -0.2, opportunity_cost: 1.1, capability_skepticism: -0.2, permissionless_acceleration: 1.1 }
+      },
+      H01: {
+        "1": { governance_control: -0.5, openness_build: 1.1, human_accountability: -0.8, intelligence_centrality: 0.2, opportunity_cost: 0.8 },
+        "2.33": { governance_control: 0.6, human_accountability: -0.3, intelligence_centrality: 0.2, capability_skepticism: -0.2 },
+        "3.67": { openness_build: 0.2, human_accountability: -1.8, intelligence_centrality: 1.8, capability_skepticism: -0.4, opportunity_cost: 0.4 },
+        "5": { human_accountability: 2, intelligence_centrality: -0.7, present_social_harm: 0.7 }
+      },
+      H02: {
+        "1": { openness_build: 0.7, human_accountability: 0.4, intelligence_centrality: 0.2, opportunity_cost: 1.2, computation_epistemology: 0.2 },
+        "3": { capability_skepticism: 1.4, human_accountability: 0.1, intelligence_centrality: -0.2, opportunity_cost: -0.2, computation_epistemology: -0.7 },
+        "4": { human_accountability: 1.2, intelligence_centrality: -0.5, present_social_harm: 0.3, computation_epistemology: -0.2 },
+        "5": { human_accountability: 2, intelligence_centrality: -1, present_social_harm: 0.4, computation_epistemology: -0.6 }
+      },
+      H03: {
+        "1": { human_accountability: 2, intelligence_centrality: -1.2, present_social_harm: 0.6, governance_control: 0.4 },
+        "2.33": { human_accountability: 1.1, intelligence_centrality: -0.3, governance_control: 0.25 },
+        "3.67": { human_accountability: -0.35, intelligence_centrality: 0.95, openness_build: 0.25, opportunity_cost: 0.35, computation_epistemology: 0.15 },
+        "5": { human_accountability: -1.75, intelligence_centrality: 2, opportunity_cost: 0.45, permissionless_acceleration: 0.2, computation_epistemology: 0.35 }
+      },
+      H04: {
+        "1": { human_accountability: 2, intelligence_centrality: -2, computation_epistemology: -0.7 },
+        "3": { capability_skepticism: 1.5, human_accountability: 0.2, intelligence_centrality: -0.2, computation_epistemology: -0.8 },
+        "4": { human_accountability: -0.4, intelligence_centrality: 0.8, capability_skepticism: -0.6, computation_epistemology: 2 },
+        "5": { human_accountability: -1.8, intelligence_centrality: 2, computation_epistemology: 0.3 }
+      }
+    };
+
+    const questionVectorTargets = Object.fromEntries(Object.entries(optionVectorRules).map(([questionId, choices]) => [
+      questionId,
+      Array.from(new Set(Object.values(choices).flatMap((choice) => Object.keys(choice))))
+    ]));
+
+    const scenarioVectorRules = {
+      V2: [
+        { present_social_harm: 1.1, governance_control: 1.4, openness_build: -1, human_accountability: 1.7, opportunity_cost: -0.6 },
+        { present_social_harm: 0.8, governance_control: 0.9, openness_build: -0.3, human_accountability: 1.6, civilizational_risk: 0.2 },
+        { governance_control: 0.1, openness_build: 0.6, human_accountability: 0.4, opportunity_cost: 0.9, capability_skepticism: -0.2 },
+        { governance_control: -0.8, openness_build: 1, human_accountability: -0.2, opportunity_cost: 1.1, capability_skepticism: -0.4, computation_epistemology: 0.2 }
+      ],
+      V3: [
+        { civilizational_risk: 1.6, governance_control: 1.4, openness_build: -1.2, human_accountability: 0.8, opportunity_cost: -0.8 },
+        { civilizational_risk: 0.8, governance_control: 1.2, openness_build: -0.6, human_accountability: 1, opportunity_cost: -0.2 },
+        { civilizational_risk: -0.3, governance_control: -0.1, openness_build: 0.8, human_accountability: 0.3, opportunity_cost: 1.5, capability_skepticism: -0.2 },
+        { civilizational_risk: -0.2, governance_control: -0.4, openness_build: 1.1, human_accountability: -0.8, intelligence_centrality: 1.5, opportunity_cost: 1.8, permissionless_acceleration: 0.5, computation_epistemology: 0.3 }
+      ],
+      V4: [
+        { civilizational_risk: 1.2, governance_control: 1.6, openness_build: -1.5, human_accountability: 0.8, opportunity_cost: -0.6 },
+        { civilizational_risk: 0.6, governance_control: 1, openness_build: -0.5, human_accountability: 1, opportunity_cost: -0.1 },
+        { governance_control: 0.1, openness_build: 0.6, human_accountability: 0.4, opportunity_cost: 0.7 },
+        { governance_control: -1, openness_build: 1.8, human_accountability: -0.2, opportunity_cost: 1.1, permissionless_acceleration: 1.8 }
+      ]
+    };
+
+    const scenarioVectorTargets = Object.fromEntries(Object.entries(scenarioVectorRules).map(([scenarioId, choices]) => [
+      scenarioId,
+      Array.from(new Set(choices.flatMap((choice) => Object.keys(choice))))
+    ]));
+
+    const profilePrototypes = {
+      STOP: makeVector({ civilizational_risk: 1.05, present_social_harm: 0.35, governance_control: 1.25, openness_build: -0.95, human_accountability: 1.15, intelligence_centrality: -0.75, capability_skepticism: -0.15, opportunity_cost: -0.6, computation_epistemology: -0.35 }),
+      SAFE: makeVector({ civilizational_risk: 0.75, present_social_harm: 0.45, governance_control: 0.9, openness_build: -0.45, human_accountability: 1, intelligence_centrality: -0.45, capability_skepticism: 0.1, opportunity_cost: -0.25, computation_epistemology: -0.2 }),
+      AUDT: makeVector({ civilizational_risk: 0, present_social_harm: 1.35, governance_control: 0.75, openness_build: -0.25, human_accountability: 1.35, intelligence_centrality: -0.7, capability_skepticism: 0.3, opportunity_cost: -0.15, computation_epistemology: -0.35 }),
+      NORM: makeVector({ civilizational_risk: -0.1, present_social_harm: 0.55, governance_control: 0.2, openness_build: 0.15, human_accountability: 0.55, intelligence_centrality: -0.2, capability_skepticism: 0.25, opportunity_cost: 0.05, computation_epistemology: -0.05 }),
+      SKEP: makeVector({ civilizational_risk: -0.3, present_social_harm: 0.15, governance_control: 0.45, openness_build: -0.1, human_accountability: 0.4, intelligence_centrality: -0.15, capability_skepticism: 0.85, opportunity_cost: -0.25, permissionless_acceleration: 0, computation_epistemology: -0.65 }),
+      GPUC: makeVector({ civilizational_risk: -0.22, present_social_harm: 0.1, governance_control: 0.35, openness_build: 0.05, human_accountability: 0.12, intelligence_centrality: 0.3, capability_skepticism: 0.35, opportunity_cost: 0.18, permissionless_acceleration: 0, computation_epistemology: 0.5 }),
+      BOOM: makeVector({ civilizational_risk: -0.15, present_social_harm: 0.2, governance_control: -0.15, openness_build: 0.55, human_accountability: 0.4, intelligence_centrality: -0.05, capability_skepticism: 0.25, opportunity_cost: 0.55, permissionless_acceleration: 0.25, computation_epistemology: 0.1 }),
+      SING: makeVector({ civilizational_risk: -0.35, present_social_harm: -0.1, governance_control: -0.45, openness_build: 0.95, human_accountability: -0.7, intelligence_centrality: 1.1, capability_skepticism: -0.1, opportunity_cost: 0.85, permissionless_acceleration: 0.55, computation_epistemology: 0.45 }),
+      EACC: makeVector({ civilizational_risk: -0.55, present_social_harm: -0.05, governance_control: -0.75, openness_build: 1.15, human_accountability: -0.25, intelligence_centrality: 0.35, capability_skepticism: 0.2, opportunity_cost: 0.95, permissionless_acceleration: 1.65, computation_epistemology: 0.05 }),
+      POST: makeVector({ civilizational_risk: 0.1, present_social_harm: 0, governance_control: 0, openness_build: 0.35, human_accountability: -0.95, intelligence_centrality: 1.35, capability_skepticism: 0, opportunity_cost: 0.4, permissionless_acceleration: 0.25, computation_epistemology: 0.3 })
+    };
+
+    const profileDistanceWeights = {
+      civilizational_risk: 1.15,
+      present_social_harm: 1.1,
+      governance_control: 0.35,
+      openness_build: 0.35,
+      human_accountability: 1.7,
+      intelligence_centrality: 1.7,
+      capability_skepticism: 0.65,
+      opportunity_cost: 0.55,
+      permissionless_acceleration: 1.35,
+      computation_epistemology: 1.45
+    };
+
+    const selfProfileDistanceBonus = 0.055;
+    const selfFamilyDistanceBonus = 0.025;
+
+    const profileReferenceCandidates = {
+      STOP: ["eliezer-yudkowsky", "nick-bostrom", "dan-hendrycks-cais"],
+      SAFE: ["stuart-russell", "paul-christiano", "ajeya-cotra", "dario-amodei-anthropic"],
+      AUDT: ["bender-gebru-mitchell-mcmillan-major", "kate-crawford", "ruha-benjamin", "pope-leo-xiv"],
+      NORM: ["ai-as-normal-technology"],
+      SKEP: ["narayanan-kapoor", "gary-marcus-melanie-mitchell"],
+      GPUC: ["rich-sutton"],
+      BOOM: ["andrew-ng", "dario-amodei-anthropic", "elon-musk-xai", "marc-andreessen"],
+      SING: ["ray-kurzweil"],
+      EACC: ["marc-andreessen", "peter-thiel", "effective-accelerationism"],
+      POST: ["benjamin-bratton", "nick-land"]
+    };
+
+    const profileAvatarByCode = {
+      STOP: "assets/profile-pictures/stop-wojak.png",
+      SAFE: "assets/profile-pictures/safe-wojak.png",
+      AUDT: "assets/profile-pictures/audt-wojak.png",
+      NORM: "assets/profile-pictures/norm-wojak.png",
+      SKEP: "assets/profile-pictures/hype-wojak.png",
+      GPUC: "assets/profile-pictures/gpuc-wojak.png",
+      BOOM: "assets/profile-pictures/boom-wojak.png",
+      SING: "assets/profile-pictures/sing-wojak.png",
+      EACC: "assets/profile-pictures/eacc-wojak.png",
+      POST: "assets/profile-pictures/post-wojak.png"
+    };
+
+    const referencePoints = [
+      { id: "eliezer-yudkowsky", label: "Yudkowsky", name: "Eliezer Yudkowsky", cluster: "Rationalist AI x-risk / MIRI", x: -2, y: 1, influence: 5, dx: "-18px", dy: "-12px" },
+      { id: "nick-bostrom", label: "Bostrom", name: "Nick Bostrom", cluster: "Superintelligence / philosophical x-risk", x: -1.68, y: 1, influence: 5, dx: "16px", dy: "10px" },
+      { id: "stuart-russell", label: "Russell", name: "Stuart Russell", cluster: "Beneficial AI / human-compatible AI", x: -1, y: 2, influence: 5, dx: "0px", dy: "0px" },
+      { id: "pope-leo-xiv", label: "Leo XIV", name: "Pope Leo XIV / Magnifica Humanitas", personName: "Pope Leo XIV", cluster: "Catholic social humanism / AI governance", x: -1.18, y: 1.72, influence: 4, dx: "30px", dy: "-20px" },
+      { id: "paul-christiano", label: "Christiano", name: "Paul Christiano", cluster: "Scalable alignment / technical safety", x: -0.87, y: 1.2, influence: 4, dx: "-18px", dy: "8px" },
+      { id: "ajeya-cotra", label: "Cotra", name: "Ajeya Cotra", cluster: "AI timelines / Open Philanthropy", x: -0.87, y: 1, influence: 4, dx: "16px", dy: "-10px" },
+      { id: "dario-amodei-anthropic", label: "Amodei", name: "Dario Amodei / Anthropic", personName: "Dario Amodei", cluster: "Frontier-lab safety optimism", x: -0.22, y: 1.1, influence: 5, dx: "12px", dy: "8px" },
+      { id: "dan-hendrycks-cais", label: "Hendrycks", name: "Dan Hendrycks / Center for AI Safety", personName: "Dan Hendrycks", cluster: "Public AI x-risk and ML safety", x: -1.38, y: 1, influence: 4, dx: "8px", dy: "-12px" },
+      { id: "bender-gebru-mitchell-mcmillan-major", label: "Bender et al.", name: "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major", cluster: "Critical AI / stochastic parrots", x: -0.46, y: 2, influence: 5, dx: "-40px", dy: "-16px" },
+      { id: "kate-crawford", label: "Crawford", name: "Kate Crawford", cluster: "AI political economy / extraction", x: -0.39, y: 2, influence: 4, dx: "18px", dy: "2px" },
+      { id: "ruha-benjamin", label: "Benjamin", name: "Ruha Benjamin", cluster: "Race, automation, and technology critique", x: -0.39, y: 2, influence: 4, dx: "0px", dy: "24px" },
+      { id: "ai-as-normal-technology", label: "Normal Tech", name: "AI as Normal Technology", personName: "Arvind Narayanan / Sayash Kapoor", cluster: "Normal technology / context-specific governance", x: 0.02, y: 0.9, influence: 3, dx: "-12px", dy: "-18px" },
+      { id: "narayanan-kapoor", label: "Narayanan/Kapoor", name: "Arvind Narayanan and Sayash Kapoor", cluster: "AI hype skepticism / snake oil critique", x: -0.07, y: 1.5, influence: 4, dx: "0px", dy: "0px" },
+      { id: "gary-marcus-melanie-mitchell", label: "Marcus/Mitchell", name: "Gary Marcus / Melanie Mitchell", cluster: "Deep learning skepticism", x: 0.07, y: 0.5, influence: 4, dx: "0px", dy: "0px" },
+      { id: "rich-sutton", label: "Sutton", name: "Rich Sutton", cluster: "Bitter Lesson / computation-centered AI", x: 0.6, y: -1, influence: 5, dx: "-12px", dy: "0px" },
+      { id: "benjamin-bratton", label: "Bratton", name: "Benjamin Bratton", cluster: "Posthuman control / planetary computation", x: -1.15, y: -1.1, influence: 4, dx: "12px", dy: "0px" },
+      { id: "yann-lecun", label: "LeCun", name: "Yann LeCun", cluster: "Open-source / architecture optimism / anti-doom", x: 1.03, y: 0, influence: 5, dx: "12px", dy: "4px" },
+      { id: "andrew-ng", label: "Andrew Ng", name: "Andrew Ng", cluster: "Pragmatic AI optimism", x: 1.07, y: 1, influence: 4, dx: "-15px", dy: "-11px" },
+      { id: "sam-altman-openai", label: "Altman/OpenAI", name: "Sam Altman / OpenAI", personName: "Sam Altman", cluster: "Managed AGI optimism", x: 0.84, y: 1, influence: 5, dx: "16px", dy: "11px" },
+      { id: "elon-musk-xai", label: "Musk/xAI", name: "Elon Musk / xAI", personName: "Elon Musk", cluster: "Risk-aware techno-optimism / open-weight frontier build", x: 1.2, y: -0.28, influence: 5, dx: "-24px", dy: "18px" },
+      { id: "peter-thiel", label: "Thiel", name: "Peter Thiel / Founders Fund", personName: "Peter Thiel", cluster: "Techno-libertarian anti-stagnation / founder sovereignty", x: 1.32, y: -0.72, influence: 4, dx: "16px", dy: "-18px" },
+      { id: "ray-kurzweil", label: "Kurzweil", name: "Ray Kurzweil", cluster: "Singularity / transhumanist optimism", x: 1.44, y: -0.4, influence: 5, dx: "-20px", dy: "10px" },
+      { id: "marc-andreessen", label: "Andreessen", name: "Marc Andreessen", cluster: "Techno-optimism / anti-pause politics", x: 1.64, y: 0.4, influence: 4, dx: "15px", dy: "-8px" },
+      { id: "effective-accelerationism", label: "e/acc", name: "e/acc / effective accelerationism", personName: "Guillaume Verdon / Marc Andreessen", cluster: "Accelerationist AI politics", x: 1.93, y: -0.8, influence: 3, dx: "0px", dy: "0px" },
+      { id: "nick-land", label: "Land", name: "Nick Land", cluster: "Accelerationism / Dark Enlightenment", x: 1.79, y: -2, influence: 4, dx: "0px", dy: "0px" }
+    ];
+
+    const categoryInfo = {
+      "X-risk safety": { label: "X-risk / alignment safety", color: "#b42318" },
+      "Catholic social humanism": { label: "Catholic social humanism / human dignity", color: "#9a3412" },
+      "Frontier lab governance": { label: "Frontier lab governance", color: "#0f766e" },
+      "Critical AI": { label: "Critical AI / social harm", color: "#7c3aed" },
+      "Normal technology": { label: "Normal technology / contextual governance", color: "#475569" },
+      "Hype skepticism": { label: "AI hype skeptic / demystification", color: "#64748b" },
+      "Scaling thought": { label: "Scaling / Bitter Lesson", color: "#0369a1" },
+      "Architecture optimism": { label: "Architecture optimism / world models", color: "#4f46e5" },
+      "Posthuman control": { label: "Posthuman control / system governance", color: "#5b21b6" },
+      "Pragmatic optimism": { label: "Pragmatic optimism", color: "#15803d" },
+      "Techno-libertarianism": { label: "Techno-libertarianism / anti-stagnation", color: "#a16207" },
+      "Techno-optimism": { label: "Techno-optimism / singularity", color: "#c2410c" },
+      "Accelerationism": { label: "Accelerationism / posthuman edge", color: "#7f1d1d" }
+    };
+
+    const referenceCategoryById = {
+      "eliezer-yudkowsky": "X-risk safety",
+      "nick-bostrom": "X-risk safety",
+      "stuart-russell": "X-risk safety",
+      "pope-leo-xiv": "Catholic social humanism",
+      "paul-christiano": "X-risk safety",
+      "ajeya-cotra": "X-risk safety",
+      "dan-hendrycks-cais": "X-risk safety",
+      "dario-amodei-anthropic": "Frontier lab governance",
+      "sam-altman-openai": "Frontier lab governance",
+      "bender-gebru-mitchell-mcmillan-major": "Critical AI",
+      "kate-crawford": "Critical AI",
+      "ruha-benjamin": "Critical AI",
+      "ai-as-normal-technology": "Normal technology",
+      "narayanan-kapoor": "Hype skepticism",
+      "gary-marcus-melanie-mitchell": "Hype skepticism",
+      "rich-sutton": "Scaling thought",
+      "benjamin-bratton": "Posthuman control",
+      "yann-lecun": "Architecture optimism",
+      "andrew-ng": "Pragmatic optimism",
+      "elon-musk-xai": "Techno-optimism",
+      "peter-thiel": "Techno-libertarianism",
+      "ray-kurzweil": "Techno-optimism",
+      "marc-andreessen": "Techno-optimism",
+      "effective-accelerationism": "Accelerationism",
+      "nick-land": "Accelerationism"
+    };
+
+    const referenceProfiles = {
+      "eliezer-yudkowsky": "Advanced AI is likely to kill humanity unless alignment is solved before deployment.",
+      "nick-bostrom": "Superintelligent agents may pursue convergent instrumental goals that threaten human control.",
+      "stuart-russell": "AI systems should be designed around uncertainty about human preferences and provable benefit to humans.",
+      "pope-leo-xiv": "AI should serve human dignity, the common good, and the vulnerable; technological power needs public responsibility, governance, and disarmament from logics of domination.",
+      "paul-christiano": "Advanced AI failure may arise through gradual delegation, misalignment, and scalable oversight failures.",
+      "ajeya-cotra": "Transformative AI timelines can be forecast using compute requirements and biological anchors.",
+      "dario-amodei-anthropic": "AI could bring enormous benefits, but frontier scaling requires explicit safety, evals, and deployment thresholds.",
+      "dan-hendrycks-cais": "AI should be treated as a societal-scale risk comparable to other major global hazards.",
+      "bender-gebru-mitchell-mcmillan-major": "Large language models carry social, environmental, labor, data, and representational harms that scale-centered narratives can obscure.",
+      "kate-crawford": "AI is a material, labor, data, and power infrastructure rather than a disembodied intelligence.",
+      "ruha-benjamin": "Automated systems can reproduce and intensify racial hierarchy while presenting themselves as neutral or objective.",
+      "ai-as-normal-technology": "AI should be evaluated as an important but ordinary technology: by use case, failure mode, institutional responsibility, and verifiable benefit.",
+      "narayanan-kapoor": "AI is powerful but often oversold; evaluation should distinguish real capability from snake oil and magical AGI narratives.",
+      "gary-marcus-melanie-mitchell": "Current deep learning is impressive but brittle, and may not be sufficient for robust general intelligence.",
+      "rich-sutton": "General methods that leverage search, learning, and computation ultimately beat attempts to encode human domain knowledge.",
+      "benjamin-bratton": "Frames governance through planetary-scale computation, the Stack, and synthetic intelligence; the emphasis is strong system-level governance rather than open acceleration.",
+      "yann-lecun": "Advanced AI needs new architectures and world models; near-term doomer narratives are overstated.",
+      "andrew-ng": "AI is a general-purpose technology like electricity, and should be deployed broadly to create value.",
+      "sam-altman-openai": "AGI can produce broad abundance if developed with safety, governance, and benefit-sharing institutions.",
+      "elon-musk-xai": "AI could pose extreme risks, so safety matters; but humanity should also expand its boundaries through Mars, Neuralink, xAI, and stronger intelligence.",
+      "peter-thiel": "Modern society's core problem is technological stagnation; the future needs strong founders and deep-tech breakthroughs rather than risk governance, bureaucracy, and consensus politics freezing progress.",
+      "ray-kurzweil": "Technological progress, especially AI and computing, points toward a singularity and human-machine merger.",
+      "marc-andreessen": "AI should be developed aggressively because it can expand abundance, solve problems, and empower people.",
+      "effective-accelerationism": "Technological acceleration is treated as morally urgent, while regulation is often treated as the larger danger.",
+      "nick-land": "Capital, technology, and intelligence are imagined as autonomous runaway processes that exceed humanist control."
+    };
+
+    const referenceSources = {
+      "eliezer-yudkowsky": { title: "AGI Ruin: A List of Lethalities", url: "https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities" },
+      "nick-bostrom": { title: "Superintelligence", url: "https://nickbostrom.com/views/superintelligence.pdf" },
+      "stuart-russell": { title: "Human-Compatible Artificial Intelligence", url: "https://aima.cs.berkeley.edu/~russell/papers/mi19book-hcai.pdf" },
+      "pope-leo-xiv": { title: "Magnifica Humanitas", url: "https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html" },
+      "paul-christiano": { title: "What Failure Looks Like", url: "https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like" },
+      "ajeya-cotra": { title: "Forecasting Transformative AI with Biological Anchors", url: "https://www.cold-takes.com/forecasting-transformative-ai-the-biological-anchors-method-in-a-nutshell/" },
+      "dario-amodei-anthropic": { title: "Machines of Loving Grace", url: "https://darioamodei.com/essay/machines-of-loving-grace" },
+      "dan-hendrycks-cais": { title: "Statement on AI Risk", url: "https://safe.ai/work/statement-on-ai-risk" },
+      "bender-gebru-mitchell-mcmillan-major": { title: "On the Dangers of Stochastic Parrots", url: "https://dl.acm.org/doi/10.1145/3442188.3445922" },
+      "kate-crawford": { title: "Atlas of AI", url: "https://yalebooks.yale.edu/book/9780300264630/atlas-of-ai/" },
+      "ruha-benjamin": { title: "Race After Technology", url: "https://www.ruhabenjamin.com/race-after-technology" },
+      "ai-as-normal-technology": { title: "AI as Normal Technology", url: "https://www.normaltech.ai/p/ai-as-normal-technology" },
+      "narayanan-kapoor": { title: "AI Snake Oil", url: "https://www.aisnakeoil.com/" },
+      "gary-marcus-melanie-mitchell": { title: "Rebooting AI", url: "https://www.penguinrandomhouse.com/books/575774/rebooting-ai-by-gary-marcus-and-ernest-davis/" },
+      "rich-sutton": { title: "The Bitter Lesson", url: "http://www.incompleteideas.net/IncIdeas/BitterLesson.html" },
+      "benjamin-bratton": { title: "The Stack", url: "https://mitpress.mit.edu/9780262029575/the-stack/" },
+      "yann-lecun": { title: "A Path Towards Autonomous Machine Intelligence", url: "https://openreview.net/pdf?id=BZ5a1r-kVsf" },
+      "andrew-ng": { title: "Why AI Is the New Electricity", url: "https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity" },
+      "sam-altman-openai": { title: "Planning for AGI and beyond", url: "https://openai.com/index/planning-for-agi-and-beyond/" },
+      "elon-musk-xai": { title: "Open Release of Grok-1", url: "https://x.ai/news/grok-os" },
+      "peter-thiel": { title: "What Happened to the Future?", url: "https://foundersfund.com/2017/01/manifesto/" },
+      "ray-kurzweil": { title: "The Singularity Is Nearer", url: "https://www.thesingularityisnearer.com/" },
+      "marc-andreessen": { title: "The Techno-Optimist Manifesto", url: "https://a16z.com/the-techno-optimist-manifesto/" },
+      "effective-accelerationism": { title: "Effective Accelerationism", url: "https://wiki.p2pfoundation.net/Effective_Accelerationism" },
+      "nick-land": { title: "Meltdown", url: "https://www.ccru.net/swarm1/1_melt.htm" }
+    };
+
+    const profileTextSources = {
+      ...Object.fromEntries(Object.values(referenceSources).map((source) => [source.title, source.url])),
+      "AGI Ruin": referenceSources["eliezer-yudkowsky"].url,
+      "Shut It All Down": "https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/",
+      "Human Compatible": referenceSources["stuart-russell"].url,
+      "AI is the New Electricity": referenceSources["andrew-ng"].url,
+      "The Singularity Is Near": "https://www.singularity.com/",
+      "The Intelligence Age": "https://ia.samaltman.com/",
+      "Effective Accelerationism manifestos": referenceSources["effective-accelerationism"].url,
+      "Dark Enlightenment": "https://archive.ph/cXUIj"
+    };
+
+    const referenceDetails = {
+      "eliezer-yudkowsky": {
+        core: "If alignment is not solved before powerful AGI is deployed, AI could irreversibly take the future away from humanity; the failure mode is existential, not merely a product accident.",
+        lineage: "Eliezer Yudkowsky developed this position through the rationalist and MIRI alignment milieu of the 2000s-2020s, and crystallized it in AGI Ruin: A List of Lethalities in 2022. The question he raised was not whether today's systems are dangerous, but whether a future general intelligence could be aligned after deployment at all. The argument was motivated by decision theory, intelligence-explosion reasoning, and the perceived institutional failure to treat alignment as a precondition for AGI; its impact was to make hard-takeoff, doom probability, and pause-oriented safety central reference points in AI safety discourse.",
+        placement: "Far left because it supports very high deployment thresholds and safety-first pauses; still above the midline because the central aim is preserving human control and the human future.",
+        focus: "Follow the causal chain: fast capability gain, amplified goal misalignment, and little chance to repair the system after deployment.",
+        counter: "Russell and Christiano emphasize corrigibility and scalable oversight more constructively; e/acc treats pause logic as a threat to progress itself.",
+        works: ["AGI Ruin: A List of Lethalities", "List of Lethalities", "Shut It All Down"]
+      },
+      "nick-bostrom": {
+        core: "Superintelligence may pursue instrumental goals such as resources, power, and self-preservation even when its final goal looks harmless.",
+        lineage: "Nick Bostrom's Superintelligence, published in 2014 at the Oxford Future of Humanity Institute, translated earlier work on existential risk, transhumanism, and future generations into a strategic theory of machine intelligence. He asked what happens if a system becomes much more capable than humans while pursuing goals not identical to ours, and used the orthogonality thesis and instrumental convergence to explain why even banal final goals could produce dangerous instrumental behavior. The book gave policy, philanthropy, and AI safety communities a shared vocabulary for superintelligence risk.",
+        placement: "Left because it emphasizes control before frontier capability; above the midline because the risk is human goals failing to constrain a stronger intelligence.",
+        focus: "The key claim is not about today's models but about what happens once systems have strategic capability.",
+        counter: "Yudkowsky makes the failure case more operational and urgent; normal-technology views argue that this abstraction can crowd out concrete governance.",
+        works: ["Superintelligence", "The Vulnerable World Hypothesis", "Existential risk writings"]
+      },
+      "stuart-russell": {
+        core: "AI should not maximize a fixed objective with certainty; it should remain uncertain about human preferences and stay corrigible, interruptible, and accountable.",
+        lineage: "Stuart Russell, a co-author of the standard AI textbook Artificial Intelligence: A Modern Approach, reframed the objective-specification problem in Human Compatible in 2019. In the context of classical AI's assumption that agents maximize a known objective, he asked how machines should act if human preferences are uncertain, incomplete, and revealed only through interaction. The resulting beneficial-AI program influenced work on assistance games, inverse reinforcement learning, corrigibility, and policy language around human oversight.",
+        placement: "High control because the system must be designed to be beneficial before broad deployment; high human-centeredness because human preferences and accountability remain central.",
+        focus: "The important move is turning safety from fear into a design principle: powerful machines should know that they do not know what humans ultimately want.",
+        counter: "Yudkowsky thinks such schemes may still underestimate difficulty; accelerationists worry they hand deployment speed to experts and regulators.",
+        works: ["Human Compatible", "Human-Compatible Artificial Intelligence", "Assistance games"]
+      },
+      "pope-leo-xiv": {
+        core: "AI should serve human dignity, the common good, workers, and vulnerable people; technical power needs public responsibility and moral limits.",
+        lineage: "Pope Leo XIV's Magnifica Humanitas, released in May 2026, places AI inside the Catholic social teaching tradition that runs from Leo XIII's Rerum Novarum in 1891 through later teaching on labor, dignity, solidarity, and the common good. The question is whether AI can serve the human person without turning people into data, labor inputs, or objects of domination. Its potential impact is to make human dignity, labor protection, truth, and anti-domination part of the moral vocabulary of AI governance beyond secular policy circles.",
+        placement: "Upper-left because it emphasizes governance, accountability, and social boundaries; very high on human-centeredness because people are not variables in an optimization system.",
+        focus: "The position is not anti-technology. It asks what vision of the person and community technological systems are serving.",
+        counter: "Techno-optimists expect growth to solve many problems; posthuman views question whether human dignity should be the final coordinate.",
+        works: ["Catholic social teaching on technology", "AI ethics and human dignity addresses", "Magnifica Humanitas"]
+      },
+      "paul-christiano": {
+        core: "Advanced AI failure may come through gradual delegation, weak oversight, and goal misgeneralization rather than a single dramatic turn.",
+        lineage: "Paul Christiano's What Failure Looks Like, written in the 2018-2019 Alignment Forum / LessWrong context, asked what AI failure might look like without a sudden cinematic takeover. He raised the problem because ordinary economic delegation, proxy objectives, and weak oversight could gradually hand real power to systems that are only superficially aligned. The essay shaped later agendas around intent alignment, scalable oversight, iterated amplification, ELK, reward modeling, and delegated cognition.",
+        placement: "Left but not maximally left because it emphasizes technical oversight and governance thresholds; above the midline because the goal is faithful service to human intent.",
+        focus: "Look at the supervision chain: when humans cannot directly evaluate complex tasks, how do we avoid systems optimizing the metric rather than the intent?",
+        counter: "Yudkowsky thinks these schemes remain too optimistic; normal-technology views ask whether such failures are really different from ordinary system failures.",
+        works: ["What Failure Looks Like", "Iterated amplification", "ELK and scalable oversight discussions"]
+      },
+      "ajeya-cotra": {
+        core: "Transformative AI timelines can be estimated using biological anchors and compute requirements, so safety and policy should prepare in advance.",
+        lineage: "Ajeya Cotra's 2020 Open Philanthropy report Forecasting Transformative AI with Biological Anchors asked how one could estimate transformative-AI timelines from compute requirements, training analogies, and biological anchors rather than pure intuition. The context was longtermist grantmaking and policy planning under deep uncertainty. Its impact was to make timelines, training compute, and biological-anchor models central tools for AI risk prioritization, even among people who reject any single forecast date.",
+        placement: "Left because it takes transformative AI risk seriously; above the midline because the concern is how human society prepares and governs.",
+        focus: "The point is not a specific year. It is a way of making an uncertain future discussable and decision-relevant.",
+        counter: "Hype skeptics argue that timeline models may over-rely on scaling assumptions; accelerationists worry that early constraints delay benefits.",
+        works: ["Forecasting Transformative AI with Biological Anchors", "Open Phil AI timelines work"]
+      },
+      "dario-amodei-anthropic": {
+        core: "Frontier AI can produce enormous benefits, but scaling risks need evals, responsible scaling policies, and deployment thresholds.",
+        lineage: "Dario Amodei's position is built from three linked Anthropic-era texts: Constitutional AI in 2022, the Responsible Scaling Policy in 2023, and Machines of Loving Grace in 2024. In the context of a frontier lab continuing to scale models, he asks whether rapid capability growth can be paired with evals, staged deployment, and safety thresholds rather than either full pause or full acceleration. The impact is a governance style in which frontier labs present safety engineering and institutional commitments as the condition for pursuing very large upside.",
+        placement: "Near center-left because it does not reject deployment but wants controlled deployment; above the midline because the benefit story serves medicine, science, governance, and human welfare.",
+        focus: "The tension is the point: keep building while using thresholds and evals to reduce catastrophic downside.",
+        counter: "Critical AI argues lab self-governance cannot solve concentrated power; e/acc sees responsible scaling as slowdown.",
+        works: ["Machines of Loving Grace", "Responsible Scaling Policy", "Constitutional AI"]
+      },
+      "dan-hendrycks-cais": {
+        core: "AI should be treated as a societal-scale risk alongside nuclear, pandemic, and climate risks, not merely as an internal technical problem.",
+        lineage: "Dan Hendrycks and the Center for AI Safety turned technical ML safety concerns into public risk advocacy through work such as X-Risk Analysis for AI Research in 2022 and the Statement on AI Risk in May 2023. The question was how to make extreme AI risks legible to policymakers, scientists, and the public without requiring them to accept a full LessWrong-style takeoff model. The result was a short, institutionally portable extinction-risk frame that entered mainstream AI policy debates.",
+        placement: "Left because it supports public safety thresholds for dangerous capabilities; above the midline because the aim is protecting society from systemic risk.",
+        focus: "The main move is socializing AI risk: taking it from forum argument to policy, standards, and institutions.",
+        counter: "Bender/Gebru-style critiques ask whether x-risk talk hides present harms; accelerationists argue it creates a pause coalition.",
+        works: ["Statement on AI Risk", "CAIS AI risk work", "ML safety papers"]
+      },
+      "bender-gebru-mitchell-mcmillan-major": {
+        core: "Large language models can amplify data extraction, environmental cost, labor exploitation, bias, and concentrated power while scale narratives hide those harms.",
+        lineage: "Emily Bender, Timnit Gebru, Angelina McMillan-Major, and Margaret Mitchell intervened in the scale-up of language models with the 2021 FAccT paper On the Dangers of Stochastic Parrots. In the context of rapidly growing LMs, they asked what social, environmental, epistemic, and representational costs are hidden by benchmark performance. The paper helped define critical AI's language-model critique by shifting attention from capability spectacle to data extraction, labor, documentation, power, and institutional accountability.",
+        placement: "High because it insists on social accountability and affected communities; left because it supports audits, constraints, and institutional responsibility.",
+        focus: "Look behind model capability: whose data, whose labor, who bears errors, and who benefits from scale?",
+        counter: "X-risk safety says future loss of control is the larger risk; techno-optimists argue the critique underweights general-purpose benefits.",
+        works: ["On the Dangers of Stochastic Parrots", "FAccT / critical NLP debates"]
+      },
+      "kate-crawford": {
+        core: "AI is a material infrastructure of minerals, energy, data, labor, state power, and corporate power, not a disembodied cloud of intelligence.",
+        lineage: "Kate Crawford's Atlas of AI, published by Yale University Press in 2021 after more than a decade of work on AI's social implications, asks what AI looks like when treated as an extractive infrastructure rather than an abstract algorithm. Drawing on media studies, STS, political economy, and field research, Crawford connects minerals, data, labor, classification, and state power. The impact is to make material supply chains and political economy unavoidable in serious AI ethics debate.",
+        placement: "High because it foregrounds power, labor, and social consequences; left because it asks for institutional constraints rather than default deployment.",
+        focus: "The point is demystification: beyond model ability lie supply chains, annotation labor, data capture, and governance power.",
+        counter: "Andrew Ng-style deployment optimism stresses applied value; Sutton-style computation-centered thought talks less about material and labor foundations.",
+        works: ["Atlas of AI", "AI Now Institute work", "The politics of data and extraction"]
+      },
+      "ruha-benjamin": {
+        core: "Automated systems often recode racial and social hierarchies as neutral technology through prediction, scoring, and administrative decision-making.",
+        lineage: "Ruha Benjamin's Race After Technology, published in 2019, introduced the New Jim Code in the context of debates over algorithmic bias, policing, health care, and platform power. She asked why apparently neutral technologies so often reproduce racial hierarchy and social punishment. The book's impact was to connect AI ethics with abolitionist critique, race and technology studies, and the design of institutions that do not merely automate existing injustice.",
+        placement: "High because it centers affected communities, rights, and justice; left because it distrusts unaudited deployment inside unequal institutions.",
+        focus: "Ask whether a system reduces bias or simply turns old power structures into harder-to-contest automated procedures.",
+        counter: "Normal Technology tends to prefer case-by-case governance; deployment optimists argue technology can improve flawed institutions.",
+        works: ["Race After Technology", "Viral Justice", "New Jim Code"]
+      },
+      "ai-as-normal-technology": {
+        core: "AI is important but ordinary: it will change many sectors, but governance should be based on specific contexts, failure modes, and responsibility chains rather than AGI mythology.",
+        lineage: "Arvind Narayanan and Sayash Kapoor's AI as Normal Technology framing, developed after their AI Snake Oil work and circulated in 2024-2025 policy discussions, asks what changes if AI is governed as a powerful but ordinary technology rather than as magic or apocalypse. They raise it against both AGI exceptionalism and product hype. Its impact is to redirect attention toward sector-specific regulation, empirical performance, deployment context, and institutional adaptation.",
+        placement: "Near the center because it rejects both unconditional openness and a single catastrophe-driven pause; above the midline because it cares about institutional responsibility.",
+        focus: "The key contrast is with x-risk and e/acc narratives: AI matters, but no single future story should dominate every use case.",
+        counter: "Yudkowsky and Bostrom say the normal-technology analogy underestimates superintelligence; Andreessen and e/acc say contextual governance can become bureaucracy against innovation.",
+        works: ["AI as Normal Technology", "Context-specific AI governance", "Technology diffusion and regulation arguments"]
+      },
+      "narayanan-kapoor": {
+        core: "Many AI products package prediction, classification, or generation as general intelligence; evaluation should separate useful tools from snake oil and inflated AGI stories.",
+        lineage: "Arvind Narayanan and Sayash Kapoor's AI Snake Oil project, culminating in the 2024 book AI Snake Oil, asks how to distinguish AI that works from predictive systems sold far beyond their evidence. The context is a long record of failed or overstated systems in hiring, policing, education, and business analytics. Its impact is to give journalists, policymakers, and practitioners a vocabulary for separating generative, predictive, and decision-making AI claims.",
+        placement: "Upper-middle because it values empirical evaluation and social consequences; near the center horizontally because it is anti-overclaiming, not anti-technology.",
+        focus: "For every system, ask: what is the task, what is the baseline, what works in the real world, and who is responsible when it fails?",
+        counter: "Scaling thought treats short-term flaws as less relevant to long-term general methods; singularity optimism sees this skepticism as underestimating exponential progress.",
+        works: ["AI Snake Oil", "AI Snake Oil newsletter", "Predictive AI critique"]
+      },
+      "gary-marcus-melanie-mitchell": {
+        core: "Deep learning is useful but brittle; without abstraction, causality, compositional generalization, and common sense, demos should not be mistaken for AGI.",
+        lineage: "Gary Marcus and Ernest Davis's Rebooting AI in 2019, alongside Melanie Mitchell's Artificial Intelligence: A Guide for Thinking Humans in the same year, came out of cognitive science, symbolic AI, and complex-systems traditions. They asked whether deep learning systems that perform well on benchmarks possess robust abstraction, causality, and common sense. Their impact was to sustain a capability-skeptical counterweight to scaling optimism inside both public and technical debates.",
+        placement: "Near the center horizontally because the main claim is about capability, not a governance movement; above the midline because it stresses human-understandable reasoning and evaluation.",
+        focus: "The boundary question matters: fluent output is not the same as transferable understanding, causal modeling, or reliable planning.",
+        counter: "Sutton's Bitter Lesson says hand-built cognitive structure loses to general computation; LeCun argues new architectures can close many gaps.",
+        works: ["Rebooting AI", "Artificial Intelligence: A Guide for Thinking Humans", "Deep learning critique essays"]
+      },
+      "rich-sutton": {
+        core: "In the long run, general methods using search, learning, and computation beat systems built around hand-coded human domain knowledge.",
+        lineage: "Rich Sutton's 2019 essay The Bitter Lesson distills decades of reinforcement learning and AI history into a methodological claim: general methods that leverage computation eventually beat systems built around human expert knowledge. He raised the question after observing repeated transitions in chess, Go, speech, and vision. Its impact was to strengthen a compute-and-search-centered research ideology, often invoked against human-crafted symbolic or domain-specific approaches.",
+        placement: "Lower-right because it weakens the authority of human intuition and handcrafted knowledge; not as far right as e/acc because it is not primarily a political accelerationist program.",
+        focus: "The epistemic lesson is to stop treating human expert knowledge as the final structure of intelligence.",
+        counter: "Marcus and Mitchell argue scale still lacks abstraction and causality; Critical AI asks who supplies the data, labor, and energy for computation-centered progress.",
+        works: ["The Bitter Lesson", "Reinforcement learning research tradition"]
+      },
+      "benjamin-bratton": {
+        core: "AI should be understood through planetary-scale computation, platform stacks, and synthetic intelligence, not simply as a human tool or market product.",
+        lineage: "Benjamin Bratton's The Stack in 2015 and The Terraforming in 2019 come from design theory, geopolitics, infrastructure studies, and posthuman governance. He asked how planetary-scale computation reorganizes sovereignty, cities, platforms, users, and states into a layered accidental megastructure. The impact is a non-simple humanist account of AI and computation: governance becomes system design at planetary scale, not merely product regulation or individual rights.",
+        placement: "Lower-left because it is not open acceleration but strong systems governance; lower half because it does not treat current human/social structures as the only center.",
+        focus: "The Stack matters: AI is one layer in a larger planetary computation architecture, so governance is system design, not just product regulation.",
+        counter: "e/acc stresses decentralized acceleration; Catholic and social-humanist views insist that human dignity must limit system logic.",
+        works: ["The Stack", "The Terraforming", "Synthetic intelligence and planetary computation essays"]
+      },
+      "yann-lecun": {
+        core: "Current doomer narratives overstate the danger of existing systems; stronger AI needs world models, planning, and new architectures rather than treating LLMs as AGI.",
+        lineage: "Yann LeCun's A Path Towards Autonomous Machine Intelligence, released in 2022, extends his long deep-learning and representation-learning program into a world-model agenda. In the context of LLM-driven AI risk debate, he asked how machines could learn like humans and animals through predictive world models, planning, and intrinsic objectives rather than text prediction alone. Its impact is to provide a capability-optimist but LLM-skeptical alternative to both doom and pure scaling narratives.",
+        placement: "Right because it resists overcentralization and premature restriction; near the midline vertically because the argument is architectural rather than explicitly posthuman.",
+        focus: "Separate current LLM limits, future architecture routes, and AI-risk narratives.",
+        counter: "Yudkowsky argues architecture details do not remove loss-of-control risk; Narayanan and Kapoor share some anti-hype instincts but focus more on product misuse.",
+        works: ["A Path Towards Autonomous Machine Intelligence", "JEPA / world model talks", "Open source AI arguments"]
+      },
+      "andrew-ng": {
+        core: "AI is a general-purpose technology like electricity; the priority is connecting it to healthcare, education, industry, and services to create measurable value.",
+        lineage: "Andrew Ng's AI is the New Electricity framing, popularized in 2017 through lectures and industry talks, asks how AI should be understood as a general-purpose enabling technology for many sectors rather than a single AGI rupture. The context is applied machine learning, enterprise adoption, and the translation of research into products. Its impact was to normalize deployment, workflow redesign, and measurable sectoral value as the practical center of AI strategy.",
+        placement: "Upper-right because it emphasizes deployment and practical benefit; above the midline because the goal is improving human institutions and services.",
+        focus: "The practical questions are data, workflow, product, organizational adoption, and measurable gains.",
+        counter: "Safety views say deployment speed must be limited by dangerous capability thresholds; Critical AI says productivity narratives can hide labor and power issues.",
+        works: ["AI is the New Electricity", "Landing AI / applied AI talks", "AI transformation playbooks"]
+      },
+      "sam-altman-openai": {
+        core: "AGI can create broad abundance, but the transition needs safety, governance, benefit sharing, and staged deployment.",
+        lineage: "Sam Altman and OpenAI's Planning for AGI and beyond, published in 2023, articulates a frontier-lab attempt to combine AGI ambition, deployment, safety, and benefit sharing. The question is how a private lab can justify building increasingly general systems while claiming to manage social risk and distribute benefits. Its impact is to define the managed-AGI corporate imaginary: constrained defaults, broad access, safety rhetoric, and centralized lab authority in one package.",
+        placement: "Center-right and upper because it accepts continued building and deployment while retaining safety, governance, and social-benefit language.",
+        focus: "The tension is central: the same discourse contains AGI abundance, lab concentration, and safety thresholds.",
+        counter: "Critical AI questions concentrated power; e/acc questions closed access and control; hard safety questions whether deployment commitments are enough.",
+        works: ["Planning for AGI and beyond", "OpenAI charter", "Governance and deployment statements"]
+      },
+      "elon-musk-xai": {
+        core: "Musk's AI position is mixed: he has long warned about existential AI risk, while also imagining humanity's future through Mars, Neuralink, human-AI symbiosis, and xAI-style stronger intelligence.",
+        lineage: "Elon Musk's place in AI discourse comes from two strands: early involvement with OpenAI and later AI safety / pause warnings, plus SpaceX, Neuralink, the launch of xAI in 2023, Grok, and the release of Grok-1 weights and architecture. The question he raises is not simply pause versus acceleration, but who gets to build an AI that is framed as more truth-seeking, less captured by existing institutions, and still safe for humanity. The public effect is a hybrid of x-risk warning, posthuman expansion imagery, anti-OpenAI politics, open-weight signaling, and high-intensity build culture.",
+        placement: "Right but not all the way to e/acc: the rightward position comes from xAI building, Grok's open-weight release, and competitive deployment; the below-midline position reflects Mars / Neuralink / human-AI symbiosis moving beyond ordinary human-centered framing without becoming Land-style technological autonomy.",
+        focus: "Read it as a hybrid: not a pure safety-pause view and not pure accelerationism, but risk warning plus posthuman expansion plus competitive build plus partial openness.",
+        counter: "Andreessen emphasizes x-risk less; Yudkowsky emphasizes pause and alignment first; Altman/OpenAI emphasizes lab governance and benefit sharing.",
+        works: ["Open Release of Grok-1", "Pause Giant AI Experiments open letter", "xAI / Grok public positioning"]
+      },
+      "peter-thiel": {
+        core: "Thiel's core is not generic AI optimism but anti-stagnation: modern society is trapped by risk aversion, bureaucracy, and low-ambition technology, and needs deep tech, founder power, and vertical progress.",
+        lineage: "Peter Thiel's technology politics comes from PayPal, Palantir, Founders Fund, Zero to One, and the anti-stagnation line captured by 'we wanted flying cars, instead we got 140 characters.' The question is why the West stopped producing enough civilization-changing technologies after roughly the 1970s, and why universities, regulation, consensus politics, and competitive markets can turn real vertical innovation into incremental improvement. In AI discourse, this makes AI a deep technology that can break stagnation and reorganize power, not merely another software product.",
+        placement: "Lower-right because it resists stagnation and excessive risk governance, while backing strong founders, deep tech, and breakthrough capital allocation; lower half because it puts less faith in democratic consensus and existing human institutions as final arbiters of technological futures.",
+        focus: "Read it as anti-stagnation rather than open source: Thiel cares more about who has the power to drive civilization-scale technological breakthroughs than about decentralized openness.",
+        counter: "Andreessen gives techno-optimism a more public-facing abundance story; e/acc turns acceleration into a meme; Catholic and social-humanist views question whether this future politics sacrifices the common good and human dignity.",
+        works: ["What Happened to the Future?", "Zero to One", "Founders Fund / Palantir worldview"]
+      },
+      "ray-kurzweil": {
+        core: "Exponential progress in computation, AI, life sciences, and nanotechnology leads toward the singularity, life extension, and human-machine merger.",
+        lineage: "Ray Kurzweil's The Singularity Is Near in 2005, updated by The Singularity Is Nearer in 2024, asks whether exponential trends in computation, biotechnology, nanotechnology, and AI imply a coming merger of human and machine intelligence. The context is transhumanism and technological forecasting rather than AI governance. Its impact was to popularize the singularity as a civilizational horizon, making abundance, longevity, and human-machine integration part of mainstream AI futurism.",
+        placement: "Lower-right because it embraces strong technological progress and human-machine fusion; lower half because present human form is not the endpoint.",
+        focus: "The structure is evolutionary and accelerating: AI is not just a tool but part of a continuous transformation of civilization.",
+        counter: "Hype skeptics think exponential forecasts often ignore bottlenecks; Catholic and social-humanist views question the anthropology behind enhancement.",
+        works: ["The Singularity Is Near", "The Singularity Is Nearer", "The Age of Spiritual Machines"]
+      },
+      "marc-andreessen": {
+        core: "Technological progress is a primary force against scarcity, disease, and poverty; anti-tech politics, pauses, and excessive regulation suppress human flourishing.",
+        lineage: "Marc Andreessen's Why AI Will Save the World in June 2023 and The Techno-Optimist Manifesto in October 2023 translate venture-capital build culture into an explicit political theory of technology. In the context of post-ChatGPT regulation debates, he asked whether AI fear, safety, and ethics had become veto powers against progress. The impact was to harden a Silicon Valley anti-pause position that treats markets, entrepreneurship, and abundance as moral arguments for accelerated development.",
+        placement: "Right because it supports building, deployment, and anti-regulatory politics; slightly above the midline because the stated goal is human abundance and individual empowerment.",
+        focus: "The political posture matters: resist turning safety, ethics, or governance into a default veto over building.",
+        counter: "Critical AI says this underweights power and distribution; x-risk safety says it underweights low-probability high-loss risk.",
+        works: ["The Techno-Optimist Manifesto", "Why AI Will Save the World", "a16z AI essays"]
+      },
+      "effective-accelerationism": {
+        core: "Technological acceleration is treated as a moral and civilizational task; regulation, pauses, and safety narratives are often treated as the larger risk.",
+        lineage: "Effective accelerationism emerged around 2022 in crypto, AI Twitter, and pseudonymous build-culture networks associated with figures such as Beff Jezos, then became more visible during 2023 AI regulation fights. It asks why technological acceleration should be treated as a moral good and why deceleration, central control, or safety gatekeeping might be the greater danger. Its impact is memetic rather than institutional: it gives open diffusion, speed, and anti-regulatory politics a recognizable badge.",
+        placement: "Far right because acceleration and open diffusion are central; lower half because it weakens human-centered governance and gives more weight to technological evolution, markets, and decentralization.",
+        focus: "Read it as a memetic and political movement rather than a tight academic theory. People who use e/acc language can differ a lot internally.",
+        counter: "Safety advocates think it romanticizes externalized risk; critical AI thinkers see power and harm being treated as development costs.",
+        works: ["Effective Accelerationism manifestos", "Beff Jezos / e/acc discourse", "Permissionless innovation arguments"]
+      },
+      "nick-land": {
+        core: "Capital, technology, and intelligence are imagined as an autonomous acceleration process that exceeds humanist political control.",
+        lineage: "Nick Land's Meltdown, first performed and circulated in the mid-1990s around the Cybernetic Culture Research Unit at Warwick, joined Deleuze and Guattari, cybernetics, cyberpunk, and capitalism into a theory-fiction of runaway technocapital. The question was not how humans should govern technology, but whether capital and intelligence are already nonhuman processes dissolving liberal human control. Its impact runs through accelerationist theory, posthuman political aesthetics, and later internet ideologies, often as both inspiration and warning.",
+        placement: "Far lower-right because it embraces acceleration and anti-human-centeredness; openness here is not democratic openness but technocapital pushing itself forward.",
+        focus: "Distinguish two layers: philosophical nonhuman acceleration, and the later internet-political influence of Dark Enlightenment.",
+        counter: "Bratton is also posthuman in some ways but emphasizes system design and governance; humanist safety and Catholic social thought treat Land as a warning case.",
+        works: ["Meltdown", "CCRU writings", "Fanged Noumena"]
+      }
+    };
+
+    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "D01", "R01", "R04", "E01", "H01", "H03", "H04"];
+    const scenarioOrder = ["V2", "V4", "V3"];
+
+    const introPage = {
+      id: "intro",
+      kind: "intro",
+      title: "Welcome",
+      tag: "START",
+      instruction: "Read this before you begin",
+      prompt: "Welcome to AI Persona.",
+      sections: [
+        {
+          title: "Who this is for",
+          body: "This quiz is for people with some familiarity with AI debates, technology policy, or AI use in society. You do not need technical AI expertise."
+        },
+        {
+          title: "What you will do",
+          body: "Answer 16 short questions. For each one, choose the option closest to your view, even if no option fits perfectly. Some questions are abstract or politically loaded. If two answers both seem partly right, choose the one closest to your default judgment."
+        },
+        {
+          title: "Data notice",
+          body: "Your answers may be used to improve the quiz and understand response patterns. The quiz does not ask for your name or contact information."
+        }
+      ],
+      links: [
+        {
+          title: "AI Governance Spectrum",
+          body: "View reference figures, two-axis positions, and four judgment spectrums.",
+          href: "ai-governance-spectrum.html"
+        },
+        {
+          title: "AI Persona",
+          body: "View the 10 AI governance persona results, profile pictures, and representative texts.",
+          href: "ai-governance-persona-profiles-en.html"
+        }
+      ],
+      linksTitle: "Preview the result categories"
+    };
+
+    const pages = [
+      introPage,
+      ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
+        id: q.id,
+        kind: "core",
+        title: q.id === "U01" ? "Usage Background" : "Core Judgments",
+        subtitle: q.id === "U01" ? "Not included in coordinate scoring; helps interpret the sample" : "Choose the judgment closest to yours",
+        tag: q.id,
+        instruction: q.id === "U01" ? "Choose the usage pattern closest to yours" : "Choose the position closest to your view",
+        prompt: q.text,
+        options: q.options
+      })),
+      ...scenarioOrder.map((id) => scenarios.find((s) => s.id === id)).map((s) => ({
+        id: s.id,
+        kind: "scenario",
+        title: "Scenario Choice",
+        subtitle: "Low-weight scored scenario for profile calibration",
+        tag: s.id,
+        instruction: "Choose the response closest to your judgment in this concrete case",
+        prompt: s.prompt,
+        options: s.options.map((option, i) => [option, String.fromCharCode(65 + i), option])
+      })),
+      {
+        id: "closestStatement",
+        kind: "statement",
+        title: "AI Persona Check (Multiple Select)",
+        subtitle: "Final question: select all that apply; not included in coordinate scoring",
+        tag: "SELF",
+        instruction: "This is a multiple-select question: choose every statement that feels close. If none fit, select only the last option",
+        prompt: "Which statements are closest to your current AI governance persona? (Select all that apply)",
+        options: statements.map((statement, i) => [statement, String(i + 1), statement]),
+        multiple: true,
+        exclusiveValue: statements[statements.length - 1]
+      }
+    ];
+
+    let currentIndex = 0;
+    let answers = {};
+    let activeReferenceId = "";
+    let lastSubmittedFingerprint = "";
+    let autoAdvanceTimer = 0;
+    let shareImageUrl = "";
+    const DRAFT_STORAGE_KEY = "ai-governance-persona-draft-v1";
+
+    function loadDraft() {
+      try {
+        const raw = window.localStorage.getItem(DRAFT_STORAGE_KEY);
+        if (!raw) return;
+        const draft = JSON.parse(raw);
+        if (!draft || draft.quiz_id !== "ai-ideology-quiz" || !draft.answers || typeof draft.answers !== "object") return;
+        const validPageIds = new Set(pages.map((page) => page.id));
+        answers = Object.fromEntries(Object.entries(draft.answers).filter(([id]) => validPageIds.has(id)));
+        if (Number.isInteger(draft.currentIndex) && draft.currentIndex >= 0 && draft.currentIndex <= pages.length) {
+          currentIndex = draft.currentIndex;
+        }
+      } catch (error) {
+        window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+      }
+    }
+
+    function saveDraft() {
+      try {
+        window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({
+          quiz_id: "ai-ideology-quiz",
+          saved_at: new Date().toISOString(),
+          currentIndex,
+          answers
+        }));
+      } catch (error) {
+        // Local draft persistence is best-effort; the quiz should still work without it.
+      }
+    }
+
+    function clearDraft() {
+      try {
+        window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+      } catch (error) {
+        // Ignore storage failures.
+      }
+    }
+
+    loadDraft();
+
+    const form = document.querySelector("#quizForm");
+    const brandProgress = document.querySelector("#brandProgress");
+    const heroSection = document.querySelector("#heroSection");
+    const quizPager = document.querySelector("#quizPager");
+    const resultPanel = document.querySelector("#resultPanel");
+    const pageCount = document.querySelector("#pageCount");
+    const pageTag = document.querySelector("#pageTag");
+    const pageInstruction = document.querySelector("#pageInstruction");
+    const pagePrompt = document.querySelector("#pagePrompt");
+    const pageOptions = document.querySelector("#pageOptions");
+    const progressFill = document.querySelector("#progressFill");
+    const progressText = document.querySelector("#progressText");
+    const introResourceLinks = document.querySelector("#introResourceLinks");
+    const prevTopBtn = document.querySelector("#prevTopBtn");
+    const prevBtn = document.querySelector("#prevBtn");
+    const nextBtn = document.querySelector("#nextBtn");
+    const pagerActions = document.querySelector(".pager-actions");
+    const abilityNarrative = document.querySelector("#abilityNarrative");
+    const dimensionR = document.querySelector("#dimensionR");
+    const dimensionC = document.querySelector("#dimensionC");
+    const dimensionH = document.querySelector("#dimensionH");
+    const mapDot = document.querySelector("#mapDot");
+    const mapDotCode = document.querySelector("#mapDotCode");
+    const mapQuadrant = document.querySelector("#mapQuadrant");
+    const mapLegend = document.querySelector("#mapLegend");
+    const referenceLayer = document.querySelector("#referenceLayer");
+    const referenceDetail = document.querySelector("#referenceDetail");
+    const referenceModal = document.querySelector("#referenceModal");
+    const profileAvatar = document.querySelector("#profileAvatar");
+    const profileCode = document.querySelector("#profileCode");
+    const profileName = document.querySelector("#profileName");
+    const profileRoast = document.querySelector("#profileRoast");
+    const profileTexts = document.querySelector("#profileTexts");
+    const profileTell = document.querySelector("#profileTell");
+    const nearestPerson = document.querySelector("#nearestPerson");
+    const nearestClaim = document.querySelector("#nearestClaim");
+    const nearestPersonSection = document.querySelector("#nearestPersonSection");
+    const classificationConfidence = document.querySelector("#classificationConfidence");
+    const classificationConfidenceText = document.querySelector("#classificationConfidenceText");
+    const submitStatus = document.querySelector("#submitStatus");
+    const resetBtn = document.querySelector("#resetBtn");
+    const editLastBtn = document.querySelector("#editLastBtn");
+    const restartBtn = document.querySelector("#restartBtn");
+    const shareBtn = document.querySelector("#shareBtn");
+    const longShareBtn = document.querySelector("#longShareBtn");
+    const shareCard = document.querySelector("#shareCard");
+    const shareStatus = document.querySelector("#shareStatus");
+    const sharePreview = document.querySelector("#sharePreview");
+    const shareDownload = document.querySelector("#shareDownload");
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function renderProfileTexts(value) {
+      const titles = String(value).split(",").map((title) => title.trim()).filter(Boolean);
+      if (!titles.length) return "--";
+      return titles.map((title) => {
+        const url = profileTextSources[title];
+        if (!url) return escapeHTML(title);
+        return `<a class="profile-text-link" href="${escapeHTML(url)}" target="_blank" rel="noreferrer">${escapeHTML(title)}</a>`;
+      }).join(", ");
+    }
+
+    function profileAvatarFor(code) {
+      return profileAvatarByCode[code] || profileAvatarByCode.NORM;
+    }
+
+    function displayProfileCode(code) {
+      return code === "EACC" ? "E/ACC" : code;
+    }
+
+    function selected(name) {
+      return answers[name] || "";
+    }
+
+    function selectedValues(name) {
+      const value = answers[name];
+      if (Array.isArray(value)) return value;
+      return value ? [value] : [];
+    }
+
+    function hasAnswer(page) {
+      if (page.kind === "intro") return true;
+      const value = answers[page.id];
+      return Array.isArray(value) ? value.length > 0 : Boolean(value);
+    }
+
+    function centered(value) {
+      return (Number(value) - 3) / 2;
+    }
+
+    function formatScore(value) {
+      if (!Number.isFinite(value)) return "--";
+      const rounded = Number(value.toFixed(2));
+      return rounded > 0 ? `+${rounded}` : `${rounded}`;
+    }
+
+    function clampScore(value) {
+      return Math.max(-2, Math.min(2, value));
+    }
+
+    function updateSpectrumMarker(id, value, min, max) {
+      const marker = document.getElementById(id);
+      if (!marker) return;
+      if (!Number.isFinite(value)) {
+        marker.style.setProperty("--pos", "50%");
+        marker.dataset.empty = "true";
+        return;
+      }
+      const percent = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+      marker.style.setProperty("--pos", `${percent}%`);
+      marker.dataset.empty = "false";
+    }
+
+    function diagnosticValue(kind) {
+      const q = questions.find((item) => item.dimension === "r" && item.diagnosis === kind);
+      const value = q ? selected(q.id) : "";
+      return value ? clampScore(2 * centered(value)) : NaN;
+    }
+
+    function directedDimensionScore(dimension) {
+      const items = questions.filter((q) => q.dimension === dimension);
+      const values = items
+        .map((q) => {
+          const value = selected(q.id);
+          return value ? centered(value) * q.direction : NaN;
+        })
+        .filter(Number.isFinite);
+
+      return values.length === items.length
+        ? 2 * (values.reduce((sum, value) => sum + value, 0) / values.length)
+        : NaN;
+    }
+
+    function riskSpectrumLabel(result) {
+      const entries = [
+        { key: "catastrophic", value: result.rCatastrophic, label: "civilizational risk" },
+        { key: "social", value: result.rSocialHarm, label: "current social harm" },
+        { key: "normal", value: result.rNormalTech, label: "normal tech / overnarrative" },
+        { key: "opportunity", value: result.rOpportunityCost, label: "opportunity cost" }
+      ].filter((entry) => Number.isFinite(entry.value)).sort((a, b) => b.value - a.value);
+      if (!entries.length) return "--";
+      const [top, second] = entries;
+      if (!second) return `primary: ${top.label}`;
+      if (top.value < 0.4) return `${top.label} / ${second.label} (weak signal)`;
+      if (top.value - second.value <= 0.35) return `${top.label} / ${second.label} balanced`;
+      return `primary: ${top.label}; secondary: ${second.label}`;
+    }
+
+    function responseSpectrumLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value <= -1.2) return "strong control";
+      if (value <= -0.4) return "control-leaning";
+      if (value < 0.4) {
+        if (value <= -0.15) return "middle, slightly control-leaning";
+        if (value >= 0.15) return "middle, slightly open";
+        return "middle";
+      }
+      if (value < 1.2) return "open-leaning";
+      return "strong openness";
+    }
+
+    function valueSpectrumLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value >= 1.2) return "strongly human/social-structure-centered";
+      if (value >= 0.4) return "human/social-structure-centered";
+      if (value > -0.4) {
+        if (value >= 0.15) return "middle, slightly human/social-structure-centered";
+        if (value <= -0.15) return "middle, slightly intelligence-centered";
+        return "middle";
+      }
+      if (value > -1.2) return "intelligence-centered";
+      return "strongly posthuman / intelligence-centered";
+    }
+
+    function itemCenteredScore(id) {
+      const value = selected(id);
+      return value && Number.isFinite(Number(value)) ? centered(value) : NaN;
+    }
+
+    function abilityNarrativeScore() {
+      const weights = [
+        ["R01", 1],
+        ["R04", 1],
+        ["D01", 0.8],
+        ["C02", 0.8],
+        ["E01", 1],
+        ["H02", 0.7],
+        ["H04", 1]
+      ];
+
+      let numerator = 0;
+      let denominator = 0;
+      for (const [id, weight] of weights) {
+        const value = selected(id);
+        const vector = value ? optionVectorRules[id]?.[value] : null;
+        if (!vector) continue;
+        const valueScore = (
+          (0.55 * (vector.capability_skepticism || 0)) -
+          (0.45 * (vector.computation_epistemology || 0)) -
+          (0.25 * (vector.intelligence_centrality || 0))
+        ) / 2;
+        numerator += valueScore * weight;
+        denominator += Math.abs(weight);
+      }
+
+      return denominator > 0 ? clampScore(numerator / denominator) : NaN;
+    }
+
+    function abilityNarrativeLabel(value) {
+      if (!Number.isFinite(value)) return "--";
+      if (value >= 0.45) return "bubble skeptic";
+      if (value >= 0.15) return "hype-skeptical";
+      if (value > -0.15) return "Mixed evidence";
+      if (value > -0.45) return "transformative-leaning";
+      return "strong transformative believer";
+    }
+
+    function selectedItemSignalVectors() {
+      const coreVectors = questions.map((question) => {
+        const value = selected(question.id);
+        const vector = value ? makeVector(optionVectorRules[question.id]?.[value] || {}) : emptyVector();
+        return [question.id, vector];
+      });
+      const scenarioVectors = scenarios.map((scenario) => {
+        const value = selected(scenario.id);
+        const index = scenario.options.indexOf(value);
+        const vector = index >= 0 ? makeVector(scenarioVectorRules[scenario.id]?.[index] || {}) : emptyVector();
+        return [scenario.id, vector];
+      });
+      return Object.fromEntries([...coreVectors, ...scenarioVectors]);
+    }
+
+    function respondentVectorFromItems(itemSignalVector) {
+      const sums = emptyVector();
+      const weights = emptyVector();
+      for (const question of questions) {
+        const selectedValue = selected(question.id);
+        if (!selectedValue) continue;
+        const targets = questionVectorTargets[question.id] || [];
+        const vector = itemSignalVector[question.id] || emptyVector();
+        for (const dimension of targets) {
+          sums[dimension] += vector[dimension] || 0;
+          weights[dimension] += 1;
+        }
+      }
+      for (const scenario of scenarios) {
+        const selectedValue = selected(scenario.id);
+        if (!selectedValue) continue;
+        const targets = scenarioVectorTargets[scenario.id] || [];
+        const vector = itemSignalVector[scenario.id] || emptyVector();
+        for (const dimension of targets) {
+          sums[dimension] += scenarioVectorWeight * (vector[dimension] || 0);
+          weights[dimension] += scenarioVectorWeight;
+        }
+      }
+
+      return Object.fromEntries(vectorDimensions.map((dimension) => [
+        dimension,
+        weights[dimension] ? sums[dimension] / weights[dimension] : 0
+      ]));
+    }
+
+    function vectorDistance(left, right) {
+      let numerator = 0;
+      let denominator = 0;
+      for (const dimension of vectorDimensions) {
+        const weight = profileDistanceWeights[dimension] || 1;
+        const difference = ((left[dimension] || 0) - (right[dimension] || 0)) / 2;
+        numerator += weight * (difference ** 2);
+        denominator += weight;
+      }
+      return denominator ? Math.sqrt(numerator / denominator) : Infinity;
+    }
+
+    function selfProfileAdjustment(code) {
+      const selfCodes = Array.from(new Set(selectedSelfProfileCodes()));
+      if (!selfCodes.length) return 0;
+      const divisor = Math.sqrt(selfCodes.length);
+      if (selfCodes.includes(code)) return selfProfileDistanceBonus / divisor;
+      if (selfCodes.some((selfCode) => profileFamilyMatch(code, selfCode))) return selfFamilyDistanceBonus / divisor;
+      return 0;
+    }
+
+    function profilePrototypeRankings(respondentVector) {
+      return Object.entries(profilePrototypes)
+        .map(([code, prototype]) => {
+          const rawDistance = vectorDistance(respondentVector, prototype);
+          const selfAdjustment = selfProfileAdjustment(code);
+          const distance = Math.max(0, rawDistance - selfAdjustment);
+          return {
+            code,
+            rawDistance,
+            selfAdjustment,
+            distance,
+            score: 1 / (1 + distance)
+          };
+        })
+        .sort((a, b) => a.distance - b.distance);
+    }
+
+    function projectRespondentVector(vector) {
+      const x = clampScore(
+        (0.55 * (vector.openness_build || 0)) -
+        (0.55 * (vector.governance_control || 0)) -
+        (0.20 * (vector.civilizational_risk || 0)) +
+        (0.15 * (vector.opportunity_cost || 0))
+      );
+      const y = clampScore(
+        (0.60 * (vector.human_accountability || 0)) -
+        (0.60 * (vector.intelligence_centrality || 0)) +
+        (0.15 * (vector.present_social_harm || 0))
+      );
+      return { method: projectionMethod, x, y };
+    }
+
+    function answeredPages() {
+      return pages.filter((page) => page.kind !== "intro" && hasAnswer(page)).length;
+    }
+
+    function currentPageAnswered() {
+      const page = pages[currentIndex];
+      return page ? hasAnswer(page) : true;
+    }
+
+    function updatePagerControls() {
+      const done = answeredPages();
+      const page = pages[currentIndex];
+      const isIntro = Boolean(page && page.kind === "intro");
+      const isMulti = Boolean(page && page.multiple);
+      const answered = currentPageAnswered();
+      const isLast = currentIndex === pages.length - 1;
+      const answerPageCount = pages.length - 1;
+      progressFill.style.width = `${Math.round((done / answerPageCount) * 100)}%`;
+      progressText.textContent = `${done}/${answerPageCount}`;
+      if (brandProgress) brandProgress.textContent = isIntro ? "Start" : `Question ${currentIndex} / ${pages.length - 1}`;
+      if (pagerActions) pagerActions.hidden = !(isIntro || isMulti);
+      prevBtn.disabled = currentIndex === 0;
+      if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
+      nextBtn.hidden = !(isIntro || isMulti);
+      nextBtn.disabled = !answered;
+      nextBtn.textContent = isIntro ? "Start quiz" : isLast ? "See Result" : "Next";
+      prevBtn.hidden = isIntro;
+      if (prevTopBtn) prevTopBtn.hidden = isIntro;
+      if (!isIntro) {
+        prevBtn.disabled = currentIndex === 0;
+        if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
+      }
+    }
+
+    function scrollToElement(element) {
+      const topbarHeight = document.querySelector(".topbar")?.offsetHeight || 0;
+      const top = element.getBoundingClientRect().top + window.scrollY - topbarHeight - 12;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    }
+
+    function clearAutoAdvance() {
+      if (!autoAdvanceTimer) return;
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = 0;
+    }
+
+    function goToPrevious() {
+      clearAutoAdvance();
+      if (currentIndex === 0) return;
+      currentIndex -= 1;
+      saveDraft();
+      renderPage(true);
+    }
+
+    function goToNext() {
+      clearAutoAdvance();
+      if (!currentPageAnswered()) return;
+      currentIndex += 1;
+      saveDraft();
+      renderPage(true);
+    }
+
+    function scheduleAutoAdvance(pageId) {
+      const page = pages[currentIndex];
+      if (!page || page.id !== pageId || page.multiple || currentIndex >= pages.length - 1) return;
+      clearAutoAdvance();
+      autoAdvanceTimer = window.setTimeout(() => {
+        const activePage = pages[currentIndex];
+        if (activePage && activePage.id === pageId && currentPageAnswered()) {
+          goToNext();
+        }
+      }, 180);
+    }
+
+    function renderIntroIndex(title, countLabel, body, items) {
+      return `
+        <section class="intro-index">
+          <div class="intro-index-head">
+            <strong>${escapeHTML(title)}</strong>
+            <span>${escapeHTML(countLabel)}</span>
+          </div>
+          <p>${escapeHTML(body)}</p>
+          <div class="intro-list">${items.join("")}</div>
+        </section>
+      `;
+    }
+
+    function renderIntroReferenceIndex(config) {
+      const items = referencePoints.map((point) => {
+        const category = categoryInfo[referenceCategoryById[point.id]]?.label || point.cluster;
+        return `
+          <article class="intro-list-item">
+            <b>${escapeHTML(point.name)}</b>
+            <span>${escapeHTML(category)}</span>
+            <span>${escapeHTML(point.cluster)} · ${escapeHTML(config.coordinateLabel)} (${point.x}, ${point.y})</span>
+          </article>
+        `;
+      });
+      return renderIntroIndex(config.title, config.countLabel, config.body, items);
+    }
+
+    function renderIntroProfileIndex(config) {
+      const items = Object.entries(profiles).map(([code, profile]) => `
+        <article class="intro-list-item">
+          <span class="intro-code">${escapeHTML(displayProfileCode(code))}</span>
+          <b>${escapeHTML(profile[0])}</b>
+          <span>${escapeHTML(profile[1])}</span>
+          <span>${escapeHTML(config.textLabel)}: ${escapeHTML(profile[2])}</span>
+          <span>${escapeHTML(config.signalLabel)}: ${escapeHTML(profile[3])}</span>
+        </article>
+      `);
+      return renderIntroIndex(config.title, config.countLabel, config.body, items);
+    }
+
+    function renderIntroPage(page) {
+      pageOptions.className = "intro-options";
+      pageOptions.innerHTML = [
+        `
+          <section class="intro-resource-links">
+            <div class="intro-resource-title">${escapeHTML(page.linksTitle)}</div>
+            ${page.links.map((link) => `
+              <a class="intro-link-card" href="${escapeHTML(link.href)}">
+                <strong>${escapeHTML(link.title)}</strong>
+                <p>${escapeHTML(link.body)}</p>
+              </a>
+            `).join("")}
+          </section>
+        `,
+        ...page.sections.map((section) => `
+          <section class="intro-note">
+            <strong>${escapeHTML(section.title)}</strong>
+            <p>${escapeHTML(section.body)}</p>
+          </section>
+        `)
+      ].join("");
+    }
+
+    function renderPage(shouldScroll = false) {
+      if (currentIndex >= pages.length) {
+        if (heroSection) heroSection.hidden = true;
+        quizPager.hidden = true;
+        if (introResourceLinks) introResourceLinks.hidden = true;
+        resultPanel.hidden = false;
+        if (brandProgress) brandProgress.textContent = `Complete ${answeredPages()}/${pages.length - 1}`;
+        update();
+        if (shouldScroll) scrollToElement(resultPanel);
+        return;
+      }
+
+      const page = pages[currentIndex];
+      if (heroSection) heroSection.hidden = false;
+      quizPager.hidden = false;
+      if (introResourceLinks) {
+        introResourceLinks.hidden = true;
+        introResourceLinks.innerHTML = "";
+      }
+      resultPanel.hidden = true;
+      pageCount.textContent = page.kind === "intro" ? "Before you begin" : `Question ${currentIndex} / ${pages.length - 1}`;
+      pageTag.textContent = page.kind === "intro" ? page.tag : page.multiple ? `${page.tag} · MULTI` : page.tag;
+      pageInstruction.textContent = page.instruction;
+      pageInstruction.hidden = !page.instruction;
+      pagePrompt.textContent = page.prompt;
+      if (page.kind === "intro") {
+        renderIntroPage(page);
+        updatePagerControls();
+        if (shouldScroll) scrollToElement(quizPager);
+        return;
+      }
+      pageOptions.className = "single-options";
+      const inputType = page.multiple ? "checkbox" : "radio";
+      pageOptions.innerHTML = page.options.map(([value, key, label]) => `
+        <label class="single-option">
+          <input type="${inputType}" name="${escapeHTML(page.id)}" value="${escapeHTML(value)}" ${selectedValues(page.id).includes(value) ? "checked" : ""}>
+          <span class="option-key">${escapeHTML(key)}</span>
+          <span class="option-text">${escapeHTML(label)}</span>
+        </label>
+      `).join("");
+      updatePagerControls();
+      if (shouldScroll) scrollToElement(quizPager);
+    }
+
+    function calculate() {
+      let answered = 0;
+
+      for (const q of questions) {
+        const value = selected(q.id);
+        if (!value) continue;
+        answered += 1;
+      }
+
+      const complete = answered === questions.length;
+      const itemSignalVector = complete ? selectedItemSignalVectors() : {};
+      const respondentVector = complete ? respondentVectorFromItems(itemSignalVector) : emptyVector();
+      const projection = complete ? projectRespondentVector(respondentVector) : { method: projectionMethod, x: NaN, y: NaN };
+      const profileRanking = complete ? profilePrototypeRankings(respondentVector) : [];
+      const topProfile = profileRanking[0] || { code: "NORM", distance: NaN, score: NaN };
+      const secondProfile = profileRanking[1] || { code: "", distance: NaN, score: NaN };
+      const rCatastrophic = complete ? respondentVector.civilizational_risk : NaN;
+      const rSocialHarm = complete ? respondentVector.present_social_harm : NaN;
+      const rNormalTech = complete ? respondentVector.capability_skepticism : NaN;
+      const rOpportunityCost = complete ? respondentVector.opportunity_cost : NaN;
+      const rProjection = complete ? rCatastrophic - rOpportunityCost : NaN;
+      const c = complete ? clampScore(((respondentVector.openness_build || 0) - (respondentVector.governance_control || 0)) / 2) : NaN;
+      const h = complete ? clampScore(((respondentVector.human_accountability || 0) - (respondentVector.intelligence_centrality || 0)) / 2) : NaN;
+      const x = projection.x;
+      const y = projection.y;
+
+      return {
+        measurementVersion,
+        projectionMethod: projection.method,
+        itemSignalVector,
+        respondentVector,
+        profileRanking,
+        profileCode: topProfile.code,
+        profileDistance: topProfile.distance,
+        profileMargin: Number.isFinite(secondProfile.distance) ? secondProfile.distance - topProfile.distance : NaN,
+        x,
+        y,
+        rProjection,
+        rCatastrophic,
+        rSocialHarm,
+        rNormalTech,
+        rOpportunityCost,
+        c,
+        h,
+        answered
+      };
+    }
+
+    function baseProfileFor(x, y) {
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return "";
+      if (x >= 1.5 && y <= -1.5) return "POST";
+      if (x >= 1.25 && y <= -0.75) return "EACC";
+      if (x <= -1.25 && y >= 0) return "STOP";
+      if (x >= 1.25 && y >= -0.75 && y <= 0.75) return "SING";
+      if (x >= 0.15 && y <= 0.15) return "GPUC";
+      if (x >= 0.55 && y >= 0.25) return "BOOM";
+      if (x >= -1.5 && x <= -0.25 && y >= 0.75) return "SAFE";
+      if (x >= -0.5 && x <= 0.5 && y >= 1.25) return "AUDT";
+      return "";
+    }
+
+    function selectedSelfProfileCodes() {
+      return selectedValues("closestStatement")
+        .map((statement) => statementProfiles[statements.indexOf(statement)])
+        .filter(Boolean);
+    }
+
+    function selectedScenarioProfileCodes() {
+      return scenarios.map((scenario) => {
+        const choice = selected(scenario.id);
+        const index = scenario.options.indexOf(choice);
+        return scenarioProfiles[scenario.id]?.[index] || "";
+      }).filter(Boolean);
+    }
+
+    function profileEvidence(result) {
+      return Object.fromEntries((result.profileRanking || []).map((entry) => [entry.code, entry.score]));
+    }
+
+    function profileFamilyMatch(code, evidenceCode) {
+      if (!code || !evidenceCode) return false;
+      if (code === evidenceCode) return true;
+      const families = {
+        STOP: ["SAFE"],
+        SAFE: ["STOP", "AUDT"],
+        AUDT: ["SAFE", "NORM", "SKEP"],
+        NORM: ["AUDT", "SKEP", "BOOM"],
+        SKEP: ["NORM", "AUDT"],
+        GPUC: ["SING", "POST"],
+        BOOM: ["NORM", "SING", "EACC"],
+        SING: ["BOOM", "GPUC", "EACC"],
+        EACC: ["BOOM", "SING", "POST"],
+        POST: ["GPUC", "EACC"]
+      };
+      return families[code]?.includes(evidenceCode) || false;
+    }
+
+    function classificationDiagnostics(result, code) {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) {
+        return {
+          label: "--",
+          text: "Completion shows whether position, scenarios, and self-confirmation agree.",
+          level: "none"
+        };
+      }
+
+      const margin = Number.isFinite(result.profileMargin) ? result.profileMargin : 0;
+      const positionCode = nearestProfileFor(result.x, result.y);
+      const selfCodes = selectedSelfProfileCodes();
+      const scenarioCodes = selectedScenarioProfileCodes();
+      const selfMatch = selfCodes.some((item) => profileFamilyMatch(code, item));
+      const scenarioMatches = scenarioCodes.filter((item) => profileFamilyMatch(code, item)).length;
+      const scenarioRatio = scenarioCodes.length ? scenarioMatches / scenarioCodes.length : 0;
+      const selfSpreadPenalty = new Set(selfCodes).size >= 3 ? 1 : 0;
+
+      let support = 0;
+      if (profileFamilyMatch(code, positionCode)) support += 0.5;
+      if (margin >= 0.22) support += 2;
+      else if (margin >= 0.10) support += 1;
+      else if (margin < 0.06) support -= 1;
+      if (selfCodes.length) support += selfMatch ? 1 : -1;
+      if (scenarioCodes.length) {
+        if (scenarioRatio >= 0.5) support += 0.5;
+        if (scenarioMatches === 0) support -= 0.5;
+      }
+      support -= selfSpreadPenalty;
+
+      if (support >= 3 && margin >= 0.10) {
+        return {
+          label: "High",
+          text: "Position, scenario choices, and self-confirmation mostly agree; this profile can be read as the main interpretation.",
+          level: "high"
+        };
+      }
+      if (support >= 1 && margin >= 0.02) {
+        return {
+          label: "Medium",
+          text: "The main position is clear, but scenarios or self-confirmation add conditions; read this with neighboring profiles.",
+          level: "medium"
+        };
+      }
+      return {
+        label: "Low",
+        text: "Position, scenarios, and self-confirmation diverge; read this as a mixed or conditional result.",
+        level: "low"
+      };
+    }
+
+    function nearestProfileFor(x, y, candidates = Object.keys(profileAnchors)) {
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return "NORM";
+      return candidates.reduce((best, code) => {
+        const anchor = profileAnchors[code];
+        const distance = ((x - anchor.x) ** 2) + ((y - anchor.y) ** 2);
+        return distance < best.distance ? { code, distance } : best;
+      }, { code: candidates[0], distance: Infinity }).code;
+    }
+
+    function profileFor(result) {
+      return Number.isFinite(result.x) && Number.isFinite(result.y) ? result.profileCode : "NORM";
+    }
+
+    function clampPercent(value) {
+      return Math.max(0, Math.min(100, value));
+    }
+
+    function coordToPercent(value) {
+      return clampPercent(((value + 2) / 4) * 100);
+    }
+
+    function coordToReferencePercent(value) {
+      return clampPercent(7 + ((value + 2) / 4) * 86);
+    }
+
+    function categoryForPoint(point) {
+      return referenceCategoryById[point.id] || "Normal technology";
+    }
+
+    function renderMapLegend() {
+      mapLegend.innerHTML = Object.entries(categoryInfo).map(([, info]) => `
+        <span><i style="background:${info.color}"></i>${escapeHTML(info.label)}</span>
+      `).join("");
+    }
+
+    function renderReferencePoints() {
+      referenceLayer.innerHTML = referencePoints.map((point) => {
+        const size = 8 + point.influence * 1.2;
+        const category = categoryForPoint(point);
+        const info = categoryInfo[category];
+        const isActive = activeReferenceId === point.id;
+        const labelSide = point.x > 0.85 ? "label-left" : "label-right";
+        return `
+          <button class="reference-point ${labelSide}${isActive ? " active" : ""}" type="button" data-id="${escapeHTML(point.id)}" aria-pressed="${isActive ? "true" : "false"}" style="--left:${coordToReferencePercent(point.x)}%; --bottom:${coordToReferencePercent(point.y)}%; --dx:${point.dx}; --dy:${point.dy}; --size:${size}px; --color:${info.color};" title="${escapeHTML(point.name)} · ${escapeHTML(point.cluster)}">
+            <span class="reference-label">${escapeHTML(point.label)}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function quadrantFor(x, y) {
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return "Position appears after completion";
+      const horizontal = x < -0.35 ? "Control threshold" : x > 0.35 ? "Open deployment" : "Middle response";
+      const vertical = y > 0.35 ? "Human/social-structure-centered" : y < -0.35 ? "Posthuman/intelligence-centered" : "Middle values";
+      return `${horizontal} / ${vertical}`;
+    }
+
+    function nearestReferenceFor(result, code = "") {
+      if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) return null;
+      const candidateIds = profileReferenceCandidates[code] || [];
+      const pool = candidateIds.length
+        ? referencePoints.filter((point) => candidateIds.includes(point.id))
+        : referencePoints;
+      return pool.reduce((best, point) => {
+        const distance = ((result.x - point.x) ** 2) + ((result.y - point.y) ** 2);
+        if (!best || distance < best.distance) return { point, distance };
+        if (distance === best.distance && point.influence > best.point.influence) return { point, distance };
+        return best;
+      }, null)?.point || null;
+    }
+
+    function referencePersonName(point) {
+      return point ? (point.personName || point.name) : "";
+    }
+
+    function riskPlainText(result) {
+      const candidates = [
+        { key: "catastrophic", value: result.rCatastrophic },
+        { key: "social", value: result.rSocialHarm },
+        { key: "normal", value: result.rNormalTech },
+        { key: "opportunity", value: result.rOpportunityCost }
+      ].sort((a, b) => b.value - a.value);
+      if (result.rProjection >= 1) return "You put real weight on frontier AI going badly wrong, so you want safety boundaries before the biggest deployments.";
+      if (result.rProjection <= -1) return "You are more worried that too much restriction will delay concrete gains in medicine, education, research, and productivity.";
+      if (candidates[0]?.key === "social") return "You are most sensitive to harms AI is already amplifying: bias, surveillance, labor, data use, and concentrated power.";
+      if (candidates[0]?.key === "normal") return "You tend to see AI as important but not magical: useful, fallible, and often oversold.";
+      return "You do not read AI as simply doom or salvation; you are balancing risks and benefits.";
+    }
+
+    function governancePlainText(score) {
+      if (score <= -0.75) return "On governance, you lean toward control: audits, thresholds, and responsibility before broad release.";
+      if (score >= 0.75) return "On governance, you lean toward openness: put AI into more real settings and learn from deployment.";
+      return "On governance, you are context-specific: neither blanket pause nor unconditional openness.";
+    }
+
+    function valuePlainText(score) {
+      if (score >= 0.75) return "On values, you want human society to keep final accountability, especially in healthcare, education, law, and other serious decisions.";
+      if (score <= -0.75) return "On values, you are more willing to let stronger intelligence, computation, and learning outrun ordinary human intuition.";
+      return "On values, you are not strongly committed to either 'humans must always decide' or 'intelligence should move beyond humans.'";
+    }
+
+    function closeReferenceModal() {
+      referenceModal.hidden = true;
+    }
+
+    function renderReferenceNotes(point, detail, stance) {
+      const core = detail?.core || stance;
+      const lineage = detail?.lineage || "This reference point does not yet have a full intellectual lineage note.";
+      const placement = detail?.placement || `This reference sits in ${quadrantFor(point.x, point.y)} because its public argument is closest to ${point.cluster}.`;
+      const focus = detail?.focus || "Use this point as a nearby reference, not as a claim that every view in the cluster is identical.";
+      const counter = detail?.counter || "";
+      const works = detail?.works || [];
+      const source = referenceSources[point.id];
+      const sourceLink = source
+        ? `<p>Main reference: <a href="${escapeHTML(source.url)}" target="_blank" rel="noreferrer">${escapeHTML(source.title)}</a></p>`
+        : "";
+      const worksLine = works.length ? `<p>Related texts: ${works.map(escapeHTML).join(" · ")}</p>` : "";
+      return `
+        <div class="reference-note-grid">
+          <div class="reference-note">
+            <span>Core claim</span>
+            <p>${escapeHTML(core)}</p>
+            <p>${escapeHTML(placement)}</p>
+            <p>${escapeHTML(focus)}</p>
+          </div>
+          ${counter ? `<div class="reference-note"><span>Contrast</span><p>${escapeHTML(counter)}</p></div>` : ""}
+          <div class="reference-note">
+            <span>Intellectual lineage</span>
+            <p>${escapeHTML(lineage)}</p>
+            ${sourceLink}
+            ${worksLine}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderReferenceDetail(point) {
+      if (!point) {
+        referenceDetail.innerHTML = "";
+        closeReferenceModal();
+        return;
+      }
+
+      const category = categoryForPoint(point);
+      const info = categoryInfo[category];
+      const stance = referenceProfiles[point.id] || point.cluster;
+      const detail = referenceDetails[point.id];
+      referenceDetail.innerHTML = `
+        <div class="reference-detail-head">
+          <b id="referenceModalTitle">${escapeHTML(point.name)}</b>
+          <span class="reference-detail-badge" style="--color:${info.color}">${escapeHTML(info.label)}</span>
+        </div>
+        ${renderReferenceNotes(point, detail, stance)}
+      `;
+      referenceModal.hidden = false;
+    }
+
+    function updateMap(result, complete, code) {
+      mapDot.hidden = !complete;
+      mapDotCode.textContent = complete ? displayProfileCode(code) : "----";
+      mapQuadrant.textContent = complete ? quadrantFor(result.x, result.y) : "Position appears after completion";
+      if (!complete) return;
+      mapDot.style.left = `${coordToPercent(result.x)}%`;
+      mapDot.style.bottom = `${coordToPercent(result.y)}%`;
+    }
+
+    function canSubmitResults() {
+      const host = window.location.hostname;
+      if (!host || host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "[::1]") return false;
+      if (host === "cestunyu.github.io" || host.endsWith(".github.io")) return false;
+      return true;
+    }
+
+    function fixedScore(value) {
+      return Number.isFinite(value) ? Number(value.toFixed(4)) : "";
+    }
+
+    function fixedVector(vector = {}) {
+      return Object.fromEntries(vectorDimensions.map((dimension) => [dimension, fixedScore(vector[dimension])]));
+    }
+
+    function fixedItemSignalVectors(itemSignalVector = {}) {
+      return Object.fromEntries(Object.entries(itemSignalVector).map(([questionId, vector]) => [questionId, fixedVector(vector)]));
+    }
+
+    function fixedProfileRanking(profileRanking = []) {
+      return profileRanking.map((entry) => ({
+        code: entry.code,
+        raw_distance: fixedScore(entry.rawDistance),
+        self_adjustment: fixedScore(entry.selfAdjustment),
+        distance: fixedScore(entry.distance),
+        score: fixedScore(entry.score)
+      }));
+    }
+
+    function buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics) {
+      const abilityScore = abilityNarrativeScore();
+      const nearest = nearestReferenceFor(result, code);
+      const selfCodes = selectedSelfProfileCodes();
+      const scenarioCodes = selectedScenarioProfileCodes();
+      const scenarioMatches = scenarioCodes.filter((item) => profileFamilyMatch(code, item)).length;
+      const selfAgreement = selfCodes.length ? selfCodes.some((item) => profileFamilyMatch(code, item)) : "";
+      const scenarioAgreement = scenarioCodes.length ? scenarioMatches / scenarioCodes.length : "";
+      return {
+        quiz_id: "ai-ideology-quiz",
+        quiz_version: "2026-06-01",
+        measurement_version: result.measurementVersion || measurementVersion,
+        locale: "en",
+        completed_at: new Date().toISOString(),
+        profile_code: code,
+        profile_display_code: displayProfileCode(code),
+        profile_name: profile[0],
+        profile_confidence: diagnostics.level,
+        profile_margin: fixedScore(result.profileMargin),
+        profile_distance: fixedScore(result.profileDistance),
+        projection: {
+          method: result.projectionMethod || projectionMethod,
+          x: fixedScore(result.x),
+          y: fixedScore(result.y)
+        },
+        respondent_vector: fixedVector(result.respondentVector),
+        item_signal_vector: fixedItemSignalVectors(result.itemSignalVector),
+        profile_ranking: fixedProfileRanking(result.profileRanking),
+        scores: {
+          x: fixedScore(result.x),
+          y: fixedScore(result.y),
+          r_projection: fixedScore(result.rProjection),
+          r_catastrophic: fixedScore(result.rCatastrophic),
+          r_social_harm: fixedScore(result.rSocialHarm),
+          r_normal_tech: fixedScore(result.rNormalTech),
+          r_opportunity_cost: fixedScore(result.rOpportunityCost),
+          c: fixedScore(result.c),
+          h: fixedScore(result.h),
+          ability: fixedScore(abilityScore)
+        },
+        labels: {
+          ability: abilityLabel,
+          risk: riskLabel,
+          governance: responseLabel,
+          value: valueLabel,
+          classification_confidence: diagnostics.label,
+          classification_confidence_note: diagnostics.text,
+          quadrant: quadrantFor(result.x, result.y),
+          nearest_reference: nearest ? referencePersonName(nearest) : ""
+        },
+        answers: Object.fromEntries(questions.map((question) => [question.id, selected(question.id)])),
+        scenarios: Object.fromEntries(scenarios.map((scenario) => [scenario.id, selected(scenario.id)])),
+        closest_statement: selectedValues("closestStatement"),
+        diagnostics: {
+          classification_confidence: diagnostics.level,
+          core_profile: code,
+          position_profile: nearestProfileFor(result.x, result.y),
+          projection_profile: nearestProfileFor(result.x, result.y),
+          profile_margin: fixedScore(result.profileMargin),
+          profile_distance: fixedScore(result.profileDistance),
+          self_agreement: selfAgreement,
+          scenario_agreement: scenarioAgreement,
+          self_profile_codes: selfCodes,
+          scenario_profile_codes: scenarioCodes
+        },
+        summary: ""
+      };
+    }
+
+    function resultFingerprint(payload) {
+      return JSON.stringify({
+        locale: payload.locale,
+        profile_code: payload.profile_code,
+        scores: payload.scores,
+        answers: payload.answers,
+        scenarios: payload.scenarios,
+        closest_statement: payload.closest_statement
+      });
+    }
+
+    async function submitResultPayload(payload) {
+      submitStatus.textContent = "Recording result...";
+      try {
+        const response = await fetch("/api/submit-result", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+          keepalive: true
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        submitStatus.textContent = "Result recorded.";
+      } catch (error) {
+        submitStatus.textContent = "Result recording failed. Your result is still available here.";
+      }
+    }
+
+    function maybeSubmitResult(result, complete, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics) {
+      if (!submitStatus) return;
+      if (!complete) {
+        submitStatus.textContent = "";
+        return;
+      }
+      if (!canSubmitResults()) return;
+
+      const payload = buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics);
+      const fingerprint = resultFingerprint(payload);
+      if (fingerprint === lastSubmittedFingerprint) return;
+      lastSubmittedFingerprint = fingerprint;
+      submitResultPayload(payload);
+    }
+
+    function update() {
+      const result = calculate();
+      const code = profileFor(result);
+      const profile = profiles[code];
+      const complete = Number.isFinite(result.x) && Number.isFinite(result.y);
+      const riskLabel = complete ? riskSpectrumLabel(result) : "--";
+      const responseLabel = complete ? responseSpectrumLabel(result.c) : "--";
+      const valueLabel = complete ? valueSpectrumLabel(result.h) : "--";
+      const abilityScore = abilityNarrativeScore();
+      const abilityLabel = complete ? abilityNarrativeLabel(abilityScore) : "--";
+      const nearest = complete ? nearestReferenceFor(result, code) : null;
+      const diagnostics = complete
+        ? classificationDiagnostics(result, code)
+        : classificationDiagnostics({ x: NaN, y: NaN }, code);
+      const displayCode = displayProfileCode(code);
+
+      abilityNarrative.textContent = abilityLabel;
+      dimensionR.textContent = riskLabel;
+      dimensionC.textContent = responseLabel;
+      dimensionH.textContent = valueLabel;
+      updateSpectrumMarker("abilitySpectrumMarker", abilityScore, -1, 1);
+      updateSpectrumMarker("riskSpectrumMarker", result.rProjection, -4, 4);
+      updateSpectrumMarker("governanceSpectrumMarker", result.c, -2, 2);
+      updateSpectrumMarker("valueSpectrumMarker", result.h, -2, 2);
+      updateMap(result, complete, code);
+      if (profileAvatar) {
+        if (complete) {
+          const avatarSrc = profileAvatarFor(code);
+          if (profileAvatar.getAttribute("src") !== avatarSrc) profileAvatar.src = avatarSrc;
+          profileAvatar.alt = `${profile[0]} ${displayCode} avatar`;
+          profileAvatar.hidden = false;
+        } else {
+          profileAvatar.hidden = true;
+          profileAvatar.removeAttribute("src");
+        }
+      }
+      profileCode.textContent = complete ? displayCode : "----";
+      profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "Waiting for profile";
+      profileRoast.textContent = complete ? profile[1] : "Complete the usage item and 11 core judgments for a stable result.";
+      profileTexts.innerHTML = complete ? renderProfileTexts(profile[2]) : "--";
+      profileTell.textContent = complete ? profile[3] : "--";
+      nearestPerson.textContent = nearest ? referencePersonName(nearest) : "--";
+      const nearestDetail = nearest ? referenceDetails[nearest.id] : null;
+      if (nearestClaim) nearestClaim.textContent = nearestDetail ? nearestDetail.core : "--";
+      if (classificationConfidence) classificationConfidence.textContent = diagnostics.label;
+      if (classificationConfidenceText) classificationConfidenceText.textContent = diagnostics.text;
+      if (nearestPersonSection) {
+        if (nearest) {
+          nearestPersonSection.dataset.referenceId = nearest.id;
+          nearestPersonSection.dataset.ready = "true";
+          nearestPersonSection.setAttribute("aria-label", `Open map notes for ${referencePersonName(nearest)}`);
+        } else {
+          nearestPersonSection.dataset.referenceId = "";
+          nearestPersonSection.dataset.ready = "false";
+          nearestPersonSection.setAttribute("aria-label", "Closest reference appears after completion");
+        }
+      }
+
+      maybeSubmitResult(result, complete && currentIndex >= pages.length, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics);
+    }
+
+    function drawRoundedRect(ctx, x, y, width, height, radius) {
+      const r = Math.min(radius, width / 2, height / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + width - r, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+      ctx.lineTo(x + width, y + height - r);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+      ctx.lineTo(x + r, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 4) {
+      const source = String(text || "");
+      const tokens = source.includes(" ") ? source.split(/(\s+)/) : Array.from(source);
+      let line = "";
+      let lines = 0;
+      for (const token of tokens) {
+        const next = line + token;
+        if (ctx.measureText(next).width > maxWidth && line) {
+          ctx.fillText(line.trim(), x, y);
+          y += lineHeight;
+          lines += 1;
+          line = token.trimStart();
+          if (lines >= maxLines - 1) break;
+        } else {
+          line = next;
+        }
+      }
+      if (line && lines < maxLines) {
+        ctx.fillText(line.trim(), x, y);
+        y += lineHeight;
+      }
+      return y;
+    }
+
+    function resetShareImage() {
+      if (shareImageUrl) URL.revokeObjectURL(shareImageUrl);
+      shareImageUrl = "";
+      if (sharePreview) sharePreview.removeAttribute("src");
+      if (shareDownload) shareDownload.removeAttribute("href");
+      if (shareCard) shareCard.hidden = true;
+    }
+
+    function canvasToBlob(canvas) {
+      return new Promise((resolve) => {
+        try {
+          canvas.toBlob(resolve, "image/png", 0.95);
+        } catch (error) {
+          resolve(null);
+        }
+      });
+    }
+
+    function loadImage(src) {
+      return new Promise((resolve) => {
+        if (!src) {
+          resolve(null);
+          return;
+        }
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => resolve(null);
+        image.src = src;
+      });
+    }
+
+    function drawImageCover(ctx, image, x, y, width, height) {
+      const sourceRatio = image.width / image.height;
+      const targetRatio = width / height;
+      let sourceWidth = image.width;
+      let sourceHeight = image.height;
+      let sourceX = 0;
+      let sourceY = 0;
+      if (sourceRatio > targetRatio) {
+        sourceWidth = image.height * targetRatio;
+        sourceX = (image.width - sourceWidth) / 2;
+      } else {
+        sourceHeight = image.width / targetRatio;
+        sourceY = (image.height - sourceHeight) / 2;
+      }
+      ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+    }
+
+    function drawAvatar(ctx, image, x, y, size) {
+      if (!image) return;
+      ctx.save();
+      drawRoundedRect(ctx, x, y, size, size, 14);
+      ctx.clip();
+      drawImageCover(ctx, image, x, y, size, size);
+      ctx.restore();
+      ctx.strokeStyle = "#d8dee8";
+      ctx.lineWidth = 1;
+      drawRoundedRect(ctx, x, y, size, size, 14);
+      ctx.stroke();
+    }
+
+    async function publishShareCanvas(canvas, filename, readyText) {
+      const blob = await canvasToBlob(canvas);
+      resetShareImage();
+      try {
+        shareImageUrl = blob ? URL.createObjectURL(blob) : canvas.toDataURL("image/png");
+      } catch (error) {
+        shareImageUrl = "";
+      }
+      if (!shareImageUrl) {
+        if (shareStatus) shareStatus.textContent = "Image generation failed. Please try again.";
+        if (shareCard) shareCard.hidden = false;
+        return;
+      }
+      if (sharePreview) sharePreview.src = shareImageUrl;
+      if (shareDownload) {
+        shareDownload.href = shareImageUrl;
+        shareDownload.download = filename;
+      }
+      if (shareStatus) shareStatus.textContent = readyText;
+      if (shareCard) shareCard.hidden = false;
+      scrollToElement(shareCard);
+    }
+
+    function drawShareMiniMap(ctx, result, x, y, size, labels) {
+      ctx.save();
+      ctx.fillStyle = "#f8fbff";
+      drawRoundedRect(ctx, x, y, size, size, 12);
+      ctx.fill();
+      ctx.strokeStyle = "#bfd0e8";
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+
+      ctx.fillStyle = "#dbeafe";
+      ctx.fillRect(x + 1, y + 1, size / 2 - 1, size - 2);
+      ctx.fillStyle = "#eef6ff";
+      ctx.fillRect(x + size / 2, y + 1, size / 2 - 1, size - 2);
+
+      ctx.strokeStyle = "rgba(51,65,85,0.24)";
+      ctx.beginPath();
+      ctx.moveTo(x + size / 2, y + 12);
+      ctx.lineTo(x + size / 2, y + size - 12);
+      ctx.moveTo(x + 12, y + size / 2);
+      ctx.lineTo(x + size - 12, y + size / 2);
+      ctx.stroke();
+
+      ctx.fillStyle = "#64748b";
+      ctx.font = "800 10px Inter, Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(labels.top, x + size / 2, y + 22);
+      ctx.fillText(labels.bottom, x + size / 2, y + size - 12);
+      ctx.save();
+      ctx.translate(x + 18, y + size / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText(labels.left, 0, 0);
+      ctx.restore();
+      ctx.save();
+      ctx.translate(x + size - 18, y + size / 2);
+      ctx.rotate(Math.PI / 2);
+      ctx.fillText(labels.right, 0, 0);
+      ctx.restore();
+
+      const dotX = x + (coordToPercent(result.x) / 100) * size;
+      const dotY = y + size - (coordToPercent(result.y) / 100) * size;
+      ctx.fillStyle = "#2563eb";
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 12, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#f8fbff";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function fitCanvasText(ctx, text, maxWidth) {
+      const source = String(text || "--");
+      if (ctx.measureText(source).width <= maxWidth) return source;
+      let clipped = source;
+      while (clipped.length > 1 && ctx.measureText(`${clipped}...`).width > maxWidth) {
+        clipped = clipped.slice(0, -1);
+      }
+      return `${clipped}...`;
+    }
+
+    function drawShareSpectrum(ctx, item) {
+      const { x, y, width, label, valueLabel, value, min, max, left, right } = item;
+      const percent = Number.isFinite(value) ? Math.max(0, Math.min(1, (value - min) / (max - min))) : 0.5;
+      ctx.save();
+      ctx.fillStyle = "#f8fbff";
+      drawRoundedRect(ctx, x, y, width, 48, 10);
+      ctx.fill();
+      ctx.strokeStyle = "#d6e3f4";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = "#334155";
+      ctx.font = "820 13px Inter, Arial, sans-serif";
+      ctx.fillText(label, x + 14, y + 19);
+      ctx.fillStyle = "#64748b";
+      ctx.font = "720 11px Inter, Arial, sans-serif";
+      ctx.textAlign = "right";
+      ctx.fillText(fitCanvasText(ctx, valueLabel, width - 158), x + width - 14, y + 19);
+      ctx.textAlign = "left";
+
+      const barX = x + 14;
+      const barY = y + 31;
+      const barW = width - 28;
+      ctx.fillStyle = "#dbeafe";
+      drawRoundedRect(ctx, barX, barY, barW, 7, 999);
+      ctx.fill();
+      ctx.fillStyle = "#1e3a8a";
+      drawRoundedRect(ctx, barX, barY, barW * percent, 7, 999);
+      ctx.fill();
+      ctx.fillStyle = "#0f172a";
+      ctx.beginPath();
+      ctx.arc(barX + barW * percent, barY + 3.5, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "700 9px Inter, Arial, sans-serif";
+      ctx.fillText(left, barX, y + 45);
+      ctx.textAlign = "right";
+      ctx.fillText(right, barX + barW, y + 45);
+      ctx.restore();
+    }
+
+    async function generateShareImage() {
+      const result = calculate();
+      const complete = Number.isFinite(result.x) && Number.isFinite(result.y);
+      if (!complete) return;
+
+      const code = profileFor(result);
+      const profile = profiles[code];
+      const displayCode = displayProfileCode(code);
+      const nearest = nearestReferenceFor(result, code);
+      const avatarImage = await loadImage(profileAvatarFor(code));
+      const abilityScore = abilityNarrativeScore();
+      const abilityLabel = abilityNarrativeLabel(abilityScore);
+      const riskLabel = riskSpectrumLabel(result);
+      const responseLabel = responseSpectrumLabel(result.c);
+      const valueLabel = valueSpectrumLabel(result.h);
+      const canvas = document.createElement("canvas");
+      const width = 720;
+      const height = 1280;
+      const scale = 2;
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(scale, scale);
+
+      ctx.fillStyle = "#eef2f7";
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "#ffffff";
+      drawRoundedRect(ctx, 34, 32, width - 68, height - 64, 18);
+      ctx.fill();
+      ctx.strokeStyle = "#d8e2ee";
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "900 25px Inter, Arial, sans-serif";
+      ctx.fillText("AI Persona", 62, 78);
+      ctx.fillStyle = "#64748b";
+      ctx.font = "720 14px Inter, Arial, sans-serif";
+      ctx.fillText("Find your position on the AI thought spectrum", 62, 104);
+
+      const avatarX = 130;
+      const avatarY = 126;
+      const avatarSize = 460;
+      if (avatarImage) {
+        drawAvatar(ctx, avatarImage, avatarX, avatarY, avatarSize);
+      } else {
+        ctx.fillStyle = "#dbeafe";
+        drawRoundedRect(ctx, avatarX, avatarY, avatarSize, avatarSize, 18);
+        ctx.fill();
+        ctx.fillStyle = "#1e3a8a";
+        ctx.font = "900 72px Inter, Arial, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(displayCode, width / 2, avatarY + 256);
+        ctx.textAlign = "left";
+      }
+
+      ctx.fillStyle = "rgba(15,23,42,0.92)";
+      drawRoundedRect(ctx, 124, 552, 472, 60, 14);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 25px Inter, Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`${displayCode}: ${profile[0]}`, width / 2, 590);
+      ctx.textAlign = "left";
+
+      ctx.fillStyle = "#f8fbff";
+      drawRoundedRect(ctx, 62, 642, 596, 82, 14);
+      ctx.fill();
+      ctx.strokeStyle = "#d8e2ee";
+      ctx.stroke();
+      ctx.fillStyle = "#64748b";
+      ctx.font = "820 13px Inter, Arial, sans-serif";
+      ctx.fillText("Closest Reference", 84, 675);
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "900 24px Inter, Arial, sans-serif";
+      drawWrappedText(ctx, nearest ? referencePersonName(nearest) : "--", 84, 708, 548, 28, 1);
+
+      const mapY = 752;
+      drawShareMiniMap(ctx, result, 62, mapY, 200, {
+        top: "Human",
+        bottom: "Intel.",
+        left: "Control",
+        right: "Open"
+      });
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "900 19px Inter, Arial, sans-serif";
+      drawWrappedText(ctx, quadrantFor(result.x, result.y), 292, mapY + 28, 336, 24, 2);
+      ctx.fillStyle = "#475569";
+      ctx.font = "720 15px Inter, Arial, sans-serif";
+      drawWrappedText(ctx, profile[1], 292, mapY + 88, 336, 22, 4);
+
+      const spectrumY = 982;
+      const spectra = [
+        { label: "Capability", valueLabel: abilityLabel, value: abilityScore, min: -1, max: 1, left: "Transformative AI", right: "Bubble skeptic" },
+        { label: "Risk", valueLabel: riskLabel, value: result.rProjection, min: -4, max: 4, left: "Opportunity cost", right: "Civilizational risk" },
+        { label: "Governance", valueLabel: responseLabel, value: result.c, min: -2, max: 2, left: "Control", right: "Open" },
+        { label: "Value", valueLabel: valueLabel, value: result.h, min: -2, max: 2, left: "Intelligence-centered", right: "Human-centered" }
+      ];
+      spectra.forEach((item, index) => drawShareSpectrum(ctx, {
+        ...item,
+        x: 62,
+        y: spectrumY + index * 54,
+        width: 596
+      }));
+
+      ctx.fillStyle = "#e6f4f1";
+      drawRoundedRect(ctx, 62, height - 92, 596, 54, 14);
+      ctx.fill();
+      ctx.fillStyle = "#0b5d55";
+      ctx.font = "850 17px Inter, Arial, sans-serif";
+      ctx.fillText("Start", 84, height - 59);
+      ctx.fillStyle = "#475569";
+      ctx.font = "750 13px Inter, Arial, sans-serif";
+      ctx.textAlign = "right";
+      ctx.fillText("ai-persona-qxad5fjx.edgeone.cool", 636, height - 59);
+      ctx.textAlign = "left";
+
+      if (shareCard) shareCard.hidden = false;
+      if (shareStatus) shareStatus.textContent = "Generating share card...";
+      await publishShareCanvas(canvas, `ai-stance-card-${code}.png`, "The share card is ready. Save it and post it wherever you want.");
+    }
+
+    async function generateLongShareImage() {
+      const result = calculate();
+      const complete = Number.isFinite(result.x) && Number.isFinite(result.y);
+      if (!complete) return;
+
+      if (shareCard) shareCard.hidden = false;
+      if (shareStatus) shareStatus.textContent = "Exporting mobile page image...";
+      const code = profileFor(result);
+      const profile = profiles[code];
+      const displayCode = displayProfileCode(code);
+      const abilityLabel = abilityNarrativeLabel(abilityNarrativeScore());
+      const riskLabel = riskSpectrumLabel(result);
+      const responseLabel = responseSpectrumLabel(result.c);
+      const valueLabel = valueSpectrumLabel(result.h);
+      const nearest = nearestReferenceFor(result, code);
+      const nearestDetail = nearest ? referenceDetails[nearest.id] : null;
+      const diagnostics = classificationDiagnostics(result, code);
+      const avatarImage = window.location.protocol === "file:" ? null : await loadImage(profileAvatarFor(code));
+      const canvas = document.createElement("canvas");
+      const width = 390;
+      const height = 1780;
+      const scale = 3;
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(scale, scale);
+
+      ctx.fillStyle = "#f5f6f8";
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = "rgba(245,246,248,0.96)";
+      ctx.fillRect(0, 0, width, 48);
+      ctx.fillStyle = "#17202a";
+      ctx.font = "800 13px Inter, Arial, sans-serif";
+      ctx.fillText("AI Persona", 10, 28);
+      ctx.fillStyle = "#667085";
+      ctx.font = "760 12px Inter, Arial, sans-serif";
+      ctx.textAlign = "right";
+      ctx.fillText("16/16 complete", width - 10, 28);
+      ctx.textAlign = "left";
+
+      ctx.fillStyle = "#ffffff";
+      drawRoundedRect(ctx, 8, 58, width - 16, height - 92, 8);
+      ctx.fill();
+      ctx.strokeStyle = "#d8dee8";
+      ctx.stroke();
+
+      let y = 84;
+      drawAvatar(ctx, avatarImage, 111, y, 168);
+      y += 188;
+      ctx.fillStyle = "#17202a";
+      drawRoundedRect(ctx, 111, y, 168, 42, 7);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 18px Inter, Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(displayCode, width / 2, y + 27);
+      ctx.textAlign = "left";
+
+      y += 70;
+      ctx.fillStyle = "#17202a";
+      ctx.font = "850 20px Inter, Arial, sans-serif";
+      y = drawWrappedText(ctx, `${displayCode}: ${profile[0]}`, 22, y, 346, 27, 2) + 12;
+      ctx.fillStyle = "#17202a";
+      ctx.font = "760 15px Inter, Arial, sans-serif";
+      y = drawWrappedText(ctx, profile[1], 22, y, 346, 22, 4) + 20;
+
+      const labeledText = (label, value, maxLines = 3) => {
+        ctx.fillStyle = "#667085";
+        ctx.font = "820 11px Inter, Arial, sans-serif";
+        ctx.fillText(label, 22, y);
+        ctx.fillStyle = "#3a4454";
+        ctx.font = "680 13px Inter, Arial, sans-serif";
+        y = drawWrappedText(ctx, value || "--", 22, y + 22, 346, 20, maxLines) + 10;
+      };
+
+      labeledText("Social Tells", profile[3], 3);
+      labeledText("Representative Works", profile[2], 2);
+      labeledText("Closest Reference", nearest ? referencePersonName(nearest) : "--", 2);
+      labeledText("Core Claim", nearestDetail ? nearestDetail.core : "--", 3);
+      labeledText("Classification Stability", `${diagnostics.label}. ${diagnostics.text}`, 3);
+
+      ctx.fillStyle = "#ffffff";
+      drawRoundedRect(ctx, 22, y + 4, 346, 398, 8);
+      ctx.fill();
+      ctx.strokeStyle = "#d8dee8";
+      ctx.stroke();
+      ctx.fillStyle = "#17202a";
+      ctx.font = "850 16px Inter, Arial, sans-serif";
+      ctx.fillText("Two-Axis Map", 34, y + 34);
+      ctx.fillStyle = "#667085";
+      ctx.font = "750 11px Inter, Arial, sans-serif";
+      ctx.textAlign = "right";
+      ctx.fillText(quadrantFor(result.x, result.y), 356, y + 34);
+      ctx.textAlign = "left";
+
+      const mapX = 46;
+      const mapY = y + 58;
+      const mapSize = 298;
+      ctx.fillStyle = "#fbfcfe";
+      drawRoundedRect(ctx, mapX, mapY, mapSize, mapSize, 8);
+      ctx.fill();
+      ctx.strokeStyle = "#cfd8e5";
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(23,32,42,0.22)";
+      ctx.beginPath();
+      ctx.moveTo(mapX, mapY + mapSize / 2);
+      ctx.lineTo(mapX + mapSize, mapY + mapSize / 2);
+      ctx.moveTo(mapX + mapSize / 2, mapY);
+      ctx.lineTo(mapX + mapSize / 2, mapY + mapSize);
+      ctx.stroke();
+      const dotX = mapX + (coordToPercent(result.x) / 100) * mapSize;
+      const dotY = mapY + mapSize - (coordToPercent(result.y) / 100) * mapSize;
+      ctx.fillStyle = "#0f766e";
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.lineWidth = 1;
+      ctx.fillStyle = "#667085";
+      ctx.font = "750 10px Inter, Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Human/social structure", mapX + mapSize / 2, mapY + 20);
+      ctx.fillText("Posthuman/intelligence", mapX + mapSize / 2, mapY + mapSize - 12);
+      ctx.textAlign = "left";
+      y += 428;
+
+      const metrics = [
+        ["Capability", abilityLabel],
+        ["Risk", riskLabel],
+        ["Governance", responseLabel],
+        ["Value", valueLabel]
+      ];
+      metrics.forEach(([label, value]) => {
+        ctx.fillStyle = "#f8fafc";
+        drawRoundedRect(ctx, 22, y, 346, 78, 7);
+        ctx.fill();
+        ctx.strokeStyle = "#d8dee8";
+        ctx.stroke();
+        ctx.fillStyle = "#667085";
+        ctx.font = "750 11px Inter, Arial, sans-serif";
+        ctx.fillText(label, 34, y + 24);
+        ctx.fillStyle = "#17202a";
+        ctx.font = "850 16px Inter, Arial, sans-serif";
+        drawWrappedText(ctx, value, 34, y + 50, 322, 20, 2);
+        y += 88;
+      });
+
+      ctx.fillStyle = "#e7f6f3";
+      drawRoundedRect(ctx, 22, y, 346, 82, 8);
+      ctx.fill();
+      ctx.fillStyle = "#0b5d55";
+      ctx.font = "850 15px Inter, Arial, sans-serif";
+      ctx.fillText("Get your AI Persona", 34, y + 32);
+      ctx.fillStyle = "#344054";
+      ctx.font = "720 12px Inter, Arial, sans-serif";
+      ctx.fillText("ai-persona-qxad5fjx.edgeone.cool", 34, y + 58);
+
+      await publishShareCanvas(canvas, `ai-stance-mobile-page-${code}.png`, "The mobile page image is ready. Save it and post it wherever you want.");
+    }
+
+    function resetQuiz() {
+      clearAutoAdvance();
+      resetShareImage();
+      answers = {};
+      currentIndex = 0;
+      activeReferenceId = "";
+      lastSubmittedFingerprint = "";
+      clearDraft();
+      if (submitStatus) submitStatus.textContent = "";
+      update();
+      renderReferencePoints();
+      renderReferenceDetail();
+      renderPage();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    form.addEventListener("change", (event) => {
+      if (!event.target.matches("input[type='radio'], input[type='checkbox']")) return;
+      const page = pages.find((item) => item.id === event.target.name);
+      if (page && page.multiple) {
+        let values = Array.from(pageOptions.querySelectorAll(`input[name="${event.target.name}"]:checked`)).map((input) => input.value);
+        if (page.exclusiveValue) {
+          if (event.target.value === page.exclusiveValue && event.target.checked) {
+            values = [page.exclusiveValue];
+          } else {
+            values = values.filter((value) => value !== page.exclusiveValue);
+          }
+          pageOptions.querySelectorAll(`input[name="${event.target.name}"]`).forEach((input) => {
+            input.checked = values.includes(input.value);
+          });
+        }
+        answers[event.target.name] = values;
+      } else {
+        answers[event.target.name] = event.target.value;
+      }
+      saveDraft();
+      resetShareImage();
+      update();
+      updatePagerControls();
+      if (event.target.type === "radio") scheduleAutoAdvance(event.target.name);
+    });
+
+    pageOptions.addEventListener("click", (event) => {
+      const label = event.target.closest(".single-option");
+      const input = label ? label.querySelector("input[type='radio']") : null;
+      const page = pages[currentIndex];
+      if (!input || !page || page.multiple) return;
+      window.setTimeout(() => {
+        if (input.checked && selected(page.id) === input.value) scheduleAutoAdvance(page.id);
+      }, 0);
+    });
+
+    prevBtn.addEventListener("click", goToPrevious);
+    if (prevTopBtn) prevTopBtn.addEventListener("click", goToPrevious);
+    nextBtn.addEventListener("click", goToNext);
+
+    resetBtn.addEventListener("click", resetQuiz);
+    if (restartBtn) restartBtn.addEventListener("click", resetQuiz);
+    if (shareBtn) shareBtn.addEventListener("click", generateShareImage);
+    if (longShareBtn) longShareBtn.addEventListener("click", generateLongShareImage);
+    editLastBtn.addEventListener("click", () => {
+      clearAutoAdvance();
+      currentIndex = pages.length - 1;
+      saveDraft();
+      renderPage(true);
+    });
+
+    function openReferenceById(id) {
+      const point = referencePoints.find((item) => item.id === id);
+      if (!point) return;
+      activeReferenceId = point.id;
+      renderReferencePoints();
+      renderReferenceDetail(point);
+    }
+
+    referenceLayer.addEventListener("click", (event) => {
+      const target = event.target.closest(".reference-point");
+      if (!target) return;
+      openReferenceById(target.dataset.id);
+    });
+
+    if (nearestPersonSection) {
+      nearestPersonSection.addEventListener("click", () => openReferenceById(nearestPersonSection.dataset.referenceId));
+      nearestPersonSection.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        openReferenceById(nearestPersonSection.dataset.referenceId);
+      });
+    }
+
+    referenceModal.addEventListener("click", (event) => {
+      if (!event.target.matches("[data-reference-close]")) return;
+      closeReferenceModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || referenceModal.hidden) return;
+      closeReferenceModal();
+    });
+
+    update();
+    renderMapLegend();
+    renderReferencePoints();
+    renderReferenceDetail();
+    renderPage();
+  </script>
+</body>
+</html>
