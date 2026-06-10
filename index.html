@@ -1732,14 +1732,13 @@
         id: "C02",
         dimension: "c",
         direction: -1,
-        facet: "许可、审计与问责",
-        text: "你最担心当前 AI 治理忽视哪类问题？",
+        facet: "治理盲点判断",
+        text: "关于 AI 治理，你最担心哪件事被忽视？",
         options: [
-          ["1", "A", "过度控制：过早、过严的审批规则可能保护既有大机构，阻碍有用竞争。"],
-          ["1.67", "B", "证据不足：许多能力和伤害说法仍来自演示、炒作或选择性案例。"],
-          ["2.33", "C", "缺少审计链条：没有测试、日志、事故报告和责任机制，就没人说得清哪里出了问题。"],
-          ["3.67", "D", "现实社会伤害：劳动、歧视、监控、申诉和公共采购这些影响可能被忽视。"],
-          ["5", "E", "危险能力失控：具备危险能力的系统可能在没有许可、第三方测试或叫停权的情况下部署。"]
+          ["1", "A", "规则定得太强，最后可能让最强 AI 被少数大公司控制。"],
+          ["2.33", "B", "很多关于 AI 能力的说法证据还不够，政策可能被夸大的宣传带着走。"],
+          ["3.67", "C", "缺少事故报告和外部审查。系统出问题后，外界可能根本不知道发生了什么。"],
+          ["5", "D", "受影响的人不在讨论里，比如劳动者、被监控者，或被算法决定影响的人。"]
         ]
       },
       {
@@ -1931,10 +1930,9 @@
       },
       C02: {
         "1": { governance_control: -1.4, openness_build: 1.7, human_accountability: -0.4, opportunity_cost: 0.7, permissionless_acceleration: 1.1 },
-        "1.67": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
-        "2.33": { governance_control: 0.5, openness_build: 0.3, human_accountability: 0.6, present_social_harm: 0.2 },
-        "3.67": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 },
-        "5": { civilizational_risk: 1.1, governance_control: 2, openness_build: -1.2, human_accountability: 1.2, intelligence_centrality: -0.5, opportunity_cost: -0.6 }
+        "2.33": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
+        "3.67": { governance_control: 0.7, openness_build: -0.2, human_accountability: 1.2, present_social_harm: 0.4, capability_skepticism: 0.2 },
+        "5": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 }
       },
       L01: {
         "1": { openness_build: 1.1, opportunity_cost: 1.4, governance_control: -0.4, human_accountability: -0.3, present_social_harm: -0.3 },

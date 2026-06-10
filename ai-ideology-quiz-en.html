@@ -1659,13 +1659,12 @@
         dimension: "r",
         diagnosis: "opportunity",
         facet: "opportunity-cost diagnosis",
-        text: "If governments or big companies slow AI development or restrict releases, what is the biggest cost?",
+        text: "If the government slows new AI model releases in the name of safety, which view is closest to yours?",
         options: [
-          ["1", "A", "If risks are real, slower is not the problem; deploying unreliable systems too early is more dangerous."],
-          ["1.67", "B", "Many costs are overstated; AI's capabilities, benefits, and timelines are still uncertain."],
-          ["2.33", "C", "Rules may help big firms and shut out small teams, open source, and public scrutiny."],
-          ["3.67", "D", "Medicine, education, science, and productivity gains would arrive later; deploy AI with guardrails."],
-          ["5", "E", "It would slow the growth of intelligence itself, and shrink humanity's future."]
+          ["1", "A", "Safety should come first. The stronger the system, the less it should be rushed into everyone's hands."],
+          ["2.33", "B", "Restrictions like this can lock power inside a few big companies and governments, making outside scrutiny harder."],
+          ["3.67", "C", "Slowing releases too much means useful AI tools that could help many people arrive later."],
+          ["5", "D", "The larger cost is slowing intelligence itself, and shrinking humanity's future."]
         ]
       },
       {
@@ -1732,14 +1731,13 @@
         id: "C02",
         dimension: "c",
         direction: -1,
-        facet: "licensing, audits, and accountability",
-        text: "What issue are you most worried current AI governance will overlook?",
+        facet: "governance blind spot judgment",
+        text: "In AI governance, what are you most worried will be overlooked?",
         options: [
-          ["1", "A", "Over-control: strict early approval rules may protect incumbents and block useful competition."],
-          ["1.67", "B", "Weak evidence: many capability and harm claims still rely on demos, hype, or selective examples."],
-          ["2.33", "C", "No audit trail: without tests, logs, incident reports, and liability, no one can tell what went wrong."],
-          ["3.67", "D", "Real social harms: labor, discrimination, surveillance, appeals, and public procurement may be overlooked."],
-          ["5", "E", "Dangerous capability: systems with dangerous capabilities may be deployed without licenses, third-party tests, or stop powers."]
+          ["1", "A", "Rules may become too strict, leaving the strongest AI systems controlled by a few big companies."],
+          ["2.33", "B", "Many claims about AI capabilities still lack evidence, and policy may be driven by exaggerated publicity."],
+          ["3.67", "C", "Incident reporting and outside review may be missing. When systems fail, outsiders may not know what happened."],
+          ["5", "D", "Affected people may be left out of the discussion, such as workers, surveilled people, or people affected by algorithmic decisions."]
         ]
       },
       {
@@ -1825,18 +1823,18 @@
       {
         id: "V3",
         prompt: "A validated AI research tool can suggest directions, design experiments, and analyze results much faster. Some judgments are hard for humans to trace. What should happen?",
-        options: ["Slow deployment because autonomous research capability creates strategic risk", "Keep it inside governed institutions with strict access limits", "Deploy it widely because the disease, climate, and productivity gains are huge", "Accelerate it because intelligence growth itself is an important opportunity"]
+        options: ["Slow down first, because this kind of capability could become hard to contain", "Let only trusted institutions use it, with clear records of responsibility", "Get it to research teams quickly, because it could help many people", "Accelerate it, because stronger intelligence is itself an important opportunity"]
       }
     ];
 
     const statements = [
       "AI may destroy human civilization, so alignment and governance must come first.",
       "Advanced AI should not be treated as ordinary software; before broad deployment, it must remain controllable and accountable to humans.",
-      "The core AI issues are present social harms, concentration of power, labor, bias, and exploitation.",
+      "The biggest AI problem is not a distant future; people are already being affected, watched, or excluded.",
       "AI is an important but normal technology: useful, fallible, and best governed by context.",
       "Many AI narratives package ordinary systems as magic; first cut through hype, snake oil, and overclaiming.",
       "Scaling, search, data, and compute are the deepest lessons; human intuition should be discounted.",
-      "AI should be built and deployed because it can create enormous abundance.",
+      "AI should reach the real world faster because it can help many people.",
       "AI is not merely a tool; it is a path toward the singularity, human-machine merger, or civilizational upgrade.",
       "AI acceleration has moral urgency and should not be constrained by human fear.",
       "If higher intelligence or technocapital outgrows a human/social-structure-centered frame, that is not necessarily failure; humans may be a transitional stage.",
@@ -1931,10 +1929,9 @@
       },
       C02: {
         "1": { governance_control: -1.4, openness_build: 1.7, human_accountability: -0.4, opportunity_cost: 0.7, permissionless_acceleration: 1.1 },
-        "1.67": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
-        "2.33": { governance_control: 0.5, openness_build: 0.3, human_accountability: 0.6, present_social_harm: 0.2 },
-        "3.67": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 },
-        "5": { civilizational_risk: 1.1, governance_control: 2, openness_build: -1.2, human_accountability: 1.2, intelligence_centrality: -0.5, opportunity_cost: -0.6 }
+        "2.33": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
+        "3.67": { governance_control: 0.7, openness_build: -0.2, human_accountability: 1.2, present_social_harm: 0.4, capability_skepticism: 0.2 },
+        "5": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 }
       },
       L01: {
         "1": { openness_build: 1.1, opportunity_cost: 1.4, governance_control: -0.4, human_accountability: -0.3, present_social_harm: -0.3 },
@@ -3260,8 +3257,8 @@
         { key: "opportunity", value: result.rOpportunityCost }
       ].sort((a, b) => b.value - a.value);
       if (result.rProjection >= 1) return "You put real weight on frontier AI going badly wrong, so you want safety boundaries before the biggest deployments.";
-      if (result.rProjection <= -1) return "You are more worried that too much restriction will delay concrete gains in medicine, education, research, and productivity.";
-      if (candidates[0]?.key === "social") return "You are most sensitive to harms AI is already amplifying: bias, surveillance, labor, data use, and concentrated power.";
+      if (result.rProjection <= -1) return "You are more worried that too much restriction keeps useful AI tools from reaching people who could benefit.";
+      if (candidates[0]?.key === "social") return "You are most sensitive to people already being harmed by AI, especially when they are watched, misjudged, or shut out.";
       if (candidates[0]?.key === "normal") return "You tend to see AI as important but not magical: useful, fallible, and often oversold.";
       return "You do not read AI as simply doom or salvation; you are balancing risks and benefits.";
     }

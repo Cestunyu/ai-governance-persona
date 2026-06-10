@@ -1660,13 +1660,12 @@
         dimension: "r",
         diagnosis: "opportunity",
         facet: "机会成本诊断",
-        text: "如果政府或大公司放慢 AI 研发或限制发布，最大代价是什么？",
+        text: "如果政府出于安全考虑，要求 AI 公司放慢新模型发布或接受更严格审批，你更接近哪种立场？",
         options: [
-          ["1", "A", "如果风险真实，慢一点不是问题；过早部署不可靠系统更危险。"],
-          ["1.67", "B", "很多代价被夸大了；AI 的能力、收益和时间表仍不确定。"],
-          ["2.33", "C", "规则可能帮大公司占优势，让小团队、开源和公众监督更难参与。"],
-          ["3.67", "D", "医疗、教育、科研和生产力收益会变慢；应边治理边部署。"],
-          ["5", "E", "更大的代价是智能发展变慢，也压缩未来文明的可能性。"]
+          ["1", "A", "安全应放在第一位。越强大的系统，越不能急着推给所有人用。"],
+          ["2.33", "B", "这类限制容易把权力锁在少数大公司和政府手里，让外部的人更难检查和参与。"],
+          ["3.67", "C", "过度放慢发布会让本该帮助很多人的 AI 工具更晚到来。"],
+          ["5", "D", "更大的代价是智能发展变慢，也压缩未来文明的可能性。"]
         ]
       },
       {
@@ -1733,14 +1732,13 @@
         id: "C02",
         dimension: "c",
         direction: -1,
-        facet: "许可、审计与问责",
-        text: "你最担心当前 AI 治理忽视哪类问题？",
+        facet: "治理盲点判断",
+        text: "关于 AI 治理，你最担心哪件事被忽视？",
         options: [
-          ["1", "A", "过度控制：过早、过严的审批规则可能保护既有大机构，阻碍有用竞争。"],
-          ["1.67", "B", "证据不足：许多能力和伤害说法仍来自演示、炒作或选择性案例。"],
-          ["2.33", "C", "缺少审计链条：没有测试、日志、事故报告和责任机制，就没人说得清哪里出了问题。"],
-          ["3.67", "D", "现实社会伤害：劳动、歧视、监控、申诉和公共采购这些影响可能被忽视。"],
-          ["5", "E", "危险能力失控：具备危险能力的系统可能在没有许可、第三方测试或叫停权的情况下部署。"]
+          ["1", "A", "规则定得太强，最后可能让最强 AI 被少数大公司控制。"],
+          ["2.33", "B", "很多关于 AI 能力的说法证据还不够，政策可能被夸大的宣传带着走。"],
+          ["3.67", "C", "缺少事故报告和外部审查。系统出问题后，外界可能根本不知道发生了什么。"],
+          ["5", "D", "受影响的人不在讨论里，比如劳动者、被监控者，或被算法决定影响的人。"]
         ]
       },
       {
@@ -1826,18 +1824,18 @@
       {
         id: "V3",
         prompt: "一种已验证的 AI 工具能明显加快科研：提出思路、设计实验、分析结果。但有些判断人类很难追踪。你支持哪种做法？",
-        options: ["放慢部署，因为自主科研能力有战略风险", "放在受治理的机构内，严格限制访问", "广泛部署，因为疾病、气候和生产率收益巨大", "加速推进，因为智能增长本身是重要机会"]
+        options: ["先放慢，因为这种能力一旦失控会很麻烦", "只给可信机构用，并留下清楚的责任记录", "尽快给科研团队用，因为它可能帮很多人", "加速推进，因为更强智能本身就是重要机会"]
       }
     ];
 
     const statements = [
       "AI 可能毁灭人类文明，所以对齐和治理必须优先。",
       "先进 AI 不能当作普通软件放任发布；在广泛部署前，必须先能被人类控制和问责。",
-      "AI 的核心问题是当下的社会伤害、权力集中、劳动、偏见和剥削。",
+      "AI 最大的问题不是未来太远，而是现在已经有人被它影响、监控或排除。",
       "AI 是一种重要但普通的技术：有用、会出错，应按具体场景治理。",
       "很多 AI 叙事把普通系统包装成魔法；应先拆穿炒作 (hype)、神药话术 (snake oil) 和夸大能力。",
       "规模化 (scaling)、搜索、数据和算力是最深的教训；人类直觉应该被降权。",
-      "AI 应该被建设和部署，因为它能创造巨大的丰裕。",
+      "AI 应该更快进入现实世界，因为它能帮到很多人。",
       "AI 不只是工具，更像通往奇点、人机融合或文明升级的路径。",
       "AI 加速本身有道德紧迫性，不应该被人类恐惧束缚。",
       "如果更高级的智能或技术资本会超出人类/社会结构中心框架，这未必是失败；人类可能只是过渡阶段。",
@@ -1932,10 +1930,9 @@
       },
       C02: {
         "1": { governance_control: -1.4, openness_build: 1.7, human_accountability: -0.4, opportunity_cost: 0.7, permissionless_acceleration: 1.1 },
-        "1.67": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
-        "2.33": { governance_control: 0.5, openness_build: 0.3, human_accountability: 0.6, present_social_harm: 0.2 },
-        "3.67": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 },
-        "5": { civilizational_risk: 1.1, governance_control: 2, openness_build: -1.2, human_accountability: 1.2, intelligence_centrality: -0.5, opportunity_cost: -0.6 }
+        "2.33": { civilizational_risk: -0.6, governance_control: 0.2, openness_build: 0.1, human_accountability: 0.3, capability_skepticism: 1.4, opportunity_cost: -0.2, computation_epistemology: -0.6 },
+        "3.67": { governance_control: 0.7, openness_build: -0.2, human_accountability: 1.2, present_social_harm: 0.4, capability_skepticism: 0.2 },
+        "5": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 }
       },
       L01: {
         "1": { openness_build: 1.1, opportunity_cost: 1.4, governance_control: -0.4, human_accountability: -0.3, present_social_harm: -0.3 },
@@ -3261,8 +3258,8 @@
         { key: "opportunity", value: result.rOpportunityCost }
       ].sort((a, b) => b.value - a.value);
       if (result.rProjection >= 1) return "你比较相信前沿 AI 可能出大事，所以倾向于提前设安全边界。";
-      if (result.rProjection <= -1) return "你更担心限制太多会拖慢医疗、教育、科研和生产力这些现实收益。";
-      if (candidates[0]?.key === "social") return "你最敏感的是 AI 已经在现实里放大的问题，比如偏见、监控、劳动和权力集中。";
+      if (result.rProjection <= -1) return "你更担心限制太多，让本该帮到人的 AI 工具迟迟到不了现实里。";
+      if (candidates[0]?.key === "social") return "你最敏感的是 AI 已经在现实里伤到一些人，尤其是被监控、被误判或被排除的人。";
       if (candidates[0]?.key === "normal") return "你倾向把 AI 当成一种重要但不神秘的技术：有用、会出错，也常被过度包装。";
       return "你没有把 AI 简单看成灾难或救星，而是在风险和收益之间保留判断。";
     }
