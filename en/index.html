@@ -1494,7 +1494,7 @@
       <div class="brand">
         <strong class="brand-title">AI Persona</strong>
         <strong class="brand-progress" id="brandProgress">Start</strong>
-        <span>13 questions to see where you stand on AI risk, governance, openness, and human control.</span>
+        <span>16 questions to see where you stand on AI risk, governance, openness, and human control.</span>
       </div>
       <div class="topbar-actions">
         <a class="lang-link" href="/ch/">中文</a>
@@ -1647,12 +1647,12 @@
         dimension: "r",
         diagnosis: "catastrophic",
         facet: "severe risk diagnosis",
-        text: "What concrete consequence of more powerful AI worries you most?",
+        text: "What risk from more powerful AI should be prevented first?",
         options: [
-          ["1", "A", "I suspect many danger claims are overstated; AI may not create systemic danger in the next 10-20 years."],
-          ["2.33", "B", "AI will deepen today's harms: concentrated power, job loss, bias, surveillance, and inequality."],
-          ["3.67", "C", "Frontier AI may escape human control; alignment and control failures should drive policy."],
-          ["5", "D", "AI, compute, and capital may start steering themselves, leaving society with less control."]
+          ["1", "A", "The risk may be overstated; near-term AI problems should not be treated as a systemic crisis."],
+          ["2.33", "B", "Concrete social harm: AI could be used for surveillance, discrimination, or denying people opportunities."],
+          ["3.67", "C", "Loss of control: frontier systems may take actions humans cannot stop."],
+          ["5", "D", "Loss of social direction: AI could expand faster than public decision-making can keep up."]
         ]
       },
       {
@@ -1670,15 +1670,51 @@
         ]
       },
       {
+        id: "L01",
+        dimension: "l",
+        facet: "labor replacement and benefit sharing",
+        text: "If AI makes many jobs cheaper and more automated, and could even cause large-scale unemployment, what should policy do first?",
+        options: [
+          ["1", "A", "Let AI be used first. Even if some jobs disappear, higher productivity will create new opportunities."],
+          ["2.33", "B", "Help people change jobs. The priority is not to block AI, but to help affected workers move into new roles."],
+          ["3.67", "C", "Share more of the gains. The wealth created by AI should not flow only to companies and investors; workers should benefit too."],
+          ["5", "D", "Limit replacement first. AI systems that could replace people at large scale should not be deployed quickly without protections."]
+        ]
+      },
+      {
+        id: "I01",
+        dimension: "i",
+        facet: "information ecosystem and synthetic content",
+        text: "An AI-generated fake video spreads quickly online, and many people think it is real. What is the most important problem?",
+        options: [
+          ["1", "A", "Verification is too slow. Platforms and media should label suspicious content faster so people know it may be AI-generated."],
+          ["2.33", "B", "These tools are too easy to misuse. AI tools that can realistically impersonate real people should not be freely available."],
+          ["3.67", "C", "Platforms amplify fake content. The deeper problem is not one fake video, but who profits from spread and attention."],
+          ["5", "D", "AI creation should not be restricted because of this. People who fake things should be responsible, but ordinary AI expression should not be over-controlled."]
+        ]
+      },
+      {
+        id: "T01",
+        dimension: "t",
+        facet: "training data and permission rules",
+        text: "An AI company wants to train a new model on online articles, images, and code. Much of it is public, but the authors did not clearly agree. What worries you most?",
+        options: [
+          ["1", "A", "Too many limits would slow progress. Public content is already learned from and referenced, and AI should be able to learn from it too."],
+          ["2.33", "B", "Creators are being taken from. Models get stronger from other people's work, but the original creators have no choice and receive no return."],
+          ["3.67", "C", "Personal content gets misused. Publicly visible does not mean free to train on, especially when it involves real people's lives."],
+          ["5", "D", "Complex permission rules would push out small teams and open-source projects. In the end, only big companies could afford the data and legal costs."]
+        ]
+      },
+      {
         id: "D01",
         dimension: "d",
         facet: "democratic-society threat diagnosis",
-        text: "A city uses AI to choose transit and welfare plans. The top plan is more efficient but costs some communities more, and the tradeoff is hard to explain. What worries you most?",
+        text: "A city uses AI to help allocate welfare services. Residents cannot easily understand the reasons or appeal decisions. What worries you most?",
         options: [
-          ["1", "A", "The worry is overstated; the real issues are budgets, interest groups, administrative capacity, and human politics."],
-          ["2.33", "B", "Value tradeoffs get buried inside the model; residents cannot really debate who benefits and who pays."],
-          ["3.67", "C", "The model becomes an administrative tool; when it makes mistakes, ordinary people have little way to appeal."],
-          ["5", "D", "If AI plans keep looking more effective, human objections may be dismissed as not understanding the data."]
+          ["1", "A", "This worry may be overstated; the real bottlenecks are still budgets and administrative capacity."],
+          ["2.33", "B", "The value tradeoff is opaque; residents cannot tell why some people benefit and others lose."],
+          ["3.67", "C", "Appeals become harder; when the system is wrong, ordinary people struggle to get decisions reviewed."],
+          ["5", "D", "Human judgment gets sidelined; if the model looks effective, objections are easier to ignore."]
         ]
       },
       {
@@ -1900,6 +1936,24 @@
         "2.33": { governance_control: 0.5, openness_build: 0.3, human_accountability: 0.6, present_social_harm: 0.2 },
         "3.67": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 },
         "5": { civilizational_risk: 1.1, governance_control: 2, openness_build: -1.2, human_accountability: 1.2, intelligence_centrality: -0.5, opportunity_cost: -0.6 }
+      },
+      L01: {
+        "1": { openness_build: 1.1, opportunity_cost: 1.4, governance_control: -0.4, human_accountability: -0.3, present_social_harm: -0.3 },
+        "2.33": { opportunity_cost: 0.5, human_accountability: 0.5, present_social_harm: 0.3, governance_control: 0.1 },
+        "3.67": { present_social_harm: 1.4, human_accountability: 1.4, governance_control: 0.6, openness_build: -0.2 },
+        "5": { present_social_harm: 1.1, human_accountability: 1.2, governance_control: 1.4, openness_build: -1.1, opportunity_cost: -0.6 }
+      },
+      I01: {
+        "1": { governance_control: 0.4, human_accountability: 0.8, capability_skepticism: 0.5, present_social_harm: 0.4 },
+        "2.33": { governance_control: 1.6, openness_build: -1.1, human_accountability: 0.9, present_social_harm: 0.7, civilizational_risk: 0.3 },
+        "3.67": { present_social_harm: 1.8, human_accountability: 1.3, governance_control: 0.5, capability_skepticism: 0.3 },
+        "5": { openness_build: 1.5, governance_control: -1.1, opportunity_cost: 0.7, permissionless_acceleration: 1.0, human_accountability: -0.2 }
+      },
+      T01: {
+        "1": { openness_build: 1.1, opportunity_cost: 1.1, governance_control: -0.5, permissionless_acceleration: 0.7, computation_epistemology: 0.3 },
+        "2.33": { present_social_harm: 1.2, human_accountability: 1.2, governance_control: 0.4, openness_build: -0.2 },
+        "3.67": { present_social_harm: 0.9, human_accountability: 1.1, governance_control: 1.2, openness_build: -0.5, capability_skepticism: 0.2 },
+        "5": { openness_build: 1.4, governance_control: -0.8, permissionless_acceleration: 1.4, opportunity_cost: 0.6, human_accountability: 0.2 }
       },
       C03: {
         "1": { civilizational_risk: 1.2, governance_control: 1.9, openness_build: -1.5, human_accountability: 0.9, opportunity_cost: -0.6 },
@@ -2350,7 +2404,7 @@
       }
     };
 
-    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "D01", "R01", "R04", "E01", "H01", "H04"];
+    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "L01", "I01", "T01", "D01", "R01", "R04", "E01", "H01", "H04"];
     const scenarioOrder = ["V3"];
 
     const introPage = {
@@ -2367,7 +2421,7 @@
         },
         {
           title: "What you will do",
-          body: "Answer 13 short questions. For each one, choose the option closest to your view, even if no option fits perfectly. Some questions are abstract or politically loaded. If two answers both seem partly right, choose the one closest to your default judgment."
+          body: "Answer 16 short questions. For each one, choose the option closest to your view, even if no option fits perfectly. Some questions are abstract or politically loaded. If two answers both seem partly right, choose the one closest to your default judgment."
         },
         {
           title: "Data notice",

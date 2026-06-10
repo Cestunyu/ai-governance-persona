@@ -1492,7 +1492,7 @@
       <div class="brand">
         <strong class="brand-title">你的 AI Persona 是什么？</strong>
         <strong class="brand-progress" id="brandProgress">开始</strong>
-        <span>13 个问题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
+        <span>16 个问题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
       </div>
       <div class="topbar-actions">
         <a class="lang-link active" href="/ch/">中文</a>
@@ -1646,12 +1646,12 @@
         dimension: "r",
         diagnosis: "catastrophic",
         facet: "严重风险诊断",
-        text: "未来更强 AI 让你最担心的具体后果是什么？",
+        text: "未来更强 AI 最应该优先防范哪类风险？",
         options: [
-          ["1", "A", "我怀疑危险说法被夸大；未来 10-20 年未必有系统性危险。"],
-          ["2.33", "B", "我更担心 AI 加剧眼前伤害：权力集中、失业、偏见、监控和不平等。"],
-          ["3.67", "C", "我更担心前沿系统失控；对齐和控制失败应成为政策核心。"],
-          ["5", "D", "我更担心资本和算力推着 AI 扩张，让社会越来越难决定方向。"]
+          ["1", "A", "风险可能被高估；近期 AI 问题不应被说成系统性危机。"],
+          ["2.33", "B", "现实社会伤害：AI 可能被用于监控、歧视或剥夺人的机会。"],
+          ["3.67", "C", "失控风险：前沿系统可能做出人类无法阻止的行为。"],
+          ["5", "D", "社会失去方向：AI 扩张太快，公共决策越来越跟不上。"]
         ]
       },
       {
@@ -1669,15 +1669,51 @@
         ]
       },
       {
+        id: "L01",
+        dimension: "l",
+        facet: "劳动替代与收益分配",
+        text: "如果 AI 让许多工作更便宜、更自动化，甚至可能带来大规模失业，政策应该优先做什么？",
+        options: [
+          ["1", "A", "先让 AI 用起来。即使一些工作会消失，更高生产率也会创造新的机会。"],
+          ["2.33", "B", "帮人换工作。重点不是挡住 AI，而是让受影响的人能转到新岗位。"],
+          ["3.67", "C", "多分一点收益。AI 带来的财富不应只流向公司和投资者，也应回到劳动者。"],
+          ["5", "D", "先限制替代。会大规模取代人的 AI，不应该在没有保护措施时快速部署。"]
+        ]
+      },
+      {
+        id: "I01",
+        dimension: "i",
+        facet: "信息生态与合成内容",
+        text: "一段 AI 生成的假视频在网上快速传播，很多人以为是真的。你觉得最关键的问题是什么？",
+        options: [
+          ["1", "A", "真假识别太慢。平台和媒体应该更快标出可疑内容，让人知道它可能是 AI 生成的。"],
+          ["2.33", "B", "这类工具太容易滥用。能逼真冒充真人的 AI 工具，不应该被随便使用。"],
+          ["3.67", "C", "平台放大了假内容。真正的问题不是单个假视频，而是谁从传播和流量中获利。"],
+          ["5", "D", "不应因此限制 AI 创作。造假者应该负责，但普通人使用 AI 表达和创作不该被过度管制。"]
+        ]
+      },
+      {
+        id: "T01",
+        dimension: "t",
+        facet: "训练数据与授权规则",
+        text: "一家 AI 公司想用网上的文章、图片和代码训练新模型。很多内容是公开的，但作者并没有明确同意。你最担心什么？",
+        options: [
+          ["1", "A", "限制太多会拖慢进步。公开内容本来就会被学习和引用，AI 也应该能从中学习。"],
+          ["2.33", "B", "创作者被白拿。模型靠别人的作品变强，但原作者没有选择权，也拿不到回报。"],
+          ["3.67", "C", "个人内容被滥用。公开可见不等于可以随便训练，尤其是涉及真实个人生活的内容。"],
+          ["5", "D", "复杂授权规则会让小团队和开源项目出局。最后只有大公司负担得起数据和法律成本。"]
+        ]
+      },
+      {
         id: "D01",
         dimension: "d",
         facet: "民主社会威胁诊断",
-        text: "城市用 AI 选交通和福利方案。方案整体更有效，但一些社区代价更高，权衡理由也难解释。你最担心什么？",
+        text: "城市用 AI 辅助分配福利资源。居民很难看懂理由，也很难申诉。你最担心什么？",
         options: [
-          ["1", "A", "担忧被夸大；真正问题仍是预算、利益集团、行政能力和人类政治。"],
-          ["2.33", "B", "价值取舍被藏进模型里；谁受益、谁受损，居民很难真正讨论。"],
-          ["3.67", "C", "模型会变成行政工具；一旦出错，普通人很难申诉。"],
-          ["5", "D", "如果 AI 方案长期显得更有效，人的反对会被当成“不懂数据”。"]
+          ["1", "A", "这类担忧可能被高估；真正瓶颈仍是预算和行政能力。"],
+          ["2.33", "B", "价值取舍不透明；居民不知道为什么有人获益、有人受损。"],
+          ["3.67", "C", "申诉变困难；出错时普通人很难让决定被重新审查。"],
+          ["5", "D", "人类判断被边缘化；只要模型看起来有效，反对意见就容易被忽视。"]
         ]
       },
       {
@@ -1899,6 +1935,24 @@
         "2.33": { governance_control: 0.5, openness_build: 0.3, human_accountability: 0.6, present_social_harm: 0.2 },
         "3.67": { governance_control: 0.9, openness_build: -0.2, human_accountability: 1.4, present_social_harm: 1.7, capability_skepticism: 0.2 },
         "5": { civilizational_risk: 1.1, governance_control: 2, openness_build: -1.2, human_accountability: 1.2, intelligence_centrality: -0.5, opportunity_cost: -0.6 }
+      },
+      L01: {
+        "1": { openness_build: 1.1, opportunity_cost: 1.4, governance_control: -0.4, human_accountability: -0.3, present_social_harm: -0.3 },
+        "2.33": { opportunity_cost: 0.5, human_accountability: 0.5, present_social_harm: 0.3, governance_control: 0.1 },
+        "3.67": { present_social_harm: 1.4, human_accountability: 1.4, governance_control: 0.6, openness_build: -0.2 },
+        "5": { present_social_harm: 1.1, human_accountability: 1.2, governance_control: 1.4, openness_build: -1.1, opportunity_cost: -0.6 }
+      },
+      I01: {
+        "1": { governance_control: 0.4, human_accountability: 0.8, capability_skepticism: 0.5, present_social_harm: 0.4 },
+        "2.33": { governance_control: 1.6, openness_build: -1.1, human_accountability: 0.9, present_social_harm: 0.7, civilizational_risk: 0.3 },
+        "3.67": { present_social_harm: 1.8, human_accountability: 1.3, governance_control: 0.5, capability_skepticism: 0.3 },
+        "5": { openness_build: 1.5, governance_control: -1.1, opportunity_cost: 0.7, permissionless_acceleration: 1.0, human_accountability: -0.2 }
+      },
+      T01: {
+        "1": { openness_build: 1.1, opportunity_cost: 1.1, governance_control: -0.5, permissionless_acceleration: 0.7, computation_epistemology: 0.3 },
+        "2.33": { present_social_harm: 1.2, human_accountability: 1.2, governance_control: 0.4, openness_build: -0.2 },
+        "3.67": { present_social_harm: 0.9, human_accountability: 1.1, governance_control: 1.2, openness_build: -0.5, capability_skepticism: 0.2 },
+        "5": { openness_build: 1.4, governance_control: -0.8, permissionless_acceleration: 1.4, opportunity_cost: 0.6, human_accountability: 0.2 }
       },
       C03: {
         "1": { civilizational_risk: 1.2, governance_control: 1.9, openness_build: -1.5, human_accountability: 0.9, opportunity_cost: -0.6 },
@@ -2349,7 +2403,7 @@
       }
     };
 
-    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "D01", "R01", "R04", "E01", "H01", "H04"];
+    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "L01", "I01", "T01", "D01", "R01", "R04", "E01", "H01", "H04"];
     const scenarioOrder = ["V3"];
 
     const introPage = {
@@ -2366,7 +2420,7 @@
         },
         {
           title: "你需要做什么",
-          body: "你将回答 13 个简短问题。每题选择最接近你看法的选项；即使没有完美答案，也请选择相对最接近的一项。有些问题会比较抽象，也可能带有政治或价值判断。如果两个答案都部分正确，请选择更接近你默认判断的那个。"
+          body: "你将回答 16 个简短问题。每题选择最接近你看法的选项；即使没有完美答案，也请选择相对最接近的一项。有些问题会比较抽象，也可能带有政治或价值判断。如果两个答案都部分正确，请选择更接近你默认判断的那个。"
         },
         {
           title: "数据说明",
