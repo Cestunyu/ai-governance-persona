@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>你的 AI Persona 是什么？</title>
+  <title>AI 人格测试</title>
   <link rel="icon" href="data:,">
   <style>
     :root {
@@ -1490,8 +1490,7 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <strong class="brand-title">你的 AI Persona 是什么？</strong>
-        <strong class="brand-progress" id="brandProgress">开始</strong>
+        <strong class="brand-title">AI 人格测试</strong>
         <span>16 个问题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
       </div>
       <div class="topbar-actions">
@@ -1538,7 +1537,7 @@
     <section class="result" id="resultPanel" aria-live="polite" hidden>
       <div class="profile">
         <div class="profile-visual">
-          <img class="profile-avatar" id="profileAvatar" alt="你的 AI Persona 头像" hidden>
+          <img class="profile-avatar" id="profileAvatar" alt="AI 人格测试头像" hidden>
           <h3 class="profile-title" id="profileName">等待生成画像</h3>
           <div class="code" id="profileCode">----</div>
         </div>
@@ -2409,7 +2408,7 @@
       title: "欢迎",
       tag: "开始",
       instruction: "开始前请先阅读",
-      prompt: "欢迎参加 AI Persona 测试。",
+      prompt: "欢迎参加 AI 人格测试。",
       sections: [
         {
           title: "适合谁填写",
@@ -2431,8 +2430,8 @@
           href: "ai-governance-spectrum.html"
         },
         {
-          title: "AI Persona 档案",
-          body: "查看 10 种 AI Persona、头像和代表文本。",
+          title: "AI 人格档案",
+          body: "查看 10 种 AI 人格、头像和代表文本。",
           href: "ai-personality-profiles.html"
         }
       ],
@@ -2464,11 +2463,11 @@
       {
         id: "closestStatement",
         kind: "statement",
-        title: "AI Persona 校验（多选）",
+        title: "AI 人格校验（多选）",
         subtitle: "最后一题为多选，不进入坐标计算，用于复查分类",
         tag: "SELF",
         instruction: "这是多选题：可以选择多个接近你的说法；如果都不像，请只选最后一项",
-        prompt: "下面哪些话接近你现在的 AI Persona？（可多选）",
+        prompt: "下面哪些话接近你现在的 AI 人格？（可多选）",
         options: statements.map((statement, i) => [statement, String(i + 1), statement]),
         multiple: true,
         exclusiveValue: statements[statements.length - 1]
@@ -3804,7 +3803,7 @@
 
       ctx.fillStyle = "#0f172a";
       ctx.font = "900 25px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      ctx.fillText("AI Persona", 62, 78);
+      ctx.fillText("AI 人格测试", 62, 78);
       ctx.fillStyle = "#64748b";
       ctx.font = "720 14px Inter, PingFang SC, Microsoft YaHei, sans-serif";
       ctx.fillText("测测你在 AI 思想光谱中的位置", 62, 104);
@@ -3924,7 +3923,7 @@
       ctx.fillRect(0, 0, width, 48);
       ctx.fillStyle = "#17202a";
       ctx.font = "800 13px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      ctx.fillText("你的 AI Persona 是什么？", 10, 28);
+      ctx.fillText("AI 人格测试", 10, 28);
       ctx.fillStyle = "#667085";
       ctx.font = "760 12px Inter, PingFang SC, Microsoft YaHei, sans-serif";
       ctx.textAlign = "right";
@@ -4045,7 +4044,7 @@
       ctx.fill();
       ctx.fillStyle = "#0b5d55";
       ctx.font = "850 15px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      ctx.fillText("测测你的 AI Persona", 34, y + 32);
+      ctx.fillText("测测你的 AI 人格", 34, y + 32);
       ctx.fillStyle = "#344054";
       ctx.font = "720 12px Inter, PingFang SC, Microsoft YaHei, sans-serif";
       ctx.fillText("ai-persona-qxad5fjx.edgeone.cool", 34, y + 58);
