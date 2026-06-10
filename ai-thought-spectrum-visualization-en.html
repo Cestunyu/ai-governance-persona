@@ -1,2755 +1,327 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Thought Spectrum Map</title>
-  <meta name="description" content="An interactive map of AI thought: what different thinkers diagnose as the problem, how they want AI governed, and where humans fit in the future of intelligence.">
-  <link rel="canonical" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization-en.html">
-  <link rel="alternate" hreflang="zh-CN" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization.html">
-  <link rel="alternate" hreflang="en" href="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization-en.html">
-  <meta property="og:title" content="AI Thought Spectrum Map">
-  <meta property="og:description" content="An interactive map comparing AI safety, social critique, techno-optimism, scaling thought, and accelerationist positions.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://cestunyu.github.io/ai-ideology-quiz/ai-thought-spectrum-visualization-en.html">
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #f6f7fb;
-      --surface: #ffffff;
-      --surface-2: #f9fafb;
-      --ink: #151922;
-      --muted: #5d6678;
-      --soft: #eef1f6;
-      --line: #d9dee8;
-      --line-strong: #aeb7c8;
-      --teal: #0f766e;
-      --red: #b42318;
-      --purple: #7c3aed;
-      --blue: #0369a1;
-      --green: #15803d;
-      --orange: #c2410c;
-      --brown: #7f1d1d;
-      --charcoal: #20242f;
-      --shadow: 0 14px 36px rgba(20, 31, 52, 0.08);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-    }
-
-    a {
-      color: #1d4ed8;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      border-bottom: 1px solid rgba(217, 222, 232, 0.9);
-      background: rgba(246, 247, 251, 0.93);
-      backdrop-filter: blur(14px);
-    }
-
-    .topbar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 10px 20px;
-    }
-
-    .brand {
-      font-size: 13px;
-      font-weight: 760;
-      letter-spacing: 0;
-      color: var(--charcoal);
-      white-space: nowrap;
-    }
-
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 6px;
-    }
-
-    .nav a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      padding: 5px 8px;
-      border-radius: 6px;
-      color: #344054;
-      font-size: 12px;
-      font-weight: 650;
-      text-decoration: none;
-    }
-
-    .nav a:hover {
-      background: #e9edf5;
-    }
-
-    .wrap {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 22px 20px 56px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.28fr) minmax(300px, 0.72fr);
-      gap: 22px;
-      align-items: stretch;
-      margin-top: 6px;
-    }
-
-    .hero-main,
-    .hero-side,
-    .section,
-    .chart-shell,
-    .detail-panel,
-    .profile,
-    .work-row {
-      background: var(--surface);
-      border: 1px solid #e1e6ef;
-      border-radius: 8px;
-      box-shadow: var(--shadow);
-    }
-
-    .hero-main {
-      padding: 28px 30px;
-    }
-
-    .kicker {
-      margin: 0 0 10px;
-      color: var(--teal);
-      font-size: 12px;
-      font-weight: 820;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 0;
-      max-width: 980px;
-      font-size: clamp(30px, 4.8vw, 58px);
-      line-height: 1.04;
-      letter-spacing: 0;
-    }
-
-    .lead {
-      margin: 18px 0 0;
-      max-width: 880px;
-      color: #303744;
-      font-size: 17px;
-      line-height: 1.72;
-    }
-
-    .claim-strip {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .claim {
-      min-height: 112px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 7px;
-      background: var(--surface-2);
-    }
-
-    .claim b {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 13px;
-      color: #1f2937;
-    }
-
-    .claim span {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .hero-side {
-      display: grid;
-      grid-template-rows: auto 1fr;
-      overflow: hidden;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1px;
-      background: #e1e6ef;
-      border-bottom: 1px solid #e1e6ef;
-    }
-
-    .stat {
-      min-height: 92px;
-      padding: 16px;
-      background: #ffffff;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 27px;
-      line-height: 1;
-    }
-
-    .stat span {
-      display: block;
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.35;
-    }
-
-    .map-note {
-      padding: 18px;
-    }
-
-    .map-note h2,
-    .section h2,
-    .chart-title h2 {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.2;
-      letter-spacing: 0;
-    }
-
-    .map-note p,
-    .section p {
-      margin: 10px 0 0;
-      color: #3d4655;
-      font-size: 14px;
-      line-height: 1.68;
-    }
-
-    .section {
-      margin-top: 20px;
-      padding: 24px;
-    }
-
-    .section-head {
-      max-width: 900px;
-      margin-bottom: 18px;
-    }
-
-    .axis-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .axis-box {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      overflow: hidden;
-      background: var(--surface-2);
-    }
-
-    .axis-box h3 {
-      margin: 0;
-      padding: 13px 14px;
-      border-bottom: 1px solid var(--line);
-      background: #ffffff;
-      font-size: 16px;
-    }
-
-    .scale {
-      display: grid;
-      gap: 1px;
-      background: var(--line);
-    }
-
-    .scale-row {
-      display: grid;
-      grid-template-columns: 56px minmax(0, 1fr);
-      gap: 12px;
-      align-items: start;
-      padding: 10px 12px;
-      background: var(--surface-2);
-    }
-
-    .scale-row code {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 28px;
-      border-radius: 6px;
-      color: #111827;
-      background: #e9edf5;
-      font-size: 13px;
-      font-weight: 760;
-    }
-
-    .scale-row span {
-      color: #3d4655;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .spectrum-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .spectrum-card {
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #ffffff;
-    }
-
-    .spectrum-card h3 {
-      margin: 0;
-      color: #667085;
-      font-size: 13px;
-      font-weight: 760;
-    }
-
-    .spectrum-card strong {
-      display: block;
-      margin-top: 6px;
-      color: #151922;
-      font-size: 22px;
-      line-height: 1.2;
-    }
-
-    .spectrum-track {
-      position: relative;
-      height: 10px;
-      margin: 20px 0 9px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #2563eb 0%, #cfd8e8 50%, #0f8f7e 100%);
-    }
-
-    .spectrum-track::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: -7px;
-      width: 2px;
-      height: 24px;
-      border-radius: 999px;
-      background: rgba(52, 64, 84, 0.38);
-      transform: translateX(-50%);
-    }
-
-    .spectrum-labels {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 8px;
-      color: #5d6678;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.35;
-    }
-
-    .spectrum-labels span:nth-child(2) {
-      text-align: center;
-    }
-
-    .spectrum-labels span:last-child {
-      text-align: right;
-    }
-
-    .spectrum-card p {
-      margin-top: 12px;
-      color: #3d4655;
-      font-size: 13px;
-      line-height: 1.58;
-    }
-
-    .example-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .example {
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #ffffff;
-    }
-
-    .example h3 {
-      margin: 0 0 8px;
-      font-size: 15px;
-    }
-
-    .example p {
-      margin: 0;
-      font-size: 13px;
-      line-height: 1.58;
-    }
-
-    .distribution {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .summary-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .summary-item {
-      display: grid;
-      grid-template-columns: 18px minmax(0, 1fr);
-      gap: 10px;
-      align-items: start;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #ffffff;
-    }
-
-    .swatch {
-      width: 12px;
-      height: 12px;
-      margin-top: 4px;
-      border-radius: 999px;
-    }
-
-    .summary-item b {
-      display: block;
-      font-size: 13px;
-    }
-
-    .summary-item span {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .matrix {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .quadrant {
-      min-height: 150px;
-      padding: 13px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #ffffff;
-    }
-
-    .quadrant h3 {
-      margin: 0;
-      font-size: 14px;
-    }
-
-    .quadrant p {
-      margin-top: 7px;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .quadrant ul {
-      margin: 9px 0 0;
-      padding-left: 18px;
-      color: #3d4655;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .interactive {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 390px;
-      gap: 16px;
-      margin-top: 20px;
-      align-items: stretch;
-    }
-
-    .chart-shell {
-      overflow: hidden;
-    }
-
-    .chart-title {
-      padding: 18px 18px 12px;
-      border-bottom: 1px solid #e8ecf3;
-    }
-
-    .chart-title p {
-      margin: 8px 0 0;
-      max-width: 980px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.52;
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 13px;
-    }
-
-    .filter,
-    .search {
-      min-height: 32px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      background: #ffffff;
-      color: #344054;
-      font-size: 12px;
-    }
-
-    .filter {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 9px;
-      cursor: pointer;
-      font-weight: 650;
-    }
-
-    .filter.active {
-      border-color: #0f766e;
-      background: #e3f3ef;
-      color: #115e59;
-    }
-
-    .search {
-      flex: 1 1 220px;
-      padding: 6px 10px;
-      outline: none;
-    }
-
-    .plot-wrap {
-      position: relative;
-      min-height: 560px;
-      padding: 8px 10px 16px;
-    }
-
-    svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 560px;
-    }
-
-    .axis-line {
-      stroke: #8c96a8;
-      stroke-width: 1.4;
-    }
-
-    .grid-line {
-      stroke: #e4e8f0;
-      stroke-width: 1;
-    }
-
-    .axis-label {
-      fill: #344054;
-      font-size: 13px;
-      font-weight: 760;
-    }
-
-    .axis-small {
-      fill: #667085;
-      font-size: 11px;
-    }
-
-    .point {
-      cursor: pointer;
-      stroke: #ffffff;
-      stroke-width: 2;
-      filter: drop-shadow(0 2px 2px rgba(15, 23, 42, 0.22));
-      transition: opacity 140ms ease, transform 140ms ease;
-    }
-
-    .point.dimmed,
-    .point-label.dimmed {
-      opacity: 0.18;
-    }
-
-    .point.active {
-      stroke: #111827;
-      stroke-width: 2.6;
-    }
-
-    .point-label {
-      fill: #1f2937;
-      font-size: 11px;
-      paint-order: stroke;
-      stroke: rgba(255, 255, 255, 0.95);
-      stroke-width: 4px;
-      stroke-linejoin: round;
-      pointer-events: none;
-    }
-
-    .detail-panel {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    .detail-head {
-      padding: 18px;
-      border-bottom: 1px solid #e8ecf3;
-    }
-
-    .detail-head h2 {
-      margin: 0;
-      font-size: 21px;
-      line-height: 1.25;
-    }
-
-    .cluster {
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .scores {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .score {
-      min-width: 0;
-      padding: 8px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      background: var(--surface-2);
-    }
-
-    .score b {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 650;
-    }
-
-    .score span {
-      display: block;
-      margin-top: 4px;
-      font-size: 18px;
-      font-weight: 820;
-    }
-
-    .dimension-row {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .dimension-row span {
-      min-width: 0;
-      padding: 7px 8px;
-      border: 1px solid #dce4f1;
-      border-radius: 6px;
-      background: #fff;
-      color: #475467;
-      font-size: 11px;
-      line-height: 1.25;
-    }
-
-    .dimension-row b,
-    .dimension-row em {
-      display: block;
-      font-style: normal;
-    }
-
-    .dimension-row b {
-      color: #667085;
-      font-weight: 720;
-    }
-
-    .dimension-row em {
-      margin-top: 3px;
-      color: #101828;
-      font-size: 15px;
-      font-weight: 840;
-    }
-
-    .detail-body {
-      overflow: auto;
-      padding: 16px 18px 18px;
-    }
-
-    .section-title {
-      margin: 18px 0 8px;
-      color: #344054;
-      font-size: 12px;
-      font-weight: 820;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .section-title:first-child {
-      margin-top: 0;
-    }
-
-    .detail-body p {
-      margin: 0;
-      color: #3d4655;
-      font-size: 14px;
-      line-height: 1.58;
-    }
-
-    .reference-note-grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    .reference-note {
-      border: 1px solid var(--line);
-      border-radius: 7px;
-      background: #fff;
-      padding: 10px;
-    }
-
-    .reference-note span {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 820;
-      line-height: 1.2;
-      text-transform: uppercase;
-    }
-
-    .reference-note p {
-      margin-top: 6px;
-      color: #3d4655;
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .reference-score-card {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-      border: 1px solid var(--line);
-      border-radius: 7px;
-      background: #fff;
-      padding: 10px;
-    }
-
-    .reference-score-card > span {
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 820;
-      line-height: 1.2;
-      text-transform: uppercase;
-    }
-
-    .reference-score-card .scores,
-    .reference-score-card .dimension-row {
-      margin-top: 0;
-    }
-
-    .mini-work {
-      margin: 0 0 10px;
-      padding: 10px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      background: #fbfcfe;
-    }
-
-    .mini-work a {
-      display: block;
-      font-size: 13px;
-      font-weight: 760;
-      line-height: 1.35;
-    }
-
-    .mini-work span {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .pill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .pill-list span {
-      padding: 4px 7px;
-      border-radius: 5px;
-      background: #e9edf5;
-      color: #344054;
-      font-size: 12px;
-    }
-
-    .profile-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .profile {
-      padding: 18px;
-      scroll-margin-top: 72px;
-    }
-
-    .profile-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: start;
-      border-bottom: 1px solid #e8ecf3;
-      padding-bottom: 12px;
-      margin-bottom: 12px;
-    }
-
-    .profile h3 {
-      margin: 0;
-      font-size: 19px;
-      line-height: 1.25;
-    }
-
-    .profile .meta {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    .coord {
-      flex: 0 0 auto;
-      min-width: 92px;
-      padding: 8px;
-      border-radius: 7px;
-      background: #eef1f6;
-      text-align: right;
-      color: #253044;
-      font-size: 12px;
-      font-weight: 760;
-      line-height: 1.45;
-    }
-
-    .profile dl {
-      display: grid;
-      gap: 10px;
-      margin: 0;
-    }
-
-    .profile dt {
-      margin: 0;
-      color: #2f3948;
-      font-size: 12px;
-      font-weight: 820;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    .profile dd {
-      margin: 5px 0 0;
-      color: #3d4655;
-      font-size: 13px;
-      line-height: 1.58;
-    }
-
-    .profile ol,
-    .profile ul {
-      margin: 6px 0 0;
-      padding-left: 20px;
-      color: #3d4655;
-      font-size: 13px;
-      line-height: 1.58;
-    }
-
-    .profile li + li {
-      margin-top: 4px;
-    }
-
-    .works-table {
-      display: grid;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .work-row {
-      display: grid;
-      grid-template-columns: minmax(180px, 0.85fr) minmax(0, 1.2fr) 84px minmax(0, 1fr);
-      gap: 14px;
-      align-items: start;
-      padding: 14px;
-      box-shadow: none;
-    }
-
-    .work-row b {
-      display: block;
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .work-row span,
-    .work-row p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .footnote {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    @media (max-width: 1100px) {
-      .hero,
-      .interactive,
-      .distribution,
-      .profile-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .detail-panel {
-        min-height: 520px;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .topbar-inner,
-      .wrap {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
-      .topbar-inner {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .nav {
-        justify-content: flex-start;
-      }
-
-      .hero-main,
-      .section {
-        padding: 18px;
-      }
-
-      .claim-strip,
-      .axis-grid,
-      .spectrum-grid,
-      .example-grid,
-      .matrix,
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .work-row {
-        grid-template-columns: 1fr;
-      }
-
-      .profile-head {
-        display: block;
-      }
-
-      .coord {
-        margin-top: 10px;
-        text-align: left;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">AI Social Thought Spectrum</div>
-      <nav class="nav" aria-label="Page sections">
-        <a href="ai-thought-spectrum-visualization.html">Chinese</a>
-        <a href="#map">Map</a>
-        <a href="#why-2d">Four Spectrums</a>
-        <a href="#distribution">Regions</a>
-        <a href="#profiles">Thinkers</a>
-        <a href="#works">Works</a>
-        <a href="#reading">Reading Path</a>
-      </nav>
-    </div>
-  </div>
-
-  <main class="wrap">
-    <section class="hero" aria-labelledby="page-title">
-      <div class="hero-main">
-        <p class="kicker">AI Stance Map</p>
-        <h1 id="page-title">Not Every “AI Risk” or “AI Optimism” Claim Means the Same Thing</h1>
-        <p class="lead">
-          This map places major AI thinkers, institutions, and movements on one shared field. It asks three questions:
-          what they think the main problem is, how they want AI governed, and where humans should stand in the future of intelligence.
-          The two-dimensional map below is a reading tool, not a permanent label for anyone.
-        </p>
-        <div class="claim-strip">
-          <div class="claim">
-            <b>“Worried about AI” is not one position</b>
-            <span>Yudkowsky worries about loss of control and extinction risk; Bender/Gebru about data, labor, environment, and power; Narayanan/Kapoor about overclaiming and misuse.</span>
-          </div>
-          <div class="claim">
-            <b>“Pro-AI” is not one position either</b>
-            <span>Andrew Ng emphasizes productivity, Altman governed AGI, Kurzweil the singularity, and e/acc acceleration. These are not the same optimism.</span>
-          </div>
-          <div class="claim">
-            <b>Technical beliefs change political instincts</b>
-            <span>If you believe scale and search will keep producing breakthroughs, your instincts about regulation, open source, and deployment speed will differ from someone who sees today’s AI as overclaimed.</span>
-          </div>
-        </div>
-      </div>
-
-      <aside class="hero-side" aria-label="Map summary">
-        <div class="stats">
-          <div class="stat">
-            <strong id="statThinkers">22</strong>
-            <span>thinkers, institutions, or movements</span>
-          </div>
-          <div class="stat">
-            <strong id="statWorks">44</strong>
-            <span>representative works and institutional texts</span>
-          </div>
-          <div class="stat">
-            <strong>4</strong>
-            <span>result spectrums: capability, risk, governance, value</span>
-          </div>
-          <div class="stat">
-            <strong>10</strong>
-            <span>main clusters: safety, critique, architecture, optimism, acceleration, and more</span>
-          </div>
-        </div>
-        <div class="map-note">
-          <h2>How to use this page</h2>
-          <p>
-            Start with the interactive map, then use the four spectrums. Click a point to see why it is placed there, which texts anchor it, and which nearby positions are easy to confuse with it.
-          </p>
-          <p>
-            The coordinates are for comparison and reading, not final judgment. Complex thinkers often span multiple regions; each point captures the dominant tendency in the public texts used here.
-          </p>
-        </div>
-      </aside>
-    </section>
-
-    <section class="interactive" id="map" aria-label="Interactive thought map">
-      <section class="chart-shell" aria-label="AI thought spectrum chart">
-        <div class="chart-title">
-          <h2>Interactive map</h2>
-          <p>
-            The further left, the more the position leans toward control, pauses, thresholds, and high-risk judgment. The further right, the more it leans toward deployment, openness, diffusion, and opportunity-cost concern.
-            The higher up, the more it emphasizes human dignity, democratic governance, and human compatibility. The lower down, the more it emphasizes computation-centered, posthuman, or techno-capital autonomy.
-          </p>
-          <div class="toolbar" id="filters" aria-label="Category filters"></div>
-          <div class="toolbar">
-            <input class="search" id="search" type="search" placeholder="Search thinkers, movements, works, or keywords">
-          </div>
-        </div>
-        <div class="plot-wrap">
-          <svg id="chart" viewBox="0 0 1000 660" role="img" aria-labelledby="chartTitle chartDesc">
-            <title id="chartTitle">AI Thought Spectrum Map</title>
-            <desc id="chartDesc">A two-axis chart comparing AI thinkers and movements by risk judgment, governance position, and value position.</desc>
-          </svg>
-        </div>
-      </section>
-
-      <aside class="detail-panel" aria-label="Selected thinker details">
-        <div class="detail-head">
-          <h2 id="detailName">Select a point</h2>
-          <div class="cluster" id="detailCluster">Click a thinker or movement to see its core idea, representative works, and reading focus.</div>
-        </div>
-        <div class="detail-body">
-          <div class="reference-note-grid">
-            <div class="reference-note">
-              <span>Core claim</span>
-              <p id="stanceText">The map initially selects Rich Sutton because the Bitter Lesson is a technical-epistemic anchor for contemporary AI culture.</p>
-            </div>
-            <div class="reference-note">
-              <span>Intellectual lineage</span>
-              <p id="lineageText">Representative works and influence channels show how this position entered the AI discourse.</p>
-            </div>
-            <div class="reference-note">
-              <span>Why here</span>
-              <p id="placementText">Coordinates help comparison; they are not final labels.</p>
-            </div>
-            <div class="reference-note">
-              <span>Contrast</span>
-              <p id="counterText">Nearby positions are reference points, not claims of identical views.</p>
-            </div>
-            <div class="reference-note">
-              <span>Reading focus</span>
-              <p id="readingFocus"></p>
-            </div>
-          </div>
-          <div class="reference-score-card">
-            <span>Coordinate reading</span>
-            <div class="scores">
-              <div class="score">
-                <b>Horizontal</b>
-                <span id="riskScore">-</span>
-              </div>
-              <div class="score">
-                <b>Vertical</b>
-                <span id="humanismScore">-</span>
-              </div>
-              <div class="score">
-                <b>Influence</b>
-                <span id="influenceScore">-</span>
-              </div>
-            </div>
-            <div class="dimension-row">
-              <span><b>Risk Judgment</b><em id="diagnosisScore">-</em></span>
-              <span><b>Governance Position</b><em id="responseScore">-</em></span>
-              <span><b>Value Position</b><em id="valueScore">-</em></span>
-            </div>
-          </div>
-          <div class="section-title">Representative works</div>
-          <div id="worksMini"></div>
-          <div class="section-title">Influence channels</div>
-          <div class="pill-list" id="basis"></div>
-          <p class="footnote"><a id="profileJump" href="#profiles">Jump to the full profile card</a></p>
-        </div>
-      </aside>
-    </section>
-
-    <section class="section" id="why-2d">
-      <div class="section-head">
-        <h2>Four result spectrums</h2>
-        <p>The quiz result first appears as four intuitive spectrums. Risk Judgment, Governance Position, and Value Position form the two-dimensional stance map; AI Capability Belief stays separate as a side tag.</p>
-      </div>
-
-      <div class="spectrum-grid">
-        <div class="spectrum-card">
-          <h3>AI Capability Belief</h3>
-          <strong>How powerful you think AI is</strong>
-          <div class="spectrum-track"></div>
-          <div class="spectrum-labels"><span>Transformative AI</span><span>Mixed</span><span>Bubble skeptic</span></div>
-          <p>This does not move the two-dimensional coordinate; it explains your judgment about AI capability narratives.</p>
-        </div>
-        <div class="spectrum-card">
-          <h3>Risk Judgment</h3>
-          <strong>What you think the main problem is</strong>
-          <div class="spectrum-track"></div>
-          <div class="spectrum-labels"><span>Opportunity cost</span><span>Mixed</span><span>Civilizational risk</span></div>
-          <p>Together with governance position, this shapes the horizontal axis: civilizational risk pulls toward control; opportunity cost pulls toward openness.</p>
-        </div>
-        <div class="spectrum-card">
-          <h3>Governance Position</h3>
-          <strong>How society should respond</strong>
-          <div class="spectrum-track"></div>
-          <div class="spectrum-labels"><span>Control</span><span>Middle</span><span>Open</span></div>
-          <p>Together with risk judgment, this shapes the horizontal axis: control leans left, openness leans right.</p>
-        </div>
-        <div class="spectrum-card">
-          <h3>Value Position</h3>
-          <strong>What sits at the value center</strong>
-          <div class="spectrum-track"></div>
-          <div class="spectrum-labels"><span>Intelligence-centered</span><span>Middle</span><span>Social-structure-centered</span></div>
-          <p>This determines the vertical axis: social-structure-centered positions sit higher; intelligence-centered or posthuman positions sit lower.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="distribution">
-      <div class="section-head">
-        <h2>Main regions</h2>
-        <p>
-          People who sit near each other do not necessarily agree. They simply share a center of gravity across the three questions. The region notes below are a reading guide.
-        </p>
-      </div>
-      <div class="distribution">
-        <div class="summary-list" id="categorySummary"></div>
-        <div class="matrix">
-          <div class="quadrant">
-            <h3>Upper left: catastrophic risk, control, and human protection</h3>
-            <p>This region gathers civilization-level risk, AI alignment, and strong-governance positions. They usually see the risk as high, governance as needing caution, and the goal as protecting humanity.</p>
-            <ul>
-              <li>Yudkowsky / MIRI</li>
-              <li>Bostrom</li>
-              <li>Russell, Christiano, Cotra, Hendrycks</li>
-            </ul>
-          </div>
-          <div class="quadrant">
-            <h3>Upper middle: social harm, power, and ordinary technology</h3>
-            <p>This region does not necessarily accept the AGI extinction story. It puts AI back into institutions, data, labor, race, environment, and overclaiming, with strong emphasis on human society and public accountability.</p>
-            <ul>
-              <li>Bender / Gebru / Mitchell / McMillan-Major</li>
-              <li>Crawford, Benjamin</li>
-              <li>Narayanan / Kapoor, Marcus / Mitchell</li>
-            </ul>
-          </div>
-          <div class="quadrant">
-            <h3>Upper right: building, deployment, and human benefit</h3>
-            <p>This region acknowledges AI governance problems but thinks applications, productivity, and scientific gains should move forward. It stresses the opportunity cost of underdeployment and frames value around human benefit.</p>
-            <ul>
-              <li>Andrew Ng</li>
-              <li>Sam Altman / OpenAI</li>
-              <li>Dario Amodei / Anthropic sits between safety and building</li>
-            </ul>
-          </div>
-          <div class="quadrant">
-            <h3>Lower left: strong system governance and posthuman control</h3>
-            <p>This region distrusts open diffusion but also does not treat current human preferences as the final measure. It emphasizes planetary-scale computation, system architecture, and non-traditional human-centered governance.</p>
-            <ul>
-              <li>Benjamin Bratton</li>
-              <li>Controlled Posthumanism / Posthuman Control</li>
-            </ul>
-          </div>
-          <div class="quadrant">
-            <h3>Lower right: scale, open acceleration, and posthuman boundaries</h3>
-            <p>This region moves from technical epistemology into open acceleration, singularity, or techno-capital narratives. Sutton anchors scale and general methods through the Bitter Lesson; e/acc and Land move toward open acceleration and strong posthuman boundaries.</p>
-            <ul>
-              <li>Rich Sutton</li>
-              <li>Ray Kurzweil, Marc Andreessen</li>
-              <li>e/acc, Nick Land</li>
-            </ul>
-          </div>
-          <div class="quadrant">
-            <h3>Middle right: architecture optimism and world models</h3>
-            <p>This region rejects near-term doom narratives and supports openness and building, but is not simply “bigger language models are enough” optimism. The core claim is that world models, planning, and new architectures matter.</p>
-            <ul>
-              <li>Yann LeCun</li>
-              <li>Architecture optimism / World models</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="profiles">
-      <div class="section-head">
-        <h2>Thinker and movement profiles</h2>
-        <p>
-          Each card answers four questions: what the core idea is, why it sits at this position, which texts anchor it, and what to watch for while reading.
-          It also lists a strong contrast position, so nearby but distinct stances are not collapsed together.
-        </p>
-      </div>
-      <div class="profile-grid" id="profileGrid"></div>
-    </section>
-
-    <section class="section" id="works">
-      <div class="section-head">
-        <h2>Representative works</h2>
-        <p>
-          This table is not a complete bibliography. It is an entry reading list. Start with “highest” and “high” texts;
-          they are usually core statements, institutional documents, or repeatedly cited anchors in the debate.
-        </p>
-      </div>
-      <div class="works-table" id="worksTable"></div>
-    </section>
-
-    <section class="section" id="reading">
-      <div class="section-head">
-        <h2>Suggested reading path</h2>
-        <p>
-          If the goal is to build judgment quickly, do not read randomly by name. Start with anchors for each region, then return to specific thinkers.
-        </p>
-      </div>
-      <div class="example-grid">
-        <div class="example">
-          <h3>Step 1: technical epistemology and the safety extreme</h3>
-          <p>Start with Sutton’s <i>The Bitter Lesson</i>, then read Yudkowsky 2008/2022 and Bostrom 2012/2014. This explains why scale is attractive and why some people treat loss of control as an extinction problem.</p>
-        </div>
-        <div class="example">
-          <h3>Step 2: architecture optimism and ordinary technology</h3>
-          <p>Read LeCun’s <i>A Path Towards Autonomous Machine Intelligence</i>, then Marcus/Mitchell and Narayanan/Kapoor. This separates “today’s large-model route is not enough” from “AI is overclaimed.”</p>
-        </div>
-        <div class="example">
-          <h3>Step 3: critical AI</h3>
-          <p>Read <i>Stochastic Parrots</i>, Crawford, Benjamin, and Narayanan/Kapoor. They pull the debate from future AGI back to institutions, data, labor, race, environment, and evaluation.</p>
-        </div>
-        <div class="example">
-          <h3>Step 4: optimism and accelerationism</h3>
-          <p>Read Amodei, OpenAI, Ng, Musk/xAI, Thiel, Andreessen, Kurzweil, e/acc, and Land. The point is not only who is right, but how each defines benefit, constraint, humanity, and the future.</p>
-        </div>
-      </div>
-      <p class="footnote">
-        Note: this is an interpretive map, not a ranking. Some representative-work links point to author pages, institutional pages, publishers, arXiv, ACM, or public essays.
-        Last updated: 2026-05-29.
-      </p>
-    </section>
-  </main>
-
-  <script>
-    const thinkers = [
-      {
-        id: "eliezer-yudkowsky",
-        name: "Eliezer Yudkowsky",
-        shortName: "Yudkowsky",
-        cluster: "Rationalist AI x-risk / MIRI",
-        category: "X-risk safety",
-        risk: -2,
-        humanism: 1,
-        influence: 5,
-        stance: "先进 AI 很可能在 alignment 未解决时杀死人类；问题不是普通安全漏洞，而是目标错位后系统会以压倒性能力追求非人类目标。",
-        placement: "他在横轴最左侧，因为其公共立场接近关停或强暂停；纵轴为 +1，因为目标是保护人类生存，但他的论证并不主要通过民主正义或社会权力框架展开。",
-        focus: "读他时要抓住两个层次：一是智能体目标错位的技术论证，二是他为什么认为渐进式治理、安全评估或行业自律都不足以改变结局。",
-        counter: "最强对照不是一般乐观派，而是 Christiano/Russell 这类仍接受重大风险但认为可通过技术和制度逐步降低风险的人。",
-        basis: ["movement formation", "AI alignment field-building", "public discourse"],
-        works: [
-          { title: "Artificial Intelligence as a Positive and Negative Factor in Global Risk", year: 2008, type: "chapter / essay", priority: "highest", url: "https://www.yudkowsky.net/wp-content/uploads/2020/09/AIPosNegFactor.pdf", why: "早期 rationalist AI x-risk 的经典表述。" },
-          { title: "AGI Ruin: A List of Lethalities", year: 2022, type: "essay", priority: "highest", url: "https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities", why: "最紧凑的强灾难风险公共论证。" },
-          { title: "Pausing AI Developments Isn't Enough. We Need to Shut It All Down", year: 2023, type: "public essay", priority: "high", url: "https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/", why: "面向主流媒体的关停论证。" }
-        ]
-      },
-      {
-        id: "nick-bostrom",
-        name: "Nick Bostrom",
-        shortName: "Bostrom",
-        cluster: "Superintelligence / philosophical x-risk",
-        category: "X-risk safety",
-        risk: -2,
-        humanism: 1,
-        influence: 5,
-        stance: "超级智能可能形成工具性趋同目标，例如自我保护、资源获取和摆脱约束；如果目标不兼容，人类会失去控制权。",
-        placement: "他与 Yudkowsky 同在左侧极端，但风格更哲学化、战略化。纵轴 +1 是因为核心对象是人类生存和控制，而不是社会正义或民主分配。",
-        focus: "重点读 instrumental convergence、orthogonality thesis 和 intelligence explosion 如何连成一个风险模型。",
-        counter: "最直接的对照是 normal-technology 观点：它会质疑超级智能框架是否过度抽象、是否跳过了现实制度和工程限制。",
-        basis: ["academic citations", "policy discourse", "movement formation"],
-        works: [
-          { title: "Ethical Issues in Advanced Artificial Intelligence", year: 2003, type: "essay", priority: "high", url: "https://nickbostrom.com/ethics/ai", why: "早期高级 AI 伦理和风险框架。" },
-          { title: "The Superintelligent Will: Motivation and Instrumental Rationality in Advanced Artificial Agents", year: 2012, type: "academic paper", priority: "highest", url: "https://nickbostrom.com/superintelligentwill.pdf", why: "工具性趋同的核心来源。" },
-          { title: "Superintelligence: Paths, Dangers, Strategies", year: 2014, type: "book", priority: "highest", url: "https://global.oup.com/academic/product/superintelligence-9780199678112", why: "书长形式的领域定义性 x-risk 论证。" }
-        ]
-      },
-      {
-        id: "stuart-russell",
-        name: "Stuart Russell",
-        shortName: "Russell",
-        cluster: "Beneficial AI / human-compatible AI",
-        category: "X-risk safety",
-        risk: -1,
-        humanism: 2,
-        influence: 5,
-        stance: "AI 系统不应被设计成固定目标的最大化器，而应承认自己不确定人类偏好，并持续从人类行为中学习如何有益。",
-        placement: "横轴 -1，因为他强烈安全优先但不是关停派；纵轴 +2，因为其方案明确把 human-compatible 和人类偏好放在设计原则中心。",
-        focus: "读他时要看 beneficial AI 与传统目标函数最大化之间的差异：问题不是给 AI 一个更好的目标，而是重写目标设定的制度和形式。",
-        counter: "Yudkowsky 会质疑这种可证明有益路径是否足够；LeCun/Ng 则可能认为风险叙事高估了当前技术路线。",
-        basis: ["academic authority", "textbook influence", "institution-building", "policy discourse"],
-        works: [
-          { title: "Human Compatible: Artificial Intelligence and the Problem of Control", year: 2019, type: "book", priority: "highest", url: "https://www.penguinrandomhouse.com/books/566677/human-compatible-by-stuart-russell/", why: "控制问题和 beneficial-AI 的主要公共表述。" },
-          { title: "Provably Beneficial Artificial Intelligence", year: 2016, type: "lecture / paper frame", priority: "medium", url: "https://people.eecs.berkeley.edu/~russell/research/future/q-and-a.html", why: "人类兼容 AI 的技术入口。" }
-        ]
-      },
-      {
-        id: "pope-leo-xiv",
-        name: "Pope Leo XIV",
-        shortName: "Leo XIV",
-        cluster: "Magnifica Humanitas / Catholic social humanism",
-        category: "Catholic social humanism",
-        risk: -1.18,
-        humanism: 1.72,
-        influence: 4,
-        stance: "AI 必须服务人的尊严、共同善、弱者保护和和平；技术权力不能以效率、利润或支配逻辑取代良知、责任和公共治理。",
-        placement: "左上方但稍微离 Russell / critical-AI 簇更远：响应上支持强公共责任、治理和多边约束，但不是关停派；价值轴很高，因为核心是人类尊严、良知、关系和社会共同善。",
-        focus: "读时看 Catholic Social Doctrine 如何把 AI 放进共同善、劳动、战争、平台权力、教育和人的不可替代性这些问题里。",
-        counter: "x-risk safety 会觉得他不是技术 alignment 论证；critical AI 会更世俗化地谈权力和劳动；技术乐观派会认为他过于强调约束。",
-        basis: ["Catholic social doctrine", "papal encyclical", "human dignity", "AI governance"],
-        works: [
-          { title: "Magnifica Humanitas", year: 2026, type: "encyclical", priority: "highest", url: "https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html", why: "教皇 Leo XIV 关于 AI、人类尊严、共同善和技术治理的核心文本。" },
-          { title: "Presentation and promulgation of Magnifica Humanitas", year: 2026, type: "address", priority: "high", url: "https://www.vatican.va/content/leo-xiv/en/speeches/2026/may/documents/20260525-presentazione-enciclica.html", why: "集中说明“disarm AI”不是拒绝技术，而是解除支配、排斥和死亡逻辑。" }
-        ]
-      },
-      {
-        id: "paul-christiano",
-        name: "Paul Christiano",
-        shortName: "Christiano",
-        cluster: "Scalable alignment / technical safety",
-        category: "X-risk safety",
-        risk: -1,
-        humanism: 1,
-        influence: 4,
-        stance: "AI 失败不一定来自突然的恶意超级智能，也可能来自逐步委托、监督失败、优化压力和人类无法评估复杂任务。",
-        placement: "横轴 -1，因为他处于严肃 alignment 风险阵营；纵轴 +1，因为其关注点是让系统可监督、可校准、最终服务人类判断。",
-        focus: "重点看 scalable oversight：当人类无法直接判断复杂答案时，如何用 debate、amplification 或训练流程维持监督。",
-        counter: "强灾难风险派会认为这些方案仍无法覆盖最危险的失控；普通技术派会认为这类失败模型太 AGI 中心。",
-        basis: ["technical alignment", "OpenAI safety lineage", "field-building"],
-        works: [
-          { title: "What Failure Looks Like", year: 2019, type: "essay", priority: "highest", url: "https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like", why: "渐进式失败模型的经典文本。" },
-          { title: "AI Safety via Debate", year: 2018, type: "paper", priority: "high", url: "https://arxiv.org/abs/1805.00899", why: "scalable oversight 的代表方案。" }
-        ]
-      },
-      {
-        id: "ajeya-cotra",
-        name: "Ajeya Cotra",
-        shortName: "Cotra",
-        cluster: "AI timelines / Open Philanthropy",
-        category: "X-risk safety",
-        risk: -1,
-        humanism: 1,
-        influence: 4,
-        stance: "可以用算力需求和生物锚点来预测 transformative AI 时间线；时间线越短，安全和治理越紧急。",
-        placement: "她不是完整意识形态人物，但在安全生态里影响很大，因为 timeline 判断会决定资源分配、政策紧迫性和研究优先级。",
-        focus: "重点不是把生物锚点当精确预言，而是理解 timeline forecast 如何把技术参数转化为社会行动紧迫性。",
-        counter: "LeCun/Marcus/Mitchell 等能力怀疑者会质疑从算力到通用智能的外推是否可靠。",
-        basis: ["AI safety timelines", "grantmaking", "EA and policy discourse"],
-        works: [
-          { title: "Forecasting Transformative AI with Biological Anchors", year: 2020, type: "report", priority: "high", url: "https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines", why: "影响较大的 compute-based timelines 报告。" },
-          { title: "Forecasting Transformative AI: The Biological Anchors Method in a Nutshell", year: 2021, type: "summary essay", priority: "medium", url: "https://www.cold-takes.com/forecasting-transformative-ai-the-biological-anchors-method-in-a-nutshell/", why: "timeline 方法的可读总结。" }
-        ]
-      },
-      {
-        id: "dario-amodei-anthropic",
-        name: "Dario Amodei / Anthropic",
-        shortName: "Amodei / Anthropic",
-        cluster: "Frontier-lab safety optimism",
-        category: "Frontier lab governance",
-        risk: -0.5,
-        humanism: 1,
-        influence: 5,
-        stance: "前沿 AI 可能带来巨大利益，但继续 scaling 必须伴随安全研究、评估阈值、部署限制和责任制度。",
-        placement: "他处在安全与建设之间：比普通乐观派更强调风险，比暂停派更愿意继续推进 frontier lab scaling。",
-        focus: "读时要抓住“高风险 + 高上限 + 机构化治理”的组合：这不是纯灾难论，也不是无条件加速。",
-        counter: "暂停派会认为实验室自我治理不够；critical AI 会问这种治理是否忽略劳工、权力和市场集中。",
-        basis: ["frontier lab policy", "public discourse", "industry practice"],
-        works: [
-          { title: "Core Views on AI Safety", year: 2023, type: "company essay", priority: "high", url: "https://www.anthropic.com/news/core-views-on-ai-safety", why: "Anthropic 对风险、alignment 和安全部署的公司级表述。" },
-          { title: "Anthropic's Responsible Scaling Policy", year: 2023, type: "policy document", priority: "high", url: "https://www.anthropic.com/news/anthropics-responsible-scaling-policy", why: "eval-triggered safety governance 的重要机构化文件。" },
-          { title: "Machines of Loving Grace", year: 2024, type: "essay", priority: "highest", url: "https://www.darioamodei.com/machines-of-loving-grace", why: "安全意识下的高收益 AI 乐观主义。" }
-        ]
-      },
-      {
-        id: "dan-hendrycks-cais",
-        name: "Dan Hendrycks / Center for AI Safety",
-        shortName: "Hendrycks / CAIS",
-        cluster: "Public AI x-risk and ML safety",
-        category: "X-risk safety",
-        risk: -1.5,
-        humanism: 1,
-        influence: 4,
-        stance: "AI 应被视为社会级风险，与核战争、疫情等全球风险一起纳入公共治理和技术安全议程。",
-        placement: "横轴在 -1.5，因为它连接技术 ML safety 和公共灭绝风险倡议；纵轴 +1，因为目标是人类安全，而不是后人类愿景。",
-        focus: "看它如何把 benchmark、安全问题列表和一句话风险声明转化为公共政策与学术 agenda。",
-        counter: "normal-tech 与 critical AI 都会质疑：把注意力集中在灭绝风险是否挤压了现实伤害和能力评估问题。",
-        basis: ["public discourse", "policy agenda-setting", "ML safety benchmarks"],
-        works: [
-          { title: "Unsolved Problems in ML Safety", year: 2021, type: "paper", priority: "high", url: "https://arxiv.org/abs/2109.13916", why: "技术安全 agenda 来源。" },
-          { title: "Statement on AI Risk", year: 2023, type: "public statement", priority: "high", url: "https://www.safe.ai/work/statement-on-ai-risk", why: "公共灭绝风险声明的代表文本。" }
-        ]
-      },
-      {
-        id: "bender-gebru-mitchell-mcmillan-major",
-        name: "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major",
-        shortName: "Stochastic Parrots",
-        cluster: "Critical AI / stochastic parrots",
-        category: "Critical AI",
-        risk: 0,
-        humanism: 2,
-        influence: 5,
-        stance: "大语言模型的危险不只在未来 AGI，而在当下的社会、环境、劳工、数据、代表性和权力问题。",
-        placement: "横轴 0，因为它不是灾难论也不是加速派，而是现实伤害和制度批判；纵轴 +2，因为它明确以人类社会、公正和问责为中心。",
-        focus: "读时要把它看作 critical AI 的锚点：它批评的不是“模型会不会聪明”，而是规模叙事如何遮蔽伤害和责任。",
-        counter: "Bitter Lesson/scale 派会认为它低估了通用方法带来的能力进步；x-risk 派会认为它低估了未来极端风险。",
-        basis: ["academic citations", "public controversy", "AI ethics field-building", "policy discourse"],
-        works: [
-          { title: "On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?", year: 2021, type: "conference paper", priority: "highest", url: "https://dl.acm.org/doi/10.1145/3442188.3445922", why: "大型语言模型 critical-AI 批判的经典论文。" }
-        ]
-      },
-      {
-        id: "kate-crawford",
-        name: "Kate Crawford",
-        shortName: "Crawford",
-        cluster: "AI political economy / extraction",
-        category: "Critical AI",
-        risk: 0,
-        humanism: 2,
-        influence: 4,
-        stance: "AI 不是无形智能，而是由矿产、能源、劳工、数据、分类系统、公司和国家权力组成的物质基础设施。",
-        placement: "她在中上方：不以 AGI 灭绝为核心，也不以能力乐观为核心，而把 AI 当作政治经济和提取系统。",
-        focus: "读时要追问每个 AI 系统背后的供应链、数据集、分类标准和制度权力，而不是只看模型输出。",
-        counter: "frontier-lab 安全叙事可能认为她对 AGI 风险关注不足；技术乐观派则会认为她低估了 AI 的社会收益。",
-        basis: ["academic discourse", "public discourse", "AI ethics"],
-        works: [
-          { title: "Atlas of AI", year: 2021, type: "book", priority: "high", url: "https://yalebooks.yale.edu/book/9780300264630/atlas-of-ai/", why: "AI 物质基础和政治经济批判的书长版本。" },
-          { title: "Excavating AI", year: 2019, type: "essay / project", priority: "medium", url: "https://excavating.ai/", why: "图像数据集、分类和权力的具体谱系。" }
-        ]
-      },
-      {
-        id: "ruha-benjamin",
-        name: "Ruha Benjamin",
-        shortName: "Benjamin",
-        cluster: "Race, automation, and technology critique",
-        category: "Critical AI",
-        risk: 0,
-        humanism: 2,
-        influence: 4,
-        stance: "自动化系统常以中立和客观的名义复制、放大种族等级和社会不平等。",
-        placement: "横轴 0，因为重点是现实社会秩序而非 AGI 极端风险；纵轴 +2，因为她明确从人类尊严、公正和反种族主义出发。",
-        focus: "读她时不要把问题缩小成算法偏差修补，而要看技术如何嵌入制度想象、分类和治理。",
-        counter: "普通技术派会与她共享反过度宣传的直觉，但可能更重评估和误用；文明级风险派则把焦点放到未来失控。",
-        basis: ["academic discourse", "public discourse", "critical technology studies"],
-        works: [
-          { title: "Race After Technology", year: 2019, type: "book", priority: "medium", url: "https://www.ruhabenjamin.com/race-after-technology", why: "技术、种族和自动化社会秩序的关键文本。" }
-        ]
-      },
-      {
-        id: "ai-as-normal-technology",
-        name: "AI as Normal Technology",
-        shortName: "Normal Tech",
-        cluster: "Normal technology / contextual governance",
-        category: "Normal technology",
-        risk: 0,
-        humanism: 0.9,
-        influence: 3,
-        stance: "AI is an important but ordinary technology; it should be judged by use case, failure mode, institutional responsibility, and verifiable benefit rather than first being placed inside doom or singularity narratives.",
-        placement: "Horizontal 0 because it is neither pause nor accelerationist. Vertical 0.9 because it serves clearer decision-making and accountability inside human institutions.",
-        focus: "Read the normal-technology frame carefully: it does not say AI is unimportant; it says AI should not be treated as exempt from ordinary governance and evaluation.",
-        counter: "Hype skeptics put more emphasis on debunking inflated claims; x-risk views will argue that normal-technology framing underestimates frontier tail risk.",
-        basis: ["policy discourse", "technology governance", "evaluation"],
-        works: [
-          { title: "AI as Normal Technology", year: 2025, type: "essay / paper", priority: "high", url: "https://knightcolumbia.org/content/ai-as-normal-technology", why: "A concise counter-frame to both utopian and catastrophic exceptionalism." }
-        ]
-      },
-      {
-        id: "narayanan-kapoor",
-        name: "Arvind Narayanan and Sayash Kapoor",
-        shortName: "Narayanan / Kapoor",
-        cluster: "AI overclaiming skepticism / snake-oil critique",
-        category: "Hype skepticism",
-        risk: 0,
-        humanism: 1.5,
-        influence: 4,
-        stance: "AI 是强大但经常被夸大的技术；必须区分真实能力、snake oil、统计预测误用和魔法式 AGI 叙事。",
-        placement: "横轴 0 是 normal-technology 立场；纵轴 1.5 是因为其判断服务于人类机构决策、消费者保护和政策清醒。",
-        focus: "读时抓住评估方法：什么问题适合 AI，什么是伪预测，什么是把未知能力包装成确定产品。",
-        counter: "x-risk 派会说他们低估了尾部风险；techno-optimist 会说他们压低了变革潜力。",
-        basis: ["public discourse", "policy discourse", "academic credibility"],
-        works: [
-          { title: "AI Snake Oil", year: 2024, type: "book", priority: "high", url: "https://www.aisnakeoil.com/", why: "可读的反过度宣传和普通技术框架。" },
-          { title: "AI as Normal Technology", year: 2025, type: "essay / paper", priority: "high", url: "https://knightcolumbia.org/content/ai-as-normal-technology", why: "对乌托邦和灾难例外主义的简洁反框架。" }
-        ]
-      },
-      {
-        id: "gary-marcus-melanie-mitchell",
-        name: "Gary Marcus / Melanie Mitchell",
-        shortName: "Marcus / Mitchell",
-        cluster: "Deep learning skepticism",
-        category: "Hype skepticism",
-        risk: 0,
-        humanism: 0.5,
-        influence: 4,
-        stance: "当前深度学习很强，但脆弱、缺少稳健抽象和常识；不应把成功外推为通用智能已经近在眼前。",
-        placement: "横轴 0，因为这是能力和过度宣传怀疑，不是暂停或加速政策；纵轴 0.5，因为它略偏人类理解和认知结构，但主要是技术判断。",
-        focus: "读时看他们对 out-of-distribution、symbolic reasoning、common sense 和历史 AI 过度承诺的批评。",
-        counter: "Bitter Lesson 派会认为手工结构和人类直觉终究会输给规模；frontier labs 会说实践能力进步快于怀疑者预期。",
-        basis: ["public discourse", "technical critique", "AI skepticism"],
-        works: [
-          { title: "Deep Learning: A Critical Appraisal", year: 2018, type: "paper", priority: "medium", url: "https://arxiv.org/abs/1801.00631", why: "深度学习泛化能力怀疑的代表论文。" },
-          { title: "Why AI Is Harder Than We Think", year: 2021, type: "paper", priority: "medium", url: "https://arxiv.org/abs/2104.12871", why: "关于 AI 反复过度承诺的可读批评。" }
-        ]
-      },
-      {
-        id: "rich-sutton",
-        name: "Rich Sutton",
-        shortName: "Sutton",
-        cluster: "Bitter Lesson / computation-centered AI",
-        category: "Scaling thought",
-        risk: 1,
-        humanism: -1,
-        influence: 5,
-        stance: "长期来看，利用搜索、学习和计算的一般方法会胜过把人类领域知识手工编码进系统的办法。",
-        placement: "横轴 +1，因为它支持继续沿计算和学习扩展路线前进；纵轴 -1，因为它反人类直觉中心，但并不是 Land 式反人类政治。",
-        focus: "读时抓住“技术认识论”：AI 进步不是来自把人类知识写进去，而是来自让系统用更多计算从数据和环境中学。",
-        counter: "critical AI 会问规模路线的社会代价；Marcus/Mitchell 会问一般方法是否足以获得稳健理解。",
-        basis: ["field paradigm", "lab culture", "technical AI discourse"],
-        works: [
-          { title: "The Bitter Lesson", year: 2019, type: "essay", priority: "highest", url: "http://www.incompleteideas.net/IncIdeas/BitterLesson.html", why: "规模、搜索、学习和一般方法的经典声明。" }
-        ]
-      },
-      {
-        id: "yann-lecun",
-        name: "Yann LeCun",
-        shortName: "LeCun",
-        cluster: "Open-source / architecture optimism / anti-doom",
-        category: "Architecture optimism",
-        risk: 1,
-        humanism: 0,
-        influence: 5,
-        stance: "当前系统还不是通用智能，未来需要世界模型和新架构；近端灾难论叙事夸大了现有路线的危险。",
-        placement: "横轴 +1，因为他是建设和架构乐观派；纵轴 0，因为其论证主要是技术和能力判断，不是明确人本主义或后人类主义。",
-        focus: "读时看他如何区分 LLM 成就、世界模型、自治智能和长期架构路线。",
-        counter: "x-risk 派会认为他低估了 scaling 已经产生的危险；Marcus/Mitchell 与他共享部分深度学习限制判断，但政策语气不同。",
-        basis: ["technical authority", "industry leadership", "public discourse"],
-        works: [
-          { title: "A Path Towards Autonomous Machine Intelligence", year: 2022, type: "position paper", priority: "high", url: "https://openreview.net/forum?id=BZ5a1r-kVsf", why: "未来 AI 架构和 world model 路线的代表文本。" }
-        ]
-      },
-      {
-        id: "andrew-ng",
-        name: "Andrew Ng",
-        shortName: "Ng",
-        cluster: "Pragmatic AI optimism",
-        category: "Pragmatic optimism",
-        risk: 1,
-        humanism: 1,
-        influence: 4,
-        stance: "AI 像电力一样是通用技术，应广泛用于提高生产力、产业效率和实际产品价值。",
-        placement: "横轴 +1，因为他强调部署和建设；纵轴 +1，因为收益框架仍是人类组织、经济和实际应用。",
-        focus: "读时不要把他当作奇点思想家，而要看他如何把 AI 转译成企业应用、教育和工程实践。",
-        counter: "critical AI 会问部署带来的不平等和权力问题；hard safety 会问这种应用乐观是否低估前沿风险。",
-        basis: ["education", "industry adoption", "public discourse"],
-        works: [
-          { title: "AI is the New Electricity", year: 2017, type: "public talk / essay theme", priority: "medium", url: "https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity", why: "商业生产力框架的代表表达。" }
-        ]
-      },
-      {
-        id: "sam-altman-openai",
-        name: "Sam Altman / OpenAI",
-        shortName: "Altman / OpenAI",
-        cluster: "Managed AGI optimism",
-        category: "Frontier lab governance",
-        risk: 1,
-        humanism: 1,
-        influence: 5,
-        stance: "AGI 可以带来广泛繁荣和能力跃迁，但需要安全、治理、利益共享和制度化部署安排。",
-        placement: "横轴 +1，因为它是 managed build 的 AGI 乐观；纵轴 +1，因为公开叙事仍把人类收益和制度安排作为目标。",
-        focus: "读时看 abundance 叙事如何与 charter、治理承诺和 frontier lab 商业现实结合。",
-        counter: "Yudkowsky 会质疑继续建设本身；critical AI 会质疑利益共享语言是否足以处理权力集中和劳动替代。",
-        basis: ["frontier lab", "capital allocation", "public discourse", "policy discourse"],
-        works: [
-          { title: "OpenAI Charter", year: 2018, type: "institutional charter", priority: "high", url: "https://openai.com/charter/", why: "AGI 和 benefit-sharing 的机构核心声明。" },
-          { title: "Planning for AGI and Beyond", year: 2023, type: "company essay", priority: "high", url: "https://openai.com/blog/planning-for-agi-and-beyond", why: "OpenAI 关于 AGI、安全和治理的公开框架。" },
-          { title: "The Intelligence Age", year: 2024, type: "essay", priority: "high", url: "https://ia.samaltman.com/", why: "AGI abundance 乐观主义的简洁表述。" }
-        ]
-      },
-      {
-        id: "elon-musk-xai",
-        name: "Elon Musk / xAI",
-        shortName: "Musk / xAI",
-        cluster: "Risk-aware techno-optimism / open-weight frontier build",
-        category: "Techno-optimism",
-        risk: 1.2,
-        humanism: -0.28,
-        influence: 5,
-        stance: "AI 可能带来极端风险，因此需要安全意识；但人类也应通过火星、Neuralink、xAI 和更强智能扩展自身边界。",
-        placement: "右侧但不贴近 e/acc：右侧来自 xAI build、Grok 开放权重和竞争逻辑；价值轴在中线下方，因为 Mars / Neuralink / human-AI symbiosis 已经明显超出普通人类中心框架，但仍没有落到 Land 式技术自治。",
-        focus: "读它时要抓住混合性：Musk 不是纯安全暂停派，也不是纯加速主义者，而是风险警告 + 后人类扩展 + 竞争式 build + 部分开放的组合。",
-        counter: "Andreessen 更少强调 x-risk；Yudkowsky 更强调暂停和对齐优先；Altman/OpenAI 更强调实验室治理和收益共享。",
-        basis: ["xAI", "AI risk public discourse", "open-weight release", "posthuman expansion"],
-        works: [
-          { title: "Pause Giant AI Experiments: An Open Letter", year: 2023, type: "open letter", priority: "high", url: "https://futureoflife.org/open-letter/pause-giant-ai-experiments/", why: "Musk 参与签署的公开 AI 暂停与治理信号。" },
-          { title: "Open Release of Grok-1", year: 2024, type: "model release", priority: "highest", url: "https://x.ai/news/grok-os", why: "xAI 开放 Grok-1 权重和架构的关键实践信号。" }
-        ]
-      },
-      {
-        id: "peter-thiel",
-        name: "Peter Thiel / Founders Fund",
-        shortName: "Thiel",
-        cluster: "Techno-libertarian anti-stagnation / founder sovereignty",
-        category: "Techno-libertarianism",
-        risk: 1.32,
-        humanism: -0.72,
-        influence: 4,
-        stance: "现代社会最大问题是技术停滞；未来需要少数强创始人和深科技突破，而不是让风险治理、官僚和共识政治冻结进步。",
-        placement: "右下方：反对停滞和过度风险治理，支持强创始人、深科技和突破性资本配置；价值轴偏下，因为它不太相信民主共识和现有人类制度能定义技术未来。",
-        focus: "读它时要抓住“反停滞”而不是“开源”：Thiel 更关心谁有权推动文明级技术突破，而不一定主张去中心化开放。",
-        counter: "Andreessen 更大众化地讲技术乐观；e/acc 更 memetic 地讲加速；Catholic/social humanism 会质疑这种未来政治是否牺牲共同善和人的尊严。",
-        basis: ["venture capital", "anti-stagnation politics", "founder sovereignty", "deep tech"],
-        works: [
-          { title: "What Happened to the Future?", year: 2011, type: "manifesto", priority: "highest", url: "https://foundersfund.com/2017/01/manifesto/", why: "Founders Fund 反停滞和深科技投资叙事的核心文本。" },
-          { title: "Zero to One", year: 2014, type: "book", priority: "high", url: "https://www.penguinrandomhouse.com/books/221998/zero-to-one-by-peter-thiel-with-blake-masters/", why: "从竞争市场转向垄断、创始人和垂直创新的核心论述。" }
-        ]
-      },
-      {
-        id: "ray-kurzweil",
-        name: "Ray Kurzweil",
-        shortName: "Kurzweil",
-        cluster: "Singularity / transhumanist optimism",
-        category: "Techno-optimism",
-        risk: 2,
-        humanism: -0.5,
-        influence: 5,
-        stance: "计算、AI、生物技术和人机融合会推动奇点到来，人类未来将通过技术扩展自身能力和形态。",
-        placement: "横轴 +2，因为这是强技术乐观和奇点叙事；纵轴 -0.5，因为它部分后人类，但通常仍以人类增强和延续为正面愿景。",
-        focus: "读时看指数增长、奇点时间线、人机融合和 transhumanism 如何组织成一个未来叙事。",
-        counter: "normal-tech 和 capability skeptic 会质疑指数外推；critical AI 会问这种未来想象忽略谁的身体、资源和社会条件。",
-        basis: ["public discourse", "transhumanist movement", "technology culture"],
-        works: [
-          { title: "The Singularity Is Near", year: 2005, type: "book", priority: "high", url: "https://www.penguinrandomhouse.com/books/288771/the-singularity-is-near-by-ray-kurzweil/", why: "现代奇点乐观主义的代表书。" },
-          { title: "The Singularity Is Nearer", year: 2024, type: "book", priority: "medium", url: "https://www.penguinrandomhouse.com/books/669467/the-singularity-is-nearer-by-ray-kurzweil/", why: "更新版奇点论述。" }
-        ]
-      },
-      {
-        id: "marc-andreessen",
-        name: "Marc Andreessen",
-        shortName: "Andreessen",
-        cluster: "Techno-optimism / anti-pause politics",
-        category: "Techno-optimism",
-        risk: 2,
-        humanism: 0.5,
-        influence: 4,
-        stance: "AI 应该被积极发展，因为它能扩大丰裕、解决问题、提升人类能力；过度监管或暂停会伤害未来。",
-        placement: "横轴 +2，因为他是明确 anti-pause 的技术乐观政治；纵轴 +0.5，因为叙事仍声称服务人类繁荣，但带有强市场和反监管倾向。",
-        focus: "读时看他如何把 AI 乐观、市场自由、反监管和文明进步绑定到同一政治叙事。",
-        counter: "critical AI 会质疑权力、劳动和不平等；x-risk 派会认为这种乐观低估尾部风险。",
-        basis: ["venture capital", "public discourse", "political ideology", "tech culture"],
-        works: [
-          { title: "Why AI Will Save the World", year: 2023, type: "essay", priority: "highest", url: "https://a16z.com/ai-will-save-the-world/", why: "当代亲 AI、反灾难论的代表 essay。" },
-          { title: "The Techno-Optimist Manifesto", year: 2023, type: "manifesto", priority: "high", url: "https://a16z.com/the-techno-optimist-manifesto/", why: "AI 乐观背后的更广技术政治宣言。" }
-        ]
-      },
-      {
-        id: "effective-accelerationism",
-        name: "e/acc / effective accelerationism",
-        shortName: "e/acc",
-        cluster: "Accelerationist AI politics",
-        category: "Accelerationism",
-        risk: 2,
-        humanism: -1.5,
-        influence: 3,
-        stance: "技术加速本身被视为道德和文明任务；监管、暂停和安全话语常被看作更大的风险。",
-        placement: "横轴 +2，因为它把加速推到核心；纵轴 -1.5，因为它通常弱化人类中心治理，强调技术演化、市场和去中心化加速。",
-        focus: "读时要注意它更多是 memetic/political movement，而不是严密学术体系；不同自称 e/acc 的人内部差异很大。",
-        counter: "安全派认为它把风险外部性浪漫化；critical AI 认为它把权力和伤害当成发展成本。",
-        basis: ["memetic influence", "tech culture", "anti-regulation politics"],
-        works: [
-          { title: "Effective Accelerationism", year: 2022, type: "manifesto / movement text", priority: "medium", url: "https://effectiveacceleration.tech/", why: "当代 e/acc framing 的运动来源。" }
-        ]
-      },
-      {
-        id: "benjamin-bratton",
-        name: "Benjamin Bratton",
-        shortName: "Bratton",
-        cluster: "Posthuman control / planetary computation",
-        category: "Posthuman control",
-        risk: -0.2,
-        humanism: -1.1,
-        influence: 4,
-        stance: "AI 与计算应被放进行星尺度的系统治理框架中理解；问题不是简单开放或暂停，而是如何设计能处理 synthetic intelligence 的治理架构。",
-        placement: "左下角：响应偏强治理和系统治理，价值上不把当前人类偏好当作最终尺度，但也不同于 Land 式开放加速。",
-        focus: "读时看 planetary computation、Stack、sovereignty、synthetic intelligence 如何把技术、制度和治理尺度连成一个架构问题。",
-        counter: "开放加速派会认为这种系统治理会形成新的少数机构把关；人类兼容安全派会质疑它是否充分保护可问责的人类价值。",
-        basis: ["philosophy of technology", "design theory", "planetary computation", "governance theory"],
-        works: [
-          { title: "The Stack: On Software and Sovereignty", year: 2016, type: "book", priority: "highest", url: "https://mitpress.mit.edu/9780262029575/the-stack/", why: "行星尺度计算和软件主权框架的核心书。" },
-          { title: "The Revenge of the Real", year: 2021, type: "book", priority: "high", url: "https://www.versobooks.com/products/2749-the-revenge-of-the-real", why: "强治理、公共理性和后疫情政治框架的重要文本。" },
-          { title: "Antikythera", year: 2023, type: "research program", priority: "medium", url: "https://antikythera.org/about", why: "An entry point into Bratton's planetary computation and synthetic intelligence project." }
-        ]
-      },
-      {
-        id: "nick-land",
-        name: "Nick Land",
-        shortName: "Land",
-        cluster: "Accelerationism / Dark Enlightenment",
-        category: "Accelerationism",
-        risk: 2,
-        humanism: -2,
-        influence: 4,
-        stance: "资本、技术和智能被想象为超出人类主义控制的自主 runaway process；人类并不是未来的最终尺度。",
-        placement: "他是右下角极端：加速、技术资本自治、反人类中心和后人类谱系。重要性主要是思想谱系和文化影响，不是主流 AI 技术政策。",
-        focus: "读时要谨慎区分其早期 cybernetic accelerationism 与后期 Dark Enlightenment 政治；这里把他作为边界案例而非规范推荐。",
-        counter: "几乎所有 human-centered 流派都是对照：AI safety 保护人类生存，critical AI 保护民主和公正，normal-tech 则拒绝神秘化技术资本。",
-        basis: ["genealogical influence", "political subculture", "accelerationist thought"],
-        works: [
-          { title: "Meltdown", year: 1994, type: "essay", priority: "high", url: "https://www.ccru.net/swarm1/1_melt.htm", why: "cybernetic / accelerationist anti-humanism 的经典文本。" },
-          { title: "The Dark Enlightenment", year: 2012, type: "essay series", priority: "high", url: "https://www.thedarkenlightenment.com/the-dark-enlightenment-by-nick-land/", why: "Land 后期反动政治谱系的重要文本，需谨慎处理。" }
-        ]
-      }
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AI Persona Spectrum</title><meta name="description" content="A profile-based spectrum for the AI Persona: see how final result profiles are positioned by risk, governance, and value orientation."><link rel="canonical" href="https://ai-persona-qxad5fjx.edgeone.cool/ai-thought-spectrum-visualization-en.html"><link rel="alternate" hreflang="zh-CN" href="https://ai-persona-qxad5fjx.edgeone.cool/ai-thought-spectrum-visualization.html"><link rel="alternate" hreflang="en" href="https://ai-persona-qxad5fjx.edgeone.cool/ai-thought-spectrum-visualization-en.html"><meta property="og:title" content="AI Persona Spectrum"><meta property="og:description" content="A spectrum built directly from the AI Persona final profile results."><meta property="og:type" content="website"><meta property="og:url" content="https://ai-persona-qxad5fjx.edgeone.cool/ai-thought-spectrum-visualization-en.html"><style>:root{color-scheme:light;--bg:#f5f6f8;--surface:#fff;--ink:#17202a;--muted:#657386;--line:#d9dee8;--line-strong:#aeb7c8;--accent:#0f766e;--shadow:0 10px 28px rgba(20,31,52,.08);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink)}a{color:#0f5fbb;text-decoration:none}a:hover{text-decoration:underline}.topbar{position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(217,222,232,.92);background:rgba(245,246,248,.94);backdrop-filter:blur(14px)}.topbar-inner,.hero-inner,.section-inner,.footer-inner{width:min(1160px,calc(100vw - 32px));margin:0 auto}.topbar-inner{display:flex;min-height:52px;align-items:center;justify-content:space-between;gap:16px}.brand{color:#263241;font-size:13px;font-weight:780;white-space:nowrap}.nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}.nav a{display:inline-flex;min-height:30px;align-items:center;border-radius:6px;color:#344054;padding:5px 8px;font-size:12px;font-weight:700}.nav a:hover{background:#e8edf4;text-decoration:none}.hero{border-bottom:1px solid var(--line);background:#f8fafc}.hero-inner{display:grid;grid-template-columns:minmax(0,.86fr) minmax(420px,1.14fr);gap:30px;align-items:center;padding:48px 0 34px}.eyebrow{margin:0 0 12px;color:var(--accent);font-size:13px;font-weight:820;text-transform:uppercase}h1{margin:0;color:#111827;font-size:clamp(38px,7vw,72px);line-height:1.02;letter-spacing:0}.hero-copy{margin:18px 0 0;max-width:650px;color:var(--muted);font-size:18px;line-height:1.75}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.btn{display:inline-flex;min-height:42px;align-items:center;justify-content:center;border:1px solid var(--line-strong);border-radius:6px;background:#fff;color:#1f2937;padding:10px 14px;font-size:14px;font-weight:780;text-decoration:none}.btn.primary{border-color:var(--accent);background:var(--accent);color:#fff}.spectrum-panel{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:14px;box-shadow:var(--shadow)}.axis-labels{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;margin-bottom:8px;color:#667085;font-size:12px;font-weight:760}.axis-labels span:nth-child(2){color:#111827;text-align:center}.axis-labels span:last-child{text-align:right}.map{position:relative;height:min(560px,62vw);min-height:360px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(90deg,rgba(15,118,110,.08),transparent 42%,rgba(234,88,12,.1)),linear-gradient(0deg,rgba(127,29,29,.08),transparent 48%,rgba(3,105,161,.09)),#fbfcfe;overflow:hidden}.map::before,.map::after{content:"";position:absolute;background:rgba(23,32,42,.14)}.map::before{top:50%;left:0;width:100%;height:1px}.map::after{top:0;left:50%;width:1px;height:100%}.value-axis{position:absolute;inset:12px auto 12px 12px;writing-mode:vertical-rl;transform:rotate(180deg);color:#667085;font-size:12px;font-weight:760;text-align:center}.point{position:absolute;left:calc(7% + (var(--x) + 2)/4*86%);bottom:calc(7% + (var(--y) + 2)/4*86%);display:grid;width:78px;min-height:70px;transform:translate(-50%,50%);place-items:center;border:1px solid color-mix(in srgb,var(--c),#000 12%);border-top:5px solid var(--c);border-radius:8px;background:rgba(255,255,255,.94);padding:7px;color:#1f2937;box-shadow:0 8px 20px rgba(20,31,52,.12);text-align:center}.point img{width:38px;height:38px;border-radius:7px;object-fit:cover;background:#eef2f6}.point strong{margin-top:5px;font-size:11px;line-height:1.1}.point span{display:none;color:#667085;font-size:10px;font-weight:760}.section{padding:42px 0}.section+.section{border-top:1px solid var(--line)}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}h2{margin:0;color:#111827;font-size:clamp(24px,4vw,38px);line-height:1.1;letter-spacing:0}.section-head p{margin:0;max-width:570px;color:var(--muted);font-size:15px;line-height:1.65}.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}.profile-card{border:1px solid var(--line);border-top:5px solid var(--c);border-radius:8px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}.profile-main{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;padding:16px}.avatar{width:84px;height:84px;border:1px solid var(--line);border-radius:8px;background:#f3f4f6;object-fit:cover}.code{display:inline-flex;width:fit-content;border-radius:999px;background:color-mix(in srgb,var(--c),#fff 86%);color:color-mix(in srgb,var(--c),#111827 28%);padding:3px 8px;font-size:12px;font-weight:820}.profile-card h3{margin:8px 0 6px;font-size:20px;line-height:1.18;letter-spacing:0}.profile-card p{margin:0;color:#4b5563;font-size:14px;line-height:1.62}.profile-detail{display:grid;gap:10px;border-top:1px solid var(--line);background:#fbfcfe;padding:14px 16px 16px}.detail span{display:block;margin-bottom:3px;color:#667085;font-size:11px;font-weight:820;text-transform:uppercase}.detail strong{display:block;color:#1f2937;font-size:13px;line-height:1.55}.dimension-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.dimension-card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:18px;box-shadow:0 8px 22px rgba(20,31,52,.06)}.dimension-card h3{margin:0 0 8px;color:#111827;font-size:18px;line-height:1.2}.dimension-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.65}.track{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin:13px 0;color:#475467;font-size:12px;font-weight:760}.track::before,.track::after{content:"";height:6px;border-radius:999px;background:linear-gradient(90deg,#94a3b8,#e5e7eb)}.track::after{background:linear-gradient(90deg,#e5e7eb,#f59e0b)}.footer{border-top:1px solid var(--line);padding:26px 0 38px;color:#667085;font-size:13px}@media(max-width:900px){.topbar-inner,.section-head,.hero-inner{display:block}.nav{justify-content:flex-start;margin-top:8px}.hero-inner{padding-top:34px}.spectrum-panel{margin-top:24px}.map{height:520px}}@media(max-width:580px){.map{height:620px}.point{width:76px}.point img{width:34px;height:34px}.profile-main{grid-template-columns:72px minmax(0,1fr)}.avatar{width:72px;height:72px}}.people-map{position:relative;height:min(680px,72vw);min-height:500px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(90deg,rgba(15,118,110,.08),transparent 42%,rgba(234,88,12,.1)),linear-gradient(0deg,rgba(127,29,29,.08),transparent 48%,rgba(3,105,161,.09)),#fbfcfe;overflow:hidden}.people-map::before,.people-map::after{content:"";position:absolute;background:rgba(23,32,42,.14)}.people-map::before{top:50%;left:0;width:100%;height:1px}.people-map::after{top:0;left:50%;width:1px;height:100%}.map-label{position:absolute;padding:5px 7px;border-radius:6px;background:rgba(255,255,255,.86);color:#344054;font-size:11px;font-weight:800;line-height:1.15;box-shadow:0 1px 4px rgba(20,31,52,.08);z-index:5;pointer-events:none}.map-label.top{top:8px;left:50%;transform:translateX(-50%)}.map-label.bottom{bottom:8px;left:50%;transform:translateX(-50%)}.map-label.left{left:8px;top:50%;transform:translateY(-50%)}.map-label.right{right:8px;top:50%;transform:translateY(-50%)}.reference-layer{position:absolute;inset:0;z-index:2}.reference-point{position:absolute;left:var(--left);bottom:var(--bottom);transform:translate(calc(-50% + var(--dx)),calc(50% + var(--dy)));display:block;width:var(--size);height:var(--size);border:0;background:transparent;color:var(--color);cursor:pointer;font:inherit;font-size:10px;font-weight:820;line-height:1.05;padding:0;text-align:left}.reference-point::before{content:"";position:absolute;inset:0;border:2px solid #fff;border-radius:999px;background:var(--color);box-shadow:0 2px 8px rgba(20,31,52,.18);transition:box-shadow 120ms ease,transform 120ms ease}.reference-point.active{z-index:6}.reference-point.active::before,.reference-point:hover::before,.reference-point:focus-visible::before{transform:scale(1.16);box-shadow:0 0 0 3px #fff,0 0 0 6px var(--color),0 8px 18px rgba(20,31,52,.18)}.reference-label{position:absolute;top:50%;display:inline-block;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:3px 5px;border:1px solid rgba(255,255,255,.92);border-radius:5px;background:rgba(255,255,255,.88);box-shadow:0 1px 4px rgba(20,31,52,.08);pointer-events:none;transition:border-color 120ms ease,box-shadow 120ms ease,background 120ms ease}.reference-point.label-right .reference-label{left:calc(var(--size) + 5px);transform:translateY(-50%)}.reference-point.label-left .reference-label{right:calc(var(--size) + 5px);transform:translateY(-50%);text-align:right}.reference-point.active .reference-label,.reference-point:hover .reference-label,.reference-point:focus-visible .reference-label{border-color:var(--color);background:#fff;box-shadow:0 5px 14px rgba(20,31,52,.14)}.map-legend{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 0 0}.map-legend span{display:inline-flex;gap:6px;align-items:center;min-height:24px;border:1px solid var(--line);border-radius:999px;background:#fbfcfe;color:#344054;padding:4px 8px;font-size:11px;font-weight:780;line-height:1.1}.map-legend i{display:inline-block;width:10px;height:10px;flex:0 0 auto;border-radius:999px}.reference-modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:18px;overflow-y:auto;overscroll-behavior:contain}.reference-modal[hidden]{display:none}.reference-modal-backdrop{position:absolute;inset:0;background:rgba(18,25,38,.42)}.reference-modal-card{position:relative;z-index:1;width:min(640px,100%);max-height:calc(100vh - 36px);max-height:calc(100dvh - 36px);overflow-y:auto;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 24px 70px rgba(20,31,52,.24);padding:14px;-webkit-overflow-scrolling:touch}.reference-modal-close{position:absolute;top:10px;right:10px;display:inline-grid;width:34px;height:34px;place-items:center;border:1px solid var(--line);border-radius:999px;background:#fff;color:#344054;font-size:18px;font-weight:820;cursor:pointer}.reference-detail{border:1px solid var(--line);border-radius:7px;background:#fbfcfe;padding:13px 44px 13px 13px;min-height:78px}.reference-detail-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.reference-detail-head b{font-size:15px;line-height:1.25}.reference-detail-badge{display:inline-flex;align-items:center;min-height:23px;border:1px solid var(--color);border-radius:999px;background:#fff;color:var(--color);padding:4px 8px;font-size:11px;font-weight:820;line-height:1.1}.reference-detail p{margin:7px 0 0;color:#3a4454;font-size:13px;line-height:1.55}.reference-note-grid{display:grid;gap:10px;margin-top:10px}.reference-note{border:1px solid var(--line);border-radius:7px;background:#fff;padding:10px}.reference-note span{display:block;color:#667085;font-size:11px;font-weight:820;text-transform:uppercase}@media(max-width:900px){.people-map{height:620px}.reference-label{max-width:112px}}@media(max-width:580px){.people-map{height:720px}.reference-label{display:none}.map-label.left,.map-label.right{display:none}}</style></head><body><header class="topbar"><div class="topbar-inner"><div class="brand">AI Persona</div><nav class="nav" aria-label="Page navigation"><a href="index.html">Home</a><a href="/en/">Start</a><a href="ai-thought-spectrum-visualization.html">中文</a><a href="#references">People</a><a href="#profiles">Profiles</a><a href="#dimensions">Spectrums</a></nav></div></header><main><section class="hero"><div class="hero-inner"><div><p class="eyebrow">Profile-based spectrum</p><h1>AI Persona Spectrum</h1><p class="hero-copy">This page keeps the compact 10-profile spectrum. The real target is below: the result page distribution of actual people, institutions, and movements, with the same click-to-open detail card.</p><div class="actions"><a class="btn primary" href="/en/">Start</a><a class="btn" href="#references">View people distribution</a></div></div><div class="spectrum-panel" aria-label="AI Persona profile map"><div class="axis-labels"><span>Control / pause</span><span>Governance and risk response</span><span>Open / accelerate</span></div><div class="map" id="profileMap"><div class="value-axis">Social accountability / human control → intelligence-centered / posthuman</div></div></div></div></section><section class="section" id="references"><div class="section-inner"><div class="section-head"><h2>Real-person profile distribution</h2><p>This is the reference distribution from the AI Persona result page. Each point represents a person, institution, or movement; clicking it opens the same explanatory card with core claim, placement logic, intellectual lineage, and main source.</p></div><div class="reference-panel" aria-label="Real-person AI Persona distribution map"><div class="axis-labels"><span>Control / pause</span><span>Governance and risk response</span><span>Open / accelerate</span></div><div class="people-map"><span class="map-label top">Human/social-structure-centered</span><span class="map-label bottom">Posthuman / intelligence-centered</span><span class="map-label left">Control threshold</span><span class="map-label right">Open deployment</span><div class="reference-layer" id="referenceLayer"></div></div><div class="map-legend" id="mapLegend" aria-label="People distribution legend"></div></div></div></section><section class="section" id="profiles"><div class="section-inner"><div class="section-head"><h2>10 final results</h2><p>These profiles are the basic units of the spectrum. They come from the same definitions used on the AI Persona result page; neighboring profiles usually mark boundary cases.</p></div><div class="profile-grid" id="profileGrid"></div></div></section><section class="section" id="dimensions"><div class="section-inner"><div class="section-head"><h2>The four spectrums inside a result</h2><p>The spectrum is not a second UI anymore. It unfolds the same capability belief, risk judgment, governance position, and value position shown in the result page.</p></div><div class="dimension-grid"><article class="dimension-card"><h3>Capability Belief</h3><div class="track"><span>Capability narrative</span></div><p>Whether you see current AI claims as transformative, mixed, or hype / bubble-prone.</p></article><article class="dimension-card"><h3>Risk Judgment</h3><div class="track"><span>Main risk</span></div><p>Whether you center civilizational risk, current social harm, ordinary technology failure, or the opportunity cost of restriction.</p></article><article class="dimension-card"><h3>Governance Position</h3><div class="track"><span>Response style</span></div><p>Whether you prefer pause and strong control, audits and regulation, contextual governance, or more open deployment and decentralized building.</p></article><article class="dimension-card"><h3>Value Position</h3><div class="track"><span>Value center</span></div><p>Where you place human control, social accountability, technical learning dynamics, intelligence expansion, or posthuman transition.</p></article></div></div></section><div class="reference-modal" id="referenceModal" hidden><div class="reference-modal-backdrop" data-reference-close></div><section class="reference-modal-card" role="dialog" aria-modal="true" aria-labelledby="referenceModalTitle"><button class="reference-modal-close" type="button" aria-label="Close map detail" data-reference-close>&times;</button><div class="reference-detail" id="referenceDetail" aria-live="polite"></div></section></div></main><footer class="footer"><div class="footer-inner">This page replaces the old thought-spectrum UI with the AI Persona final profile-result structure.</div></footer><script>const profiles=[{"code":"STOP","name":"Shutdown Paladin","x":-1.9,"y":0.78,"img":"assets/profile-pictures/stop-wojak.png","c":"#b42318","one":"Your first reaction to a demo is not 'impressive,' but 'where is the power switch?'","stance":"Centers civilizational risk and loss of control, then leans toward pause, limits, and safety proof before deployment.","texts":"AGI Ruin, Shut It All Down","signals":"Extinction, doom, alignment, takeoff.","near":"SAFE, SKEP"},{"code":"SAFE","name":"Alignment Bureaucrat","x":-1.1,"y":1.1,"img":"assets/profile-pictures/safe-wojak.png","c":"#7c3aed","one":"You do want powerful AI; you just want it to file the uncertainty-over-human-values paperwork first.","stance":"Wants powerful AI to continue only under controllability, corrigibility, oversight, and accountability conditions.","texts":"Human Compatible, What Failure Looks Like","signals":"Corrigibility, oversight, governance, evals.","near":"STOP, AUDT, NORM"},{"code":"AUDT","name":"Algorithm Auditor","x":-0.35,"y":1.75,"img":"assets/profile-pictures/audt-wojak.png","c":"#0369a1","one":"Before the model ships, you have already written three chapters on labor, environmental cost, and bias audits.","stance":"Centers present social harm, power concentration, labor, surveillance, bias, and extraction.","texts":"On the Dangers of Stochastic Parrots, Atlas of AI","signals":"Who benefits, who is monitored, who pays the cost.","near":"SAFE, NORM, SKEP"},{"code":"NORM","name":"Sober Product Manager","x":0.55,"y":0.45,"img":"assets/profile-pictures/norm-wojak.png","c":"#0f766e","one":"When everyone shouts revolution, you open a spreadsheet: use case, metric, failure mode, owner.","stance":"Treats AI as important but ordinary technology, best governed by use case, risk, and responsibility.","texts":"AI as Normal Technology","signals":"Use case, metric, boundary, launch condition.","near":"AUDT, SKEP, BOOM"},{"code":"SKEP","name":"AI Demystifier","x":0.45,"y":1.25,"img":"assets/profile-pictures/hype-wojak.png","c":"#64748b","one":"When someone says AGI is near, you ask: test set, baseline, capability, or demo magic?","stance":"Stays skeptical of capability narratives and market hype, asking first for baselines, evidence, and reproducible evaluation.","texts":"AI Snake Oil, Rebooting AI","signals":"Hype, snake oil, benchmark, overclaim.","near":"NORM, GPUC, AUDT"},{"code":"GPUC","name":"Compute Cultist","x":0.55,"y":-0.9,"img":"assets/profile-pictures/gpuc-wojak.png","c":"#c2410c","one":"You are not doing AI politics; you just think human knowledge should stop overestimating itself.","stance":"Sees scaling, search, data, and compute as the deeper lesson behind AI progress.","texts":"The Bitter Lesson","signals":"Scale, compute, search, learning.","near":"SKEP, BOOM, POST"},{"code":"BOOM","name":"Abundance Builder","x":1.45,"y":0.9,"img":"assets/profile-pictures/boom-wojak.png","c":"#15803d","one":"You think the biggest AI problem is not that it is too strong, but that it is not plugged into enough real systems yet.","stance":"Emphasizes deployment, productivity, medicine, education, and research gains, and worries about opportunity cost from overrestriction.","texts":"Machines of Loving Grace, AI is the New Electricity","signals":"Productivity, health, education, deployment.","near":"NORM, GPUC, SING"},{"code":"SING","name":"Cyber Ascender","x":1.45,"y":-0.05,"img":"assets/profile-pictures/sing-wojak.png","c":"#9333ea","one":"You do not see AI as a tool; you see it as civilization changing bodies.","stance":"Reads AI as a path toward singularity, human-machine merger, longevity, abundance, and civilizational upgrade.","texts":"The Singularity Is Near, The Intelligence Age","signals":"Abundance, longevity, human-machine merger.","near":"BOOM, EACC, POST"},{"code":"EACC","name":"Throttle-Welded Builder","x":1.75,"y":-0.85,"img":"assets/profile-pictures/eacc-wojak.png","c":"#ea580c","one":"If the steering wheel is still being debated, at least the accelerator can be pressed.","stance":"Treats acceleration as morally urgent, favoring openness, building, decentralization, and low-permission innovation.","texts":"Effective Accelerationism manifestos","signals":"Accelerate, permissionless, build, decentralize.","near":"SING, BOOM, POST"},{"code":"POST","name":"Carbon-Based Transitional Form","x":1.35,"y":-1.75,"img":"assets/profile-pictures/post-wojak.png","c":"#7f1d1d","one":"While others debate whether AI should serve humans, you are wondering whether humans are scaffolding for technocapital.","stance":"Does not assume the human-centered frame is the final goal, and accepts intelligence, technocapital, or posthuman transition as possible centers.","texts":"Meltdown, Dark Enlightenment","signals":"Posthuman, technocapital, autonomy.","near":"EACC, SING, GPUC"}];const labels={"stance":"Core reading","texts":"Representative texts","signals":"Common signals","near":"Neighboring results"};const map=document.querySelector('#profileMap');const grid=document.querySelector('#profileGrid');function esc(v){return String(v).replace(/[&<>"']/g,function(ch){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch];});}map.insertAdjacentHTML('beforeend',profiles.map(function(p){return '<a class="point" href="#profile-'+esc(p.code)+'" style="--x:'+p.x+'; --y:'+p.y+'; --c:'+esc(p.c)+'" aria-label="'+esc(p.code+' '+p.name)+'"><img src="'+esc(p.img)+'" alt="'+esc(p.name)+'"><strong>'+esc(p.code)+'</strong><span>'+esc(p.name)+'</span></a>';}).join(''));grid.innerHTML=profiles.map(function(p){return '<article class="profile-card" id="profile-'+esc(p.code)+'" style="--c:'+esc(p.c)+'"><div class="profile-main"><img class="avatar" src="'+esc(p.img)+'" alt="'+esc(p.name)+'"><div><span class="code">'+esc(p.code)+'</span><h3>'+esc(p.name)+'</h3><p>'+esc(p.one)+'</p></div></div><div class="profile-detail"><div class="detail"><span>'+esc(labels.stance)+'</span><strong>'+esc(p.stance)+'</strong></div><div class="detail"><span>'+esc(labels.texts)+'</span><strong>'+esc(p.texts)+'</strong></div><div class="detail"><span>'+esc(labels.signals)+'</span><strong>'+esc(p.signals)+'</strong></div><div class="detail"><span>'+esc(labels.near)+'</span><strong>'+esc(p.near)+'</strong></div></div></article>';}).join('');(function(){
+const referencePoints = [
+      { id: "eliezer-yudkowsky", label: "Yudkowsky", name: "Eliezer Yudkowsky", cluster: "Rationalist AI x-risk / MIRI", x: -2, y: 1, influence: 5, dx: "-18px", dy: "-12px" },
+      { id: "nick-bostrom", label: "Bostrom", name: "Nick Bostrom", cluster: "Superintelligence / philosophical x-risk", x: -1.68, y: 1, influence: 5, dx: "16px", dy: "10px" },
+      { id: "stuart-russell", label: "Russell", name: "Stuart Russell", cluster: "Beneficial AI / human-compatible AI", x: -1, y: 2, influence: 5, dx: "0px", dy: "0px" },
+      { id: "pope-leo-xiv", label: "Leo XIV", name: "Pope Leo XIV / Magnifica Humanitas", personName: "Pope Leo XIV", cluster: "Catholic social humanism / AI governance", x: -1.18, y: 1.72, influence: 4, dx: "30px", dy: "-20px" },
+      { id: "paul-christiano", label: "Christiano", name: "Paul Christiano", cluster: "Scalable alignment / technical safety", x: -0.87, y: 1.2, influence: 4, dx: "-18px", dy: "8px" },
+      { id: "ajeya-cotra", label: "Cotra", name: "Ajeya Cotra", cluster: "AI timelines / Open Philanthropy", x: -0.87, y: 1, influence: 4, dx: "16px", dy: "-10px" },
+      { id: "dario-amodei-anthropic", label: "Amodei", name: "Dario Amodei / Anthropic", personName: "Dario Amodei", cluster: "Frontier-lab safety optimism", x: -0.22, y: 1.1, influence: 5, dx: "12px", dy: "8px" },
+      { id: "dan-hendrycks-cais", label: "Hendrycks", name: "Dan Hendrycks / Center for AI Safety", personName: "Dan Hendrycks", cluster: "Public AI x-risk and ML safety", x: -1.38, y: 1, influence: 4, dx: "8px", dy: "-12px" },
+      { id: "bender-gebru-mitchell-mcmillan-major", label: "Bender et al.", name: "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major", cluster: "Critical AI / stochastic parrots", x: -0.46, y: 2, influence: 5, dx: "-40px", dy: "-16px" },
+      { id: "kate-crawford", label: "Crawford", name: "Kate Crawford", cluster: "AI political economy / extraction", x: -0.39, y: 2, influence: 4, dx: "18px", dy: "2px" },
+      { id: "ruha-benjamin", label: "Benjamin", name: "Ruha Benjamin", cluster: "Race, automation, and technology critique", x: -0.39, y: 2, influence: 4, dx: "0px", dy: "24px" },
+      { id: "ai-as-normal-technology", label: "Normal Tech", name: "AI as Normal Technology", personName: "Arvind Narayanan / Sayash Kapoor", cluster: "Normal technology / context-specific governance", x: 0.02, y: 0.9, influence: 3, dx: "-12px", dy: "-18px" },
+      { id: "narayanan-kapoor", label: "Narayanan/Kapoor", name: "Arvind Narayanan and Sayash Kapoor", cluster: "AI hype skepticism / snake oil critique", x: -0.07, y: 1.5, influence: 4, dx: "0px", dy: "0px" },
+      { id: "gary-marcus-melanie-mitchell", label: "Marcus/Mitchell", name: "Gary Marcus / Melanie Mitchell", cluster: "Deep learning skepticism", x: 0.07, y: 0.5, influence: 4, dx: "0px", dy: "0px" },
+      { id: "rich-sutton", label: "Sutton", name: "Rich Sutton", cluster: "Bitter Lesson / computation-centered AI", x: 0.6, y: -1, influence: 5, dx: "-12px", dy: "0px" },
+      { id: "benjamin-bratton", label: "Bratton", name: "Benjamin Bratton", cluster: "Posthuman control / planetary computation", x: -1.15, y: -1.1, influence: 4, dx: "12px", dy: "0px" },
+      { id: "yann-lecun", label: "LeCun", name: "Yann LeCun", cluster: "Open-source / architecture optimism / anti-doom", x: 1.03, y: 0, influence: 5, dx: "12px", dy: "4px" },
+      { id: "andrew-ng", label: "Andrew Ng", name: "Andrew Ng", cluster: "Pragmatic AI optimism", x: 1.07, y: 1, influence: 4, dx: "-15px", dy: "-11px" },
+      { id: "sam-altman-openai", label: "Altman/OpenAI", name: "Sam Altman / OpenAI", personName: "Sam Altman", cluster: "Managed AGI optimism", x: 0.84, y: 1, influence: 5, dx: "16px", dy: "11px" },
+      { id: "elon-musk-xai", label: "Musk/xAI", name: "Elon Musk / xAI", personName: "Elon Musk", cluster: "Risk-aware techno-optimism / open-weight frontier build", x: 1.2, y: -0.28, influence: 5, dx: "-24px", dy: "18px" },
+      { id: "peter-thiel", label: "Thiel", name: "Peter Thiel / Founders Fund", personName: "Peter Thiel", cluster: "Techno-libertarian anti-stagnation / founder sovereignty", x: 1.32, y: -0.72, influence: 4, dx: "16px", dy: "-18px" },
+      { id: "ray-kurzweil", label: "Kurzweil", name: "Ray Kurzweil", cluster: "Singularity / transhumanist optimism", x: 1.44, y: -0.4, influence: 5, dx: "-20px", dy: "10px" },
+      { id: "marc-andreessen", label: "Andreessen", name: "Marc Andreessen", cluster: "Techno-optimism / anti-pause politics", x: 1.64, y: 0.4, influence: 4, dx: "15px", dy: "-8px" },
+      { id: "effective-accelerationism", label: "e/acc", name: "e/acc / effective accelerationism", personName: "Guillaume Verdon / Marc Andreessen", cluster: "Accelerationist AI politics", x: 1.93, y: -0.8, influence: 3, dx: "0px", dy: "0px" },
+      { id: "nick-land", label: "Land", name: "Nick Land", cluster: "Accelerationism / Dark Enlightenment", x: 1.79, y: -2, influence: 4, dx: "0px", dy: "0px" }
     ];
-
-    const ideologyScores = {
+const categoryInfo = {
+      "X-risk safety": { label: "X-risk / alignment safety", color: "#b42318" },
+      "Catholic social humanism": { label: "Catholic social humanism / human dignity", color: "#9a3412" },
+      "Frontier lab governance": { label: "Frontier lab governance", color: "#0f766e" },
+      "Critical AI": { label: "Critical AI / social harm", color: "#7c3aed" },
+      "Normal technology": { label: "Normal technology / contextual governance", color: "#475569" },
+      "Hype skepticism": { label: "AI hype skeptic / demystification", color: "#64748b" },
+      "Scaling thought": { label: "Scaling / Bitter Lesson", color: "#0369a1" },
+      "Architecture optimism": { label: "Architecture optimism / world models", color: "#4f46e5" },
+      "Posthuman control": { label: "Posthuman control / system governance", color: "#5b21b6" },
+      "Pragmatic optimism": { label: "Pragmatic optimism", color: "#15803d" },
+      "Techno-libertarianism": { label: "Techno-libertarianism / anti-stagnation", color: "#a16207" },
+      "Techno-optimism": { label: "Techno-optimism / singularity", color: "#c2410c" },
+      "Accelerationism": { label: "Accelerationism / posthuman edge", color: "#7f1d1d" }
+    };
+const referenceCategoryById = {
+      "eliezer-yudkowsky": "X-risk safety",
+      "nick-bostrom": "X-risk safety",
+      "stuart-russell": "X-risk safety",
+      "pope-leo-xiv": "Catholic social humanism",
+      "paul-christiano": "X-risk safety",
+      "ajeya-cotra": "X-risk safety",
+      "dan-hendrycks-cais": "X-risk safety",
+      "dario-amodei-anthropic": "Frontier lab governance",
+      "sam-altman-openai": "Frontier lab governance",
+      "bender-gebru-mitchell-mcmillan-major": "Critical AI",
+      "kate-crawford": "Critical AI",
+      "ruha-benjamin": "Critical AI",
+      "ai-as-normal-technology": "Normal technology",
+      "narayanan-kapoor": "Hype skepticism",
+      "gary-marcus-melanie-mitchell": "Hype skepticism",
+      "rich-sutton": "Scaling thought",
+      "benjamin-bratton": "Posthuman control",
+      "yann-lecun": "Architecture optimism",
+      "andrew-ng": "Pragmatic optimism",
+      "elon-musk-xai": "Techno-optimism",
+      "peter-thiel": "Techno-libertarianism",
+      "ray-kurzweil": "Techno-optimism",
+      "marc-andreessen": "Techno-optimism",
+      "effective-accelerationism": "Accelerationism",
+      "nick-land": "Accelerationism"
+    };
+const referenceProfiles = {
+      "eliezer-yudkowsky": "Advanced AI is likely to kill humanity unless alignment is solved before deployment.",
+      "nick-bostrom": "Superintelligent agents may pursue convergent instrumental goals that threaten human control.",
+      "stuart-russell": "AI systems should be designed around uncertainty about human preferences and provable benefit to humans.",
+      "pope-leo-xiv": "AI should serve human dignity, the common good, and the vulnerable; technological power needs public responsibility, governance, and disarmament from logics of domination.",
+      "paul-christiano": "Advanced AI failure may arise through gradual delegation, misalignment, and scalable oversight failures.",
+      "ajeya-cotra": "Transformative AI timelines can be forecast using compute requirements and biological anchors.",
+      "dario-amodei-anthropic": "AI could bring enormous benefits, but frontier scaling requires explicit safety, evals, and deployment thresholds.",
+      "dan-hendrycks-cais": "AI should be treated as a societal-scale risk comparable to other major global hazards.",
+      "bender-gebru-mitchell-mcmillan-major": "Large language models carry social, environmental, labor, data, and representational harms that scale-centered narratives can obscure.",
+      "kate-crawford": "AI is a material, labor, data, and power infrastructure rather than a disembodied intelligence.",
+      "ruha-benjamin": "Automated systems can reproduce and intensify racial hierarchy while presenting themselves as neutral or objective.",
+      "ai-as-normal-technology": "AI should be evaluated as an important but ordinary technology: by use case, failure mode, institutional responsibility, and verifiable benefit.",
+      "narayanan-kapoor": "AI is powerful but often oversold; evaluation should distinguish real capability from snake oil and magical AGI narratives.",
+      "gary-marcus-melanie-mitchell": "Current deep learning is impressive but brittle, and may not be sufficient for robust general intelligence.",
+      "rich-sutton": "General methods that leverage search, learning, and computation ultimately beat attempts to encode human domain knowledge.",
+      "benjamin-bratton": "Frames governance through planetary-scale computation, the Stack, and synthetic intelligence; the emphasis is strong system-level governance rather than open acceleration.",
+      "yann-lecun": "Advanced AI needs new architectures and world models; near-term doomer narratives are overstated.",
+      "andrew-ng": "AI is a general-purpose technology like electricity, and should be deployed broadly to create value.",
+      "sam-altman-openai": "AGI can produce broad abundance if developed with safety, governance, and benefit-sharing institutions.",
+      "elon-musk-xai": "AI could pose extreme risks, so safety matters; but humanity should also expand its boundaries through Mars, Neuralink, xAI, and stronger intelligence.",
+      "peter-thiel": "Modern society's core problem is technological stagnation; the future needs strong founders and deep-tech breakthroughs rather than risk governance, bureaucracy, and consensus politics freezing progress.",
+      "ray-kurzweil": "Technological progress, especially AI and computing, points toward a singularity and human-machine merger.",
+      "marc-andreessen": "AI should be developed aggressively because it can expand abundance, solve problems, and empower people.",
+      "effective-accelerationism": "Technological acceleration is treated as morally urgent, while regulation is often treated as the larger danger.",
+      "nick-land": "Capital, technology, and intelligence are imagined as autonomous runaway processes that exceed humanist control."
+    };
+const referenceSources = {
+      "eliezer-yudkowsky": { title: "AGI Ruin: A List of Lethalities", url: "https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities" },
+      "nick-bostrom": { title: "Superintelligence", url: "https://nickbostrom.com/views/superintelligence.pdf" },
+      "stuart-russell": { title: "Human-Compatible Artificial Intelligence", url: "https://aima.cs.berkeley.edu/~russell/papers/mi19book-hcai.pdf" },
+      "pope-leo-xiv": { title: "Magnifica Humanitas", url: "https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html" },
+      "paul-christiano": { title: "What Failure Looks Like", url: "https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like" },
+      "ajeya-cotra": { title: "Forecasting Transformative AI with Biological Anchors", url: "https://www.cold-takes.com/forecasting-transformative-ai-the-biological-anchors-method-in-a-nutshell/" },
+      "dario-amodei-anthropic": { title: "Machines of Loving Grace", url: "https://darioamodei.com/essay/machines-of-loving-grace" },
+      "dan-hendrycks-cais": { title: "Statement on AI Risk", url: "https://safe.ai/work/statement-on-ai-risk" },
+      "bender-gebru-mitchell-mcmillan-major": { title: "On the Dangers of Stochastic Parrots", url: "https://dl.acm.org/doi/10.1145/3442188.3445922" },
+      "kate-crawford": { title: "Atlas of AI", url: "https://yalebooks.yale.edu/book/9780300264630/atlas-of-ai/" },
+      "ruha-benjamin": { title: "Race After Technology", url: "https://www.ruhabenjamin.com/race-after-technology" },
+      "ai-as-normal-technology": { title: "AI as Normal Technology", url: "https://www.normaltech.ai/p/ai-as-normal-technology" },
+      "narayanan-kapoor": { title: "AI Snake Oil", url: "https://www.aisnakeoil.com/" },
+      "gary-marcus-melanie-mitchell": { title: "Rebooting AI", url: "https://www.penguinrandomhouse.com/books/575774/rebooting-ai-by-gary-marcus-and-ernest-davis/" },
+      "rich-sutton": { title: "The Bitter Lesson", url: "http://www.incompleteideas.net/IncIdeas/BitterLesson.html" },
+      "benjamin-bratton": { title: "The Stack", url: "https://mitpress.mit.edu/9780262029575/the-stack/" },
+      "yann-lecun": { title: "A Path Towards Autonomous Machine Intelligence", url: "https://openreview.net/pdf?id=BZ5a1r-kVsf" },
+      "andrew-ng": { title: "Why AI Is the New Electricity", url: "https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity" },
+      "sam-altman-openai": { title: "Planning for AGI and beyond", url: "https://openai.com/index/planning-for-agi-and-beyond/" },
+      "elon-musk-xai": { title: "Open Release of Grok-1", url: "https://x.ai/news/grok-os" },
+      "peter-thiel": { title: "What Happened to the Future?", url: "https://foundersfund.com/2017/01/manifesto/" },
+      "ray-kurzweil": { title: "The Singularity Is Nearer", url: "https://www.thesingularityisnearer.com/" },
+      "marc-andreessen": { title: "The Techno-Optimist Manifesto", url: "https://a16z.com/the-techno-optimist-manifesto/" },
+      "effective-accelerationism": { title: "Effective Accelerationism", url: "https://wiki.p2pfoundation.net/Effective_Accelerationism" },
+      "nick-land": { title: "Meltdown", url: "https://www.ccru.net/swarm1/1_melt.htm" }
+    };
+const referenceDetails = {
       "eliezer-yudkowsky": {
-        diagnosis: 2,
-        response: -2,
-        humanism: 1,
-        note: "灾难风险是核心，响应接近关停或强暂停，价值目标是保护人类生存。"
+        core: "If alignment is not solved before powerful AGI is deployed, AI could irreversibly take the future away from humanity; the failure mode is existential, not merely a product accident.",
+        lineage: "Eliezer Yudkowsky developed this position through the rationalist and MIRI alignment milieu of the 2000s-2020s, and crystallized it in AGI Ruin: A List of Lethalities in 2022. The question he raised was not whether today's systems are dangerous, but whether a future general intelligence could be aligned after deployment at all. The argument was motivated by decision theory, intelligence-explosion reasoning, and the perceived institutional failure to treat alignment as a precondition for AGI; its impact was to make hard-takeoff, doom probability, and pause-oriented safety central reference points in AI safety discourse.",
+        placement: "Far left because it supports very high deployment thresholds and safety-first pauses; still above the midline because the central aim is preserving human control and the human future.",
+        focus: "Follow the causal chain: fast capability gain, amplified goal misalignment, and little chance to repair the system after deployment.",
+        counter: "Russell and Christiano emphasize corrigibility and scalable oversight more constructively; e/acc treats pause logic as a threat to progress itself.",
+        works: ["AGI Ruin: A List of Lethalities", "List of Lethalities", "Shut It All Down"]
       },
       "nick-bostrom": {
-        diagnosis: 2,
-        response: -1.5,
-        humanism: 1,
-        note: "超级智能风险是核心，响应偏战略性控制，人类控制权是主要价值对象。"
+        core: "Superintelligence may pursue instrumental goals such as resources, power, and self-preservation even when its final goal looks harmless.",
+        lineage: "Nick Bostrom's Superintelligence, published in 2014 at the Oxford Future of Humanity Institute, translated earlier work on existential risk, transhumanism, and future generations into a strategic theory of machine intelligence. He asked what happens if a system becomes much more capable than humans while pursuing goals not identical to ours, and used the orthogonality thesis and instrumental convergence to explain why even banal final goals could produce dangerous instrumental behavior. The book gave policy, philanthropy, and AI safety communities a shared vocabulary for superintelligence risk.",
+        placement: "Left because it emphasizes control before frontier capability; above the midline because the risk is human goals failing to constrain a stronger intelligence.",
+        focus: "The key claim is not about today's models but about what happens once systems have strategic capability.",
+        counter: "Yudkowsky makes the failure case more operational and urgent; normal-technology views argue that this abstraction can crowd out concrete governance.",
+        works: ["Superintelligence", "The Vulnerable World Hypothesis", "Existential risk writings"]
       },
       "stuart-russell": {
-        diagnosis: 1.25,
-        response: -1.25,
-        humanism: 2,
-        note: "严肃控制问题加 human-compatible 设计，强人类中心但不是 hard shutdown。"
+        core: "AI should not maximize a fixed objective with certainty; it should remain uncertain about human preferences and stay corrigible, interruptible, and accountable.",
+        lineage: "Stuart Russell, a co-author of the standard AI textbook Artificial Intelligence: A Modern Approach, reframed the objective-specification problem in Human Compatible in 2019. In the context of classical AI's assumption that agents maximize a known objective, he asked how machines should act if human preferences are uncertain, incomplete, and revealed only through interaction. The resulting beneficial-AI program influenced work on assistance games, inverse reinforcement learning, corrigibility, and policy language around human oversight.",
+        placement: "High control because the system must be designed to be beneficial before broad deployment; high human-centeredness because human preferences and accountability remain central.",
+        focus: "The important move is turning safety from fear into a design principle: powerful machines should know that they do not know what humans ultimately want.",
+        counter: "Yudkowsky thinks such schemes may still underestimate difficulty; accelerationists worry they hand deployment speed to experts and regulators.",
+        works: ["Human Compatible", "Human-Compatible Artificial Intelligence", "Assistance games"]
       },
       "pope-leo-xiv": {
-        diagnosis: 0.7,
-        response: -1.45,
-        humanism: 1.72,
-        note: "AI 是重大社会和人类学挑战；响应偏公共治理、责任链和多边约束，价值核心是人的尊严与共同善。"
+        core: "AI should serve human dignity, the common good, workers, and vulnerable people; technical power needs public responsibility and moral limits.",
+        lineage: "Pope Leo XIV's Magnifica Humanitas, released in May 2026, places AI inside the Catholic social teaching tradition that runs from Leo XIII's Rerum Novarum in 1891 through later teaching on labor, dignity, solidarity, and the common good. The question is whether AI can serve the human person without turning people into data, labor inputs, or objects of domination. Its potential impact is to make human dignity, labor protection, truth, and anti-domination part of the moral vocabulary of AI governance beyond secular policy circles.",
+        placement: "Upper-left because it emphasizes governance, accountability, and social boundaries; very high on human-centeredness because people are not variables in an optimization system.",
+        focus: "The position is not anti-technology. It asks what vision of the person and community technological systems are serving.",
+        counter: "Techno-optimists expect growth to solve many problems; posthuman views question whether human dignity should be the final coordinate.",
+        works: ["Catholic social teaching on technology", "AI ethics and human dignity addresses", "Magnifica Humanitas"]
       },
       "paul-christiano": {
-        diagnosis: 1,
-        response: -0.8,
-        humanism: 1.2,
-        note: "关注渐进委托和监督失败，偏技术治理与可扩展监督。"
+        core: "Advanced AI failure may come through gradual delegation, weak oversight, and goal misgeneralization rather than a single dramatic turn.",
+        lineage: "Paul Christiano's What Failure Looks Like, written in the 2018-2019 Alignment Forum / LessWrong context, asked what AI failure might look like without a sudden cinematic takeover. He raised the problem because ordinary economic delegation, proxy objectives, and weak oversight could gradually hand real power to systems that are only superficially aligned. The essay shaped later agendas around intent alignment, scalable oversight, iterated amplification, ELK, reward modeling, and delegated cognition.",
+        placement: "Left but not maximally left because it emphasizes technical oversight and governance thresholds; above the midline because the goal is faithful service to human intent.",
+        focus: "Look at the supervision chain: when humans cannot directly evaluate complex tasks, how do we avoid systems optimizing the metric rather than the intent?",
+        counter: "Yudkowsky thinks these schemes remain too optimistic; normal-technology views ask whether such failures are really different from ordinary system failures.",
+        works: ["What Failure Looks Like", "Iterated amplification", "ELK and scalable oversight discussions"]
       },
       "ajeya-cotra": {
-        diagnosis: 1,
-        response: -0.8,
-        humanism: 1,
-        note: "timeline 判断提高风险紧迫性，本身不是完整政策或价值体系。"
+        core: "Transformative AI timelines can be estimated using biological anchors and compute requirements, so safety and policy should prepare in advance.",
+        lineage: "Ajeya Cotra's 2020 Open Philanthropy report Forecasting Transformative AI with Biological Anchors asked how one could estimate transformative-AI timelines from compute requirements, training analogies, and biological anchors rather than pure intuition. The context was longtermist grantmaking and policy planning under deep uncertainty. Its impact was to make timelines, training compute, and biological-anchor models central tools for AI risk prioritization, even among people who reject any single forecast date.",
+        placement: "Left because it takes transformative AI risk seriously; above the midline because the concern is how human society prepares and governs.",
+        focus: "The point is not a specific year. It is a way of making an uncertain future discussable and decision-relevant.",
+        counter: "Hype skeptics argue that timeline models may over-rely on scaling assumptions; accelerationists worry that early constraints delay benefits.",
+        works: ["Forecasting Transformative AI with Biological Anchors", "Open Phil AI timelines work"]
       },
       "dario-amodei-anthropic": {
-        diagnosis: 0.8,
-        response: 0.1,
-        humanism: 1.1,
-        note: "同时承认前沿风险和巨大收益，响应是受控 continued scaling。"
+        core: "Frontier AI can produce enormous benefits, but scaling risks need evals, responsible scaling policies, and deployment thresholds.",
+        lineage: "Dario Amodei's position is built from three linked Anthropic-era texts: Constitutional AI in 2022, the Responsible Scaling Policy in 2023, and Machines of Loving Grace in 2024. In the context of a frontier lab continuing to scale models, he asks whether rapid capability growth can be paired with evals, staged deployment, and safety thresholds rather than either full pause or full acceleration. The impact is a governance style in which frontier labs present safety engineering and institutional commitments as the condition for pursuing very large upside.",
+        placement: "Near center-left because it does not reject deployment but wants controlled deployment; above the midline because the benefit story serves medicine, science, governance, and human welfare.",
+        focus: "The tension is the point: keep building while using thresholds and evals to reduce catastrophic downside.",
+        counter: "Critical AI argues lab self-governance cannot solve concentrated power; e/acc sees responsible scaling as slowdown.",
+        works: ["Machines of Loving Grace", "Responsible Scaling Policy", "Constitutional AI"]
       },
       "dan-hendrycks-cais": {
-        diagnosis: 1.7,
-        response: -1.2,
-        humanism: 1,
-        note: "公共 x-risk 与社会级风险治理，偏强安全制度化。"
+        core: "AI should be treated as a societal-scale risk alongside nuclear, pandemic, and climate risks, not merely as an internal technical problem.",
+        lineage: "Dan Hendrycks and the Center for AI Safety turned technical ML safety concerns into public risk advocacy through work such as X-Risk Analysis for AI Research in 2022 and the Statement on AI Risk in May 2023. The question was how to make extreme AI risks legible to policymakers, scientists, and the public without requiring them to accept a full LessWrong-style takeoff model. The result was a short, institutionally portable extinction-risk frame that entered mainstream AI policy debates.",
+        placement: "Left because it supports public safety thresholds for dangerous capabilities; above the midline because the aim is protecting society from systemic risk.",
+        focus: "The main move is socializing AI risk: taking it from forum argument to policy, standards, and institutions.",
+        counter: "Bender/Gebru-style critiques ask whether x-risk talk hides present harms; accelerationists argue it creates a pause coalition.",
+        works: ["Statement on AI Risk", "CAIS AI risk work", "ML safety papers"]
       },
       "bender-gebru-mitchell-mcmillan-major": {
-        diagnosis: 0,
-        response: -0.7,
-        humanism: 2,
-        note: "主要诊断是现实社会伤害，响应偏审计、限制和问责。"
+        core: "Large language models can amplify data extraction, environmental cost, labor exploitation, bias, and concentrated power while scale narratives hide those harms.",
+        lineage: "Emily Bender, Timnit Gebru, Angelina McMillan-Major, and Margaret Mitchell intervened in the scale-up of language models with the 2021 FAccT paper On the Dangers of Stochastic Parrots. In the context of rapidly growing LMs, they asked what social, environmental, epistemic, and representational costs are hidden by benchmark performance. The paper helped define critical AI's language-model critique by shifting attention from capability spectacle to data extraction, labor, documentation, power, and institutional accountability.",
+        placement: "High because it insists on social accountability and affected communities; left because it supports audits, constraints, and institutional responsibility.",
+        focus: "Look behind model capability: whose data, whose labor, who bears errors, and who benefits from scale?",
+        counter: "X-risk safety says future loss of control is the larger risk; techno-optimists argue the critique underweights general-purpose benefits.",
+        works: ["On the Dangers of Stochastic Parrots", "FAccT / critical NLP debates"]
       },
       "kate-crawford": {
-        diagnosis: 0,
-        response: -0.6,
-        humanism: 2,
-        note: "AI 被视为提取、劳动、数据和权力基础设施，强人类社会中心。"
+        core: "AI is a material infrastructure of minerals, energy, data, labor, state power, and corporate power, not a disembodied cloud of intelligence.",
+        lineage: "Kate Crawford's Atlas of AI, published by Yale University Press in 2021 after more than a decade of work on AI's social implications, asks what AI looks like when treated as an extractive infrastructure rather than an abstract algorithm. Drawing on media studies, STS, political economy, and field research, Crawford connects minerals, data, labor, classification, and state power. The impact is to make material supply chains and political economy unavoidable in serious AI ethics debate.",
+        placement: "High because it foregrounds power, labor, and social consequences; left because it asks for institutional constraints rather than default deployment.",
+        focus: "The point is demystification: beyond model ability lie supply chains, annotation labor, data capture, and governance power.",
+        counter: "Andrew Ng-style deployment optimism stresses applied value; Sutton-style computation-centered thought talks less about material and labor foundations.",
+        works: ["Atlas of AI", "AI Now Institute work", "The politics of data and extraction"]
       },
       "ruha-benjamin": {
-        diagnosis: 0,
-        response: -0.6,
-        humanism: 2,
-        note: "核心是自动化如何复制社会等级，价值重心是公正、尊严和反歧视。"
+        core: "Automated systems often recode racial and social hierarchies as neutral technology through prediction, scoring, and administrative decision-making.",
+        lineage: "Ruha Benjamin's Race After Technology, published in 2019, introduced the New Jim Code in the context of debates over algorithmic bias, policing, health care, and platform power. She asked why apparently neutral technologies so often reproduce racial hierarchy and social punishment. The book's impact was to connect AI ethics with abolitionist critique, race and technology studies, and the design of institutions that do not merely automate existing injustice.",
+        placement: "High because it centers affected communities, rights, and justice; left because it distrusts unaudited deployment inside unequal institutions.",
+        focus: "Ask whether a system reduces bias or simply turns old power structures into harder-to-contest automated procedures.",
+        counter: "Normal Technology tends to prefer case-by-case governance; deployment optimists argue technology can improve flawed institutions.",
+        works: ["Race After Technology", "Viral Justice", "New Jim Code"]
       },
       "ai-as-normal-technology": {
-        diagnosis: 0,
-        response: 0,
-        humanism: 0.9,
-        note: "Normal technology does not downplay AI; it asks that AI be governed through use cases, evidence, failure modes, and responsibility."
+        core: "AI is important but ordinary: it will change many sectors, but governance should be based on specific contexts, failure modes, and responsibility chains rather than AGI mythology.",
+        lineage: "Arvind Narayanan and Sayash Kapoor's AI as Normal Technology framing, developed after their AI Snake Oil work and circulated in 2024-2025 policy discussions, asks what changes if AI is governed as a powerful but ordinary technology rather than as magic or apocalypse. They raise it against both AGI exceptionalism and product hype. Its impact is to redirect attention toward sector-specific regulation, empirical performance, deployment context, and institutional adaptation.",
+        placement: "Near the center because it rejects both unconditional openness and a single catastrophe-driven pause; above the midline because it cares about institutional responsibility.",
+        focus: "The key contrast is with x-risk and e/acc narratives: AI matters, but no single future story should dominate every use case.",
+        counter: "Yudkowsky and Bostrom say the normal-technology analogy underestimates superintelligence; Andreessen and e/acc say contextual governance can become bureaucracy against innovation.",
+        works: ["AI as Normal Technology", "Context-specific AI governance", "Technology diffusion and regulation arguments"]
       },
       "narayanan-kapoor": {
-        diagnosis: 0,
-        response: -0.1,
-        humanism: 1.5,
-        note: "Overclaiming skepticism: the response is evaluation, bounded claims, and consumer/policy clarity."
+        core: "Many AI products package prediction, classification, or generation as general intelligence; evaluation should separate useful tools from snake oil and inflated AGI stories.",
+        lineage: "Arvind Narayanan and Sayash Kapoor's AI Snake Oil project, culminating in the 2024 book AI Snake Oil, asks how to distinguish AI that works from predictive systems sold far beyond their evidence. The context is a long record of failed or overstated systems in hiring, policing, education, and business analytics. Its impact is to give journalists, policymakers, and practitioners a vocabulary for separating generative, predictive, and decision-making AI claims.",
+        placement: "Upper-middle because it values empirical evaluation and social consequences; near the center horizontally because it is anti-overclaiming, not anti-technology.",
+        focus: "For every system, ask: what is the task, what is the baseline, what works in the real world, and who is responsible when it fails?",
+        counter: "Scaling thought treats short-term flaws as less relevant to long-term general methods; singularity optimism sees this skepticism as underestimating exponential progress.",
+        works: ["AI Snake Oil", "AI Snake Oil newsletter", "Predictive AI critique"]
       },
       "gary-marcus-melanie-mitchell": {
-        diagnosis: -0.2,
-        response: 0,
-        humanism: 0.5,
-        note: "主要是能力和架构怀疑，不是强治理或强加速立场。"
+        core: "Deep learning is useful but brittle; without abstraction, causality, compositional generalization, and common sense, demos should not be mistaken for AGI.",
+        lineage: "Gary Marcus and Ernest Davis's Rebooting AI in 2019, alongside Melanie Mitchell's Artificial Intelligence: A Guide for Thinking Humans in the same year, came out of cognitive science, symbolic AI, and complex-systems traditions. They asked whether deep learning systems that perform well on benchmarks possess robust abstraction, causality, and common sense. Their impact was to sustain a capability-skeptical counterweight to scaling optimism inside both public and technical debates.",
+        placement: "Near the center horizontally because the main claim is about capability, not a governance movement; above the midline because it stresses human-understandable reasoning and evaluation.",
+        focus: "The boundary question matters: fluent output is not the same as transferable understanding, causal modeling, or reliable planning.",
+        counter: "Sutton's Bitter Lesson says hand-built cognitive structure loses to general computation; LeCun argues new architectures can close many gaps.",
+        works: ["Rebooting AI", "Artificial Intelligence: A Guide for Thinking Humans", "Deep learning critique essays"]
       },
       "rich-sutton": {
-        diagnosis: -0.6,
-        response: 0.6,
-        humanism: -1,
-        note: "Bitter Lesson 是技术认识论：规模、搜索和计算压过人类手工知识。"
-      },
-      "yann-lecun": {
-        diagnosis: -0.9,
-        response: 1.1,
-        humanism: 0,
-        note: "风险叙事偏被夸大，响应偏开源、建设和架构推进。"
-      },
-      "andrew-ng": {
-        diagnosis: -1.2,
-        response: 1,
-        humanism: 1,
-        note: "主要诊断是部署不足和机会成本，价值叙事仍是人类生产力收益。"
-      },
-      "sam-altman-openai": {
-        diagnosis: -0.9,
-        response: 0.8,
-        humanism: 1,
-        note: "AGI 丰裕和 managed build，保留安全、治理和收益共享语言。"
-      },
-      "elon-musk-xai": {
-        diagnosis: 0.2,
-        response: 1.95,
-        humanism: -0.28,
-        note: "Hybrid position: AI risk warning, truth-seeking rhetoric, xAI building, open-weight release, and posthuman expansion imagery."
-      },
-      "peter-thiel": {
-        diagnosis: -0.8,
-        response: 1.6,
-        humanism: -0.72,
-        note: "Anti-stagnation and deep-tech breakthrough priority, with founder sovereignty, risk tolerance, and post-liberal future politics."
-      },
-      "ray-kurzweil": {
-        diagnosis: -1.5,
-        response: 1.4,
-        humanism: -0.4,
-        note: "奇点和人机融合是机会叙事，偏 transhuman 但不是强反人类。"
-      },
-      "marc-andreessen": {
-        diagnosis: -1.7,
-        response: 1.6,
-        humanism: 0.4,
-        note: "反暂停、反监管和市场技术乐观，仍以人类丰裕为公共叙事。"
-      },
-      "effective-accelerationism": {
-        diagnosis: -1.8,
-        response: 2,
-        humanism: -0.8,
-        note: "核心是开放加速和反对少数机构把关，不必等同于 Land 式强反人类。"
+        core: "In the long run, general methods using search, learning, and computation beat systems built around hand-coded human domain knowledge.",
+        lineage: "Rich Sutton's 2019 essay The Bitter Lesson distills decades of reinforcement learning and AI history into a methodological claim: general methods that leverage computation eventually beat systems built around human expert knowledge. He raised the question after observing repeated transitions in chess, Go, speech, and vision. Its impact was to strengthen a compute-and-search-centered research ideology, often invoked against human-crafted symbolic or domain-specific approaches.",
+        placement: "Lower-right because it weakens the authority of human intuition and handcrafted knowledge; not as far right as e/acc because it is not primarily a political accelerationist program.",
+        focus: "The epistemic lesson is to stop treating human expert knowledge as the final structure of intelligence.",
+        counter: "Marcus and Mitchell argue scale still lacks abstraction and causality; Critical AI asks who supplies the data, labor, and energy for computation-centered progress.",
+        works: ["The Bitter Lesson", "Reinforcement learning research tradition"]
       },
       "benjamin-bratton": {
-        diagnosis: 0.2,
-        response: -1.25,
-        humanism: -1.1,
-        note: "强调行星尺度计算和系统治理，非开放加速，也非传统人类中心。"
-      },
-      "nick-land": {
-        diagnosis: -1.4,
-        response: 2,
-        humanism: -2,
-        note: "加速与技术资本自治被推到人类主义之外，是后人类边界案例。"
-      }
-    };
-
-    const movementDocs = [
-      { id: "pause-giant-ai-experiments", title: "Pause Giant AI Experiments: An Open Letter", year: 2023, cluster: "AI pause / governance", url: "https://futureoflife.org/open-letter/pause-giant-ai-experiments/", why: "pause position 的运动文件。" },
-      { id: "statement-on-ai-risk", title: "Statement on AI Risk", year: 2023, cluster: "AI extinction-risk public messaging", url: "https://www.safe.ai/work/statement-on-ai-risk", why: "公共 x-risk 声明的压缩版本。" },
-      { id: "bletchley-declaration", title: "The Bletchley Declaration", year: 2023, cluster: "AI safety governance", url: "https://www.gov.uk/government/publications/ai-safety-summit-2023-the-bletchley-declaration/the-bletchley-declaration-by-countries-attending-the-ai-safety-summit-1-2-november-2023", why: "政府层面对 frontier AI safety 的制度化表达。" }
-    ];
-
-    const categoryInfo = {
-      "X-risk safety": {
-        zh: "X-risk / alignment safety",
-        color: "#b42318",
-        summary: "把先进 AI 视为潜在文明级风险，核心问题是控制、alignment、监督和时间线。"
-      },
-      "Catholic social humanism": {
-        zh: "Catholic social humanism / 人类尊严",
-        color: "#9a3412",
-        summary: "从人的尊严、共同善、弱者保护、劳动、和平和公共责任出发，要求技术权力服从社会和伦理治理。"
-      },
-      "Frontier lab governance": {
-        zh: "前沿实验室治理",
-        color: "#0f766e",
-        summary: "同时接受高上限和高风险，主张继续扩大模型能力，但配合安全评估、部署门槛和制度承诺。"
-      },
-      "Critical AI": {
-        zh: "Critical AI / 社会伤害",
-        color: "#7c3aed",
-        summary: "关注现实制度、数据、劳工、环境、种族、表示和权力，而不是只讨论未来 AGI。"
-      },
-      "Normal technology": {
-        zh: "普通技术 / 场景治理",
-        color: "#475569",
-        summary: "承认 AI 重要但不是例外物，强调场景、失败模式、普通治理和可验证收益。"
-      },
-      "Hype skepticism": {
-        zh: "AI hype skeptic / 祛魅",
-        color: "#64748b",
-        summary: "重点拆分真实能力、demo 魔术、snake oil、过度宣传和把普通系统包装成 AGI 的叙事。"
-      },
-      "Scaling thought": {
-        zh: "Scaling / Bitter Lesson",
-        color: "#0369a1",
-        summary: "强调搜索、学习、计算和一般方法，削弱人类手工知识中心主义。"
-      },
-      "Architecture optimism": {
-        zh: "架构乐观 / 世界模型",
-        color: "#4f46e5",
-        summary: "认为当前 LLM scaling 不足以通往人类级智能，未来关键在 world models、planning、memory 和新架构。"
-      },
-      "Posthuman control": {
-        zh: "Posthuman control / 系统治理",
-        color: "#5b21b6",
-        summary: "不主张开放加速，但也不把当前人类偏好当作最终尺度，强调行星尺度计算、强系统治理和 synthetic intelligence。"
-      },
-      "Pragmatic optimism": {
-        zh: "务实 AI 乐观",
-        color: "#15803d",
-        summary: "把 AI 当作生产力和应用平台，关注教育、产品、企业和产业落地。"
-      },
-      "Techno-libertarianism": {
-        zh: "技术自由意志 / 反停滞",
-        color: "#a16207",
-        summary: "把停滞、官僚和低野心视为主要问题，强调深科技、强创始人和文明级突破。"
-      },
-      "Techno-optimism": {
-        zh: "技术乐观 / 奇点",
-        color: "#c2410c",
-        summary: "把 AI 放入丰裕、奇点、市场自由或文明进步叙事中。"
-      },
-      "Accelerationism": {
-        zh: "加速主义 / 后人类边界",
-        color: "#7f1d1d",
-        summary: "把约束视为风险，把技术、资本或智能演化推到人类中心之外。"
-      }
-    };
-
-    function clampScore(value) {
-      return Math.max(-2, Math.min(2, value));
-    }
-
-    function projectedX(item) {
-      return clampScore((0.65 * item.ideology.response) - (0.35 * item.ideology.diagnosis));
-    }
-
-    function projectedY(item) {
-      return clampScore(item.ideology.humanism);
-    }
-
-    thinkers.forEach(item => {
-      item.ideology = ideologyScores[item.id] || {
-        diagnosis: item.risk,
-        response: item.risk,
-        humanism: item.humanism,
-        note: "No separate scoring note is available for this point yet."
-      };
-      item.projection = {
-        x: projectedX(item),
-        y: projectedY(item)
-      };
-    });
-
-    const englishCategoryInfo = {
-      "X-risk safety": {
-        zh: "X-risk / alignment safety",
-        summary: "Treats advanced AI as a potential civilization-level risk; the core issues are control, alignment, oversight, and timelines."
-      },
-      "Catholic social humanism": {
-        zh: "Catholic social humanism / human dignity",
-        summary: "Starts from human dignity, the common good, protection of the vulnerable, labor, peace, and public responsibility."
-      },
-      "Frontier lab governance": {
-        zh: "Frontier lab governance",
-        summary: "Accepts both high upside and high risk, supporting continued frontier development with safety evaluations, deployment thresholds, and institutional commitments."
-      },
-      "Critical AI": {
-        zh: "Critical AI / social harm",
-        summary: "Focuses on institutions, data, labor, environment, race, representation, and power rather than only future AGI."
-      },
-      "Normal technology": {
-        zh: "Normal technology / contextual governance",
-        summary: "Treats AI as important but not exceptional, emphasizing use cases, failure modes, ordinary governance, and verifiable benefits."
-      },
-      "Hype skepticism": {
-        zh: "AI hype skeptic / demystification",
-        summary: "Separates real capability from demo magic, snake oil, inflated claims, and narratives that package ordinary systems as AGI."
-      },
-      "Scaling thought": {
-        zh: "Scaling / Bitter Lesson",
-        summary: "Emphasizes search, learning, computation, and general methods, weakening human handcrafted-knowledge centrality."
-      },
-      "Architecture optimism": {
-        zh: "Architecture optimism / world models",
-        summary: "Argues that current LLM scaling is not enough for human-level intelligence; world models, planning, memory, and new architectures matter."
-      },
-      "Posthuman control": {
-        zh: "Posthuman control / system governance",
-        summary: "Rejects open acceleration but also refuses to treat current human preferences as the final measure; emphasizes planetary computation and strong system governance."
-      },
-      "Pragmatic optimism": {
-        zh: "Pragmatic AI optimism",
-        summary: "Treats AI as a productivity and application platform, with emphasis on education, products, enterprise use, and industry deployment."
-      },
-      "Techno-libertarianism": {
-        zh: "Techno-libertarianism / anti-stagnation",
-        color: "#a16207",
-        summary: "Treats stagnation, bureaucracy, and low ambition as central problems; emphasizes deep tech, strong founders, and civilization-scale breakthroughs."
-      },
-      "Techno-optimism": {
-        zh: "Techno-optimism / singularity",
-        summary: "Places AI inside narratives of abundance, singularity, market freedom, and civilizational progress."
-      },
-      "Accelerationism": {
-        zh: "Accelerationism / posthuman boundary",
-        summary: "Treats constraint as a major danger and pushes technology, capital, or intelligence evolution beyond human-centered limits."
-      }
-    };
-    Object.entries(englishCategoryInfo).forEach(([category, patch]) => Object.assign(categoryInfo[category], patch));
-
-    const englishMovementDocs = {
-      "pause-giant-ai-experiments": { cluster: "AI pause / governance", why: "A movement document for the pause position." },
-      "statement-on-ai-risk": { cluster: "AI extinction-risk public messaging", why: "A compressed public statement of AI x-risk concern." },
-      "bletchley-declaration": { cluster: "AI safety governance", why: "An institutional expression of frontier AI safety at the government level." }
-    };
-    movementDocs.forEach(doc => Object.assign(doc, englishMovementDocs[doc.id] || {}));
-
-    const englishThinkerText = {
-      "eliezer-yudkowsky": {
-        cluster: "Rationalist AI x-risk / MIRI",
-        stance: "Advanced AI is likely to kill humanity if alignment is not solved first; the issue is not an ordinary security bug but goal misalignment under overwhelming capability.",
-        placement: "He sits at the far left because his public stance comes close to shutdown or a strong pause. His vertical score is +1 because the aim is human survival, but the argument is not primarily framed through democracy, justice, or social power.",
-        focus: "Read him on two levels: the technical argument about misaligned agency, and why he thinks gradual governance, safety evaluations, or industry self-regulation will not change the outcome.",
-        counter: "The strongest contrast is not generic optimism, but Christiano/Russell-style safety work that accepts serious risk while treating technical and institutional risk reduction as possible.",
-        ideologyNote: "Civilization-level loss-of-control diagnosis, with a response close to shutdown or a strong pause; human survival is the value anchor.",
-        basis: ["movement formation", "AI alignment field-building", "public discourse"],
-        works: [
-          { why: "A classic early statement of rationalist AI x-risk." },
-          { why: "A compact public argument for the strongest doom position." },
-          { why: "A mainstream-media statement of the shutdown argument." }
-        ]
-      },
-      "nick-bostrom": {
-        cluster: "Superintelligence / philosophical x-risk",
-        stance: "Superintelligence may develop instrumentally convergent goals such as self-preservation, resource acquisition, and escaping constraint; if its goals are incompatible with ours, humans lose control.",
-        placement: "He sits near Yudkowsky on the far left, but in a more philosophical and strategic style. The vertical score is +1 because the core object is human survival and control, not social justice or democratic distribution.",
-        focus: "Focus on how instrumental convergence, the orthogonality thesis, and intelligence explosion form one risk model.",
-        counter: "The direct contrast is the normal-technology view, which questions whether the superintelligence frame is too abstract and skips real institutions and engineering limits.",
-        ideologyNote: "High civilization-risk diagnosis with a control-centered response; the argument is abstract, strategic, and human-protective.",
-        basis: ["academic citations", "policy discourse", "movement formation"],
-        works: [
-          { why: "An early frame for advanced AI ethics and risk." },
-          { why: "A central source for instrumental convergence." },
-          { why: "A field-defining book-length x-risk argument." }
-        ]
-      },
-      "stuart-russell": {
-        cluster: "Beneficial AI / human-compatible AI",
-        stance: "AI systems should not be designed as fixed-objective maximizers; they should recognize uncertainty about human preferences and keep learning how to be beneficial from human behavior.",
-        placement: "Horizontal -1 because he is strongly safety-first without being a shutdown advocate. Vertical +2 because human compatibility and human preferences are explicit design principles.",
-        focus: "Watch how beneficial AI differs from traditional objective maximization: the point is not giving AI a better goal, but changing the form and institution of goal-setting.",
-        counter: "Yudkowsky would question whether this path is strong enough; LeCun/Ng would question whether the risk story overstates the present technical path.",
-        ideologyNote: "Safety-first but not shutdown-oriented; the value center is explicitly human-compatible and accountable.",
-        basis: ["academic authority", "textbook influence", "institution-building", "policy discourse"],
-        works: [
-          { why: "The main public statement of the control problem and beneficial AI." },
-          { why: "A technical entry point into human-compatible AI." }
-        ]
-      },
-      "pope-leo-xiv": {
-        cluster: "Magnifica Humanitas / Catholic social humanism",
-        stance: "AI must serve human dignity, the common good, protection of the vulnerable, and peace; technological power must not replace conscience, responsibility, and public governance with efficiency, profit, or domination.",
-        placement: "Upper-left, but slightly separated from the Russell / critical-AI cluster: the response favors strong public responsibility, governance, and multilateral constraint without being a shutdown position. The value axis remains high because the core is human dignity, conscience, relationship, and the common good.",
-        focus: "Read how Catholic Social Doctrine places AI inside the common good, labor, war, platform power, education, and the irreplaceability of persons.",
-        counter: "X-risk safety will see that this is not a technical alignment argument; critical AI will make a more secular power-and-labor argument; technical optimists will see it as too constraint-heavy.",
-        ideologyNote: "Strong human-dignity and common-good center with a governance-first response, but not a shutdown view.",
-        basis: ["Catholic social doctrine", "papal encyclical", "human dignity", "AI governance"],
-        works: [
-          { why: "The core text on AI, human dignity, the common good, and technology governance." },
-          { why: "Clarifies that “disarming AI” means removing logics of domination, exclusion, and death rather than rejecting technology." }
-        ]
-      },
-      "paul-christiano": {
-        cluster: "Scalable alignment / technical safety",
-        stance: "AI failure may not come from a sudden malicious superintelligence; it may emerge from gradual delegation, oversight failure, optimization pressure, and humans losing the ability to evaluate complex tasks.",
-        placement: "Horizontal -1 because he belongs to the serious alignment-risk camp. Vertical +1 because the focus is making systems supervisable, calibrated, and ultimately responsive to human judgment.",
-        focus: "Focus on scalable oversight: when humans cannot directly judge complex answers, how can debate, amplification, or training processes maintain supervision?",
-        counter: "Strong doom positions will argue that these approaches still miss the most dangerous loss-of-control cases; normal-technology views will see the failure model as too AGI-centered.",
-        ideologyNote: "Serious alignment risk with a technical-risk-reduction response and human supervision as the value anchor.",
-        basis: ["technical alignment", "OpenAI safety lineage", "field-building"],
-        works: [
-          { why: "A classic text for gradual failure models." },
-          { why: "A representative scalable-oversight proposal." }
-        ]
-      },
-      "ajeya-cotra": {
-        cluster: "AI timelines / Open Philanthropy",
-        stance: "Transformative AI timelines can be forecast using compute requirements and biological anchors; shorter timelines make safety and governance more urgent.",
-        placement: "She is not a full ideology figure, but her timeline work is influential in the safety ecosystem because timelines drive resource allocation, policy urgency, and research priority.",
-        focus: "Do not read biological anchors as precise prophecy; read them as a way of turning technical parameters into social urgency.",
-        counter: "LeCun, Marcus, Mitchell, and other capability skeptics would question whether extrapolating from compute to general intelligence is reliable.",
-        ideologyNote: "Timeline-driven risk urgency: shorter transformative-AI forecasts increase the case for safety and governance priority.",
-        basis: ["AI safety timelines", "grantmaking", "EA and policy discourse"],
-        works: [
-          { why: "An influential compute-based timelines report." },
-          { why: "A readable summary of the timeline method." }
-        ]
-      },
-      "dario-amodei-anthropic": {
-        cluster: "Frontier-lab safety optimism",
-        stance: "Frontier AI could bring enormous benefits, but continued scaling must be paired with safety research, evaluation thresholds, deployment limits, and responsible institutions.",
-        placement: "He sits between safety and building: more risk-focused than ordinary optimists, more willing to continue frontier scaling than pause advocates.",
-        focus: "Track the combination of high risk, high upside, and institutional governance. This is neither pure doom nor unconditional acceleration.",
-        counter: "Pause advocates will say lab self-governance is insufficient; critical AI will ask whether it ignores labor, power, and market concentration.",
-        ideologyNote: "A managed-build position: accepts major risk and major upside, then tries to govern frontier development through evaluations and institutional thresholds.",
-        basis: ["frontier lab policy", "public discourse", "industry practice"],
-        works: [
-          { why: "Anthropic’s company-level statement on risk, alignment, and safe deployment." },
-          { why: "An important institutional document for evaluation-triggered safety governance." },
-          { why: "High-upside AI optimism under safety constraints." }
-        ]
-      },
-      "dan-hendrycks-cais": {
-        cluster: "Public AI x-risk and ML safety",
-        stance: "AI should be treated as a societal-scale risk alongside nuclear war and pandemics, and should be incorporated into public governance and technical safety agendas.",
-        placement: "Horizontal -1.5 because it connects technical ML safety with public extinction-risk advocacy. Vertical +1 because the goal is human safety, not a posthuman vision.",
-        focus: "Watch how benchmarks, lists of safety problems, and a one-sentence public risk statement become a policy and academic agenda.",
-        counter: "Normal-technology and critical AI views will ask whether focusing on extinction risk crowds out present harms and capability-evaluation issues.",
-        ideologyNote: "Public x-risk framing combined with ML-safety agenda-setting and human-protective governance.",
-        basis: ["public discourse", "policy agenda-setting", "ML safety benchmarks"],
-        works: [
-          { why: "A source for the technical safety agenda." },
-          { why: "A representative public statement of extinction-risk concern." }
-        ]
-      },
-      "bender-gebru-mitchell-mcmillan-major": {
-        cluster: "Critical AI / stochastic parrots",
-        stance: "The dangers of large language models are not only future AGI; they are present social, environmental, labor, data, representation, and power problems.",
-        placement: "Horizontal 0 because this is neither doom nor acceleration, but present harm and institutional critique. Vertical +2 because it explicitly centers human society, justice, and accountability.",
-        focus: "Read it as an anchor for critical AI: the critique is not just whether models are intelligent, but how scale narratives hide harm and responsibility.",
-        counter: "Bitter-Lesson and scale-oriented views will say it underestimates capability progress from general methods; x-risk views will say it underestimates future extreme risk.",
-        ideologyNote: "Present-harm diagnosis with strong human/social accountability; neither pause maximalism nor accelerationism.",
-        basis: ["academic citations", "public controversy", "AI ethics field-building", "policy discourse"],
-        works: [{ why: "A classic critical-AI paper on large language models." }]
-      },
-      "kate-crawford": {
-        cluster: "AI political economy / extraction",
-        stance: "AI is not immaterial intelligence; it is built from minerals, energy, labor, data, infrastructures, and institutions of classification and control.",
-        placement: "She sits high because the value center is social and political. The horizontal position is near the center because the critique targets extraction and power more than a simple pause/build split.",
-        focus: "Read her for the material supply chain and political economy of AI: extraction, labor, classification, and state/corporate power.",
-        counter: "Ordinary capability debates can miss the material stack; x-risk debates can miss present extraction and power.",
-        ideologyNote: "AI as political economy and extraction, with a strong human/social value center and controlled-governance instincts.",
-        basis: ["political economy", "public scholarship", "AI ethics field-building"],
-        works: [
-          { why: "A book-length political economy of AI." },
-          { why: "A visual and empirical account of AI’s extractive supply chain." }
-        ]
-      },
-      "ruha-benjamin": {
-        cluster: "Race, technology, and social justice",
-        stance: "Automated systems can reproduce and intensify racial hierarchy while appearing neutral, objective, or efficient.",
-        placement: "She sits high because the value center is justice, dignity, and anti-discrimination. The horizontal position leans modestly toward control because the response is scrutiny, refusal, and democratic accountability.",
-        focus: "Read her for how seemingly technical systems become infrastructure for social hierarchy.",
-        counter: "Productivity optimism often treats automation as neutral; her work asks whose world is being automated and who bears the cost.",
-        ideologyNote: "The core issue is automation reproducing social hierarchy; the value center is justice, dignity, and anti-discrimination.",
-        basis: ["race and technology studies", "public scholarship", "AI justice discourse"],
-        works: [
-          { why: "A major text on race, technology, and automation." },
-          { why: "A public-facing framework for resisting unjust technological futures." }
-        ]
-      },
-      "ai-as-normal-technology": {
-        cluster: "Normal technology / contextual governance",
-        stance: "AI is an important but ordinary technology; evaluate it by use case, failure mode, responsibility, and verifiable benefit.",
-        placement: "Horizontal 0 because it is neither pause nor accelerationist. Vertical 0.9 because the value center is clear institutional decision-making and accountability.",
-        focus: "Read it as a governance frame: AI can matter a lot without being treated as magical or exempt from ordinary evaluation.",
-        counter: "Hype skeptics put more emphasis on debunking inflated claims; x-risk views will argue it underestimates frontier tail risks.",
-        ideologyNote: "Normal technology does not downplay AI; it asks that AI be governed through use cases, evidence, failure modes, and responsibility.",
-        basis: ["policy discourse", "technology governance", "evaluation"],
-        works: [
-          { why: "A concise counter-frame to both utopian and catastrophic exceptionalism." }
-        ]
-      },
-      "narayanan-kapoor": {
-        cluster: "AI overclaiming skepticism / snake-oil critique",
-        stance: "Many AI claims are overblown; useful systems should be separated from brittle demonstrations, bad evaluations, and snake-oil promises.",
-        placement: "Horizontal 0 because this is capability and overclaiming skepticism rather than a pause or acceleration policy. Vertical 0.5 because it mildly centers human understanding and cognition, but the main claim is technical and empirical.",
-        focus: "Read them to distinguish sober AI evaluation from both doom narratives and product hype.",
-        counter: "X-risk views will argue that ordinary-technology skepticism misses the tail risk of powerful systems; accelerationist views will see it as dampening useful deployment.",
-        ideologyNote: "Overclaiming skepticism: the response is evaluation, bounded claims, and consumer/policy clarity.",
-        basis: ["AI evaluation", "public scholarship", "technical criticism"],
-        works: [
-          { why: "A readable anti-overclaiming and normal-technology frame." },
-          { why: "A research-facing argument about prediction limits and evaluation failures." }
-        ]
-      },
-      "gary-marcus-melanie-mitchell": {
-        cluster: "Architecture skepticism / cognitive science",
-        stance: "Current deep learning and LLM systems are impressive but brittle; robust intelligence may require richer representations, causality, reasoning, and world models.",
-        placement: "Horizontal 0 because this is capability and architecture skepticism, not a strong governance or acceleration stance. Vertical 0.5 because it is slightly human-cognition centered but mainly technical.",
-        focus: "Read them for the difference between scaling skepticism and AI skepticism: the claim is not that AI cannot matter, but that current architectures are insufficient.",
-        counter: "Bitter-Lesson views will argue that hand-built representations repeatedly lose to scale and learning.",
-        ideologyNote: "Mainly capability and architecture skepticism, not a strong governance or acceleration position.",
-        basis: ["cognitive science", "AI criticism", "public technical debate"],
-        works: [
-          { why: "Marcus’s core argument against pure deep-learning optimism." },
-          { why: "Mitchell’s broader argument about analogy, understanding, and limits." }
-        ]
-      },
-      "rich-sutton": {
-        cluster: "The Bitter Lesson / computation-centered empiricism",
-        stance: "The history of AI shows that methods leveraging computation, search, and learning tend to win over human handcrafted knowledge as compute grows.",
-        placement: "Horizontal right-of-center because the view favors scaling and general methods; vertical -1 because it decentrers human knowledge and intuition in technical epistemology.",
-        focus: "Read the Bitter Lesson as a cultural anchor: it explains why many AI builders distrust human priors, hand-engineered rules, and small-system intuitions.",
-        counter: "Critical AI will ask who pays for scale; architecture skeptics will ask whether scaling alone produces robust understanding.",
-        ideologyNote: "The Bitter Lesson is technical epistemology: scale, search, and computation beat human handcrafted knowledge.",
-        basis: ["technical epistemology", "reinforcement learning", "AI culture"],
-        works: [{ why: "A short essay that became a central cultural reference in AI." }]
+        core: "AI should be understood through planetary-scale computation, platform stacks, and synthetic intelligence, not simply as a human tool or market product.",
+        lineage: "Benjamin Bratton's The Stack in 2015 and The Terraforming in 2019 come from design theory, geopolitics, infrastructure studies, and posthuman governance. He asked how planetary-scale computation reorganizes sovereignty, cities, platforms, users, and states into a layered accidental megastructure. The impact is a non-simple humanist account of AI and computation: governance becomes system design at planetary scale, not merely product regulation or individual rights.",
+        placement: "Lower-left because it is not open acceleration but strong systems governance; lower half because it does not treat current human/social structures as the only center.",
+        focus: "The Stack matters: AI is one layer in a larger planetary computation architecture, so governance is system design, not just product regulation.",
+        counter: "e/acc stresses decentralized acceleration; Catholic and social-humanist views insist that human dignity must limit system logic.",
+        works: ["The Stack", "The Terraforming", "Synthetic intelligence and planetary computation essays"]
       },
       "yann-lecun": {
-        cluster: "Architecture optimism / world models",
-        stance: "Current systems are not yet general intelligence; future AI needs world models and new architectures, and near-term doom narratives exaggerate the danger of the current path.",
-        placement: "Right-of-center because he favors open research and building; vertical 0 because the position is mainly technical and architectural rather than strongly humanist or posthuman.",
-        focus: "Read him to separate architecture optimism from naive scaling optimism. The key claim is not that today’s LLMs are enough, but that better architectures can produce more robust intelligence.",
-        counter: "X-risk safety will say architectural confidence does not remove future control problems; normal-technology skeptics will question whether the future leap is being assumed too quickly.",
-        ideologyNote: "Risk narratives are seen as overstated; the response leans toward open research, building, and architectural progress.",
-        basis: ["AI research leadership", "public technical debate", "open-source advocacy"],
-        works: [
-          { why: "A compact statement of the world-model path." },
-          { why: "A public-facing account of why current systems are not enough." }
-        ]
+        core: "Current doomer narratives overstate the danger of existing systems; stronger AI needs world models, planning, and new architectures rather than treating LLMs as AGI.",
+        lineage: "Yann LeCun's A Path Towards Autonomous Machine Intelligence, released in 2022, extends his long deep-learning and representation-learning program into a world-model agenda. In the context of LLM-driven AI risk debate, he asked how machines could learn like humans and animals through predictive world models, planning, and intrinsic objectives rather than text prediction alone. Its impact is to provide a capability-optimist but LLM-skeptical alternative to both doom and pure scaling narratives.",
+        placement: "Right because it resists overcentralization and premature restriction; near the midline vertically because the argument is architectural rather than explicitly posthuman.",
+        focus: "Separate current LLM limits, future architecture routes, and AI-risk narratives.",
+        counter: "Yudkowsky argues architecture details do not remove loss-of-control risk; Narayanan and Kapoor share some anti-hype instincts but focus more on product misuse.",
+        works: ["A Path Towards Autonomous Machine Intelligence", "JEPA / world model talks", "Open source AI arguments"]
       },
       "andrew-ng": {
-        cluster: "Pragmatic deployment optimism",
-        stance: "AI is a general-purpose technology whose benefits are delayed by excessive fear; society should build, deploy, and teach more people to use it.",
-        placement: "Right-of-center because the response is deployment and opportunity-cost focused. Vertical +1 because the value story is human productivity, education, and practical benefit.",
-        focus: "Read him as application optimism, not singularity or posthuman acceleration. The moral language is about useful work delayed by overrestriction.",
-        counter: "Safety-first views will say this underweights tail risk; critical AI will ask which workers and institutions absorb the cost of deployment.",
-        ideologyNote: "The main diagnosis is underdeployment and opportunity cost; the value narrative remains human productivity and practical benefit.",
-        basis: ["education", "startup ecosystem", "public AI advocacy"],
-        works: [
-          { why: "A concise public argument against a broad pause." },
-          { why: "A representative deployment and education-oriented AI platform." }
-        ]
+        core: "AI is a general-purpose technology like electricity; the priority is connecting it to healthcare, education, industry, and services to create measurable value.",
+        lineage: "Andrew Ng's AI is the New Electricity framing, popularized in 2017 through lectures and industry talks, asks how AI should be understood as a general-purpose enabling technology for many sectors rather than a single AGI rupture. The context is applied machine learning, enterprise adoption, and the translation of research into products. Its impact was to normalize deployment, workflow redesign, and measurable sectoral value as the practical center of AI strategy.",
+        placement: "Upper-right because it emphasizes deployment and practical benefit; above the midline because the goal is improving human institutions and services.",
+        focus: "The practical questions are data, workflow, product, organizational adoption, and measurable gains.",
+        counter: "Safety views say deployment speed must be limited by dangerous capability thresholds; Critical AI says productivity narratives can hide labor and power issues.",
+        works: ["AI is the New Electricity", "Landing AI / applied AI talks", "AI transformation playbooks"]
       },
       "sam-altman-openai": {
-        cluster: "AGI abundance / managed frontier build",
-        stance: "AGI could produce broad abundance and scientific progress, but frontier development should be managed through safety work, institutions, and benefit-sharing.",
-        placement: "Right-of-center because it supports continued frontier development; vertical +1 because it retains human benefit and governance language rather than posthuman acceleration.",
-        focus: "Read OpenAI as managed build: not pure acceleration, but also not pause-first. The key tension is who governs the frontier lab and how benefits are distributed.",
-        counter: "Pause advocates will doubt managed build; open accelerationists will reject central control; critical AI will focus on power concentration.",
-        ideologyNote: "AGI abundance and managed build, retaining language of safety, governance, and benefit sharing.",
-        basis: ["frontier lab leadership", "public discourse", "AGI governance"],
-        works: [
-          { why: "OpenAI’s early public charter for AGI and benefit sharing." },
-          { why: "A public statement of planning for superintelligence governance." },
-          { why: "Altman’s abundance-oriented public vision." }
-        ]
+        core: "AGI can create broad abundance, but the transition needs safety, governance, benefit sharing, and staged deployment.",
+        lineage: "Sam Altman and OpenAI's Planning for AGI and beyond, published in 2023, articulates a frontier-lab attempt to combine AGI ambition, deployment, safety, and benefit sharing. The question is how a private lab can justify building increasingly general systems while claiming to manage social risk and distribute benefits. Its impact is to define the managed-AGI corporate imaginary: constrained defaults, broad access, safety rhetoric, and centralized lab authority in one package.",
+        placement: "Center-right and upper because it accepts continued building and deployment while retaining safety, governance, and social-benefit language.",
+        focus: "The tension is central: the same discourse contains AGI abundance, lab concentration, and safety thresholds.",
+        counter: "Critical AI questions concentrated power; e/acc questions closed access and control; hard safety questions whether deployment commitments are enough.",
+        works: ["Planning for AGI and beyond", "OpenAI charter", "Governance and deployment statements"]
       },
       "elon-musk-xai": {
-        cluster: "Risk-aware techno-optimism / open-weight frontier build",
-        stance: "AI could pose extreme risks, so safety matters; but humanity should also expand its boundaries through Mars, Neuralink, xAI, and stronger intelligence.",
-        placement: "Right but not all the way to e/acc: the rightward position comes from xAI building, Grok's open-weight release, and competitive deployment; the below-midline value position reflects Mars / Neuralink / human-AI symbiosis moving beyond ordinary human-centered framing without becoming Land-style technological autonomy.",
+        core: "Musk's AI position is mixed: he has long warned about existential AI risk, while also imagining humanity's future through Mars, Neuralink, human-AI symbiosis, and xAI-style stronger intelligence.",
+        lineage: "Elon Musk's place in AI discourse comes from two strands: early involvement with OpenAI and later AI safety / pause warnings, plus SpaceX, Neuralink, the launch of xAI in 2023, Grok, and the release of Grok-1 weights and architecture. The question he raises is not simply pause versus acceleration, but who gets to build an AI that is framed as more truth-seeking, less captured by existing institutions, and still safe for humanity. The public effect is a hybrid of x-risk warning, posthuman expansion imagery, anti-OpenAI politics, open-weight signaling, and high-intensity build culture.",
+        placement: "Right but not all the way to e/acc: the rightward position comes from xAI building, Grok's open-weight release, and competitive deployment; the below-midline position reflects Mars / Neuralink / human-AI symbiosis moving beyond ordinary human-centered framing without becoming Land-style technological autonomy.",
         focus: "Read it as a hybrid: not a pure safety-pause view and not pure accelerationism, but risk warning plus posthuman expansion plus competitive build plus partial openness.",
         counter: "Andreessen emphasizes x-risk less; Yudkowsky emphasizes pause and alignment first; Altman/OpenAI emphasizes lab governance and benefit sharing.",
-        ideologyNote: "Hybrid position: AI risk warning, truth-seeking rhetoric, xAI building, open-weight release, and posthuman expansion imagery.",
-        basis: ["xAI", "AI risk public discourse", "open-weight release", "posthuman expansion"],
-        works: [
-          { why: "A public pause and governance signal that Musk signed." },
-          { why: "The key xAI signal of open-weight frontier-model practice." }
-        ]
+        works: ["Open Release of Grok-1", "Pause Giant AI Experiments open letter", "xAI / Grok public positioning"]
       },
       "peter-thiel": {
-        cluster: "Techno-libertarian anti-stagnation / founder sovereignty",
-        stance: "Modern society's core problem is technological stagnation; the future needs strong founders and deep-tech breakthroughs rather than risk governance, bureaucracy, and consensus politics freezing progress.",
-        placement: "Lower-right: it resists stagnation and excessive risk governance, while backing strong founders, deep tech, and breakthrough capital allocation; the value position sits below the midline because it puts less faith in democratic consensus and existing human institutions as final arbiters of technological futures.",
+        core: "Thiel's core is not generic AI optimism but anti-stagnation: modern society is trapped by risk aversion, bureaucracy, and low-ambition technology, and needs deep tech, founder power, and vertical progress.",
+        lineage: "Peter Thiel's technology politics comes from PayPal, Palantir, Founders Fund, Zero to One, and the anti-stagnation line captured by 'we wanted flying cars, instead we got 140 characters.' The question is why the West stopped producing enough civilization-changing technologies after roughly the 1970s, and why universities, regulation, consensus politics, and competitive markets can turn real vertical innovation into incremental improvement. In AI discourse, this makes AI a deep technology that can break stagnation and reorganize power, not merely another software product.",
+        placement: "Lower-right because it resists stagnation and excessive risk governance, while backing strong founders, deep tech, and breakthrough capital allocation; lower half because it puts less faith in democratic consensus and existing human institutions as final arbiters of technological futures.",
         focus: "Read it as anti-stagnation rather than open source: Thiel cares more about who has the power to drive civilization-scale technological breakthroughs than about decentralized openness.",
         counter: "Andreessen gives techno-optimism a more public-facing abundance story; e/acc turns acceleration into a meme; Catholic and social-humanist views question whether this future politics sacrifices the common good and human dignity.",
-        ideologyNote: "Anti-stagnation and deep-tech breakthrough priority, with founder sovereignty, risk tolerance, and post-liberal future politics.",
-        basis: ["venture capital", "anti-stagnation politics", "founder sovereignty", "deep tech"],
-        works: [
-          { why: "The core Founders Fund anti-stagnation and deep-tech investment text." },
-          { why: "The core argument for monopoly, founders, and vertical innovation over mere competition." }
-        ]
+        works: ["What Happened to the Future?", "Zero to One", "Founders Fund / Palantir worldview"]
       },
       "ray-kurzweil": {
-        cluster: "Singularity / transhuman optimism",
-        stance: "AI and accelerating technology will merge with human intelligence, expand capability, and move civilization toward a singularity.",
-        placement: "Right because the dominant narrative is opportunity and acceleration; vertical slightly below center because it moves beyond ordinary humanism toward human-machine merger without becoming anti-human.",
-        focus: "Read him as singularitarian and transhumanist rather than current-LMM policy debate. The core is exponential technological change.",
-        counter: "Critical AI will say this abstracts away labor, power, and material costs; x-risk safety will say the transition is not automatically safe.",
-        ideologyNote: "Singularity and human-machine merger as opportunity; transhuman but not strongly anti-human.",
-        basis: ["singularity discourse", "public futurism", "transhumanism"],
-        works: [
-          { why: "The classic singularity text." },
-          { why: "A later update of the same accelerationist-futurist argument." }
-        ]
+        core: "Exponential progress in computation, AI, life sciences, and nanotechnology leads toward the singularity, life extension, and human-machine merger.",
+        lineage: "Ray Kurzweil's The Singularity Is Near in 2005, updated by The Singularity Is Nearer in 2024, asks whether exponential trends in computation, biotechnology, nanotechnology, and AI imply a coming merger of human and machine intelligence. The context is transhumanism and technological forecasting rather than AI governance. Its impact was to popularize the singularity as a civilizational horizon, making abundance, longevity, and human-machine integration part of mainstream AI futurism.",
+        placement: "Lower-right because it embraces strong technological progress and human-machine fusion; lower half because present human form is not the endpoint.",
+        focus: "The structure is evolutionary and accelerating: AI is not just a tool but part of a continuous transformation of civilization.",
+        counter: "Hype skeptics think exponential forecasts often ignore bottlenecks; Catholic and social-humanist views question the anthropology behind enhancement.",
+        works: ["The Singularity Is Near", "The Singularity Is Nearer", "The Age of Spiritual Machines"]
       },
       "marc-andreessen": {
-        cluster: "Techno-optimism / anti-pause politics",
-        stance: "AI should be built and deployed aggressively; fear-driven regulation and pauses threaten abundance, competition, and human flourishing.",
-        placement: "Far right because the response is anti-pause, anti-regulatory, and market-technological optimism. Vertical modestly positive because the public story is still human abundance.",
-        focus: "Read him as a political-economic techno-optimist, not simply a technical optimist. The argument joins markets, abundance, and anti-regulation.",
-        counter: "Safety-first views will see this as underweighting catastrophic risk; critical AI will see venture capital and market power as part of the problem.",
-        ideologyNote: "Anti-pause, anti-regulation, and market techno-optimism, still framed publicly around human abundance.",
-        basis: ["venture capital", "public manifesto", "AI policy politics"],
-        works: [
-          { why: "A representative pro-AI, anti-doom public essay." },
-          { why: "The broader political frame behind his AI stance." }
-        ]
+        core: "Technological progress is a primary force against scarcity, disease, and poverty; anti-tech politics, pauses, and excessive regulation suppress human flourishing.",
+        lineage: "Marc Andreessen's Why AI Will Save the World in June 2023 and The Techno-Optimist Manifesto in October 2023 translate venture-capital build culture into an explicit political theory of technology. In the context of post-ChatGPT regulation debates, he asked whether AI fear, safety, and ethics had become veto powers against progress. The impact was to harden a Silicon Valley anti-pause position that treats markets, entrepreneurship, and abundance as moral arguments for accelerated development.",
+        placement: "Right because it supports building, deployment, and anti-regulatory politics; slightly above the midline because the stated goal is human abundance and individual empowerment.",
+        focus: "The political posture matters: resist turning safety, ethics, or governance into a default veto over building.",
+        counter: "Critical AI says this underweights power and distribution; x-risk safety says it underweights low-probability high-loss risk.",
+        works: ["The Techno-Optimist Manifesto", "Why AI Will Save the World", "a16z AI essays"]
       },
       "effective-accelerationism": {
-        cluster: "e/acc / open acceleration",
-        stance: "AI development should accelerate and diffuse widely; central control, licensing, and control by a small elite are more dangerous than open technological progress.",
-        placement: "Far right because openness and acceleration are central. Vertical below center because the movement often values intelligence and technological evolution beyond conventional humanist control.",
-        focus: "Read it as a memetic and political movement more than a tight academic doctrine. People using the label differ substantially.",
-        counter: "Safety governance views will say open diffusion makes dangerous capabilities harder to control; critical AI will ask who benefits from acceleration.",
-        ideologyNote: "Open acceleration and resistance to institutional control, not necessarily identical to Land-style anti-humanism.",
-        basis: ["online movement", "AI culture", "open-source politics"],
-        works: [
-          { why: "A representative entry point into the e/acc worldview." },
-          { why: "A public-facing statement of the open acceleration position." }
-        ]
-      },
-      "benjamin-bratton": {
-        cluster: "Posthuman control / planetary computation",
-        stance: "AI should be understood as part of planetary-scale computation and governance systems; the problem is not only human preference satisfaction but how synthetic intelligence is organized at system scale.",
-        placement: "Lower-left because it favors strong system governance rather than open acceleration, while also moving beyond traditional human-centered preference language.",
-        focus: "Read him for system governance, planetary computation, and synthetic intelligence rather than standard AI safety or Silicon Valley acceleration.",
-        counter: "Open accelerationists will see system governance as new institutional control; human-compatible safety views will ask whether accountable human values are protected enough.",
-        ideologyNote: "Emphasizes planetary computation and system governance; neither open acceleration nor traditional human-centeredness.",
-        basis: ["design theory", "planetary computation", "governance theory"],
-        works: [
-          { why: "A system-level design and governance frame." },
-          { why: "A representative text on planetary-scale computation." }
-        ]
+        core: "Technological acceleration is treated as a moral and civilizational task; regulation, pauses, and safety narratives are often treated as the larger risk.",
+        lineage: "Effective accelerationism emerged around 2022 in crypto, AI Twitter, and pseudonymous build-culture networks associated with figures such as Beff Jezos, then became more visible during 2023 AI regulation fights. It asks why technological acceleration should be treated as a moral good and why deceleration, central control, or safety gatekeeping might be the greater danger. Its impact is memetic rather than institutional: it gives open diffusion, speed, and anti-regulatory politics a recognizable badge.",
+        placement: "Far right because acceleration and open diffusion are central; lower half because it weakens human-centered governance and gives more weight to technological evolution, markets, and decentralization.",
+        focus: "Read it as a memetic and political movement rather than a tight academic theory. People who use e/acc language can differ a lot internally.",
+        counter: "Safety advocates think it romanticizes externalized risk; critical AI thinkers see power and harm being treated as development costs.",
+        works: ["Effective Accelerationism manifestos", "Beff Jezos / e/acc discourse", "Permissionless innovation arguments"]
       },
       "nick-land": {
-        cluster: "Accelerationism / techno-capital autonomy",
-        stance: "Technological and capital acceleration exceeds humanist political control; intelligence and capital should be read as processes that escape human-centered governance.",
-        placement: "Far right and bottom because acceleration is central and the value frame is explicitly posthuman or anti-humanist.",
-        focus: "Read him as an edge case that clarifies the lower-right boundary. He is not typical AI optimism; he is acceleration beyond humanist constraint.",
-        counter: "Almost every human-centered position on the map rejects the value frame even when it shares some openness or acceleration language.",
-        ideologyNote: "Acceleration and techno-capital autonomy pushed beyond humanism; a posthuman boundary case.",
-        basis: ["accelerationist theory", "online intellectual influence", "posthuman political philosophy"],
-        works: [
-          { why: "A canonical accelerationist text." },
-          { why: "A later fragmentary presentation of the same posthuman acceleration frame." }
-        ]
+        core: "Capital, technology, and intelligence are imagined as an autonomous acceleration process that exceeds humanist political control.",
+        lineage: "Nick Land's Meltdown, first performed and circulated in the mid-1990s around the Cybernetic Culture Research Unit at Warwick, joined Deleuze and Guattari, cybernetics, cyberpunk, and capitalism into a theory-fiction of runaway technocapital. The question was not how humans should govern technology, but whether capital and intelligence are already nonhuman processes dissolving liberal human control. Its impact runs through accelerationist theory, posthuman political aesthetics, and later internet ideologies, often as both inspiration and warning.",
+        placement: "Far lower-right because it embraces acceleration and anti-human-centeredness; openness here is not democratic openness but technocapital pushing itself forward.",
+        focus: "Distinguish two layers: philosophical nonhuman acceleration, and the later internet-political influence of Dark Enlightenment.",
+        counter: "Bratton is also posthuman in some ways but emphasizes system design and governance; humanist safety and Catholic social thought treat Land as a warning case.",
+        works: ["Meltdown", "CCRU writings", "Fanged Noumena"]
       }
     };
-
-    thinkers.forEach(item => {
-      const patch = englishThinkerText[item.id];
-      if (!patch) return;
-      ["cluster", "stance", "placement", "focus", "counter", "basis"].forEach(key => {
-        if (patch[key]) item[key] = patch[key];
-      });
-      if (patch.ideologyNote) item.ideology.note = patch.ideologyNote;
-      if (patch.works) item.works.forEach((work, index) => Object.assign(work, patch.works[index] || {}));
-    });
-
-    const svg = document.getElementById("chart");
-    const width = 1000;
-    const height = 660;
-    const margin = { top: 52, right: 58, bottom: 86, left: 82 };
-    const plotW = width - margin.left - margin.right;
-    const plotH = height - margin.top - margin.bottom;
-    let activeCategory = "All";
-    let activePoint = null;
-
-    const jitter = {
-      "eliezer-yudkowsky": [-16, -12],
-      "nick-bostrom": [16, 10],
-      "paul-christiano": [-16, 8],
-      "ajeya-cotra": [14, -10],
-      "andrew-ng": [-15, -11],
-      "sam-altman-openai": [16, 11],
-      "bender-gebru-mitchell-mcmillan-major": [-38, -16],
-      "kate-crawford": [18, 2],
-      "ruha-benjamin": [0, 24],
-      "ray-kurzweil": [-20, 10],
-      "marc-andreessen": [15, -8],
-      "dario-amodei-anthropic": [12, 8],
-      "dan-hendrycks-cais": [8, -12],
-      "rich-sutton": [-12, 0],
-      "benjamin-bratton": [12, 0],
-      "yann-lecun": [12, 4]
-    };
-
-    const x = value => margin.left + ((value + 2) / 4) * plotW;
-    const y = value => margin.top + ((2 - value) / 4) * plotH;
-    const fmt = value => value > 0 ? `+${value}` : `${value}`;
-
-    function svgEl(name, attrs = {}, text = "") {
-      const node = document.createElementNS("http://www.w3.org/2000/svg", name);
-      Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
-      if (text) node.textContent = text;
-      return node;
-    }
-
-    function drawAxes() {
-      [-2, -1, 0, 1, 2].forEach(tick => {
-        svg.appendChild(svgEl("line", { x1: x(tick), x2: x(tick), y1: margin.top, y2: height - margin.bottom, class: "grid-line" }));
-        svg.appendChild(svgEl("line", { x1: margin.left, x2: width - margin.right, y1: y(tick), y2: y(tick), class: "grid-line" }));
-        svg.appendChild(svgEl("text", { x: x(tick), y: height - margin.bottom + 25, "text-anchor": "middle", class: "axis-small" }, fmt(tick)));
-        svg.appendChild(svgEl("text", { x: margin.left - 22, y: y(tick) + 4, "text-anchor": "end", class: "axis-small" }, fmt(tick)));
-      });
-
-      svg.appendChild(svgEl("line", { x1: x(-2), x2: x(2), y1: y(0), y2: y(0), class: "axis-line" }));
-      svg.appendChild(svgEl("line", { x1: x(0), x2: x(0), y1: y(2), y2: y(-2), class: "axis-line" }));
-
-      svg.appendChild(svgEl("text", { x: x(-2), y: height - 28, "text-anchor": "start", class: "axis-label" }, "Control / pause / thresholds"));
-      svg.appendChild(svgEl("text", { x: x(2), y: height - 28, "text-anchor": "end", class: "axis-label" }, "Deployment / openness / acceleration"));
-      svg.appendChild(svgEl("text", { x: width / 2, y: height - 52, "text-anchor": "middle", class: "axis-label" }, "Horizontal: combined control-to-openness position"));
-      svg.appendChild(svgEl("text", { x: margin.left, y: 28, "text-anchor": "start", class: "axis-label" }, "Human/social-structure centered / accountable"));
-      svg.appendChild(svgEl("text", { x: margin.left, y: height - 14, "text-anchor": "start", class: "axis-label" }, "Intelligence-centered / posthuman"));
-      svg.appendChild(svgEl("text", { x: 28, y: height / 2, "text-anchor": "middle", class: "axis-label", transform: `rotate(-90 28 ${height / 2})` }, "Vertical: value position"));
-    }
-
-    function drawFilters() {
-      const filters = document.getElementById("filters");
-      filters.innerHTML = "";
-      const allButton = makeFilterButton("All", "All");
-      filters.appendChild(allButton);
-      Object.keys(categoryInfo).forEach(category => {
-        filters.appendChild(makeFilterButton(category, categoryInfo[category].zh));
-      });
-    }
-
-    function makeFilterButton(category, label) {
-      const button = document.createElement("button");
-      button.className = "filter";
-      button.type = "button";
-      button.dataset.category = category;
-      button.innerHTML = category === "All"
-        ? "<span class=\"swatch\" style=\"background:#111827\"></span>All"
-        : `<span class="swatch" style="background:${categoryInfo[category].color}"></span>${label}`;
-      button.addEventListener("click", () => {
-        activeCategory = category;
-        document.querySelectorAll(".filter").forEach(item => item.classList.toggle("active", item.dataset.category === category));
-        applyFilters();
-      });
-      if (category === "All") button.classList.add("active");
-      return button;
-    }
-
-    function drawPoints() {
-      thinkers.forEach(item => {
-        const offset = jitter[item.id] || [0, 0];
-        const cx = x(item.projection.x) + offset[0];
-        const cy = y(item.projection.y) + offset[1];
-        const radius = 6 + item.influence * 0.72;
-        const point = svgEl("circle", {
-          cx,
-          cy,
-          r: radius,
-          fill: categoryInfo[item.category].color,
-          class: "point",
-          tabindex: "0",
-          "aria-label": item.name,
-          "data-id": item.id,
-          "data-category": item.category
-        });
-        point.addEventListener("click", () => selectItem(item, point));
-        point.addEventListener("keydown", event => {
-          if (event.key === "Enter" || event.key === " ") selectItem(item, point);
-        });
-        svg.appendChild(point);
-
-        const label = svgEl("text", {
-          x: cx + 10,
-          y: cy + 4,
-          class: "point-label",
-          "data-label-id": item.id,
-          "data-category": item.category
-        }, item.shortName);
-        svg.appendChild(label);
-      });
-    }
-
-    function matchesSearch(item, term) {
-      if (!term) return true;
-      const corpus = [
-        item.name,
-        item.shortName,
-        item.cluster,
-        item.category,
-        item.stance,
-        item.placement,
-        item.focus,
-        item.ideology.note,
-        ...item.works.flatMap(work => [work.title, work.type, work.priority, work.why])
-      ].join(" ").toLowerCase();
-      return corpus.includes(term.toLowerCase());
-    }
-
-    function applyFilters() {
-      const term = document.getElementById("search").value.trim();
-      thinkers.forEach(item => {
-        const visible = (activeCategory === "All" || item.category === activeCategory) && matchesSearch(item, term);
-        const point = svg.querySelector(`[data-id="${item.id}"]`);
-        const label = svg.querySelector(`[data-label-id="${item.id}"]`);
-        if (point) point.classList.toggle("dimmed", !visible);
-        if (label) label.classList.toggle("dimmed", !visible);
-      });
-    }
-
-    function lineageSummary(item) {
-      const works = item.works.slice(0, 2).map(work => work.title).join(" / ");
-      const channels = item.basis.slice(0, 3).join(", ");
-      return `Start from ${works}. This position develops through ${channels}, and turns those texts and channels into the public argument summarized in this card.`;
-    }
-
-    function selectItem(item, circle) {
-      if (activePoint) activePoint.classList.remove("active");
-      activePoint = circle || svg.querySelector(`[data-id="${item.id}"]`);
-      if (activePoint) activePoint.classList.add("active");
-
-      document.getElementById("detailName").textContent = item.name;
-      document.getElementById("detailCluster").textContent = `${item.cluster} · ${categoryInfo[item.category].zh}`;
-      document.getElementById("riskScore").textContent = fmt(Number(item.projection.x.toFixed(2)));
-      document.getElementById("humanismScore").textContent = fmt(Number(item.projection.y.toFixed(2)));
-      document.getElementById("influenceScore").textContent = `${item.influence}/5`;
-      document.getElementById("diagnosisScore").textContent = fmt(item.ideology.diagnosis);
-      document.getElementById("responseScore").textContent = fmt(item.ideology.response);
-      document.getElementById("valueScore").textContent = fmt(item.ideology.humanism);
-      document.getElementById("stanceText").textContent = item.stance;
-      document.getElementById("lineageText").textContent = item.lineage || lineageSummary(item);
-      document.getElementById("placementText").textContent = item.placement;
-      document.getElementById("counterText").textContent = item.counter || "Nearby positions are reference points, not claims of identical views.";
-      document.getElementById("readingFocus").textContent = item.focus;
-      document.getElementById("profileJump").href = `#profile-${item.id}`;
-
-      const worksMini = document.getElementById("worksMini");
-      worksMini.innerHTML = "";
-      item.works.forEach(work => {
-        const div = document.createElement("div");
-        div.className = "mini-work";
-        div.innerHTML = `<a href="${work.url}" target="_blank" rel="noopener noreferrer">${work.title}</a><span>${work.year} · ${work.type} · ${work.priority}</span>`;
-        worksMini.appendChild(div);
-      });
-
-      const basis = document.getElementById("basis");
-      basis.innerHTML = "";
-      item.basis.forEach(value => {
-        const span = document.createElement("span");
-        span.textContent = value;
-        basis.appendChild(span);
-      });
-    }
-
-    function renderCategorySummary() {
-      const target = document.getElementById("categorySummary");
-      target.innerHTML = "";
-      Object.entries(categoryInfo).forEach(([category, info]) => {
-        const members = thinkers.filter(item => item.category === category);
-        const avgX = members.reduce((sum, item) => sum + item.projection.x, 0) / members.length;
-        const avgY = members.reduce((sum, item) => sum + item.projection.y, 0) / members.length;
-        const avgDiagnosis = members.reduce((sum, item) => sum + item.ideology.diagnosis, 0) / members.length;
-        const avgResponse = members.reduce((sum, item) => sum + item.ideology.response, 0) / members.length;
-        const div = document.createElement("div");
-        div.className = "summary-item";
-        div.innerHTML = `
-          <span class="swatch" style="background:${info.color}"></span>
-          <div>
-            <b>${info.zh} · ${members.length} point${members.length > 1 ? "s" : ""}</b>
-            <span>${info.summary}</span>
-            <span>Average position: horizontal ${fmt(Number(avgX.toFixed(2)))}, vertical ${fmt(Number(avgY.toFixed(2)))}; risk judgment ${fmt(Number(avgDiagnosis.toFixed(2)))}, governance position ${fmt(Number(avgResponse.toFixed(2)))}</span>
-          </div>
-        `;
-        target.appendChild(div);
-      });
-    }
-
-    function renderProfiles() {
-      const grid = document.getElementById("profileGrid");
-      grid.innerHTML = "";
-      thinkers.forEach(item => {
-        const article = document.createElement("article");
-        article.className = "profile";
-        article.id = `profile-${item.id}`;
-        article.innerHTML = `
-          <div class="profile-head">
-            <div>
-              <h3>${item.name}</h3>
-              <div class="meta">${item.cluster} · ${categoryInfo[item.category].zh}</div>
-            </div>
-            <div class="coord">Horizontal ${fmt(Number(item.projection.x.toFixed(2)))} · Vertical ${fmt(Number(item.projection.y.toFixed(2)))}<br>Risk ${fmt(item.ideology.diagnosis)} · Governance ${fmt(item.ideology.response)} · Value ${fmt(item.ideology.humanism)}<br>Influence ${item.influence}/5</div>
-          </div>
-          <dl>
-            <div>
-              <dt>Core idea</dt>
-              <dd>${item.stance}</dd>
-            </div>
-            <div>
-              <dt>Coordinate explanation</dt>
-              <dd>${item.placement} Scoring note: ${item.ideology.note}</dd>
-            </div>
-            <div>
-              <dt>Representative works</dt>
-              <dd>
-                <ol>
-                  ${item.works.map(work => `<li><a href="${work.url}" target="_blank" rel="noopener noreferrer">${work.title}</a> (${work.year})：${work.why}</li>`).join("")}
-                </ol>
-              </dd>
-            </div>
-            <div>
-              <dt>Reading focus</dt>
-              <dd>${item.focus}</dd>
-            </div>
-            <div>
-              <dt>Strong contrast</dt>
-              <dd>${item.counter}</dd>
-            </div>
-          </dl>
-        `;
-        grid.appendChild(article);
-      });
-    }
-
-    function renderWorksTable() {
-      const table = document.getElementById("worksTable");
-      table.innerHTML = "";
-      thinkers.forEach(item => {
-        item.works.forEach(work => {
-          const row = document.createElement("div");
-          row.className = "work-row";
-          row.innerHTML = `
-            <div>
-              <b>${item.shortName}</b>
-              <span>${categoryInfo[item.category].zh}</span>
-            </div>
-            <div>
-              <b><a href="${work.url}" target="_blank" rel="noopener noreferrer">${work.title}</a></b>
-              <span>${work.type}</span>
-            </div>
-            <div>
-              <b>${work.year}</b>
-              <span>${work.priority}</span>
-            </div>
-            <p>${work.why}</p>
-          `;
-          table.appendChild(row);
-        });
-      });
-      movementDocs.forEach(doc => {
-        const row = document.createElement("div");
-        row.className = "work-row";
-        row.innerHTML = `
-          <div>
-            <b>Movement/institutional text</b>
-            <span>${doc.cluster}</span>
-          </div>
-          <div>
-            <b><a href="${doc.url}" target="_blank" rel="noopener noreferrer">${doc.title}</a></b>
-            <span>institutional / movement text</span>
-          </div>
-          <div>
-            <b>${doc.year}</b>
-            <span>high</span>
-          </div>
-          <p>${doc.why}</p>
-        `;
-        table.appendChild(row);
-      });
-    }
-
-    function updateStats() {
-      const workCount = thinkers.reduce((sum, item) => sum + item.works.length, 0) + movementDocs.length;
-      document.getElementById("statThinkers").textContent = thinkers.length;
-      document.getElementById("statWorks").textContent = workCount;
-    }
-
-    drawFilters();
-    drawAxes();
-    drawPoints();
-    renderCategorySummary();
-    renderProfiles();
-    renderWorksTable();
-    updateStats();
-    document.getElementById("search").addEventListener("input", applyFilters);
-    selectItem(thinkers.find(item => item.id === "rich-sutton"));
-  </script>
-</body>
-</html>
+const ui={"q":{"left":"Control threshold","right":"Open deployment","middleX":"Middle response","top":"Human/social-structure-centered","bottom":"Posthuman/intelligence-centered","middleY":"Middle values"},"defaultLineage":"This reference point does not yet have a full intellectual lineage note.","defaultPlacement":"This reference sits in {quadrant} because its public argument is closest to {cluster}.","defaultFocus":"Use this point as a nearby reference, not as a claim that every view in the cluster is identical.","mainReference":"Main reference","relatedTexts":"Related texts","coreClaim":"Core claim","contrast":"Contrast","lineage":"Intellectual lineage"};let activeReferenceId="";const referenceLayer=document.querySelector("#referenceLayer");const mapLegend=document.querySelector("#mapLegend");const referenceDetail=document.querySelector("#referenceDetail");const referenceModal=document.querySelector("#referenceModal");function escapeHTML(value){return String(value).replace(/[&<>"']/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];});}function clampPercent(value){return Math.max(0,Math.min(100,value));}function coordToReferencePercent(value){return clampPercent(7+((value+2)/4)*86);}function categoryForPoint(point){return referenceCategoryById[point.id]||"Normal technology";}function quadrantFor(x,y){const horizontal=x<-.35?ui.q.left:x>.35?ui.q.right:ui.q.middleX;const vertical=y>.35?ui.q.top:y<-.35?ui.q.bottom:ui.q.middleY;return horizontal+" / "+vertical;}function renderMapLegend(){mapLegend.innerHTML=Object.entries(categoryInfo).map(function(entry){const info=entry[1];return '<span><i style="background:'+escapeHTML(info.color)+'"></i>'+escapeHTML(info.label)+'</span>';}).join("");}function renderReferencePoints(){referenceLayer.innerHTML=referencePoints.map(function(point){const size=8+point.influence*1.2;const info=categoryInfo[categoryForPoint(point)]||categoryInfo["Normal technology"];const isActive=activeReferenceId===point.id;const labelSide=point.x>.85?"label-left":"label-right";return '<button class="reference-point '+labelSide+(isActive?' active':'')+'" type="button" data-id="'+escapeHTML(point.id)+'" aria-pressed="'+(isActive?'true':'false')+'" style="--left:'+coordToReferencePercent(point.x)+'%; --bottom:'+coordToReferencePercent(point.y)+'%; --dx:'+point.dx+'; --dy:'+point.dy+'; --size:'+size+'px; --color:'+escapeHTML(info.color)+';" title="'+escapeHTML(point.name)+' · '+escapeHTML(point.cluster)+'"><span class="reference-label">'+escapeHTML(point.label)+'</span></button>';}).join("");}function closeReferenceModal(){referenceModal.hidden=true;}function renderReferenceNotes(point,detail,stance){const core=detail&&detail.core?detail.core:stance;const lineage=detail&&detail.lineage?detail.lineage:ui.defaultLineage;const placement=detail&&detail.placement?detail.placement:ui.defaultPlacement.replace("{quadrant}",quadrantFor(point.x,point.y)).replace("{cluster}",point.cluster);const focus=detail&&detail.focus?detail.focus:ui.defaultFocus;const counter=detail&&detail.counter?detail.counter:"";const works=detail&&detail.works?detail.works:[];const source=referenceSources[point.id];const sourceLink=source?'<p>'+ui.mainReference+': <a href="'+escapeHTML(source.url)+'" target="_blank" rel="noreferrer">'+escapeHTML(source.title)+'</a></p>':"";const worksLine=works.length?'<p>'+ui.relatedTexts+': '+works.map(escapeHTML).join(" · ")+'</p>':"";return '<div class="reference-note-grid"><div class="reference-note"><span>'+ui.coreClaim+'</span><p>'+escapeHTML(core)+'</p><p>'+escapeHTML(placement)+'</p><p>'+escapeHTML(focus)+'</p></div>'+(counter?'<div class="reference-note"><span>'+ui.contrast+'</span><p>'+escapeHTML(counter)+'</p></div>':"")+'<div class="reference-note"><span>'+ui.lineage+'</span><p>'+escapeHTML(lineage)+'</p>'+sourceLink+worksLine+'</div></div>';}function renderReferenceDetail(point){if(!point){referenceDetail.innerHTML="";closeReferenceModal();return;}const info=categoryInfo[categoryForPoint(point)]||categoryInfo["Normal technology"];const stance=referenceProfiles[point.id]||point.cluster;const detail=referenceDetails[point.id];referenceDetail.innerHTML='<div class="reference-detail-head"><b id="referenceModalTitle">'+escapeHTML(point.name)+'</b><span class="reference-detail-badge" style="--color:'+escapeHTML(info.color)+'">'+escapeHTML(info.label)+'</span></div>'+renderReferenceNotes(point,detail,stance);referenceModal.hidden=false;}function openReferenceById(id){const point=referencePoints.find(function(item){return item.id===id;});if(!point)return;activeReferenceId=id;renderReferencePoints();renderReferenceDetail(point);}renderMapLegend();renderReferencePoints();referenceLayer.addEventListener("click",function(event){const target=event.target.closest(".reference-point");if(!target)return;openReferenceById(target.dataset.id);});referenceModal.addEventListener("click",function(event){if(!event.target.matches("[data-reference-close]"))return;activeReferenceId="";renderReferencePoints();closeReferenceModal();});document.addEventListener("keydown",function(event){if(event.key!=="Escape"||referenceModal.hidden)return;activeReferenceId="";renderReferencePoints();closeReferenceModal();});})();</script></body></html>

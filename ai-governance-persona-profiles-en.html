@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Persona Profiles</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f6f8;
+      --surface: #fff;
+      --ink: #17202a;
+      --muted: #657386;
+      --line: #d9dee8;
+      --accent: #0f766e;
+      --shadow: 0 10px 28px rgba(20, 31, 52, 0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); }
+    a { color: inherit; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(217, 222, 232, 0.92);
+      background: rgba(245, 246, 248, 0.94);
+      backdrop-filter: blur(14px);
+    }
+    .topbar-inner, main {
+      width: min(1100px, calc(100vw - 32px));
+      margin: 0 auto;
+    }
+    .topbar-inner {
+      min-height: 54px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand { font-weight: 850; }
+    .nav { display: flex; flex-wrap: wrap; gap: 8px; }
+    .btn {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-weight: 760;
+      text-decoration: none;
+    }
+    .btn.primary { border-color: var(--accent); background: var(--accent); color: #fff; }
+    main { padding: 22px 0 44px; }
+    .hero, .profile-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 22px;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 5vw, 44px); line-height: 1.1; letter-spacing: 0; }
+    .hero p { max-width: 820px; margin: 0; color: #344054; font-size: 15px; line-height: 1.65; }
+    .profile-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .profile-card { display: grid; gap: 10px; padding: 14px; }
+    .profile-image {
+      width: min(100%, 180px);
+      aspect-ratio: 1;
+      justify-self: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      object-fit: contain;
+      padding: 6px;
+    }
+    .profile-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+    .code {
+      border-radius: 999px;
+      background: #edf2f7;
+      color: #253044;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 850;
+    }
+    h2 { margin: 0; font-size: 19px; line-height: 1.25; letter-spacing: 0; }
+    .one { margin: 0; color: #253044; font-size: 14px; line-height: 1.55; font-weight: 700; }
+    .detail-grid { display: grid; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+    .detail span { display: block; color: var(--muted); font-size: 11px; font-weight: 820; line-height: 1.35; text-transform: uppercase; }
+    .detail p { margin: 2px 0 0; color: #475467; font-size: 13px; line-height: 1.5; }
+    .detail a { color: #0f5fbb; text-decoration: underline; text-underline-offset: 2px; }
+    @media (max-width: 720px) {
+      .topbar-inner { align-items: flex-start; flex-direction: column; padding: 8px 0; }
+      .profile-grid { grid-template-columns: 1fr; }
+      main { padding-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">AI Persona</div>
+      <nav class="nav" aria-label="Page navigation">
+        <a class="btn primary" href="/en/">Back to AI Persona</a>
+        <a class="btn" href="ai-governance-spectrum.html">AI Governance Spectrum</a>
+        <a class="btn" href="ai-personality-profiles.html">中文</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>AI Persona Profiles</h1>
+      <p>This page lists the 10 possible result personas used by AI Persona. Each profile includes its code, name, one-line portrait, representative texts, and common recognition signals.</p>
+    </section>
+    <section class="profile-grid" aria-label="AI governance persona profile list">
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/stop-wojak.png" alt="Shutdown Paladin avatar"><div class="profile-head"><span class="code">STOP</span><h2>Shutdown Paladin</h2></div><p class="one">Your first reaction to a demo is not "impressive," but "where is the power switch?"</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://www.lesswrong.com/posts/uMQ3cqWDPHhjtiesc/agi-ruin-a-list-of-lethalities" target="_blank" rel="noreferrer">AGI Ruin</a>, <a href="https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/" target="_blank" rel="noreferrer">Shut It All Down</a></p></div><div class="detail"><span>Recognition signals</span><p>Frequently says extinction, doom, alignment, takeoff.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/safe-wojak.png" alt="Alignment Bureaucrat avatar"><div class="profile-head"><span class="code">SAFE</span><h2>Alignment Bureaucrat</h2></div><p class="one">You do want powerful AI; you just want it to file the uncertainty-over-human-values paperwork first.</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://aima.cs.berkeley.edu/~russell/papers/mi19book-hcai.pdf" target="_blank" rel="noreferrer">Human Compatible</a>, <a href="https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like" target="_blank" rel="noreferrer">What Failure Looks Like</a></p></div><div class="detail"><span>Recognition signals</span><p>Often says corrigibility, oversight, governance, evals.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/audt-wojak.png" alt="Algorithm Auditor avatar"><div class="profile-head"><span class="code">AUDT</span><h2>Algorithm Auditor</h2></div><p class="one">Before the model ships, you have already written three chapters on labor, environmental cost, and bias audits.</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://dl.acm.org/doi/10.1145/3442188.3445922" target="_blank" rel="noreferrer">On the Dangers of Stochastic Parrots</a>, <a href="https://yalebooks.yale.edu/book/9780300264630/atlas-of-ai/" target="_blank" rel="noreferrer">Atlas of AI</a></p></div><div class="detail"><span>Recognition signals</span><p>When others ask whether it can be built, you ask who benefits and who gets monitored.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/norm-wojak.png" alt="Sober Product Manager avatar"><div class="profile-head"><span class="code">NORM</span><h2>Sober Product Manager</h2></div><p class="one">When everyone shouts revolution, you open a spreadsheet: use case, metric, failure mode, owner.</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://www.normaltech.ai/p/ai-as-normal-technology" target="_blank" rel="noreferrer">AI as Normal Technology</a></p></div><div class="detail"><span>Recognition signals</span><p>Your words are use case, metric, boundary, launch condition.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/hype-wojak.png" alt="AI Demystifier avatar"><div class="profile-head"><span class="code">SKEP</span><h2>AI Demystifier</h2></div><p class="one">When someone says AGI is near, you ask: test set, baseline, capability, or demo magic?</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://www.aisnakeoil.com/" target="_blank" rel="noreferrer">AI Snake Oil</a>, <a href="https://www.penguinrandomhouse.com/books/575774/rebooting-ai-by-gary-marcus-and-ernest-davis/" target="_blank" rel="noreferrer">Rebooting AI</a></p></div><div class="detail"><span>Recognition signals</span><p>Often says hype, snake oil, benchmark, overclaim, premature.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/gpuc-wojak.png" alt="Compute Cultist avatar"><div class="profile-head"><span class="code">GPUC</span><h2>Compute Cultist</h2></div><p class="one">You are not doing AI politics; you just think human knowledge should stop overestimating itself.</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html" target="_blank" rel="noreferrer">The Bitter Lesson</a></p></div><div class="detail"><span>Recognition signals</span><p>When others say common sense and expert priors, you say scale, compute, search, learning.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/boom-wojak.png" alt="Abundance Builder avatar"><div class="profile-head"><span class="code">BOOM</span><h2>Abundance Builder</h2></div><p class="one">You think the biggest AI problem is not that it is too strong, but that it is not plugged into enough real systems yet.</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://darioamodei.com/essay/machines-of-loving-grace" target="_blank" rel="noreferrer">Machines of Loving Grace</a>, <a href="https://www.gsb.stanford.edu/insights/andrew-ng-why-ai-new-electricity" target="_blank" rel="noreferrer">AI is the New Electricity</a></p></div><div class="detail"><span>Recognition signals</span><p>High-frequency words: productivity, health, education, deployment.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/sing-wojak.png" alt="Cyber Ascender avatar"><div class="profile-head"><span class="code">SING</span><h2>Cyber Ascender</h2></div><p class="one">You do not see AI as a tool; you see it as civilization changing bodies.</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://www.singularity.com/" target="_blank" rel="noreferrer">The Singularity Is Near</a>, <a href="https://ia.samaltman.com/" target="_blank" rel="noreferrer">The Intelligence Age</a></p></div><div class="detail"><span>Recognition signals</span><p>Often talks about abundance, longevity, human-machine merger.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/eacc-wojak.png" alt="Throttle-Welded Builder avatar"><div class="profile-head"><span class="code">E/ACC</span><h2>Throttle-Welded Builder</h2></div><p class="one">If the steering wheel is still being debated, at least the accelerator can be pressed.</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://wiki.p2pfoundation.net/Effective_Accelerationism" target="_blank" rel="noreferrer">Effective Accelerationism manifestos</a></p></div><div class="detail"><span>Recognition signals</span><p>Often says accelerate, permissionless, build, decentralize.</p></div></div></article>
+      <article class="profile-card"><img class="profile-image" src="assets/profile-pictures/post-wojak.png" alt="Carbon-Based Transitional Form avatar"><div class="profile-head"><span class="code">POST</span><h2>Carbon-Based Transitional Form</h2></div><p class="one">While others debate whether AI should serve humans, you are wondering whether humans are scaffolding for technocapital.</p><div class="detail-grid"><div class="detail"><span>Representative texts</span><p><a href="https://www.ccru.net/swarm1/1_melt.htm" target="_blank" rel="noreferrer">Meltdown</a>, <a href="https://archive.ph/cXUIj" target="_blank" rel="noreferrer">Dark Enlightenment</a></p></div><div class="detail"><span>Recognition signals</span><p>Often says posthuman, technocapital, autonomy.</p></div></div></article>
+    </section>
+  </main>
+</body>
+</html>
