@@ -1,18 +1,58 @@
 # AI Ideology Quiz Roadmap
 
-Last updated: 2026-05-19
+Last updated: 2026-06-07
 
 ## Current Shape
 
-This project has moved from a reading map into a lightweight measurement product. The underlying research object is still the two-axis AI social thought spectrum, but the immediate deliverable is a closed questionnaire that can place respondents and return an interpretable profile.
+This project has moved from a reading map into a lightweight measurement product with two public entry paths: start the quiz, or directly browse the spectrum.
 
-## Two-Day Sprint
+## Current Priority Shift
+
+The project should not immediately lock the existing index/introduction/share/backend design. The current priority is to record feedback, explore better product directions, and only then implement the chosen path.
+
+Key new concerns:
+
+- The item set may be too technical; revise toward a balance of rigor, accessibility, and fun.
+- External suggestions should be reviewed and routed into questionnaire, copy, scoring, or product flow changes.
+- The Introduction and Index/homepage need a stronger plain-but-distinctive presentation; create multiple demos before choosing.
+- Backend design should consider mainland China and overseas accessibility, timestamps, answer vectors, version/language fields, scores/profile outputs, and IP address policy.
+- Server purchase/provider choice is a human decision and should not be automated.
+- Sharing should become screenshot-first rather than relying on complex generated share pages.
+
+## Immediate Exploration Sprint
+
+### Track 1: Index / Introduction Demos
+
+- Produce several alternative first-screen and introduction directions.
+- Keep each version plain, credible, and visually distinctive rather than marketing-heavy.
+- Do not replace production files until the user confirms a preferred direction.
+
+### Track 2: Instrument Accessibility
+
+- Review whether the current core items are too technical or too narrow.
+- Identify items to keep, rewrite, soften, or replace.
+- Add scenario-like or more culturally legible material without weakening the scoring construct.
+
+### Track 3: Backend / Data Collection Design
+
+- Compare CSV-only, lightweight database, and hosted/server deployment.
+- Define a minimum response schema.
+- Decide IP address policy before implementation.
+- Keep raw respondent data out of git.
+
+### Track 4: Screenshot-First Sharing
+
+- Retire overcomplicated share-poster assumptions where appropriate.
+- Design result pages that are naturally screenshot-friendly on mobile and desktop.
+- Preserve result clarity while increasing social spread potential.
+
+## Previous Two-Day Sprint
 
 ### Day 1: Stabilize The Instrument
 
 - Lock the production candidates as `ai-ideology-quiz.html` and `ai-ideology-quiz-en.html`, with one-question-at-a-time interaction rather than a long form.
 - Keep the active quiz closed-ended: no background module, no open text, no quality-check module.
-- Review the 12 core items for balance across the two axes.
+- Review the core items for balance across the two axes and the 10-dimensional prototype classifier.
 - Confirm every item maps cleanly to `x_score` or `y_score`.
 - Confirm scenario questions and fixed self-placement are auxiliary checks, not coordinate inputs.
 - Run the page locally and test at least one full answer path for each quadrant.
@@ -25,13 +65,15 @@ This project has moved from a reading map into a lightweight measurement product
 - Run a 10-20 person friendly pilot.
 - Inspect whether the result profile feels plausible to respondents.
 - Revise labels and confusing items before broader release.
+- Keep the homepage as a two-choice entry: start the quiz or directly browse the spectrum.
+- Rework the Spectrum page so it is browse-first but organized around the quiz final result types.
 
 ## Artifact Roles
 
 - Chinese production candidate: `ai-ideology-quiz.html`
 - English production candidate: `ai-ideology-quiz-en.html`
 - Viral/share experiment: `ai-ideology-placement-quiz.html`
-- Research map: `ai-thought-spectrum-visualization.html`
+- Public spectrum: `ai-thought-spectrum-visualization.html` and `ai-thought-spectrum-visualization-en.html`
 - Full survey design: `questionnaires/2026-05-19-ai-ideology-placement-battery.md`
 - Closed questionnaire source: `questionnaires/2026-05-19-ai-ideology-closed-questionnaire-v1-zh.md`
 - Meme profile source: `questionnaires/2026-05-19-ai-ideology-meme-profiles-zh.md`
@@ -63,6 +105,7 @@ For the pilot, do not store raw names, email addresses, IP addresses, or free-te
 
 - The quiz can be completed without any open-ended input.
 - The result is reproducible from the answer vector.
-- The page explains the two axes without overexplaining the project.
+- The homepage clearly offers two options: start the quiz or browse the spectrum.
+- The Spectrum page explains result types and positions without feeling like an internal taxonomy dump.
 - Response data can be exported or stored in a clean tabular schema.
 - The meme profile layer is clearly separated from the measurement layer.
