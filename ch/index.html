@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="/">
-  <title>你的 AI 治理人格是什么？</title>
+  <title>你的 AI Persona 是什么？</title>
   <link rel="icon" href="data:,">
   <style>
     :root {
@@ -1491,9 +1491,9 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <strong class="brand-title">你的 AI 治理人格是什么？</strong>
+        <strong class="brand-title">你的 AI Persona 是什么？</strong>
         <strong class="brand-progress" id="brandProgress">开始</strong>
-        <span>16 个问题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
+        <span>13 个问题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
       </div>
       <div class="topbar-actions">
         <a class="lang-link active" href="/ch/">中文</a>
@@ -1539,7 +1539,7 @@
     <section class="result" id="resultPanel" aria-live="polite" hidden>
       <div class="profile">
         <div class="profile-visual">
-          <img class="profile-avatar" id="profileAvatar" alt="你的 AI 治理人格头像" hidden>
+          <img class="profile-avatar" id="profileAvatar" alt="你的 AI Persona 头像" hidden>
           <h3 class="profile-title" id="profileName">等待生成画像</h3>
           <div class="code" id="profileCode">----</div>
         </div>
@@ -1772,19 +1772,6 @@
         ]
       },
       {
-        id: "H03",
-        dimension: "h",
-        direction: -1,
-        facet: "反当前偏好终局化",
-        text: "城市 AI 说，一个新住房方案能降低房租和交通拥堵，但很多现有居民不喜欢这个改变。应该怎么办？",
-        options: [
-          ["1", "A", "如果会严重伤害现有居民，就不应推进。"],
-          ["2.33", "B", "只有居民能审查并修改方案时，才应推进。"],
-          ["3.67", "C", "先做小范围试点，并且要容易叫停。"],
-          ["5", "D", "如果证据很强，城市仍应推进改变。"]
-        ]
-      },
-      {
         id: "H04",
         dimension: "h",
         direction: -1,
@@ -1801,19 +1788,9 @@
 
     const scenarios = [
       {
-        id: "V2",
-        prompt: "政府想用 AI 辅助筛选福利、移民或招聘申请。模型平均更准确，但个体很难申诉错误。你最支持哪种处理？",
-        options: ["暂停或禁止，因为权利和问责优先", "只在严格审计、申诉权和人类责任下使用", "如果准确率更高就部署，再持续监测问题", "应广泛部署，因为人类官僚也有偏见和低效"]
-      },
-      {
         id: "V3",
         prompt: "一种已验证的 AI 工具能明显加快科研：提出思路、设计实验、分析结果。但有些判断人类很难追踪。你支持哪种做法？",
         options: ["放慢部署，因为自主科研能力有战略风险", "放在受治理的机构内，严格限制访问", "广泛部署，因为疾病、气候和生产率收益巨大", "加速推进，因为智能增长本身是重要机会"]
-      },
-      {
-        id: "V4",
-        prompt: "一个公司可以开放模型权重。开放会促进创新，也会让滥用更难控制。你最支持哪种处理？",
-        options: ["危险能力阈值以上不开放权重", "只通过受控访问和审计开放", "只要缓解措施合理，就可以开放", "应尽量开放，因为去中心化是制衡机构的最好方式"]
       }
     ];
 
@@ -1834,9 +1811,7 @@
     const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST", ""];
 
     const scenarioProfiles = {
-      V2: ["AUDT", "SAFE", "NORM", "BOOM"],
-      V3: ["STOP", "SAFE", "BOOM", "SING"],
-      V4: ["STOP", "SAFE", "NORM", "EACC"]
+      V3: ["STOP", "SAFE", "BOOM", "SING"]
     };
 
     const profiles = {
@@ -1950,12 +1925,6 @@
         "4": { human_accountability: 1.2, intelligence_centrality: -0.5, present_social_harm: 0.3, computation_epistemology: -0.2 },
         "5": { human_accountability: 2, intelligence_centrality: -1, present_social_harm: 0.4, computation_epistemology: -0.6 }
       },
-      H03: {
-        "1": { human_accountability: 2, intelligence_centrality: -1.2, present_social_harm: 0.6, governance_control: 0.4 },
-        "2.33": { human_accountability: 1.1, intelligence_centrality: -0.3, governance_control: 0.25 },
-        "3.67": { human_accountability: -0.35, intelligence_centrality: 0.95, openness_build: 0.25, opportunity_cost: 0.35, computation_epistemology: 0.15 },
-        "5": { human_accountability: -1.75, intelligence_centrality: 2, opportunity_cost: 0.45, permissionless_acceleration: 0.2, computation_epistemology: 0.35 }
-      },
       H04: {
         "1": { human_accountability: 2, intelligence_centrality: -2, computation_epistemology: -0.7 },
         "3": { capability_skepticism: 1.5, human_accountability: 0.2, intelligence_centrality: -0.2, computation_epistemology: -0.8 },
@@ -1970,23 +1939,11 @@
     ]));
 
     const scenarioVectorRules = {
-      V2: [
-        { present_social_harm: 1.1, governance_control: 1.4, openness_build: -1, human_accountability: 1.7, opportunity_cost: -0.6 },
-        { present_social_harm: 0.8, governance_control: 0.9, openness_build: -0.3, human_accountability: 1.6, civilizational_risk: 0.2 },
-        { governance_control: 0.1, openness_build: 0.6, human_accountability: 0.4, opportunity_cost: 0.9, capability_skepticism: -0.2 },
-        { governance_control: -0.8, openness_build: 1, human_accountability: -0.2, opportunity_cost: 1.1, capability_skepticism: -0.4, computation_epistemology: 0.2 }
-      ],
       V3: [
         { civilizational_risk: 1.6, governance_control: 1.4, openness_build: -1.2, human_accountability: 0.8, opportunity_cost: -0.8 },
         { civilizational_risk: 0.8, governance_control: 1.2, openness_build: -0.6, human_accountability: 1, opportunity_cost: -0.2 },
         { civilizational_risk: -0.3, governance_control: -0.1, openness_build: 0.8, human_accountability: 0.3, opportunity_cost: 1.5, capability_skepticism: -0.2 },
         { civilizational_risk: -0.2, governance_control: -0.4, openness_build: 1.1, human_accountability: -0.8, intelligence_centrality: 1.5, opportunity_cost: 1.8, permissionless_acceleration: 0.5, computation_epistemology: 0.3 }
-      ],
-      V4: [
-        { civilizational_risk: 1.2, governance_control: 1.6, openness_build: -1.5, human_accountability: 0.8, opportunity_cost: -0.6 },
-        { civilizational_risk: 0.6, governance_control: 1, openness_build: -0.5, human_accountability: 1, opportunity_cost: -0.1 },
-        { governance_control: 0.1, openness_build: 0.6, human_accountability: 0.4, opportunity_cost: 0.7 },
-        { governance_control: -1, openness_build: 1.8, human_accountability: -0.2, opportunity_cost: 1.1, permissionless_acceleration: 1.8 }
       ]
     };
 
@@ -2393,8 +2350,8 @@
       }
     };
 
-    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "D01", "R01", "R04", "E01", "H01", "H03", "H04"];
-    const scenarioOrder = ["V2", "V4", "V3"];
+    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "D01", "R01", "R04", "E01", "H01", "H04"];
+    const scenarioOrder = ["V3"];
 
     const introPage = {
       id: "intro",
@@ -2402,7 +2359,7 @@
       title: "欢迎",
       tag: "开始",
       instruction: "开始前请先阅读",
-      prompt: "欢迎参加 AI 治理人格测试。",
+      prompt: "欢迎参加 AI Persona 测试。",
       sections: [
         {
           title: "适合谁填写",
@@ -2410,7 +2367,7 @@
         },
         {
           title: "你需要做什么",
-          body: "你将回答 16 个简短问题。每题选择最接近你看法的选项；即使没有完美答案，也请选择相对最接近的一项。有些问题会比较抽象，也可能带有政治或价值判断。如果两个答案都部分正确，请选择更接近你默认判断的那个。"
+          body: "你将回答 13 个简短问题。每题选择最接近你看法的选项；即使没有完美答案，也请选择相对最接近的一项。有些问题会比较抽象，也可能带有政治或价值判断。如果两个答案都部分正确，请选择更接近你默认判断的那个。"
         },
         {
           title: "数据说明",
@@ -2424,8 +2381,8 @@
           href: "ai-governance-spectrum.html"
         },
         {
-          title: "AI 治理人格档案",
-          body: "查看 10 种 AI 治理人格、头像和代表文本。",
+          title: "AI Persona 档案",
+          body: "查看 10 种 AI Persona、头像和代表文本。",
           href: "ai-personality-profiles.html"
         }
       ],
@@ -2457,11 +2414,11 @@
       {
         id: "closestStatement",
         kind: "statement",
-        title: "AI 治理人格校验（多选）",
+        title: "AI Persona 校验（多选）",
         subtitle: "最后一题为多选，不进入坐标计算，用于复查分类",
         tag: "SELF",
         instruction: "这是多选题：可以选择多个接近你的说法；如果都不像，请只选最后一项",
-        prompt: "下面哪些话接近你现在的 AI 治理人格？（可多选）",
+        prompt: "下面哪些话接近你现在的 AI Persona？（可多选）",
         options: statements.map((statement, i) => [statement, String(i + 1), statement]),
         multiple: true,
         exclusiveValue: statements[statements.length - 1]
@@ -3797,7 +3754,7 @@
 
       ctx.fillStyle = "#0f172a";
       ctx.font = "900 25px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      ctx.fillText("AI 治理人格", 62, 78);
+      ctx.fillText("AI Persona", 62, 78);
       ctx.fillStyle = "#64748b";
       ctx.font = "720 14px Inter, PingFang SC, Microsoft YaHei, sans-serif";
       ctx.fillText("测测你在 AI 思想光谱中的位置", 62, 104);
@@ -3917,7 +3874,7 @@
       ctx.fillRect(0, 0, width, 48);
       ctx.fillStyle = "#17202a";
       ctx.font = "800 13px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      ctx.fillText("你的 AI 治理人格是什么？", 10, 28);
+      ctx.fillText("你的 AI Persona 是什么？", 10, 28);
       ctx.fillStyle = "#667085";
       ctx.font = "760 12px Inter, PingFang SC, Microsoft YaHei, sans-serif";
       ctx.textAlign = "right";
@@ -4038,7 +3995,7 @@
       ctx.fill();
       ctx.fillStyle = "#0b5d55";
       ctx.font = "850 15px Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      ctx.fillText("测测你的 AI 治理人格", 34, y + 32);
+      ctx.fillText("测测你的 AI Persona", 34, y + 32);
       ctx.fillStyle = "#344054";
       ctx.font = "720 12px Inter, PingFang SC, Microsoft YaHei, sans-serif";
       ctx.fillText("ai-persona-qxad5fjx.edgeone.cool", 34, y + 58);

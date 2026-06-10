@@ -1493,7 +1493,7 @@
       <div class="brand">
         <strong class="brand-title">AI Persona</strong>
         <strong class="brand-progress" id="brandProgress">Start</strong>
-        <span>16 questions to see where you stand on AI risk, governance, openness, and human control.</span>
+        <span>13 questions to see where you stand on AI risk, governance, openness, and human control.</span>
       </div>
       <div class="topbar-actions">
         <a class="lang-link" href="/ch/">中文</a>
@@ -1771,19 +1771,6 @@
         ]
       },
       {
-        id: "H03",
-        dimension: "h",
-        direction: -1,
-        facet: "anti-finalizing-current-preferences",
-        text: "A city AI says a new housing plan would cut rent and traffic, but many current residents dislike the change. What should happen?",
-        options: [
-          ["1", "A", "Do not proceed if it seriously harms current residents."],
-          ["2.33", "B", "Proceed only if residents can review and change the plan."],
-          ["3.67", "C", "Try a small pilot first and make it easy to stop."],
-          ["5", "D", "If the evidence is strong, the city should still make the change."]
-        ]
-      },
-      {
         id: "H04",
         dimension: "h",
         direction: -1,
@@ -1800,19 +1787,9 @@
 
     const scenarios = [
       {
-        id: "V2",
-        prompt: "A government wants to use AI to help screen welfare, immigration, or hiring applications. The model is more accurate on average, but individual errors are hard to appeal. What do you support?",
-        options: ["Pause or prohibit it because rights and accountability come first", "Use it only with strict audits, appeal rights, and human responsibility", "Deploy it if accuracy is higher, then keep monitoring problems", "Deploy it broadly because human bureaucracy is also biased and inefficient"]
-      },
-      {
         id: "V3",
         prompt: "A validated AI research tool can suggest directions, design experiments, and analyze results much faster. Some judgments are hard for humans to trace. What should happen?",
         options: ["Slow deployment because autonomous research capability creates strategic risk", "Keep it inside governed institutions with strict access limits", "Deploy it widely because the disease, climate, and productivity gains are huge", "Accelerate it because intelligence growth itself is an important opportunity"]
-      },
-      {
-        id: "V4",
-        prompt: "A company can open-source model weights. Openness promotes innovation but can make misuse harder to control. What should it do?",
-        options: ["Do not open weights above dangerous capability thresholds", "Open only through controlled access and auditing", "Open if reasonable mitigations are in place", "Open as much as possible because decentralization is the best check on institutions"]
       }
     ];
 
@@ -1833,9 +1810,7 @@
     const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST", ""];
 
     const scenarioProfiles = {
-      V2: ["AUDT", "SAFE", "NORM", "BOOM"],
-      V3: ["STOP", "SAFE", "BOOM", "SING"],
-      V4: ["STOP", "SAFE", "NORM", "EACC"]
+      V3: ["STOP", "SAFE", "BOOM", "SING"]
     };
 
     const profiles = {
@@ -1949,12 +1924,6 @@
         "4": { human_accountability: 1.2, intelligence_centrality: -0.5, present_social_harm: 0.3, computation_epistemology: -0.2 },
         "5": { human_accountability: 2, intelligence_centrality: -1, present_social_harm: 0.4, computation_epistemology: -0.6 }
       },
-      H03: {
-        "1": { human_accountability: 2, intelligence_centrality: -1.2, present_social_harm: 0.6, governance_control: 0.4 },
-        "2.33": { human_accountability: 1.1, intelligence_centrality: -0.3, governance_control: 0.25 },
-        "3.67": { human_accountability: -0.35, intelligence_centrality: 0.95, openness_build: 0.25, opportunity_cost: 0.35, computation_epistemology: 0.15 },
-        "5": { human_accountability: -1.75, intelligence_centrality: 2, opportunity_cost: 0.45, permissionless_acceleration: 0.2, computation_epistemology: 0.35 }
-      },
       H04: {
         "1": { human_accountability: 2, intelligence_centrality: -2, computation_epistemology: -0.7 },
         "3": { capability_skepticism: 1.5, human_accountability: 0.2, intelligence_centrality: -0.2, computation_epistemology: -0.8 },
@@ -1969,23 +1938,11 @@
     ]));
 
     const scenarioVectorRules = {
-      V2: [
-        { present_social_harm: 1.1, governance_control: 1.4, openness_build: -1, human_accountability: 1.7, opportunity_cost: -0.6 },
-        { present_social_harm: 0.8, governance_control: 0.9, openness_build: -0.3, human_accountability: 1.6, civilizational_risk: 0.2 },
-        { governance_control: 0.1, openness_build: 0.6, human_accountability: 0.4, opportunity_cost: 0.9, capability_skepticism: -0.2 },
-        { governance_control: -0.8, openness_build: 1, human_accountability: -0.2, opportunity_cost: 1.1, capability_skepticism: -0.4, computation_epistemology: 0.2 }
-      ],
       V3: [
         { civilizational_risk: 1.6, governance_control: 1.4, openness_build: -1.2, human_accountability: 0.8, opportunity_cost: -0.8 },
         { civilizational_risk: 0.8, governance_control: 1.2, openness_build: -0.6, human_accountability: 1, opportunity_cost: -0.2 },
         { civilizational_risk: -0.3, governance_control: -0.1, openness_build: 0.8, human_accountability: 0.3, opportunity_cost: 1.5, capability_skepticism: -0.2 },
         { civilizational_risk: -0.2, governance_control: -0.4, openness_build: 1.1, human_accountability: -0.8, intelligence_centrality: 1.5, opportunity_cost: 1.8, permissionless_acceleration: 0.5, computation_epistemology: 0.3 }
-      ],
-      V4: [
-        { civilizational_risk: 1.2, governance_control: 1.6, openness_build: -1.5, human_accountability: 0.8, opportunity_cost: -0.6 },
-        { civilizational_risk: 0.6, governance_control: 1, openness_build: -0.5, human_accountability: 1, opportunity_cost: -0.1 },
-        { governance_control: 0.1, openness_build: 0.6, human_accountability: 0.4, opportunity_cost: 0.7 },
-        { governance_control: -1, openness_build: 1.8, human_accountability: -0.2, opportunity_cost: 1.1, permissionless_acceleration: 1.8 }
       ]
     };
 
@@ -2392,8 +2349,8 @@
       }
     };
 
-    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "D01", "R01", "R04", "E01", "H01", "H03", "H04"];
-    const scenarioOrder = ["V2", "V4", "V3"];
+    const coreQuestionOrder = ["U01", "H02", "C04", "C02", "C03", "D01", "R01", "R04", "E01", "H01", "H04"];
+    const scenarioOrder = ["V3"];
 
     const introPage = {
       id: "intro",
@@ -2409,7 +2366,7 @@
         },
         {
           title: "What you will do",
-          body: "Answer 16 short questions. For each one, choose the option closest to your view, even if no option fits perfectly. Some questions are abstract or politically loaded. If two answers both seem partly right, choose the one closest to your default judgment."
+          body: "Answer 13 short questions. For each one, choose the option closest to your view, even if no option fits perfectly. Some questions are abstract or politically loaded. If two answers both seem partly right, choose the one closest to your default judgment."
         },
         {
           title: "Data notice",
