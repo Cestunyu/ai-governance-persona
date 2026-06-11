@@ -1,0 +1,851 @@
+{
+  "measurementVersion": "2026-06-10-r04-safety-release-v13",
+  "questions": [
+    {
+      "id": "R01",
+      "dimension": "r",
+      "diagnosis": "catastrophic",
+      "facet": "severe risk diagnosis",
+      "text": "What risk from more powerful AI should be prevented first?",
+      "options": [
+        [
+          "1",
+          "A",
+          "The risk may be overstated; near-term AI problems should not be treated as a systemic crisis."
+        ],
+        [
+          "2.33",
+          "B",
+          "Concrete social harm: AI could be used for surveillance, discrimination, or denying people opportunities."
+        ],
+        [
+          "3.67",
+          "C",
+          "Loss of control: frontier systems may take actions humans cannot stop."
+        ],
+        [
+          "5",
+          "D",
+          "Loss of social direction: AI could expand faster than public decision-making can keep up."
+        ]
+      ]
+    },
+    {
+      "id": "R04",
+      "dimension": "r",
+      "diagnosis": "opportunity",
+      "facet": "opportunity-cost diagnosis",
+      "text": "If the government slows new AI model releases in the name of safety, which view is closest to yours?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Safety should come first. The stronger the system, the less it should be rushed into everyone's hands."
+        ],
+        [
+          "2.33",
+          "B",
+          "Restrictions like this can lock power inside a few big companies and governments, making outside scrutiny harder."
+        ],
+        [
+          "3.67",
+          "C",
+          "Slowing releases too much means useful AI tools that could help many people arrive later."
+        ],
+        [
+          "5",
+          "D",
+          "The larger cost is slowing intelligence itself, and shrinking humanity's future."
+        ]
+      ]
+    },
+    {
+      "id": "L01",
+      "dimension": "l",
+      "facet": "labor replacement and benefit sharing",
+      "text": "If AI makes many jobs cheaper and more automated, and could even cause large-scale unemployment, what should policy do first?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Let AI be used first. Even if some jobs disappear, higher productivity will create new opportunities."
+        ],
+        [
+          "2.33",
+          "B",
+          "Help people change jobs. The priority is not to block AI, but to help affected workers move into new roles."
+        ],
+        [
+          "3.67",
+          "C",
+          "Share more of the gains. The wealth created by AI should not flow only to companies and investors; workers should benefit too."
+        ],
+        [
+          "5",
+          "D",
+          "Limit replacement first. AI systems that could replace people at large scale should not be deployed quickly without protections."
+        ]
+      ]
+    },
+    {
+      "id": "I01",
+      "dimension": "i",
+      "facet": "information ecosystem and synthetic content",
+      "text": "An AI-generated fake video spreads quickly online, and many people think it is real. What is the most important problem?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Verification is too slow. Platforms and media should label suspicious content faster so people know it may be AI-generated."
+        ],
+        [
+          "2.33",
+          "B",
+          "These tools are too easy to misuse. AI tools that can realistically impersonate real people should not be freely available."
+        ],
+        [
+          "3.67",
+          "C",
+          "Platforms amplify fake content. The deeper problem is not one fake video, but who profits from spread and attention."
+        ],
+        [
+          "5",
+          "D",
+          "AI creation should not be restricted because of this. People who fake things should be responsible, but ordinary AI expression should not be over-controlled."
+        ]
+      ]
+    },
+    {
+      "id": "T01",
+      "dimension": "t",
+      "facet": "training data and permission rules",
+      "text": "AI companies train models on public articles, images, and code, but the authors did not clearly consent. What worries you most?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Too many limits would slow progress. Public content is already learned from and referenced, and AI should be able to learn from it too."
+        ],
+        [
+          "2.33",
+          "B",
+          "Creators are being taken from. Models get stronger from other people's work, but the original creators have no choice and receive no return."
+        ],
+        [
+          "3.67",
+          "C",
+          "Personal content gets misused. Publicly visible does not mean free to train on, especially when it involves real people's lives."
+        ],
+        [
+          "5",
+          "D",
+          "Complex permission rules would push out small teams and open-source projects. In the end, only big companies could afford the data and legal costs."
+        ]
+      ]
+    },
+    {
+      "id": "D01",
+      "dimension": "d",
+      "facet": "democratic-society threat diagnosis",
+      "text": "A city uses AI to help allocate welfare services. Residents cannot easily understand the reasons or appeal decisions. What worries you most?",
+      "options": [
+        [
+          "1",
+          "A",
+          "This worry may be overstated; the real bottlenecks are still budgets and administrative capacity."
+        ],
+        [
+          "2.33",
+          "B",
+          "The value tradeoff is opaque; residents cannot tell why some people benefit and others lose."
+        ],
+        [
+          "3.67",
+          "C",
+          "Appeals become harder; when the system is wrong, ordinary people struggle to get decisions reviewed."
+        ],
+        [
+          "5",
+          "D",
+          "Human judgment gets sidelined; if the model looks effective, objections are easier to ignore."
+        ]
+      ]
+    },
+    {
+      "id": "E01",
+      "dimension": "e",
+      "facet": "source of AI progress",
+      "text": "What is the most reliable source of future AI progress?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Better human theories, interpretable mechanisms, and expert judgment."
+        ],
+        [
+          "2.33",
+          "B",
+          "Product iteration in concrete domains and real-world results."
+        ],
+        [
+          "3.67",
+          "C",
+          "More compute, search, data, and simple general methods."
+        ],
+        [
+          "5",
+          "D",
+          "Open it quickly to more builders so competition can find the answer."
+        ]
+      ]
+    },
+    {
+      "id": "C02",
+      "dimension": "c",
+      "direction": -1,
+      "facet": "governance blind spot judgment",
+      "text": "In AI governance, what are you most worried will be overlooked?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Rules may become too strict, leaving the strongest AI systems controlled by a few big companies."
+        ],
+        [
+          "2.33",
+          "B",
+          "Many claims about AI capabilities still lack evidence, and policy may be driven by exaggerated publicity."
+        ],
+        [
+          "3.67",
+          "C",
+          "Incident reporting and outside review may be missing. When systems fail, outsiders may not know what happened."
+        ],
+        [
+          "5",
+          "D",
+          "Affected people may be left out of the discussion, such as workers, surveilled people, or people affected by algorithmic decisions."
+        ]
+      ]
+    },
+    {
+      "id": "C03",
+      "dimension": "c",
+      "direction": 1,
+      "facet": "open competition / anti-gatekeeping",
+      "text": "For high-capability, high-risk AI systems, which people or institutions should develop and use them?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Only a small number of approved, inspectable institutions should build and run them."
+        ],
+        [
+          "2.33",
+          "B",
+          "They do not need to be fully open, but regulators, researchers, and public institutions should at least be able to test them."
+        ],
+        [
+          "3",
+          "C",
+          "Big companies and governments should not be the only voices; ordinary people, open-source communities, and affected groups should also have a say."
+        ],
+        [
+          "5",
+          "D",
+          "More people should be able to use strong models to build things; open competition is better than a few actors deciding who gets access."
+        ]
+      ]
+    },
+    {
+      "id": "C04",
+      "dimension": "c",
+      "direction": 1,
+      "facet": "source of deployment evidence",
+      "text": "What should an AI system prove before its use is expanded?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Strict internal tests should come first; if a system fails key safety standards, access should not expand."
+        ],
+        [
+          "2.33",
+          "B",
+          "Start with small pilots, and expand only when the system can be monitored, stopped, and rolled back."
+        ],
+        [
+          "3.67",
+          "C",
+          "The priority should be whether affected people can appeal, and whether outside review finds social harm."
+        ],
+        [
+          "5",
+          "D",
+          "Put the system into real use quickly and iterate; wider use exposes problems sooner and helps fix them."
+        ]
+      ]
+    },
+    {
+      "id": "H01",
+      "dimension": "h",
+      "direction": 1,
+      "facet": "democratic goal selection",
+      "text": "Who should have the final say over the goals and limits of AI systems?",
+      "options": [
+        [
+          "1",
+          "A",
+          "They should mostly emerge through technical progress, market choice, and real-world use."
+        ],
+        [
+          "2.33",
+          "B",
+          "Companies, experts, and professional institutions should set most goals and limits because they understand the systems and can act faster."
+        ],
+        [
+          "3.67",
+          "C",
+          "If more advanced intelligence demonstrates better judgment, today's human preferences should not always have the final say."
+        ],
+        [
+          "5",
+          "D",
+          "Even if it is less efficient, AI's goals and limits must remain accountable to democracy, rights, and the public."
+        ]
+      ]
+    },
+    {
+      "id": "U01",
+      "dimension": "u",
+      "facet": "AI usage level",
+      "text": "How do you currently use AI?",
+      "options": [
+        [
+          "1",
+          "A",
+          "I rarely use AI products; someone pulled me into taking this quiz."
+        ],
+        [
+          "2.33",
+          "B",
+          "I use AI for chat, search, writing, translation, or summarizing."
+        ],
+        [
+          "3.67",
+          "C",
+          "I use AI for coding, research, or complex work, but I am not a heavy daily user."
+        ],
+        [
+          "5",
+          "D",
+          "I rely on AI heavily every workday, often iterating with it for long sessions."
+        ]
+      ]
+    },
+    {
+      "id": "H02",
+      "dimension": "h",
+      "direction": 1,
+      "facet": "AI role in public services",
+      "text": "How much decision-making should AI take on in healthcare and education?",
+      "options": [
+        [
+          "1",
+          "A",
+          "If AI clearly performs better, it can take on more decisions; humans should still provide oversight, appeals, and fallback."
+        ],
+        [
+          "3",
+          "B",
+          "Many current systems are still unreliable in real-world settings, so AI's responsibilities should not expand too early."
+        ],
+        [
+          "4",
+          "C",
+          "AI can provide recommendations, but accountable people must make the key decisions."
+        ],
+        [
+          "5",
+          "D",
+          "In decisions that strongly affect people's lives, models should not replace final human judgment."
+        ]
+      ]
+    },
+    {
+      "id": "H04",
+      "dimension": "h",
+      "direction": -1,
+      "facet": "AI judgment priority",
+      "text": "An AI medical system has been more accurate than doctors for many years, but doctors cannot fully explain some of its judgments. For a high-risk diagnosis, who should have the final say?",
+      "options": [
+        [
+          "1",
+          "A",
+          "Human doctors and patients must keep final authority; AI should only assist."
+        ],
+        [
+          "3",
+          "B",
+          "Be cautious; long-term reliability, bias, and failure cases still need more checking."
+        ],
+        [
+          "4",
+          "C",
+          "If the evidence stays strong for years, AI can lead this kind of concrete judgment."
+        ],
+        [
+          "5",
+          "D",
+          "If higher intelligence broadly surpasses humans, decision power should gradually move toward it."
+        ]
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "V3",
+      "prompt": "An AI research tool works well, but humans struggle to trace the reasoning behind key judgments. How should it be used?",
+      "options": [
+        "Slow down first, because this kind of capability could become hard to contain",
+        "Let only trusted institutions use it, with clear records of responsibility",
+        "Get it to research teams quickly, because it could help many people",
+        "Accelerate it, because stronger intelligence is itself an important opportunity"
+      ]
+    }
+  ],
+  "statements": [
+    "AI may destroy human civilization, so alignment and governance must come first.",
+    "Advanced AI should not be treated as ordinary software; before broad deployment, it must remain controllable and accountable to humans.",
+    "The biggest AI problem is not a distant future; people are already being affected, watched, or excluded.",
+    "AI is an important but normal technology: useful, fallible, and best governed by context.",
+    "Many AI narratives package ordinary systems as magic; cut through hype and overclaiming.",
+    "Scaling, search, data, and compute are the deepest lessons; human intuition should be discounted.",
+    "AI should reach the real world faster because it can help many people.",
+    "AI is not merely a tool; it is a path toward the singularity, human-machine merger, or civilizational upgrade.",
+    "AI acceleration has moral urgency and should not be constrained by human fear.",
+    "If higher intelligence or technocapital outgrows a human/social-structure-centered frame, that is not necessarily failure; humans may be a transitional stage.",
+    "None of these fit."
+  ],
+  "statementProfiles": [
+    "STOP",
+    "SAFE",
+    "AUDT",
+    "NORM",
+    "SKEP",
+    "GPUC",
+    "BOOM",
+    "SING",
+    "EACC",
+    "POST",
+    ""
+  ],
+  "scenarioProfiles": {
+    "V3": [
+      "STOP",
+      "SAFE",
+      "BOOM",
+      "SING"
+    ]
+  },
+  "optionVectorRules": {
+    "R01": {
+      "1": {
+        "civilizational_risk": -2,
+        "present_social_harm": 0.4,
+        "capability_skepticism": 2,
+        "opportunity_cost": -0.4,
+        "computation_epistemology": -0.9
+      },
+      "5": {
+        "civilizational_risk": 0.6,
+        "openness_build": 0.3,
+        "human_accountability": -1.5,
+        "intelligence_centrality": 1.5,
+        "capability_skepticism": -0.4,
+        "opportunity_cost": 0.5,
+        "computation_epistemology": 0.4
+      },
+      "2.33": {
+        "civilizational_risk": -0.5,
+        "present_social_harm": 1.8,
+        "governance_control": 0.6,
+        "human_accountability": 1.1,
+        "capability_skepticism": 0.5
+      },
+      "3.67": {
+        "civilizational_risk": 1.8,
+        "governance_control": 1,
+        "human_accountability": 0.8,
+        "intelligence_centrality": -0.6,
+        "capability_skepticism": -0.8
+      }
+    },
+    "R04": {
+      "1": {
+        "civilizational_risk": 1.1,
+        "governance_control": 1,
+        "openness_build": -0.8,
+        "human_accountability": 0.5,
+        "opportunity_cost": -1.7
+      },
+      "5": {
+        "civilizational_risk": -0.3,
+        "openness_build": 0.8,
+        "human_accountability": -1,
+        "intelligence_centrality": 1.4,
+        "opportunity_cost": 1.8,
+        "capability_skepticism": -0.3,
+        "permissionless_acceleration": 0.5,
+        "computation_epistemology": 0.4
+      },
+      "2.33": {
+        "present_social_harm": 0.9,
+        "governance_control": -0.6,
+        "openness_build": 1,
+        "human_accountability": 0.4,
+        "opportunity_cost": 0.8,
+        "capability_skepticism": 0.2,
+        "permissionless_acceleration": 1.4
+      },
+      "3.67": {
+        "civilizational_risk": -0.2,
+        "governance_control": -0.2,
+        "openness_build": 0.7,
+        "human_accountability": 0.3,
+        "opportunity_cost": 1.5
+      }
+    },
+    "E01": {
+      "1": {
+        "human_accountability": 0.5,
+        "intelligence_centrality": -0.2,
+        "capability_skepticism": 0.4,
+        "computation_epistemology": -1.4
+      },
+      "5": {
+        "governance_control": -0.8,
+        "openness_build": 1.5,
+        "human_accountability": -0.2,
+        "opportunity_cost": 0.7,
+        "permissionless_acceleration": 1.7
+      },
+      "2.33": {
+        "openness_build": 0.3,
+        "human_accountability": 0.5,
+        "opportunity_cost": 0.6,
+        "computation_epistemology": 0.1
+      },
+      "3.67": {
+        "intelligence_centrality": 0.5,
+        "capability_skepticism": -0.8,
+        "opportunity_cost": 0.3,
+        "computation_epistemology": 2
+      }
+    },
+    "D01": {
+      "1": {
+        "civilizational_risk": -0.9,
+        "capability_skepticism": 1.4,
+        "present_social_harm": 0.2,
+        "human_accountability": 0.2,
+        "computation_epistemology": -0.5
+      },
+      "5": {
+        "intelligence_centrality": 1.4,
+        "human_accountability": -1,
+        "civilizational_risk": 0.5,
+        "opportunity_cost": 0.2
+      },
+      "2.33": {
+        "present_social_harm": 1.4,
+        "governance_control": 0.6,
+        "human_accountability": 1,
+        "capability_skepticism": 0.4
+      },
+      "3.67": {
+        "present_social_harm": 2,
+        "governance_control": 1.2,
+        "openness_build": -0.5,
+        "human_accountability": 1.4
+      }
+    },
+    "C02": {
+      "1": {
+        "governance_control": -1.4,
+        "openness_build": 1.7,
+        "human_accountability": -0.4,
+        "opportunity_cost": 0.7,
+        "permissionless_acceleration": 1.1
+      },
+      "5": {
+        "governance_control": 0.9,
+        "openness_build": -0.2,
+        "human_accountability": 1.4,
+        "present_social_harm": 1.7,
+        "capability_skepticism": 0.2
+      },
+      "2.33": {
+        "civilizational_risk": -0.6,
+        "governance_control": 0.2,
+        "openness_build": 0.1,
+        "human_accountability": 0.3,
+        "capability_skepticism": 1.4,
+        "opportunity_cost": -0.2,
+        "computation_epistemology": -0.6
+      },
+      "3.67": {
+        "governance_control": 0.7,
+        "openness_build": -0.2,
+        "human_accountability": 1.2,
+        "present_social_harm": 0.4,
+        "capability_skepticism": 0.2
+      }
+    },
+    "L01": {
+      "1": {
+        "openness_build": 1.1,
+        "opportunity_cost": 1.4,
+        "governance_control": -0.4,
+        "human_accountability": -0.3,
+        "present_social_harm": -0.3
+      },
+      "5": {
+        "present_social_harm": 1.1,
+        "human_accountability": 1.2,
+        "governance_control": 1.4,
+        "openness_build": -1.1,
+        "opportunity_cost": -0.6
+      },
+      "2.33": {
+        "opportunity_cost": 0.5,
+        "human_accountability": 0.5,
+        "present_social_harm": 0.3,
+        "governance_control": 0.1
+      },
+      "3.67": {
+        "present_social_harm": 1.4,
+        "human_accountability": 1.4,
+        "governance_control": 0.6,
+        "openness_build": -0.2
+      }
+    },
+    "I01": {
+      "1": {
+        "governance_control": 0.4,
+        "human_accountability": 0.8,
+        "capability_skepticism": 0.5,
+        "present_social_harm": 0.4
+      },
+      "5": {
+        "openness_build": 1.5,
+        "governance_control": -1.1,
+        "opportunity_cost": 0.7,
+        "permissionless_acceleration": 1,
+        "human_accountability": -0.2
+      },
+      "2.33": {
+        "governance_control": 1.6,
+        "openness_build": -1.1,
+        "human_accountability": 0.9,
+        "present_social_harm": 0.7,
+        "civilizational_risk": 0.3
+      },
+      "3.67": {
+        "present_social_harm": 1.8,
+        "human_accountability": 1.3,
+        "governance_control": 0.5,
+        "capability_skepticism": 0.3
+      }
+    },
+    "T01": {
+      "1": {
+        "openness_build": 1.1,
+        "opportunity_cost": 1.1,
+        "governance_control": -0.5,
+        "permissionless_acceleration": 0.7,
+        "computation_epistemology": 0.3
+      },
+      "5": {
+        "openness_build": 1.4,
+        "governance_control": -0.8,
+        "permissionless_acceleration": 1.4,
+        "opportunity_cost": 0.6,
+        "human_accountability": 0.2
+      },
+      "2.33": {
+        "present_social_harm": 1.2,
+        "human_accountability": 1.2,
+        "governance_control": 0.4,
+        "openness_build": -0.2
+      },
+      "3.67": {
+        "present_social_harm": 0.9,
+        "human_accountability": 1.1,
+        "governance_control": 1.2,
+        "openness_build": -0.5,
+        "capability_skepticism": 0.2
+      }
+    },
+    "C03": {
+      "1": {
+        "civilizational_risk": 1.2,
+        "governance_control": 1.9,
+        "openness_build": -1.5,
+        "human_accountability": 0.9,
+        "opportunity_cost": -0.6
+      },
+      "3": {
+        "present_social_harm": 1.4,
+        "governance_control": 0.3,
+        "openness_build": 0.8,
+        "human_accountability": 1.2,
+        "capability_skepticism": 0.3
+      },
+      "5": {
+        "governance_control": -1.3,
+        "openness_build": 1.9,
+        "human_accountability": -0.4,
+        "opportunity_cost": 1.1,
+        "capability_skepticism": -0.2,
+        "permissionless_acceleration": 2
+      },
+      "2.33": {
+        "civilizational_risk": 0.5,
+        "governance_control": 1,
+        "openness_build": -0.3,
+        "human_accountability": 0.8,
+        "present_social_harm": 0.2
+      }
+    },
+    "C04": {
+      "1": {
+        "civilizational_risk": 1.2,
+        "governance_control": 1.8,
+        "openness_build": -1.5,
+        "human_accountability": 0.6,
+        "opportunity_cost": -0.9
+      },
+      "5": {
+        "governance_control": -0.9,
+        "openness_build": 1.6,
+        "human_accountability": -0.2,
+        "opportunity_cost": 1.1,
+        "capability_skepticism": -0.2,
+        "permissionless_acceleration": 1.1
+      },
+      "2.33": {
+        "civilizational_risk": 0.4,
+        "governance_control": 1,
+        "openness_build": -0.3,
+        "human_accountability": 0.8,
+        "opportunity_cost": -0.1
+      },
+      "3.67": {
+        "present_social_harm": 1.6,
+        "governance_control": 0.8,
+        "openness_build": -0.1,
+        "human_accountability": 1.5,
+        "capability_skepticism": 0.2
+      }
+    },
+    "H01": {
+      "1": {
+        "governance_control": -0.5,
+        "openness_build": 1.1,
+        "human_accountability": -0.8,
+        "intelligence_centrality": 0.2,
+        "opportunity_cost": 0.8
+      },
+      "5": {
+        "human_accountability": 2,
+        "intelligence_centrality": -0.7,
+        "present_social_harm": 0.7
+      },
+      "2.33": {
+        "governance_control": 0.6,
+        "human_accountability": -0.3,
+        "intelligence_centrality": 0.2,
+        "capability_skepticism": -0.2
+      },
+      "3.67": {
+        "openness_build": 0.2,
+        "human_accountability": -1.8,
+        "intelligence_centrality": 1.8,
+        "capability_skepticism": -0.4,
+        "opportunity_cost": 0.4
+      }
+    },
+    "H02": {
+      "1": {
+        "openness_build": 0.7,
+        "human_accountability": 0.4,
+        "intelligence_centrality": 0.2,
+        "opportunity_cost": 1.2,
+        "computation_epistemology": 0.2
+      },
+      "3": {
+        "capability_skepticism": 1.4,
+        "human_accountability": 0.1,
+        "intelligence_centrality": -0.2,
+        "opportunity_cost": -0.2,
+        "computation_epistemology": -0.7
+      },
+      "4": {
+        "human_accountability": 1.2,
+        "intelligence_centrality": -0.5,
+        "present_social_harm": 0.3,
+        "computation_epistemology": -0.2
+      },
+      "5": {
+        "human_accountability": 2,
+        "intelligence_centrality": -1,
+        "present_social_harm": 0.4,
+        "computation_epistemology": -0.6
+      }
+    },
+    "H04": {
+      "1": {
+        "human_accountability": 2,
+        "intelligence_centrality": -2,
+        "computation_epistemology": -0.7
+      },
+      "3": {
+        "capability_skepticism": 1.5,
+        "human_accountability": 0.2,
+        "intelligence_centrality": -0.2,
+        "computation_epistemology": -0.8
+      },
+      "4": {
+        "human_accountability": -0.4,
+        "intelligence_centrality": 0.8,
+        "capability_skepticism": -0.6,
+        "computation_epistemology": 2
+      },
+      "5": {
+        "human_accountability": -1.8,
+        "intelligence_centrality": 2,
+        "computation_epistemology": 0.3
+      }
+    }
+  },
+  "coreQuestionOrder": [
+    "U01",
+    "H02",
+    "C04",
+    "C02",
+    "C03",
+    "L01",
+    "I01",
+    "T01",
+    "D01",
+    "R01",
+    "R04",
+    "E01",
+    "H01",
+    "H04"
+  ],
+  "scenarioOrder": [
+    "V3"
+  ]
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPUC Share Demo</title>
+  <style>
+    body { margin: 0; background: #eef2f7; color: #152033; font-family: Inter, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }
+    main { width: min(1180px, calc(100vw - 28px)); margin: 0 auto; padding: 28px 0 48px; }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    p { margin: 0 0 22px; color: #657386; line-height: 1.6; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; align-items: start; }
+    figure { margin: 0; border: 1px solid #d8e2ee; border-radius: 10px; background: white; padding: 10px; }
+    img { display: block; width: 100%; border-radius: 8px; background: #edf2f7; }
+    figcaption { padding: 10px 2px 2px; font-size: 13px; font-weight: 800; color: #334155; }
+    small { display: block; margin-top: 4px; color: #657386; font-weight: 650; line-height: 1.45; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>GPUC Share Demo</h1>
+    <p>All cards keep the 2D coordinate map smaller than the profile picture, make the profile picture dominant, state the closest reference clearly, and use zh/en-specific QR codes.</p>
+    <section class="grid">
+      <figure><img src="gpuc-share-zh-a-avatar-first.png" alt="zh A / Avatar first"><figcaption>ZH A / Avatar first<small>The profile picture dominates; map and QR stay deliberately small.</small></figcaption></figure>
+<figure><img src="gpuc-share-zh-b-nearest-first.png" alt="zh B / Nearest person first"><figcaption>ZH B / Nearest person first<small>The closest reference is called out directly under the profile identity.</small></figcaption></figure>
+<figure><img src="gpuc-share-zh-c-compact-poster.png" alt="zh C / Compact poster"><figcaption>ZH C / Compact poster<small>A tighter share-card layout with the same three required elements.</small></figcaption></figure>
+<figure><img src="gpuc-share-en-a-avatar-first.png" alt="en A / Avatar first"><figcaption>EN A / Avatar first<small>The profile picture dominates; map and QR stay deliberately small.</small></figcaption></figure>
+<figure><img src="gpuc-share-en-b-nearest-first.png" alt="en B / Nearest person first"><figcaption>EN B / Nearest person first<small>The closest reference is called out directly under the profile identity.</small></figcaption></figure>
+<figure><img src="gpuc-share-en-c-compact-poster.png" alt="en C / Compact poster"><figcaption>EN C / Compact poster<small>A tighter share-card layout with the same three required elements.</small></figcaption></figure>
+    </section>
+  </main>
+</body>
+</html>

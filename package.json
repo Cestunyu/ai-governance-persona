@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "data:export": "scripts/export-remote-results.sh",
+    "quiz:canonicalize": "node scripts/sync-canonical-quiz.js",
+    "quiz:check": "node scripts/check-quiz-sync.js",
+    "release:check": "npm run quiz:check",
+    "release:bundle": "node scripts/build-release-bundle.js"
+  },
   "dependencies": {
     "@edgeone/pages-blob": "0.0.8"
   }

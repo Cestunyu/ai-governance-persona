@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1",
+  "task_id": "task-2026-06-07-index-introduction-demo-exploration",
+  "project_id": "ai-ideology-quiz",
+  "status": "captured",
+  "created_at": "2026-06-07T02:52:53+02:00",
+  "updated_at": "2026-06-07T02:52:53+02:00",
+  "objective": "Create several alternative demo concepts for improving the index and introduction experience, aiming for a plain but distinctive first impression before the user chooses a final direction.",
+  "acceptance_criteria": [
+    "Produce multiple index/introduction design directions rather than one final implementation.",
+    "Each demo direction should explain layout, tone, first-screen content, and why it improves project completeness.",
+    "Do not replace production pages until the user confirms a preferred version."
+  ],
+  "context_refs": [
+    {
+      "type": "state",
+      "path": "/Users/yuun/Documents/GitHub/ai-ideology-quiz/STATE.json",
+      "notes": "canonical project state"
+    }
+  ],
+  "policy": {
+    "external_writes": false,
+    "allowed_file_writes": [
+      "/Users/yuun/Documents/GitHub/ai-ideology-quiz"
+    ],
+    "forbidden_reads": [
+      ".env"
+    ]
+  },
+  "review": {
+    "required": true,
+    "mode": "read_only_after_write",
+    "checks": [
+      "state_consistency",
+      "source_traceability"
+    ]
+  }
+}

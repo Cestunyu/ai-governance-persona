@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Version D Share Card Audit</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --audit-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f6f8;
+      color: #17202a;
+      font-family: var(--audit-font);
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 18px 0 36px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      margin: 0 -14px 18px;
+      border-bottom: 1px solid #d9e2ef;
+      background: rgba(245, 246, 248, 0.94);
+      padding: 14px;
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      color: #111827;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .note {
+      margin: 0;
+      color: #667085;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .toolbar label {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    select,
+    button {
+      min-height: 34px;
+      border: 1px solid #cfd8e5;
+      border-radius: 7px;
+      background: #fff;
+      color: #1f2937;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 760;
+      padding: 6px 9px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .status {
+      display: inline-flex;
+      min-height: 28px;
+      align-items: center;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #123a8a;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 820;
+    }
+
+    section {
+      margin-top: 22px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      color: #111827;
+      font-size: 17px;
+      line-height: 1.2;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .demo {
+      min-width: 0;
+    }
+
+    .caption {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      width: 410px;
+      margin: 0 auto 8px;
+      color: #344054;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .caption span {
+      display: block;
+      color: #667085;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .badge {
+      align-self: start;
+      border-radius: 999px;
+      background: #ecfdf3;
+      color: #067647;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .badge.bad {
+      background: #fef3f2;
+      color: #b42318;
+    }
+
+    .card {
+      position: relative;
+      width: 410px;
+      height: 820px;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(20, 31, 52, 0.05);
+      font-family: var(--audit-font);
+    }
+
+    .top {
+      position: absolute;
+      top: 30px;
+      left: 22px;
+      right: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      min-width: 0;
+      overflow: hidden;
+      color: #132036;
+      font-size: 17px;
+      font-weight: 820;
+      line-height: 1.1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .pill {
+      display: none;
+    }
+
+    .avatar {
+      position: absolute;
+      top: 70px;
+      left: 24px;
+      width: 362px;
+      height: 362px;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #f8fafc;
+    }
+
+    .avatar img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .identity {
+      position: absolute;
+      top: 452px;
+      left: 30px;
+      width: 350px;
+    }
+
+    .code-line {
+      overflow: hidden;
+      color: #9a5b12;
+      font-size: 17px;
+      font-weight: 840;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .title {
+      margin-top: 7px;
+      overflow-wrap: anywhere;
+      color: #111827;
+      font-size: 26px;
+      font-weight: 780;
+      line-height: 1.12;
+    }
+
+    .sentence {
+      position: absolute;
+      top: 526px;
+      left: 30px;
+      width: 350px;
+      height: 112px;
+      overflow: hidden;
+      background: transparent;
+      padding: 0;
+    }
+
+    .short {
+      display: -webkit-box;
+      max-height: 57px;
+      margin: 0 0 7px;
+      overflow: hidden;
+      color: #132036;
+      font-size: 21px;
+      font-weight: 780;
+      line-height: 1.35;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .explain {
+      display: -webkit-box;
+      max-height: 58px;
+      margin: 0;
+      overflow: hidden;
+      color: #667085;
+      font-size: 13px;
+      font-weight: 520;
+      line-height: 1.45;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .nearest,
+    .mini-map,
+    .qr {
+      position: absolute;
+      top: 666px;
+      height: 82px;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .nearest {
+      left: 30px;
+      width: 170px;
+      padding: 15px 10px 15px 0;
+    }
+
+    .label {
+      margin: 0 0 9px;
+      color: #657386;
+      font-size: 11px;
+      font-weight: 760;
+      line-height: 1;
+    }
+
+    .nearest-name {
+      max-width: 100%;
+      overflow: hidden;
+      color: #111827;
+      font-size: 20px;
+      font-weight: 760;
+      line-height: 1.1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .mini-map {
+      left: 218px;
+      width: 82px;
+      border: 1px solid #edf1f6;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .mini-map::before,
+    .mini-map::after {
+      content: "";
+      position: absolute;
+      background: rgba(51, 65, 85, 0.24);
+    }
+
+    .mini-map::before {
+      top: 12px;
+      bottom: 12px;
+      left: 50%;
+      width: 1px;
+    }
+
+    .mini-map::after {
+      left: 12px;
+      right: 12px;
+      top: 50%;
+      height: 1px;
+    }
+
+    .dot {
+      position: absolute;
+      left: var(--dot-left);
+      top: var(--dot-top);
+      width: 14px;
+      height: 14px;
+      border: 3px solid #fff;
+      border-radius: 999px;
+      background: var(--profile-color);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 10px rgba(20, 31, 52, 0.18);
+    }
+
+    .qr {
+      left: 298px;
+      width: 82px;
+      display: grid;
+      place-items: center;
+      padding: 7px;
+    }
+
+    .qr img {
+      width: 68px;
+      height: 68px;
+      display: block;
+    }
+
+    .cta {
+      position: absolute;
+      top: 752px;
+      left: 30px;
+      width: 350px;
+      height: 43px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      overflow: hidden;
+      background: transparent;
+      color: #0f766e;
+      padding: 0;
+    }
+
+    .cta-text {
+      min-width: 0;
+      overflow: hidden;
+      font-size: 15px;
+      font-weight: 760;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .qr-pill {
+      flex: 0 0 auto;
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .audit-details {
+      width: 410px;
+      margin: 8px auto 0;
+      color: #667085;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .audit-details code {
+      color: #344054;
+      font-family: var(--audit-font);
+      font-weight: 780;
+    }
+
+    @media (max-width: 460px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .demo {
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Version D Share Card Audit</h1>
+      <p class="note">Version D editorial layout. This page generates all 10 personas in Chinese and English, uses the profile-specific nearest-reference candidate pool, and refits text after every font change.</p>
+      <div class="toolbar">
+        <label>
+          Font
+          <select id="fontSelect">
+            <option value='Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif'>System / Inter fallback</option>
+            <option value='Arial, "PingFang SC", "Microsoft YaHei", sans-serif'>Arial / PingFang</option>
+            <option value='Georgia, "Times New Roman", "Songti SC", serif'>Serif stress test</option>
+            <option value='"Courier New", "PingFang SC", monospace'>Mono stress test</option>
+          </select>
+        </label>
+        <button id="refitBtn" type="button">Refit text</button>
+        <span class="status" id="auditStatus">Waiting for layout check</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>Version D: 10 personas, Chinese + English</h2>
+      <div class="grid" id="cards"></div>
+    </section>
+  </main>
+
+  <script>
+    const profileOrder = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST"];
+
+    const localeMeta = {
+      zh: {
+        label: "中文",
+        brand: "AI 人格测试",
+        nearestLabel: "最接近的人",
+        cta: "扫码测测你的 AI 人格",
+        qr: "CN QR",
+        qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona-qxad5fjx.edgeone.cool%2Fcn%2F"
+      },
+      en: {
+        label: "English",
+        brand: "AI Governance Persona",
+        nearestLabel: "Closest reference",
+        cta: "Scan to find your AI persona",
+        qr: "EN QR",
+        qrUrl: "https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona-qxad5fjx.edgeone.cool%2Fen%2F"
+      }
+    };
+
+    const profileCopy = {
+      zh: {
+        STOP: ["关机圣骑士", "电闸在哪儿？", "AGI Ruin, Shut It All Down", "看到能力展示，先问失控风险和关停方案。"],
+        SAFE: ["对齐公务员", "先填完人类偏好登记表", "Human Compatible, What Failure Looks Like", "不是反对强 AI，而是希望能力扩张之前先解决对齐、监督和治理。"],
+        AUDT: ["算法纪委", "先问谁受益，谁被监控", "On the Dangers of Stochastic Parrots, Atlas of AI", "关注 AI 背后的权力、劳动、偏见、环境成本和被技术治理的人。"],
+        NORM: ["冷静产品经理", "先看场景、指标和责任人", "AI as Normal Technology", "把 AI 当成具体技术产品，关心边界、上线条件、失败模式和实际用户。"],
+        SKEP: ["AI 祛魅师", "别讲智能觉醒，它迟早要翻车", "AI Snake Oil, Rebooting AI", "对“快 AGI 了”的叙事保持怀疑，先看基线、测试集和真实可复现能力。"],
+        GPUC: ["算力拜物教徒", "人类知识别太把自己当回事", "The Bitter Lesson", "相信通用方法、搜索、学习和算力最终会超过手写知识与专家直觉。"],
+        BOOM: ["丰裕施工队", "先把 AI 接进真实世界", "Machines of Loving Grace, AI is the New Electricity", "相信 AI 的主要价值来自部署到医疗、教育、生产率和现实系统里。"],
+        SING: ["赛博飞升派", "AI 不是工具，是文明跃升", "The Singularity Is Near, The Intelligence Age", "把 AI 看成文明跃迁、长寿、丰裕和人机融合的入口。"],
+        EACC: ["油门焊死哥", "方向盘还在吵，油门先踩", "Effective Accelerationism manifestos", "偏向开放、建设、加速和减少许可，认为停滞本身也是风险。"],
+        POST: ["Carbon to Silicon", "人类不是终点，只是启动器", "Meltdown, Dark Enlightenment", "更关心后人类、技术资本、自主系统，以及“AI 是否还服务人类”这个前提本身。"]
+      },
+      en: {
+        STOP: ["Shutdown Paladin", "Where is the power switch?", "AGI Ruin, Shut It All Down", "When a capability demo appears, your first question is loss of control and how to shut it down."],
+        SAFE: ["Alignment Bureaucrat", "File the human-values paperwork first.", "Human Compatible, What Failure Looks Like", "You are not against powerful AI; you want alignment, oversight, and governance before capability expansion."],
+        AUDT: ["Algorithm Auditor", "First ask who benefits and who gets monitored.", "On the Dangers of Stochastic Parrots, Atlas of AI", "You focus on the power, labor, bias, environmental costs, and people governed by AI systems."],
+        NORM: ["Sober Product Manager", "Use Case, Metric, Owner.", "AI as Normal Technology", "You treat AI as a product: define the use case, metric, owner, boundary, and failure mode."],
+        SKEP: ["AI Demystifier", "Stop saying awakening. It will break soon enough.", "AI Snake Oil, Rebooting AI", "You are skeptical of near-AGI narratives and want baselines, test sets, and reproducible evidence."],
+        GPUC: ["Scale Believer", "Scale beats priors.", "The Bitter Lesson", "You believe general methods, search, learning, and compute will beat hand-coded knowledge and expert intuition."],
+        BOOM: ["Abundance Builder", "Deploy it where life gets better.", "Machines of Loving Grace, AI is the New Electricity", "You believe AI's main value comes from real deployment in health, education, productivity, and science."],
+        SING: ["Cyber Ascender", "Not a tool. A civilization jump.", "The Singularity Is Near, The Intelligence Age", "You see AI as a path to civilizational transition, longevity, abundance, and human-machine merger."],
+        EACC: ["Accelerationist Builder", "While steering is debated, press the accelerator.", "Effective Accelerationism manifestos", "You lean toward openness, building, acceleration, and fewer permissions, seeing stagnation as its own risk."],
+        POST: ["Carbon to Silicon", "Humans are the bootloader.", "Meltdown, Dark Enlightenment", "You care about posthuman systems, technocapital, autonomy, and whether AI serving humans was ever the right premise."]
+      }
+    };
+
+    const profileAnchors = {
+      STOP: { x: -1.8, y: 0.9, color: "#b42318" },
+      SAFE: { x: -1.05, y: 1.35, color: "#7c3aed" },
+      AUDT: { x: -0.45, y: 1.8, color: "#0369a1" },
+      NORM: { x: 0.05, y: 0.85, color: "#0f766e" },
+      SKEP: { x: -0.05, y: 1.2, color: "#64748b" },
+      GPUC: { x: 0.6, y: -1, color: "#c2410c" },
+      BOOM: { x: 1.05, y: 0.9, color: "#15803d" },
+      SING: { x: 1.45, y: -0.35, color: "#9333ea" },
+      EACC: { x: 1.85, y: -0.8, color: "#ea580c" },
+      POST: { x: 1.8, y: -1.8, color: "#7f1d1d" }
+    };
+
+    const profileAvatarByCode = {
+      STOP: "../assets/profile-pictures/stop-wojak.png",
+      SAFE: "../assets/profile-pictures/safe-wojak.png",
+      AUDT: "../assets/profile-pictures/audt-wojak.png",
+      NORM: "../assets/profile-pictures/norm-wojak.png",
+      SKEP: "../assets/profile-pictures/hype-wojak.png",
+      GPUC: "../assets/profile-pictures/gpuc-wojak.png",
+      BOOM: "../assets/profile-pictures/boom-wojak.png",
+      SING: "../assets/profile-pictures/sing-wojak.png",
+      EACC: "../assets/profile-pictures/eacc-wojak.png",
+      POST: "../assets/profile-pictures/post-wojak.png"
+    };
+
+    const profileReferenceCandidates = {
+      STOP: ["eliezer-yudkowsky", "nick-bostrom", "dan-hendrycks-cais"],
+      SAFE: ["stuart-russell", "paul-christiano", "ajeya-cotra", "dario-amodei-anthropic"],
+      AUDT: ["bender-gebru-mitchell-mcmillan-major", "kate-crawford", "ruha-benjamin", "pope-leo-xiv"],
+      NORM: ["ai-as-normal-technology"],
+      SKEP: ["narayanan-kapoor", "gary-marcus-melanie-mitchell"],
+      GPUC: ["rich-sutton"],
+      BOOM: ["andrew-ng", "dario-amodei-anthropic", "elon-musk-xai", "marc-andreessen"],
+      SING: ["ray-kurzweil"],
+      EACC: ["marc-andreessen", "peter-thiel", "effective-accelerationism"],
+      POST: ["benjamin-bratton", "nick-land"]
+    };
+
+    const referencePoints = [
+      { id: "eliezer-yudkowsky", name: "Eliezer Yudkowsky", x: -2, y: 1, influence: 5 },
+      { id: "nick-bostrom", name: "Nick Bostrom", x: -1.68, y: 1, influence: 5 },
+      { id: "stuart-russell", name: "Stuart Russell", x: -1, y: 2, influence: 5 },
+      { id: "pope-leo-xiv", name: "Pope Leo XIV / Magnifica Humanitas", personName: "Pope Leo XIV", x: -1.18, y: 1.72, influence: 4 },
+      { id: "paul-christiano", name: "Paul Christiano", x: -0.87, y: 1.2, influence: 4 },
+      { id: "ajeya-cotra", name: "Ajeya Cotra", x: -0.87, y: 1, influence: 4 },
+      { id: "dario-amodei-anthropic", name: "Dario Amodei / Anthropic", personName: "Dario Amodei", x: -0.22, y: 1.1, influence: 5 },
+      { id: "dan-hendrycks-cais", name: "Dan Hendrycks / Center for AI Safety", personName: "Dan Hendrycks", x: -1.38, y: 1, influence: 4 },
+      { id: "bender-gebru-mitchell-mcmillan-major", name: "Emily Bender, Timnit Gebru, Margaret Mitchell, and Angelina McMillan-Major", shareName: "Emily Bender", x: -0.46, y: 2, influence: 5 },
+      { id: "kate-crawford", name: "Kate Crawford", x: -0.39, y: 2, influence: 4 },
+      { id: "ruha-benjamin", name: "Ruha Benjamin", x: -0.39, y: 2, influence: 4 },
+      { id: "ai-as-normal-technology", name: "AI as Normal Technology", personName: "Arvind Narayanan / Sayash Kapoor", shareName: "Arvind Narayanan", x: 0.02, y: 0.9, influence: 3 },
+      { id: "narayanan-kapoor", name: "Arvind Narayanan and Sayash Kapoor", shareName: "Arvind Narayanan", x: -0.07, y: 1.5, influence: 4 },
+      { id: "gary-marcus-melanie-mitchell", name: "Gary Marcus / Melanie Mitchell", shareName: "Gary Marcus", x: 0.07, y: 0.5, influence: 4 },
+      { id: "rich-sutton", name: "Rich Sutton", x: 0.6, y: -1, influence: 5 },
+      { id: "benjamin-bratton", name: "Benjamin Bratton", x: -1.15, y: -1.1, influence: 4 },
+      { id: "andrew-ng", name: "Andrew Ng", x: 1.07, y: 1, influence: 4 },
+      { id: "elon-musk-xai", name: "Elon Musk / xAI", personName: "Elon Musk", x: 1.2, y: -0.28, influence: 5 },
+      { id: "peter-thiel", name: "Peter Thiel / Founders Fund", personName: "Peter Thiel", x: 1.32, y: -0.72, influence: 4 },
+      { id: "ray-kurzweil", name: "Ray Kurzweil", x: 1.44, y: -0.4, influence: 5 },
+      { id: "marc-andreessen", name: "Marc Andreessen", x: 1.64, y: 0.4, influence: 4 },
+      { id: "effective-accelerationism", name: "e/acc / effective accelerationism", personName: "Guillaume Verdon / Marc Andreessen", shareName: "Guillaume Verdon", x: 1.93, y: -0.8, influence: 3 },
+      { id: "nick-land", name: "Nick Land", x: 1.79, y: -2, influence: 4 }
+    ];
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function coordToPercent(value) {
+      return Math.max(8, Math.min(92, 8 + ((value + 2) / 4) * 84));
+    }
+
+    function nearestReferenceFor(code) {
+      const anchor = profileAnchors[code];
+      const candidateIds = profileReferenceCandidates[code] || [];
+      const pool = referencePoints.filter((point) => candidateIds.includes(point.id));
+      return pool.reduce((best, point) => {
+        const distance = ((anchor.x - point.x) ** 2) + ((anchor.y - point.y) ** 2);
+        if (!best || distance < best.distance) return { point, distance };
+        if (distance === best.distance && point.influence > best.point.influence) return { point, distance };
+        return best;
+      }, null)?.point || null;
+    }
+
+    function referencePersonName(point) {
+      if (!point) return "--";
+      if (point.shareName) return point.shareName;
+      return (point.personName || point.name)
+        .split(/\s*\/\s*|\s+and\s+|,\s*/)[0]
+        .trim() || "--";
+    }
+
+    function cardHTML(code, locale) {
+      const meta = localeMeta[locale];
+      const profile = profileCopy[locale][code];
+      const anchor = profileAnchors[code];
+      const nearest = nearestReferenceFor(code);
+      const candidates = profileReferenceCandidates[code].length;
+      const dotLeft = coordToPercent(anchor.x);
+      const dotTop = 100 - coordToPercent(anchor.y);
+      return `
+        <article class="demo" data-card-shell>
+          <div class="caption">
+            <div>${escapeHTML(meta.label)} / ${escapeHTML(code)}<span>${escapeHTML(profile[1])}</span></div>
+            <b class="badge" data-status>checking</b>
+          </div>
+          <div class="card" style="--profile-color:${anchor.color}; --dot-left:${dotLeft}%; --dot-top:${dotTop}%;">
+            <div class="top">
+              <div class="brand" data-fit data-fit-min="11" data-fit-base="17">${escapeHTML(meta.brand)}</div>
+              <div class="pill">${escapeHTML(code)}</div>
+            </div>
+            <div class="avatar"><img src="${escapeHTML(profileAvatarByCode[code])}" alt="${escapeHTML(code)} avatar"></div>
+            <div class="identity">
+              <div class="code-line">${escapeHTML(code)}</div>
+              <div class="title" data-fit data-fit-min="18" data-fit-base="26">${escapeHTML(profile[0])}</div>
+            </div>
+            <div class="sentence">
+              <p class="short" data-fit data-fit-min="16" data-fit-base="21">${escapeHTML(profile[1])}</p>
+              <p class="explain" data-fit data-fit-min="10" data-fit-base="13">${escapeHTML(profile[3])}</p>
+            </div>
+            <div class="nearest">
+              <p class="label">${escapeHTML(meta.nearestLabel)}</p>
+              <div class="nearest-name" data-fit data-fit-min="11" data-fit-base="20">${escapeHTML(referencePersonName(nearest))}</div>
+            </div>
+            <div class="mini-map"><span class="dot"></span></div>
+            <div class="qr"><img src="${escapeHTML(meta.qrUrl)}" alt="${escapeHTML(meta.qr)}"></div>
+            <div class="cta">
+              <span class="cta-text" data-fit data-fit-min="11" data-fit-base="15">${escapeHTML(meta.cta)}</span>
+              <span class="qr-pill">${escapeHTML(meta.qr)}</span>
+            </div>
+          </div>
+          <div class="audit-details">
+            nearest selected from <code>${candidates}</code> candidate${candidates === 1 ? "" : "s"}:
+            <code>${escapeHTML(referencePersonName(nearest))}</code>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderCards() {
+      const cards = document.querySelector("#cards");
+      cards.innerHTML = profileOrder.flatMap((code) => [
+        cardHTML(code, "zh"),
+        cardHTML(code, "en")
+      ]).join("");
+    }
+
+    function elementOverflows(element) {
+      const epsilon = 1;
+      return element.scrollWidth > element.clientWidth + epsilon || element.scrollHeight > element.clientHeight + epsilon;
+    }
+
+    function fitElement(element) {
+      const base = Number(element.dataset.fitBase || 16);
+      const min = Number(element.dataset.fitMin || 10);
+      element.style.fontSize = base + "px";
+      let size = base;
+      while (size > min && elementOverflows(element)) {
+        size -= 1;
+        element.style.fontSize = size + "px";
+      }
+      element.dataset.fitSize = String(size);
+      return !elementOverflows(element);
+    }
+
+    function refitAndAudit() {
+      let badCards = 0;
+      document.querySelectorAll("[data-fit]").forEach(fitElement);
+      document.querySelectorAll("[data-card-shell]").forEach((shell) => {
+        const failed = Array.from(shell.querySelectorAll("[data-fit]")).filter((node) => elementOverflows(node));
+        const badge = shell.querySelector("[data-status]");
+        if (failed.length) {
+          badCards += 1;
+          badge.textContent = failed.length + " overflow";
+          badge.classList.add("bad");
+        } else {
+          badge.textContent = "ok";
+          badge.classList.remove("bad");
+        }
+      });
+      const status = document.querySelector("#auditStatus");
+      status.textContent = badCards ? `${badCards} cards still overflow` : "All cards pass text overflow check";
+      status.style.background = badCards ? "#fef3f2" : "#ecfdf3";
+      status.style.color = badCards ? "#b42318" : "#067647";
+    }
+
+    renderCards();
+    window.addEventListener("load", refitAndAudit);
+    window.addEventListener("resize", refitAndAudit);
+    document.querySelector("#refitBtn").addEventListener("click", refitAndAudit);
+    document.querySelector("#fontSelect").addEventListener("change", (event) => {
+      document.documentElement.style.setProperty("--audit-font", event.target.value);
+      requestAnimationFrame(refitAndAudit);
+    });
+  </script>
+</body>
+</html>

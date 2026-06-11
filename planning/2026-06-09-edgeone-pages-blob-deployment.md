@@ -33,7 +33,7 @@ Follow-up fix on 2026-06-09:
   - `ai-governance-persona-profiles-en.html`
   - `ai-governance-spectrum.html`
   - `ai-thought-spectrum-visualization.html`
-  - `ai-thought-spectrum-visualization-en.html`
+  - `ai-governance-spectrum-en.html`
 - Replaced the root `index.html` entry with the full quiz page content from `ai-ideology-quiz.html`, so `https://ai-persona-qxad5fjx.edgeone.cool/` opens the current quiz experience directly instead of the older two-card entry page.
 
 ## Backend API Audit
@@ -80,13 +80,13 @@ Follow-up fix on 2026-06-09:
 
 Use the EdgeOne preview/production URL after deploy:
 
-1. Open `/`.
-2. Open `/ai-ideology-quiz.html`.
-3. Open `/ai-ideology-quiz-en.html`.
-4. Complete one Chinese quiz and confirm the result page still appears.
-5. Complete one English quiz and confirm the result page still appears.
+1. Open `/` and confirm it redirects to `/cn/`.
+2. Open `/cn/`.
+3. Open `/en/`.
+4. Complete one Chinese quiz and confirm the result/share page still appears.
+5. Complete one English quiz and confirm the result/share page still appears.
 6. Confirm `GET /api/export.csv` without a token returns `401 Unauthorized`.
-7. Confirm `GET /api/export.csv?token=<token>` downloads CSV with the two test rows.
+7. Confirm `GET /api/export.csv?token=<token>` downloads CSV with the smoke rows.
 
 ## Known Limits Before Broader Sharing
 
@@ -109,8 +109,43 @@ Use the EdgeOne preview/production URL after deploy:
 - Deployment id: `dpjnak91lllf`.
 - Public page smoke:
   - `/en/` contains `16 questions` and `T01`.
-  - `/ch/` contains `16 个问题` and `T01`.
+  - `/cn/` contains `16 个问题` and `T01`.
 - Backend smoke:
   - `GET /api/export.csv` without token returns `401 Unauthorized`.
   - `POST /api/submit-result` accepted the new answer/scenario shape.
   - Smoke result id: `c396b8f3-77f8-47e7-8531-09d6c84318bf`.
+
+## 2026-06-11 Repository Cleanup
+
+- Current production quiz/result/share entry points are `/cn/` and `/en/`.
+- Root `index.html` and legacy `/ch/` are now lightweight redirects to `/cn/`.
+- Old standalone quiz and spectrum experiments were moved to `archive/old-pages/`.
+- Share-card demo files and generated demo images were moved to `archive/old-demos/`.
+- Local state file `STATE.json` is ignored and should not be committed.
+
+## Release Harness
+
+- Canonical quiz data:
+  - `data/quiz.zh.json`
+  - `data/quiz.en.json`
+- Production HTML:
+  - `cn/index.html`
+  - `en/index.html`
+- Pre-release check:
+  - `npm run release:check`
+- Bundle command:
+  - `npm run release:bundle`
+- If production HTML intentionally contains newer question text, run `npm run quiz:canonicalize`, inspect the JSON diff, then rerun `npm run release:check`.
+
+## 2026-06-11 Production Launch
+
+- Deployed clean public bundle from `/tmp/ai-persona-edgeone-dist` with EdgeOne CLI.
+- Deployment id: `dpm23zdcd3n5`.
+- Project id: `pages-esxansdhquzd`.
+- Public host: `https://ai-persona-qxad5fjx.edgeone.cool`.
+- Local `curl` smoke from the USZ guest network returned a network gateway 403 for `.edgeone.cool`, so direct local checks were blocked by the network rather than by the app.
+- External fetch smoke passed:
+  - `/cn/` renders the current Chinese 16-question AI persona page.
+  - `/en/` renders the current English 16-question AI Governance Persona page.
+  - `/ai-governance-spectrum.html` renders the current spectrum page.
+  - `/api/export.csv` without a token returns `401 Unauthorized`.

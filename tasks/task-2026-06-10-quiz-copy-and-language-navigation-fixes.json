@@ -1,0 +1,60 @@
+{
+  "id": "task-2026-06-10-quiz-copy-and-language-navigation-fixes",
+  "title": "Quiz copy, English spectrum, and language navigation fixes",
+  "status": "done",
+  "created_at": "2026-06-10",
+  "source": "User feedback in Codex thread, 2026-06-10",
+  "scope": "AI Governance Persona quiz and adjacent spectrum/profile pages",
+  "items": [
+    {
+      "id": "FIX01",
+      "status": "done",
+      "area": "quiz intro copy",
+      "description": "Simplify the intro instruction that currently says users will answer 16 short questions and should choose the closest option even when no answer is perfect.",
+      "current_text_zh": "你将回答 16 个简短问题。每题选择最接近你看法的选项；即使没有完美答案，也请选择相对最接近的一项。有些问题会比较抽象，也可能带有政治或价值判断。如果两个答案都部分正确，请选择更接近你默认判断的那个。",
+      "desired_direction": "Make it much shorter: tell users to choose the closest answer; clarify that most questions are single-choice, while the final persona check is multi-select.",
+      "notes": "Implemented with short copy: 大多数题目请选择一个最接近的答案；最后一题可以多选。 English copy mirrors the same rule."
+    },
+    {
+      "id": "FIX02",
+      "status": "done",
+      "area": "English governance spectrum page",
+      "description": "The English Governance Spectrum link opens a very old page that is inconsistent with the Chinese version.",
+      "desired_direction": "Remove or stop linking to the old English spectrum page. Keep the Chinese two-dimensional stance map as the source of truth, but provide an all-English version of that same map/page.",
+      "notes": "Implemented: replaced old English spectrum links with ai-governance-spectrum-en.html and deleted ai-thought-spectrum-visualization-en.html."
+    },
+    {
+      "id": "FIX03",
+      "status": "done",
+      "area": "language switching UX",
+      "description": "Add Chinese/English switching on both the spectrum page and persona profile page, with a consistent top-right position.",
+      "requirements": [
+        "Every relevant page should show the language switch in the top-right corner.",
+        "The switch should move users to the corresponding page in the other language.",
+        "Spectrum page and persona profile page both need this, not only the quiz page."
+      ],
+      "open_question": "Button label logic is not final. User suggested: in Chinese state show '中文/English'; in English state show 'EN/CH', but wants discussion before implementation.",
+      "discussion_note": "Consider a more consistent pair such as '中文 / EN' on both languages, or show the current language first and target second. Avoid ambiguous labels if it looks like a toggle rather than a state indicator.",
+      "notes": "Implemented top-right language links on spectrum and persona profile pages: Chinese pages show 中文 / English; English pages show EN / CH."
+    },
+    {
+      "id": "C03",
+      "status": "external_done_no_action",
+      "area": "quiz option copy",
+      "description": "The word 'Gatekeeper' is strange or unclear for many users, especially in Chinese context.",
+      "desired_direction": "Replace or explain gatekeeper language in C03 / related copy with more accessible Chinese wording, such as '把关者', '少数控制者', '准入门槛', or a fuller phrase depending on context.",
+      "notes": "User said this was already changed elsewhere; do not edit C03 in this pass."
+    }
+  ],
+  "implementation_order": [
+    "FIX01",
+    "C03",
+    "FIX02",
+    "FIX03"
+  ],
+  "validation": [
+    "Run npm run quiz:check after quiz text changes.",
+    "Verify Chinese and English page links manually after language navigation changes.",
+    "Check that stale English Governance Spectrum page is no longer reachable from current navigation."
+  ]
+}

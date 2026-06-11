@@ -18,7 +18,9 @@ const ALLOWED_PAYLOAD_FIELDS = new Set([
   "quiz_version",
   "measurement_version",
   "locale",
+  "started_at",
   "completed_at",
+  "duration_ms",
   "profile_code",
   "profile_display_code",
   "profile_name",
@@ -33,8 +35,11 @@ const ALLOWED_PAYLOAD_FIELDS = new Set([
   "scores",
   "labels",
   "answers",
+  "answer_keys",
   "scenarios",
+  "scenario_keys",
   "closest_statement",
+  "closest_statement_keys",
   "diagnostics",
   "summary",
   "turnstile_token"
@@ -105,7 +110,9 @@ function assertPayload(payload) {
   assertString(payload.measurement_version, "measurement_version");
   assertString(payload.locale, "locale");
   if (!VALID_LOCALES.has(payload.locale)) throw new Error("Unknown locale.");
+  if (payload.started_at !== undefined) assertString(payload.started_at, "started_at");
   assertString(payload.completed_at, "completed_at");
+  assertFiniteOrEmpty(payload.duration_ms, "duration_ms");
   assertString(payload.profile_code, "profile_code");
 
   for (const fieldName of REQUIRED_OBJECT_FIELDS) {
@@ -118,6 +125,11 @@ function assertPayload(payload) {
   }
   if (!Array.isArray(payload.closest_statement)) {
     throw new Error("closest_statement must be an array.");
+  }
+  if (payload.answer_keys !== undefined) assertPlainObject(payload.answer_keys, "answer_keys");
+  if (payload.scenario_keys !== undefined) assertPlainObject(payload.scenario_keys, "scenario_keys");
+  if (payload.closest_statement_keys !== undefined && !Array.isArray(payload.closest_statement_keys)) {
+    throw new Error("closest_statement_keys must be an array.");
   }
 
   assertFiniteOrEmpty(payload.scores.x, "scores.x");

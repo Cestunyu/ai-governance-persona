@@ -1,10 +1,12 @@
 # AI Ideology Quiz Roadmap
 
-Last updated: 2026-06-07
+Last updated: 2026-06-11
 
 ## Current Shape
 
 This project has moved from a reading map into a lightweight measurement product with two public entry paths: start the quiz, or directly browse the spectrum.
+
+The current production quiz/result/share pages are `/cn/` and `/en/`. The root `index.html` and legacy `/ch/` path redirect to `/cn/`; old standalone quiz experiments live under `archive/old-pages/`.
 
 ## Current Priority Shift
 
@@ -50,7 +52,7 @@ Key new concerns:
 
 ### Day 1: Stabilize The Instrument
 
-- Lock the production candidates as `ai-ideology-quiz.html` and `ai-ideology-quiz-en.html`, with one-question-at-a-time interaction rather than a long form.
+- Lock the production pages as `/cn/` and `/en/`, with one-question-at-a-time interaction rather than a long form.
 - Keep the active quiz closed-ended: no background module, no open text, no quality-check module.
 - Review the core items for balance across the two axes and the 10-dimensional prototype classifier.
 - Confirm every item maps cleanly to `x_score` or `y_score`.
@@ -70,10 +72,13 @@ Key new concerns:
 
 ## Artifact Roles
 
-- Chinese production candidate: `ai-ideology-quiz.html`
-- English production candidate: `ai-ideology-quiz-en.html`
-- Viral/share experiment: `ai-ideology-placement-quiz.html`
-- Public spectrum: `ai-thought-spectrum-visualization.html` and `ai-thought-spectrum-visualization-en.html`
+- Chinese production page: `/cn/`
+- English production page: `/en/`
+- Root entry: `index.html` redirects to `/cn/`
+- Archived quiz/share experiments: `archive/old-pages/`
+- Archived share-card demos: `archive/old-demos/`
+- Public spectrum: `ai-governance-spectrum.html` and `ai-governance-spectrum-en.html`
+- Public profile catalogs: `ai-personality-profiles.html` and `ai-governance-persona-profiles-en.html`
 - Full survey design: `questionnaires/2026-05-19-ai-ideology-placement-battery.md`
 - Closed questionnaire source: `questionnaires/2026-05-19-ai-ideology-closed-questionnaire-v1-zh.md`
 - Meme profile source: `questionnaires/2026-05-19-ai-ideology-meme-profiles-zh.md`

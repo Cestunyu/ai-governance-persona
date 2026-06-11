@@ -1,0 +1,227 @@
+{
+  "schema_version": "0.1.0",
+  "task_id": "task-2026-06-09-edgeone-pages-blob-deployment",
+  "project_id": "ai-persona",
+  "legacy_project_id": "ai-ideology-quiz",
+  "title": "Deploy AI Persona with EdgeOne Pages and Blob backend",
+  "status": "in_progress",
+  "created_at": "2026-06-09T00:00:00+02:00",
+  "updated_at": "2026-06-09T20:30:00+02:00",
+  "decision": {
+    "chosen_option": "A",
+    "platform": "EdgeOne Pages + Blob",
+    "rationale": "Reuse the existing EdgeOne Pages Functions code for /api/submit-result and /api/export.csv with the least migration work.",
+    "domain_policy": "Use the default free EdgeOne Pages URL first; buy a custom domain only after the public pilot is stable."
+  },
+  "goals": [
+    "Make AI Persona publicly playable.",
+    "Record completed quiz results for backend statistics.",
+    "Add basic anti-spam and anti-bot protection before broader sharing.",
+    "Provide a protected CSV export for analysis.",
+    "Avoid collecting unnecessary personal data."
+  ],
+  "non_goals": [
+    "Do not buy a VPS for the first deployment.",
+    "Do not buy a custom domain before the pilot works on the default URL.",
+    "Do not collect names, emails, or open-text identity fields.",
+    "Do not call the response data validated survey evidence before a pilot review."
+  ],
+  "acceptance_criteria": [
+    "EdgeOne Pages serves the index page and both Chinese and English quiz pages.",
+    "POST /api/submit-result returns ok:true for a valid completed quiz payload.",
+    "Results are stored in the configured Blob store under date-grouped keys.",
+    "GET /api/export.csv requires EXPORT_TOKEN or RESULTS_EXPORT_TOKEN.",
+    "CSV export includes at least timestamp, locale, quiz version, answer vector, scores, profile code, and diagnostics.",
+    "A basic anti-abuse layer is active before broad sharing.",
+    "Public pages still work if result recording fails."
+  ],
+  "todo": [
+    {
+      "id": "E1",
+      "title": "Audit current EdgeOne backend functions",
+      "status": "done",
+      "priority": "P0",
+      "files": [
+        "/Users/yuun/Documents/GitHub/ai-ideology-quiz/edge-functions/api/submit-result.js",
+        "/Users/yuun/Documents/GitHub/ai-ideology-quiz/edge-functions/api/export.csv.js"
+      ],
+      "deliverable": "Short note confirming current API behavior, storage key format, export auth, and missing anti-abuse controls.",
+      "completion_note": "Audited in planning/2026-06-09-edgeone-pages-blob-deployment.md. submit-result stores records under results/YYYY-MM-DD/YYYYMMDDhhmmssmmm-uuid.json; export.csv requires EXPORT_TOKEN or RESULTS_EXPORT_TOKEN; missing control was frontend CAPTCHA/rate-limit enforcement."
+    },
+    {
+      "id": "E2",
+      "title": "Lock minimum response schema",
+      "status": "done",
+      "priority": "P0",
+      "depends_on": [
+        "E1"
+      ],
+      "fields": [
+        "created_at",
+        "locale",
+        "quiz_version",
+        "measurement_version",
+        "answers",
+        "scenarios",
+        "scores",
+        "labels",
+        "profile_code",
+        "profile_margin",
+        "profile_ranking",
+        "projection",
+        "diagnostics"
+      ],
+      "privacy_policy": {
+        "names": "do_not_collect",
+        "emails": "do_not_collect",
+        "raw_ip_in_payload": "do_not_store",
+        "provider_logs": "allowed_for_security_only",
+        "free_text_identity": "do_not_collect"
+      },
+      "deliverable": "Data schema note in data/README.md or a backend design note.",
+      "completion_note": "Minimum accepted response schema and privacy policy are documented in data/README.md."
+    },
+    {
+      "id": "E3",
+      "title": "Add anti-abuse gate to submissions",
+      "status": "partial",
+      "priority": "P0",
+      "depends_on": [
+        "E1",
+        "E2"
+      ],
+      "recommended_controls": [
+        "Turnstile or platform CAPTCHA token on final submission",
+        "Server-side token verification before Blob write",
+        "Request body size limit already capped at 64KB",
+        "Reject malformed or incomplete payloads",
+        "Optional coarse rate limit by provider feature or hashed request fingerprint"
+      ],
+      "deliverable": "Valid submissions still work; obvious bot/malformed submissions are rejected.",
+      "completion_note": "Strict schema validation, 64KB body limits, sensitive-field stripping, and optional server-side Turnstile verification are implemented in edge-functions/api/submit-result.js. Frontend Turnstile token capture and provider-side rate limiting remain before broad sharing."
+    },
+    {
+      "id": "E4",
+      "title": "Configure EdgeOne project",
+      "status": "done",
+      "priority": "P0",
+      "depends_on": [
+        "E1"
+      ],
+      "human_actions": [
+        "Create or select EdgeOne Pages project.",
+        "Connect the GitHub repository.",
+        "Confirm build settings for a static HTML project.",
+        "Enable Pages Functions.",
+        "Create or bind Blob store named ai-ideology-results.",
+        "Set EXPORT_TOKEN or RESULTS_EXPORT_TOKEN secret."
+      ],
+      "deliverable": "EdgeOne preview or production URL.",
+      "completion_note": "Created EdgeOne Pages project ai-persona, project id pages-esxansdhquzd. Set EXPORT_TOKEN in EdgeOne environment variables. Latest production deployment id dplmpe591y9m."
+    },
+    {
+      "id": "E5",
+      "title": "Deploy static pages and API functions",
+      "status": "done",
+      "priority": "P0",
+      "depends_on": [
+        "E3",
+        "E4"
+      ],
+      "checks": [
+        "index.html loads",
+        "ai-ideology-quiz.html loads",
+        "ai-ideology-quiz-en.html loads",
+        "/api/submit-result accepts valid POST",
+        "/api/export.csv rejects missing token",
+        "/api/export.csv returns CSV with valid token"
+      ],
+      "deliverable": "Public EdgeOne URL with working quiz and backend capture.",
+      "completion_note": "Deployed a cleaned public bundle to https://ai-persona-qxad5fjx.edgeone.cool. Public HTML routes return 200 and match the current deployment bundle by SHA-256. The root path now serves the full current quiz page instead of the older two-card index entry. POST /api/submit-result accepted smoke payloads and /api/export.csv rejects missing token with 401 while returning CSV with a valid bearer token."
+    },
+    {
+      "id": "E6",
+      "title": "Run end-to-end smoke test",
+      "status": "partial",
+      "priority": "P0",
+      "depends_on": [
+        "E5"
+      ],
+      "test_paths": [
+        "Complete Chinese quiz once",
+        "Complete English quiz once",
+        "Confirm submit status shows success or graceful failure",
+        "Export CSV and verify both test rows",
+        "Check mobile viewport layout",
+        "Check result share-card still works"
+      ],
+      "deliverable": "Smoke-test note with public URL, test timestamp, and known issues.",
+      "completion_note": "CLI/curl smoke completed on 2026-06-09: static pages 200, backend POST ok:true on deploy-token URL and naked public host, export auth works, CSV contains two smoke rows. Remaining: manual full Chinese quiz, manual full English quiz, mobile viewport check, and share-card check."
+    },
+    {
+      "id": "E7",
+      "title": "Prepare lightweight dashboard statistics",
+      "status": "todo",
+      "priority": "P1",
+      "depends_on": [
+        "E6"
+      ],
+      "metrics": [
+        "total_completed_results",
+        "completion_count_by_day",
+        "language_split",
+        "profile_distribution",
+        "average_profile_margin",
+        "scenario_agreement_distribution",
+        "self_agreement_distribution"
+      ],
+      "deliverable": "CSV-based analysis script or simple local dashboard."
+    },
+    {
+      "id": "E8",
+      "title": "Decide custom domain later",
+      "status": "blocked_until_public_url_stable",
+      "priority": "P2",
+      "depends_on": [
+        "E6"
+      ],
+      "decision_rule": "Buy a custom domain only after backend capture, export, and anti-abuse are stable on the free EdgeOne URL.",
+      "deliverable": "Domain decision note."
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "Q1",
+      "question": "Should final submission require CAPTCHA for every user, or only after suspicious behavior?",
+      "default": "Require it only at final submission, not at page entry."
+    },
+    {
+      "id": "Q2",
+      "question": "Should provider logs be enough for abuse investigation, or should the app store a temporary hashed request fingerprint?",
+      "default": "Use provider logs only for the first pilot."
+    },
+    {
+      "id": "Q3",
+      "question": "Should CSV export stay token-protected only, or should it also be restricted by platform access control?",
+      "default": "Token-protected export first, platform access control if EdgeOne supports it easily."
+    }
+  ],
+  "source_refs": [
+    {
+      "type": "existing_api",
+      "path": "/Users/yuun/Documents/GitHub/ai-ideology-quiz/edge-functions/api/submit-result.js"
+    },
+    {
+      "type": "existing_api",
+      "path": "/Users/yuun/Documents/GitHub/ai-ideology-quiz/edge-functions/api/export.csv.js"
+    },
+    {
+      "type": "prior_backend_task",
+      "path": "/Users/yuun/Documents/GitHub/ai-ideology-quiz/tasks/task-2026-06-07-backend-data-collection-design.json"
+    },
+    {
+      "type": "roadmap",
+      "path": "/Users/yuun/AI-work/coordination/goals/2026-06-09-ai-ideology-quiz-roadmap.json"
+    }
+  ]
+}

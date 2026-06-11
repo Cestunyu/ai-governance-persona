@@ -5,6 +5,9 @@ const RESULT_PREFIX = "results/";
 
 const csvFields = [
   "created_at",
+  "started_at",
+  "completed_at",
+  "duration_ms",
   "id",
   "quiz_version",
   "measurement_version",
@@ -33,7 +36,9 @@ const csvFields = [
   "quadrant",
   "warmup_reaction",
   "closest_statement",
+  "closest_statement_keys",
   "scenario_v3",
+  "scenario_v3_key",
   "U01",
   "H02",
   "C04",
@@ -48,6 +53,20 @@ const csvFields = [
   "E01",
   "H01",
   "H04",
+  "U01_key",
+  "H02_key",
+  "C04_key",
+  "C02_key",
+  "C03_key",
+  "L01_key",
+  "I01_key",
+  "T01_key",
+  "D01_key",
+  "R01_key",
+  "R04_key",
+  "E01_key",
+  "H01_key",
+  "H04_key",
   "self_agreement",
   "scenario_agreement",
   "respondent_vector_json",
@@ -55,7 +74,9 @@ const csvFields = [
   "profile_ranking_json",
   "projection_json",
   "answers_json",
+  "answer_keys_json",
   "scenarios_json",
+  "scenario_keys_json",
   "summary"
 ];
 
@@ -113,15 +134,23 @@ function flattenRecord(record) {
   const scores = payload.scores || {};
   const labels = payload.labels || {};
   const answers = payload.answers || {};
+  const answerKeys = payload.answer_keys || {};
   const scenarios = payload.scenarios || {};
+  const scenarioKeys = payload.scenario_keys || {};
   const diagnostics = payload.diagnostics || {};
   const projection = payload.projection || {};
   const closestStatement = Array.isArray(payload.closest_statement)
     ? payload.closest_statement.join(" | ")
     : payload.closest_statement || "";
+  const closestStatementKeys = Array.isArray(payload.closest_statement_keys)
+    ? payload.closest_statement_keys.join(" | ")
+    : payload.closest_statement_keys || "";
 
   return {
     created_at: record?.created_at || payload.completed_at || "",
+    started_at: payload.started_at || "",
+    completed_at: payload.completed_at || "",
+    duration_ms: payload.duration_ms ?? "",
     id: record?.id || "",
     quiz_version: payload.quiz_version || "",
     measurement_version: payload.measurement_version || "",
@@ -150,7 +179,9 @@ function flattenRecord(record) {
     quadrant: labels.quadrant || "",
     warmup_reaction: payload.warmup_reaction || "",
     closest_statement: closestStatement,
+    closest_statement_keys: closestStatementKeys,
     scenario_v3: scenarios.V3 || "",
+    scenario_v3_key: scenarioKeys.V3 || "",
     U01: answers.U01 || "",
     H02: answers.H02 || "",
     C04: answers.C04 || "",
@@ -165,6 +196,20 @@ function flattenRecord(record) {
     E01: answers.E01 || "",
     H01: answers.H01 || "",
     H04: answers.H04 || "",
+    U01_key: answerKeys.U01 || "",
+    H02_key: answerKeys.H02 || "",
+    C04_key: answerKeys.C04 || "",
+    C02_key: answerKeys.C02 || "",
+    C03_key: answerKeys.C03 || "",
+    L01_key: answerKeys.L01 || "",
+    I01_key: answerKeys.I01 || "",
+    T01_key: answerKeys.T01 || "",
+    D01_key: answerKeys.D01 || "",
+    R01_key: answerKeys.R01 || "",
+    R04_key: answerKeys.R04 || "",
+    E01_key: answerKeys.E01 || "",
+    H01_key: answerKeys.H01 || "",
+    H04_key: answerKeys.H04 || "",
     self_agreement: diagnostics.self_agreement,
     scenario_agreement: diagnostics.scenario_agreement,
     respondent_vector_json: safeJSON(payload.respondent_vector),
@@ -172,7 +217,9 @@ function flattenRecord(record) {
     profile_ranking_json: safeJSON(payload.profile_ranking),
     projection_json: safeJSON(projection),
     answers_json: safeJSON(answers),
+    answer_keys_json: safeJSON(answerKeys),
     scenarios_json: safeJSON(scenarios),
+    scenario_keys_json: safeJSON(scenarioKeys),
     summary: payload.summary || ""
   };
 }

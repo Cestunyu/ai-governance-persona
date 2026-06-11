@@ -6,8 +6,8 @@ This folder contains the survey instruments and profile copy for the AI ideology
 
 - `2026-05-19-ai-ideology-closed-questionnaire-v1-zh.md`
   - Closed-ended Chinese questionnaire structure.
-  - Use as the source of truth for the current quiz-only page.
-  - Background and quality-check modules are documented here for future research use, but they are not part of the active `ai-ideology-quiz.html` page.
+  - Historical questionnaire design source. The active production canonical data now lives in `data/quiz.zh.json` and `data/quiz.en.json`.
+  - Background and quality-check modules are documented here for future research use, but they are not part of the active production pages.
 
 ## Supporting Instruments
 
@@ -41,6 +41,7 @@ This folder contains the survey instruments and profile copy for the AI ideology
 ## Editing Rules
 
 - Keep production quiz items closed-ended.
+- Treat `data/quiz.zh.json` and `data/quiz.en.json` as the deployable questionnaire source of truth.
 - Do not add open text to the active pilot unless the data plan explicitly supports reviewing and storing it.
 - Do not let meme labels define the coordinates; coordinates come first, labels come second.
 - When changing item wording, record whether the scoring direction changed.

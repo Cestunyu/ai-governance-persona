@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPUC HTML Share Card Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page: #e9eef5;
+      --card: #ffffff;
+      --ink: #111827;
+      --muted: #657386;
+      --line: #d9e2ef;
+      --soft: #f4f7fb;
+      --blue: #2457d6;
+      --navy: #101c2f;
+      --mint: #0f766e;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+    }
+
+    main {
+      width: min(980px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 24px 0 44px;
+    }
+
+    .demo-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .demo-head p {
+      max-width: 520px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 22px;
+      align-items: start;
+    }
+
+    .phone-frame {
+      margin: 0;
+    }
+
+    .phone-frame figcaption {
+      margin-bottom: 8px;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .share-card {
+      width: min(100%, 390px);
+      min-height: 690px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--card);
+      padding: 20px;
+      box-shadow: 0 18px 48px rgba(20, 31, 52, 0.12);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .brand-title {
+      margin: 0;
+      color: #132036;
+      font-size: 19px;
+      font-weight: 920;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .result-code {
+      flex: none;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #123a8a;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-weight: 920;
+      line-height: 1;
+    }
+
+    .avatar-wrap {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #f8fafc;
+      padding: 6px;
+    }
+
+    .avatar {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 13px;
+      object-fit: cover;
+      background: #e9eef5;
+    }
+
+    .profile-band {
+      margin-top: 14px;
+      border-radius: 15px;
+      background: var(--navy);
+      color: #fff;
+      padding: 13px 14px 14px;
+      text-align: center;
+    }
+
+    .profile-band strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .sentence {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--soft);
+      padding: 16px 16px 17px;
+      color: #132036;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.42;
+      letter-spacing: 0;
+    }
+
+    .sentence p {
+      margin: 0;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 82px 82px;
+      gap: 12px;
+      align-items: stretch;
+      margin-top: 14px;
+    }
+
+    .nearest {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #f8fbff;
+      padding: 13px 14px;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 760;
+      line-height: 1.1;
+    }
+
+    .nearest-name {
+      margin: 0;
+      color: var(--ink);
+      font-size: 21px;
+      font-weight: 850;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .mini-map {
+      position: relative;
+      width: 82px;
+      height: 82px;
+      border: 1px solid #cbd7e6;
+      border-radius: 14px;
+      background:
+        linear-gradient(90deg, #e8f1ff 0 50%, #fbfdff 50% 100%);
+      overflow: hidden;
+    }
+
+    .mini-map::before,
+    .mini-map::after {
+      content: "";
+      position: absolute;
+      background: rgba(80, 96, 120, 0.28);
+    }
+
+    .mini-map::before {
+      left: 10px;
+      right: 10px;
+      top: 50%;
+      height: 1px;
+    }
+
+    .mini-map::after {
+      top: 10px;
+      bottom: 10px;
+      left: 50%;
+      width: 1px;
+    }
+
+    .axis {
+      position: absolute;
+      color: #66758a;
+      font-size: 8px;
+      font-weight: 850;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .axis.top { top: 8px; left: 50%; transform: translateX(-50%); }
+    .axis.bottom { bottom: 7px; left: 50%; transform: translateX(-50%); }
+    .axis.left { top: 50%; left: 6px; transform: translateY(-50%); }
+    .axis.right { top: 50%; right: 6px; transform: translateY(-50%); }
+
+    .map-dot {
+      position: absolute;
+      left: 66%;
+      top: 64%;
+      width: 15px;
+      height: 15px;
+      border: 3px solid #fff;
+      border-radius: 999px;
+      background: var(--blue);
+      box-shadow:
+        0 0 0 3px rgba(36, 87, 214, 0.16),
+        0 3px 8px rgba(36, 87, 214, 0.28);
+      transform: translate(-50%, -50%);
+    }
+
+    .map-dot::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: inherit;
+      background: #ffffff;
+      opacity: 0.65;
+    }
+
+    .qr-card {
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 6px;
+    }
+
+    .qr-card img {
+      display: block;
+      width: 68px;
+      height: 68px;
+    }
+
+    .cta {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+      border-radius: 15px;
+      background: #eaf7f4;
+      padding: 12px 14px;
+      color: #0b5d55;
+    }
+
+    .cta strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .cta span {
+      display: block;
+      color: #55706d;
+      font-size: 10px;
+      font-weight: 760;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+
+    .language-tag {
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 5px 8px;
+      color: #0b5d55;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .en .sentence {
+      font-size: 18px;
+      line-height: 1.38;
+    }
+
+    .en .profile-band strong {
+      font-size: 21px;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        width: min(430px, calc(100vw - 20px));
+        padding-top: 18px;
+      }
+
+      .demo-head {
+        display: block;
+      }
+
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .share-card {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .share-card {
+        padding: 16px;
+        border-radius: 20px;
+      }
+
+      .brand-title {
+        font-size: 17px;
+      }
+
+      .profile-band strong {
+        font-size: 20px;
+      }
+
+      .sentence {
+        font-size: 18px;
+      }
+
+      .meta-grid {
+        grid-template-columns: minmax(0, 1fr) 76px 76px;
+        gap: 9px;
+      }
+
+      .mini-map {
+        width: 76px;
+        height: 76px;
+      }
+
+      .qr-card img {
+        width: 62px;
+        height: 62px;
+      }
+    }
+
+    body.export-mode {
+      background: var(--page);
+    }
+
+    body.export-mode main {
+      width: 430px;
+      margin: 0;
+      padding: 10px;
+    }
+
+    body.export-mode .demo-head,
+    body.export-mode figcaption,
+    body.export-mode .phone-frame[data-hidden="true"] {
+      display: none;
+    }
+
+    body.export-mode .demo-grid {
+      display: block;
+      width: 410px;
+    }
+
+    body.export-mode .phone-frame {
+      margin: 0;
+    }
+
+    body.export-mode .share-card {
+      width: 410px;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="demo-head">
+      <div>
+        <h1>GPUC HTML Share Card</h1>
+        <p>先用 HTML/CSS 定版：头像最大，小二维图固定为 82px，最近的人和一句话分开承载，二维码按语言切换。</p>
+      </div>
+    </header>
+
+    <section class="demo-grid" aria-label="GPUC share card demos">
+      <figure class="phone-frame">
+        <figcaption>中文界面分享卡</figcaption>
+        <article class="share-card zh" id="share-card-zh" aria-label="GPUC 中文分享卡">
+          <header class="brand-row">
+            <div>
+              <h2 class="brand-title">AI 人格测试</h2>
+            </div>
+            <div class="result-code">GPUC</div>
+          </header>
+
+          <div class="avatar-wrap">
+            <img class="avatar" src="../../assets/profile-pictures/gpuc-wojak.png" alt="GPUC 算力拜物教徒头像">
+          </div>
+
+          <div class="profile-band">
+            <strong>GPUC: 算力拜物教徒</strong>
+          </div>
+
+          <section class="sentence" aria-label="结果短句">
+            <p>人类知识别太把自己当回事。</p>
+          </section>
+
+          <section class="meta-grid" aria-label="分享元素">
+            <div class="nearest">
+              <span class="label">最接近的人</span>
+              <p class="nearest-name">Rich Sutton</p>
+            </div>
+
+            <div class="mini-map" aria-label="二维坐标位置图">
+              <span class="axis top">人类中心</span>
+              <span class="axis bottom">智能中心</span>
+              <span class="axis left">控制</span>
+              <span class="axis right">开放</span>
+              <span class="map-dot"></span>
+            </div>
+
+            <div class="qr-card">
+              <img alt="中文测试二维码" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona-qxad5fjx.edgeone.cool%2Fch%2F">
+            </div>
+          </section>
+
+          <footer class="cta">
+            <div>
+              <strong>扫码测测你的 AI 人格</strong>
+            </div>
+            <span class="language-tag">中文 QR</span>
+          </footer>
+        </article>
+      </figure>
+
+      <figure class="phone-frame">
+        <figcaption>English UI share card</figcaption>
+        <article class="share-card en" id="share-card-en" lang="en" aria-label="GPUC English share card">
+          <header class="brand-row">
+            <div>
+              <h2 class="brand-title">AI Governance Persona</h2>
+            </div>
+            <div class="result-code">GPUC</div>
+          </header>
+
+          <div class="avatar-wrap">
+            <img class="avatar" src="../../assets/profile-pictures/gpuc-wojak.png" alt="GPUC Compute Cultist avatar">
+          </div>
+
+          <div class="profile-band">
+            <strong>GPUC: Compute Cultist</strong>
+          </div>
+
+          <section class="sentence" aria-label="Result sentence">
+            <p>Human knowledge should stop overestimating itself.</p>
+          </section>
+
+          <section class="meta-grid" aria-label="Share elements">
+            <div class="nearest">
+              <span class="label">Closest reference</span>
+              <p class="nearest-name">Rich Sutton</p>
+            </div>
+
+            <div class="mini-map" aria-label="2D coordinate position map">
+              <span class="axis top">Human</span>
+              <span class="axis bottom">Intel.</span>
+              <span class="axis left">Control</span>
+              <span class="axis right">Open</span>
+              <span class="map-dot"></span>
+            </div>
+
+            <div class="qr-card">
+              <img alt="English test QR code" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona-qxad5fjx.edgeone.cool%2Fen%2F">
+            </div>
+          </section>
+
+          <footer class="cta">
+            <div>
+              <strong>Scan to find your AI persona</strong>
+            </div>
+            <span class="language-tag">EN QR</span>
+          </footer>
+        </article>
+      </figure>
+    </section>
+  </main>
+  <script>
+    const exportLang = new URLSearchParams(window.location.search).get("export");
+    if (exportLang === "zh" || exportLang === "en") {
+      document.body.classList.add("export-mode");
+      document.querySelectorAll(".phone-frame").forEach((frame) => {
+        const card = frame.querySelector(".share-card");
+        if (!card || !card.classList.contains(exportLang)) frame.dataset.hidden = "true";
+      });
+    }
+  </script>
+</body>
+</html>

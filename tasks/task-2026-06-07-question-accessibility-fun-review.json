@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1",
+  "task_id": "task-2026-06-07-question-accessibility-fun-review",
+  "project_id": "ai-ideology-quiz",
+  "status": "captured",
+  "created_at": "2026-06-07T02:52:53+02:00",
+  "updated_at": "2026-06-07T02:52:53+02:00",
+  "objective": "Review and redesign quiz items so the instrument remains technically serious while becoming less overly technical, more interesting, and more accessible to casual respondents.",
+  "acceptance_criteria": [
+    "Identify item types that are too technical or low-fun for the target audience.",
+    "Propose a revised item strategy that preserves measurement validity while adding accessible, scenario-based, culturally legible, or playful content.",
+    "Record which existing items should be kept, rewritten, softened, or replaced before implementation."
+  ],
+  "context_refs": [
+    {
+      "type": "state",
+      "path": "/Users/yuun/Documents/GitHub/ai-ideology-quiz/STATE.json",
+      "notes": "canonical project state"
+    }
+  ],
+  "policy": {
+    "external_writes": false,
+    "allowed_file_writes": [
+      "/Users/yuun/Documents/GitHub/ai-ideology-quiz"
+    ],
+    "forbidden_reads": [
+      ".env"
+    ]
+  },
+  "review": {
+    "required": true,
+    "mode": "read_only_after_write",
+    "checks": [
+      "state_consistency",
+      "source_traceability"
+    ]
+  }
+}

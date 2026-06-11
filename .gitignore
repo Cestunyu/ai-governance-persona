@@ -1,5 +1,13 @@
 .DS_Store
 .env
 .env.*
+!.env.example
 data/responses/
+data/remote-results.csv
 *.local.*
+node_modules/
+STATE.json
+
+# Tencent Cloud EdgeOne
+.edgeone/*
+.tef_dist/*

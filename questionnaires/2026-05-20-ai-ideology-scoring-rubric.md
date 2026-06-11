@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-10
 
-This note documents the active scoring logic used by `ai-ideology-quiz.html` and `ai-ideology-quiz-en.html`.
+This note documents the active scoring logic used by the `/cn/` and `/en/` production pages. The deployable canonical questionnaire data lives in `data/quiz.zh.json` and `data/quiz.en.json`.
 
 ## Framework
 

@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Persona Short Copy Audit</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef2f7;
+      --card: #ffffff;
+      --ink: #121826;
+      --muted: #667386;
+      --line: #d9e2ef;
+      --soft: #f6f8fb;
+      --navy: #101c2f;
+      --accent: #0f766e;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    main {
+      width: min(1120px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    header {
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      max-width: 760px;
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 14px;
+    }
+
+    .persona {
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr);
+      gap: 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      padding: 14px;
+      box-shadow: 0 10px 26px rgba(20, 31, 52, 0.07);
+    }
+
+    .avatar {
+      width: 74px;
+      height: 74px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      object-fit: cover;
+      background: #e8edf4;
+    }
+
+    .topline {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+
+    .code {
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #123a8a;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .en-name {
+      margin: 2px 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 760;
+      line-height: 1.25;
+    }
+
+    .short {
+      margin: 0 0 9px;
+      color: var(--ink);
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .what {
+      margin: 0;
+      color: #344054;
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .audit {
+      margin-top: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 9px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.48;
+    }
+
+    .audit strong {
+      color: #475467;
+    }
+
+    .needs-work {
+      border-color: #f0c98d;
+      background: #fffdfa;
+    }
+
+    .ok {
+      border-color: #b9ded6;
+    }
+
+    @media (max-width: 560px) {
+      main {
+        width: min(430px, calc(100vw - 18px));
+        padding-top: 18px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .persona {
+        grid-template-columns: 64px minmax(0, 1fr);
+      }
+
+      .avatar {
+        width: 64px;
+        height: 64px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>AI Persona 短句文案审计版</h1>
+      <p class="intro">用途：先审 10 个 persona 的分享卡短句。每张卡上建议只放“短句”，详细解释放在结果页。黄色边框表示我认为还需要你定调或继续改的项。</p>
+    </header>
+
+    <section class="grid" aria-label="persona short copy audit">
+      <article class="persona ok">
+        <img class="avatar" src="../../assets/profile-pictures/stop-wojak.png" alt="STOP avatar">
+        <div>
+          <div class="topline"><h2>关机圣骑士</h2><span class="code">STOP</span></div>
+          <p class="en-name">Shutdown Paladin</p>
+          <p class="short">电闸在哪儿？</p>
+          <p class="what">看到能力展示时，第一反应是先问失控风险和停机方案。</p>
+          <p class="audit"><strong>审计点：</strong>短、有记忆点，但语气很强，适合 meme 风格。</p>
+        </div>
+      </article>
+
+      <article class="persona ok">
+        <img class="avatar" src="../../assets/profile-pictures/safe-wojak.png" alt="SAFE avatar">
+        <div>
+          <div class="topline"><h2>对齐公务员</h2><span class="code">SAFE</span></div>
+          <p class="en-name">Alignment Bureaucrat</p>
+          <p class="short">先把人类偏好登记表填完。</p>
+          <p class="what">不是反对强 AI，而是希望能力扩张之前先解决对齐、监督和治理。</p>
+          <p class="audit"><strong>审计点：</strong>沿用原方向，稍微压短；如果想更严肃，可以去掉“登记表”。</p>
+        </div>
+      </article>
+
+      <article class="persona needs-work">
+        <img class="avatar" src="../../assets/profile-pictures/audt-wojak.png" alt="AUDT avatar">
+        <div>
+          <div class="topline"><h2>算法纪委</h2><span class="code">AUDT</span></div>
+          <p class="en-name">Algorithm Auditor</p>
+          <p class="short">先问谁受益，谁被监控。</p>
+          <p class="what">关注 AI 背后的权力、劳动、偏见、环境成本和被技术治理的人。</p>
+          <p class="audit"><strong>审计点：</strong>去掉“写完前三章”；这版更清楚，也少一点阴阳怪气。</p>
+        </div>
+      </article>
+
+      <article class="persona ok">
+        <img class="avatar" src="../../assets/profile-pictures/norm-wojak.png" alt="NORM avatar">
+        <div>
+          <div class="topline"><h2>冷静产品经理</h2><span class="code">NORM</span></div>
+          <p class="en-name">Sober Product Manager</p>
+          <p class="short">先看场景、指标和责任人。</p>
+          <p class="what">把 AI 当成具体技术产品，关心边界、上线条件、失败模式和实际用户。</p>
+          <p class="audit"><strong>审计点：</strong>比较稳，分享感不强但解释准确。</p>
+        </div>
+      </article>
+
+      <article class="persona needs-work">
+        <img class="avatar" src="../../assets/profile-pictures/hype-wojak.png" alt="SKEP avatar">
+        <div>
+          <div class="topline"><h2>AI 祛魅师</h2><span class="code">SKEP</span></div>
+          <p class="en-name">AI Demystifier</p>
+          <p class="short">别讲智能觉醒，它迟早要翻车。</p>
+          <p class="what">对“快 AGI 了”的叙事保持怀疑，先看基线、测试集和真实可复现能力。</p>
+          <p class="audit"><strong>审计点：</strong>更反 hype、更 meme；技术审计感弱一点，但分享传播性更强。</p>
+        </div>
+      </article>
+
+      <article class="persona ok">
+        <img class="avatar" src="../../assets/profile-pictures/gpuc-wojak.png" alt="GPUC avatar">
+        <div>
+          <div class="topline"><h2>算力拜物教徒</h2><span class="code">GPUC</span></div>
+          <p class="en-name">Compute Cultist</p>
+          <p class="short">人类知识别太把自己当回事。</p>
+          <p class="what">相信通用方法、搜索、学习和算力最终会超过手写知识与专家直觉。</p>
+          <p class="audit"><strong>审计点：</strong>按你的方向压短了；英文可对应 “Human knowledge should stop overestimating itself.”</p>
+        </div>
+      </article>
+
+      <article class="persona needs-work">
+        <img class="avatar" src="../../assets/profile-pictures/boom-wojak.png" alt="BOOM avatar">
+        <div>
+          <div class="topline"><h2>丰裕施工队</h2><span class="code">BOOM</span></div>
+          <p class="en-name">Abundance Builder</p>
+          <p class="short">先把 AI 接进真实世界。</p>
+          <p class="what">相信 AI 的主要价值来自部署到医疗、教育、生产率和现实系统里。</p>
+          <p class="audit"><strong>审计点：</strong>原句确实有歧义；这版强调落地，但可能还不够有趣。</p>
+        </div>
+      </article>
+
+      <article class="persona ok">
+        <img class="avatar" src="../../assets/profile-pictures/sing-wojak.png" alt="SING avatar">
+        <div>
+          <div class="topline"><h2>赛博飞升派</h2><span class="code">SING</span></div>
+          <p class="en-name">Cyber Ascender</p>
+          <p class="short">AI 不是工具，是文明跃升。</p>
+          <p class="what">把 AI 看成文明跃迁、长寿、丰裕和人机融合的入口。</p>
+          <p class="audit"><strong>审计点：</strong>短句风格比较强，和 persona 匹配。</p>
+        </div>
+      </article>
+
+      <article class="persona needs-work">
+        <img class="avatar" src="../../assets/profile-pictures/eacc-wojak.png" alt="EACC avatar">
+        <div>
+          <div class="topline"><h2>油门焊死哥</h2><span class="code">E/ACC</span></div>
+          <p class="en-name">Accelerationist Builder</p>
+          <p class="short">方向盘还在吵，油门先踩。</p>
+          <p class="what">偏向开放、建设、加速和减少许可，认为停滞本身也是风险。</p>
+          <p class="audit"><strong>审计点：</strong>英文已建议改成 Accelerationist Builder；更自然，也更可懂。</p>
+        </div>
+      </article>
+
+      <article class="persona needs-work">
+        <img class="avatar" src="../../assets/profile-pictures/post-wojak.png" alt="POST avatar">
+        <div>
+          <div class="topline"><h2>碳基过渡版本</h2><span class="code">POST</span></div>
+          <p class="en-name">Carbon-Based Transitional Form</p>
+          <p class="short">人类不是终点，只是启动器。</p>
+          <p class="what">更关心后人类、技术资本、自主系统，以及“AI 是否还服务人类”这个前提本身。</p>
+          <p class="audit"><strong>审计点：</strong>比原句更短，但仍偏暗黑；可以继续调得更中性。</p>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

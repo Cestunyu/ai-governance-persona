@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1",
+  "task_id": "task-2026-06-07-screenshot-share-simplification",
+  "project_id": "ai-ideology-quiz",
+  "status": "captured",
+  "created_at": "2026-06-07T02:52:53+02:00",
+  "updated_at": "2026-06-07T02:52:53+02:00",
+  "objective": "Simplify the sharing experience around screenshot-based sharing instead of complex generated share pages or posters.",
+  "acceptance_criteria": [
+    "Review previous share-page/poster decisions and identify what to retire.",
+    "Propose a screenshot-first result page layout that is visually clean, shareable, and easy to capture on mobile and desktop.",
+    "Preserve measurement/results clarity while increasing social spread potential."
+  ],
+  "context_refs": [
+    {
+      "type": "state",
+      "path": "/Users/yuun/Documents/GitHub/ai-ideology-quiz/STATE.json",
+      "notes": "canonical project state"
+    }
+  ],
+  "policy": {
+    "external_writes": false,
+    "allowed_file_writes": [
+      "/Users/yuun/Documents/GitHub/ai-ideology-quiz"
+    ],
+    "forbidden_reads": [
+      ".env"
+    ]
+  },
+  "review": {
+    "required": true,
+    "mode": "read_only_after_write",
+    "checks": [
+      "state_consistency",
+      "source_traceability"
+    ]
+  }
+}

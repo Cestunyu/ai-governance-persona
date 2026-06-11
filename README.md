@@ -1,6 +1,6 @@
 # AI Ideology Quiz / AI Social Thought Spectrum
 
-This repository contains a lightweight AI ideology quiz and the underlying two-axis AI Social Thought Spectrum. It maps major social, political, philosophical, and technical positions around advanced AI.
+This repository contains a lightweight AI ideology quiz and a two-axis AI Social Thought Spectrum. The homepage should offer two public paths: start the quiz, or directly browse the spectrum.
 
 The goal is not to collect every AI opinion. The goal is to build a reusable map of the representative thinkers, texts, movements, and claims that shape debates about AI risk, progress, alignment, social harm, scaling, acceleration, and posthuman futures.
 
@@ -44,11 +44,18 @@ Use these buckets when collecting texts:
 
 ## Current Entry Points
 
-- `ai-ideology-quiz.html`: Chinese clean quiz-only page with one-question-at-a-time flow and reference points from the two-axis thinker map.
-- `ai-ideology-quiz-en.html`: English clean quiz-only page with the same scoring logic, reference points, and language switch.
-- `ai-ideology-placement-quiz.html`: richer experimental page with live profile, copyable summary, and PNG share-poster logic.
-- `ai-thought-spectrum-visualization.html`: Chinese public-facing map for explaining the AI thought spectrum and browsing thinkers, movements, and representative works.
-- `ai-thought-spectrum-visualization-en.html`: English public-facing version of the same spectrum map.
+- `/cn/`: Chinese production quiz/result/share page.
+- `/en/`: English production quiz/result/share page.
+- `/ch/`: legacy redirect to `/cn/`.
+- `index.html`: lightweight redirect to `/cn/`.
+- `data/quiz.zh.json`: canonical Chinese quiz/questionnaire data.
+- `data/quiz.en.json`: canonical English quiz/questionnaire data.
+- `ai-governance-spectrum.html`: Chinese browse-first governance/persona spectrum page.
+- `ai-governance-spectrum-en.html`: English browse-first spectrum page; should mirror the Chinese result-led structure.
+- `ai-personality-profiles.html`: Chinese persona profile catalog.
+- `ai-governance-persona-profiles-en.html`: English persona profile catalog.
+- `archive/old-pages/`: old quiz and spectrum pages retained for audit/history, not production.
+- `archive/old-demos/`: share-card demos and generated artifacts retained for design history.
 - `ROADMAP.md`: current two-day build plan and publication path.
 - `CURRENT.md`: active state, active files, and next actions.
 - `research/2026-05-14-ai-social-thought-spectrum-source-map.md`: source map for the spectrum and representative positions.
@@ -56,10 +63,11 @@ Use these buckets when collecting texts:
 
 ## Project Lines
 
-The project now has four parallel lines:
+The project now has four product lines:
 
 - Measurement: turn AI attitudes into a closed questionnaire and two-axis coordinates.
-- Explanation: make the spectrum map legible through the bilingual visualization pages and source map.
+- Spectrum browsing: let users directly see where result types, people, and movements sit.
+- Result explanation: make each quiz result legible through profile copy, nearby positions, dimensions, and shareable interpretation.
 - Meme layer: convert coordinates into short shareable profiles without letting the joke replace the measurement.
 - Data pipeline: collect pilot responses, store only the fields needed for analysis, and keep raw identifiable data out of this repository.
 
@@ -77,11 +85,18 @@ The project now has four parallel lines:
   - `2026-05-19-ai-ideology-short-locator-zh.md`: Chinese short locator for casual pilots
   - `2026-05-19-ai-ideology-closed-questionnaire-v1-zh.md`: closed-ended pilot questionnaire structure for data collection
   - `2026-05-19-ai-ideology-meme-profiles-zh.md`: short profile copy for result cards
-- `ai-ideology-quiz.html`: standalone quiz-only Chinese page for data collection, using an MBTI-style one-question-at-a-time flow
-- `ai-ideology-quiz-en.html`: standalone quiz-only English page for international respondents
-- `ai-ideology-placement-quiz.html`: standalone Chinese HTML quiz that scores, plots, profiles, and generates PNG share posters for respondents
-- `ai-thought-spectrum-visualization.html`: standalone Chinese interactive visualization
-- `ai-thought-spectrum-visualization-en.html`: standalone English interactive visualization
+- `cn/index.html`: current Chinese production quiz/result/share page
+- `ch/index.html`: legacy redirect to `/cn/`
+- `en/index.html`: current English production quiz/result/share page
+- `index.html`: lightweight redirect to `/cn/`
+- `data/quiz.zh.json`: canonical Chinese quiz/questionnaire data
+- `data/quiz.en.json`: canonical English quiz/questionnaire data
+- `ai-governance-spectrum.html`: Chinese interactive/result-led spectrum visualization
+- `ai-governance-spectrum-en.html`: English interactive/result-led spectrum visualization
+- `ai-personality-profiles.html`: Chinese profile catalog
+- `ai-governance-persona-profiles-en.html`: English profile catalog
+- `archive/old-pages/`: old standalone quiz and spectrum experiments
+- `archive/old-demos/`: share-card demo HTML, scripts, and generated images
 - `cycles/`: dated learning cycles
 - `_system/checks/`: reusable checks for classifying new texts
 - `research/`: durable source maps and research context
@@ -91,20 +106,21 @@ The project now has four parallel lines:
 
 1. `CURRENT.md`
 2. `ROADMAP.md`
-3. `ai-ideology-quiz.html`
-4. `ai-ideology-quiz-en.html`
+3. `ch/index.html`
+4. `en/index.html`
 5. `questionnaires/README.md`
 6. `questionnaires/2026-05-19-ai-ideology-closed-questionnaire-v1-zh.md`
 7. `questionnaires/2026-05-19-ai-ideology-meme-profiles-zh.md`
-8. `ai-ideology-placement-quiz.html`
-9. `ai-thought-spectrum-visualization.html`
-10. `ai-thought-spectrum-visualization-en.html`
-11. `concepts/ai-thought-spectrum-map.md`
-12. `data/ai-thought-spectrum.json`
-13. `_system/GUIDE.md`
-14. `research/2026-05-14-ai-social-thought-spectrum-source-map.md`
-15. `planning/2026-05-19-ai-ideology-quiz-pilot.md`
+8. `ai-governance-spectrum.html`
+9. `ai-governance-spectrum-en.html`
+10. `ai-personality-profiles.html`
+11. `ai-governance-persona-profiles-en.html`
+12. `concepts/ai-thought-spectrum-map.md`
+13. `data/ai-thought-spectrum.json`
+14. `_system/GUIDE.md`
+15. `research/2026-05-14-ai-social-thought-spectrum-source-map.md`
+16. `planning/2026-05-19-ai-ideology-quiz-pilot.md`
 
 ## Current Default
 
-When in doubt, treat `ai-ideology-quiz.html` as the Chinese production candidate, `ai-ideology-quiz-en.html` as the English production candidate, and `ai-ideology-placement-quiz.html` as the experimental social-sharing version.
+When in doubt, treat `data/quiz.zh.json` and `data/quiz.en.json` as the canonical quiz data, and treat `/cn/` and `/en/` as the production quiz/result/share pages. Treat `ai-governance-spectrum.html`, `ai-governance-spectrum-en.html`, `ai-personality-profiles.html`, and `ai-governance-persona-profiles-en.html` as supporting browse/profile pages. Old quiz and share experiments live under `archive/` and should not be edited as production surfaces. Run `npm run release:check` and `npm run release:bundle` before any deploy.

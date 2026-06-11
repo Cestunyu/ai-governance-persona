@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1",
+  "task_id": "task-2026-06-07-backend-data-collection-design",
+  "project_id": "ai-ideology-quiz",
+  "status": "captured",
+  "created_at": "2026-06-07T02:52:53+02:00",
+  "updated_at": "2026-06-07T02:52:53+02:00",
+  "objective": "Design the server and backend data collection plan for quiz responses after the user decides whether to buy a server.",
+  "acceptance_criteria": [
+    "Compare CSV-only, lightweight database, and hosted backend options for mainland China and overseas accessibility.",
+    "Define minimum response schema: timestamp, IP address policy, question answer vector, language/version, score/profile outputs, and privacy caveats.",
+    "Mark server purchase/payment as a human decision and do not perform procurement."
+  ],
+  "context_refs": [
+    {
+      "type": "state",
+      "path": "/Users/yuun/Documents/GitHub/ai-ideology-quiz/STATE.json",
+      "notes": "canonical project state"
+    }
+  ],
+  "policy": {
+    "external_writes": false,
+    "allowed_file_writes": [
+      "/Users/yuun/Documents/GitHub/ai-ideology-quiz"
+    ],
+    "forbidden_reads": [
+      ".env"
+    ]
+  },
+  "review": {
+    "required": true,
+    "mode": "read_only_after_write",
+    "checks": [
+      "state_consistency",
+      "source_traceability"
+    ]
+  }
+}
