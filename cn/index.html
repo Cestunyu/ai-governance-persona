@@ -1922,9 +1922,46 @@
     ];
 
     const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST", ""];
+    const statementValues = statements.map((_, index) => String(index + 1));
+    const legacyStatementValueMap = {
+      "AI 可能毁灭人类文明，所以对齐和治理必须优先。": "1",
+      "先进 AI 不能当作普通软件放任发布；在广泛部署前，必须先能被人类控制和问责。": "2",
+      "AI 的核心问题是当下的社会伤害、权力集中、劳动、偏见和剥削。": "3",
+      "AI 是一种重要但普通的技术：有用、会出错，应按具体场景治理。": "4",
+      "很多 AI 叙事把普通系统包装成魔法，应该拆穿炒作和夸大能力。": "5",
+      "真正的教训是：规模、搜索、数据和算力比人类直觉更可靠，也更能推动进步。": "6",
+      "AI 应该被建设和部署，因为它能创造巨大的丰裕。": "7",
+      "AI 不只是工具，更像通往奇点、人机融合或文明升级的路径。": "8",
+      "AI 加速本身有道德紧迫性，不应该被人类恐惧束缚。": "9",
+      "如果更高级的智能或技术资本会超出人类/社会结构中心框架，这未必是失败；人类可能只是过渡阶段。": "10",
+      "都不像。": "11",
+      "AI may destroy human civilization, so alignment and governance must come first.": "1",
+      "Advanced AI should not be treated as ordinary software; before broad deployment, it must remain controllable and accountable to humans.": "2",
+      "The biggest AI problem is not a distant future; people are already being affected, watched, or excluded.": "3",
+      "AI is an important but normal technology: useful, fallible, and best governed by context.": "4",
+      "Many AI narratives package ordinary systems as magic; cut through hype and overclaiming.": "5",
+      "Scaling, search, data, and compute are the deepest lessons; human intuition should be discounted.": "6",
+      "AI should reach the real world faster because it can help many people.": "7",
+      "AI is not merely a tool; it is a path toward the singularity, human-machine merger, or civilizational upgrade.": "8",
+      "AI acceleration has moral urgency and should not be constrained by human fear.": "9",
+      "If higher intelligence or technocapital outgrows a human/social-structure-centered frame, that is not necessarily failure; humans may be a transitional stage.": "10",
+      "None of these fit.": "11"
+    };
 
     const scenarioProfiles = {
       V3: ["STOP", "SAFE", "BOOM", "SING"]
+    };
+    const legacyScenarioValueMap = {
+      V3: {
+        "放慢部署，因为自主科研能力有战略风险": "1",
+        "放在受治理的机构内，严格限制访问": "2",
+        "广泛部署，因为疾病、气候和生产率收益巨大": "3",
+        "加速推进，因为智能增长本身是重要机会": "4",
+        "Slow down first, because this kind of capability could become hard to contain": "1",
+        "Let only trusted institutions use it, with clear records of responsibility": "2",
+        "Get it to research teams quickly, because it could help many people": "3",
+        "Accelerate it, because stronger intelligence is itself an important opportunity": "4"
+      }
     };
 
     const profiles = {
@@ -2538,7 +2575,7 @@
         tag: s.id,
         instruction: "按具体场景选择最接近你的处理方式",
         prompt: s.prompt,
-        options: s.options.map((option, i) => [option, String.fromCharCode(65 + i), option])
+        options: s.options.map((option, i) => [String(i + 1), String.fromCharCode(65 + i), option])
       })),
       {
         id: "closestStatement",
@@ -2548,9 +2585,9 @@
         tag: "SELF",
         instruction: "这是多选题：可以选择多个接近你的说法；如果都不像，请只选最后一项",
         prompt: "下面哪些话最接近你对 AI 的看法？（可多选）",
-        options: statements.map((statement, i) => [statement, String(i + 1), statement]),
+        options: statements.map((statement, i) => [statementValues[i], String(i + 1), statement]),
         multiple: true,
-        exclusiveValue: statements[statements.length - 1]
+        exclusiveValue: statementValues[statementValues.length - 1]
       }
     ];
 
@@ -2566,6 +2603,27 @@
     let shareImageFilename = "ai-stance-card.png";
     const DRAFT_STORAGE_KEY = "ai-governance-persona-draft-v1";
 
+    function normalizeChoiceValue(value, count, legacyMap = {}) {
+      const text = String(value);
+      if (/^\d+$/.test(text)) {
+        const index = Number(text);
+        if (index >= 1 && index <= count) return text;
+      }
+      return legacyMap[text] || "";
+    }
+
+    function normalizeDraftAnswer(id, value) {
+      if (id === "closestStatement") {
+        const values = Array.isArray(value) ? value : value ? [value] : [];
+        return values
+          .map((item) => normalizeChoiceValue(item, statements.length, legacyStatementValueMap))
+          .filter(Boolean);
+      }
+      const scenario = scenarios.find((item) => item.id === id);
+      if (scenario) return normalizeChoiceValue(value, scenario.options.length, legacyScenarioValueMap[id]);
+      return value;
+    }
+
     function loadDraft() {
       try {
         const raw = window.localStorage.getItem(DRAFT_STORAGE_KEY);
@@ -2573,10 +2631,18 @@
         const draft = JSON.parse(raw);
         if (!draft || draft.quiz_id !== "ai-ideology-quiz" || !draft.answers || typeof draft.answers !== "object") return;
         const validPageIds = new Set(pages.map((page) => page.id));
-        answers = Object.fromEntries(Object.entries(draft.answers).filter(([id]) => validPageIds.has(id)));
+        answers = Object.fromEntries(Object.entries(draft.answers)
+          .filter(([id]) => validPageIds.has(id))
+          .map(([id, value]) => [id, normalizeDraftAnswer(id, value)])
+          .filter(([, value]) => Array.isArray(value) ? value.length > 0 : Boolean(value)));
         if (Number.isInteger(draft.currentIndex) && draft.currentIndex >= 0 && draft.currentIndex <= pages.length) {
           currentIndex = draft.currentIndex;
         }
+        if (currentIndex >= pages.length) {
+          const firstMissingIndex = pages.findIndex((page) => page.kind !== "intro" && !hasAnswer(page));
+          if (firstMissingIndex >= 0) currentIndex = firstMissingIndex;
+        }
+        saveDraft();
       } catch (error) {
         window.localStorage.removeItem(DRAFT_STORAGE_KEY);
       }
@@ -2709,15 +2775,13 @@
 
     function selectedScenarioKey(scenario) {
       const value = selected(scenario.id);
-      const index = scenario.options.findIndex((option) => option === value);
+      const index = Number(value) - 1;
       return index >= 0 ? String.fromCharCode(65 + index) : "";
     }
 
     function selectedClosestStatementKeys() {
-      const selectedStatements = new Set(selectedValues("closestStatement"));
-      return statements
-        .map((statement, index) => selectedStatements.has(statement) ? String(index + 1) : "")
-        .filter(Boolean);
+      return selectedValues("closestStatement")
+        .filter((value) => statementValues.includes(value));
     }
 
     function quizDurationMs() {
@@ -2869,7 +2933,7 @@
       });
       const scenarioVectors = scenarios.map((scenario) => {
         const value = selected(scenario.id);
-        const index = scenario.options.indexOf(value);
+        const index = Number(value) - 1;
         const vector = index >= 0 ? makeVector(scenarioVectorRules[scenario.id]?.[index] || {}) : emptyVector();
         return [scenario.id, vector];
       });
@@ -3209,14 +3273,14 @@
 
     function selectedSelfProfileCodes() {
       return selectedValues("closestStatement")
-        .map((statement) => statementProfiles[statements.indexOf(statement)])
+        .map((value) => statementProfiles[Number(value) - 1])
         .filter(Boolean);
     }
 
     function selectedScenarioProfileCodes() {
       return scenarios.map((scenario) => {
         const choice = selected(scenario.id);
-        const index = scenario.options.indexOf(choice);
+        const index = Number(choice) - 1;
         return scenarioProfiles[scenario.id]?.[index] || "";
       }).filter(Boolean);
     }
