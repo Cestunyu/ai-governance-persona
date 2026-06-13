@@ -29,6 +29,7 @@ The desired state is not a definitive canon. It is a working map that makes it e
 - `site.css` provides the shared ultra-minimal visual style for the personal site pages.
 - `.github/workflows/deploy-pages.yml` deploys the static repository to GitHub Pages on pushes to `main`.
 - `CNAME` is not committed for the preview deploy because `linenyu.com` is currently served by EdgeOne Pages. Add it back only when DNS is ready to point the mother site at GitHub Pages.
+- 2026-06-14: Deployed the same personal-site bundle to EdgeOne Makers projects `ai-persona` (`dp9t04h63o6b`) and `ai-persona-overseas` (`dp08bq48tnqe`); `http://linenyu.com/` now serves the English personal homepage.
 - `/cn/` is the Chinese production quiz/result/share page.
 - `/en/` is the English production quiz/result/share page.
 - `/ch/` remains a lightweight redirect to `/cn/`; root `/` is no longer a quiz redirect.
