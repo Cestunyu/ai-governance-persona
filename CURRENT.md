@@ -28,7 +28,7 @@ The desired state is not a definitive canon. It is a working map that makes it e
 - `blog/`, `projects/`, and `posts/` provide simple English static section indexes for the personal site.
 - `site.css` provides the shared ultra-minimal visual style for the personal site pages.
 - `.github/workflows/deploy-pages.yml` deploys the static repository to GitHub Pages on pushes to `main`.
-- `CNAME` currently points GitHub Pages at `linenyu.com`; confirm this is the intended root mother-site domain before DNS cutover.
+- `CNAME` is not committed for the preview deploy because `linenyu.com` is currently served by EdgeOne Pages. Add it back only when DNS is ready to point the mother site at GitHub Pages.
 - `/cn/` is the Chinese production quiz/result/share page.
 - `/en/` is the English production quiz/result/share page.
 - `/ch/` remains a lightweight redirect to `/cn/`; root `/` is no longer a quiz redirect.
@@ -50,7 +50,7 @@ The desired state is not a definitive canon. It is a working map that makes it e
 
 ## Active Product Order
 
-1. Review the new English ultra-minimal personal mother-site shell and decide whether the root domain should be `linenyu.com` or another custom domain.
+1. Review the new English ultra-minimal personal mother-site shell on GitHub Pages preview, then decide whether the root domain should move from EdgeOne Pages to GitHub Pages.
 2. Replace placeholder Blog, Projects, and Post entries with real public content links.
 3. Keep AI Persona reachable from the mother site via `/en/` by default, with `/cn/` preserved as the Chinese version.
 4. Review the quiz items for difficulty, fun, accessibility, and measurement validity; many items currently feel too technical for the desired audience.
@@ -112,7 +112,6 @@ The current priority is project completeness and pilot-readiness, not immediate 
 - `projects/index.html`
 - `posts/index.html`
 - `.github/workflows/deploy-pages.yml`
-- `CNAME`
 - `ai-governance-spectrum.html`
 - `ai-governance-spectrum-en.html`
 - `ai-personality-profiles.html`
