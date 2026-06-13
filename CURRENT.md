@@ -1,13 +1,13 @@
 # Current AI Social Thought Spectrum State
 
-Last updated: 2026-06-11
+Last updated: 2026-06-13
 
 ## Active Cycle
 
 - cycle: `2026-05-14-ai-social-thought-spectrum-seed-map`
 - period: 2026-05-14 to 2026-05-28
 - theme: turn the AI social thought map into a pilotable AI ideology quiz
-- style: homepage offers two paths: start the quiz or browse the result-led spectrum
+- style: root homepage is now an English, ultra-minimal personal mother site linking to Blog, Projects, Posts, and AI Persona
 
 ## Current Aim
 
@@ -24,9 +24,14 @@ The desired state is not a definitive canon. It is a working map that makes it e
 
 ## Current Deliverable
 
+- `index.html` is now the first-pass English personal mother site for Linen Yu, with links to Blog, Projects, Posts, and AI Persona. Site-level AI Persona links default to `/en/`.
+- `blog/`, `projects/`, and `posts/` provide simple English static section indexes for the personal site.
+- `site.css` provides the shared ultra-minimal visual style for the personal site pages.
+- `.github/workflows/deploy-pages.yml` deploys the static repository to GitHub Pages on pushes to `main`.
+- `CNAME` currently points GitHub Pages at `linenyu.com`; confirm this is the intended root mother-site domain before DNS cutover.
 - `/cn/` is the Chinese production quiz/result/share page.
 - `/en/` is the English production quiz/result/share page.
-- `/ch/` and `index.html` are lightweight redirects to `/cn/` so neither path carries a third copy of the quiz.
+- `/ch/` remains a lightweight redirect to `/cn/`; root `/` is no longer a quiz redirect.
 - `data/quiz.zh.json` and `data/quiz.en.json` are the canonical quiz/questionnaire data checked against the production HTML by `npm run release:check`.
 - Both production quiz pages show the respondent's profile point against 20 reference thinkers and movements from `data/ai-thought-spectrum.json`.
 - The result flow includes short profile copy, small explanatory copy, nearest-reference context, a two-axis position map, and a generated share image.
@@ -45,13 +50,14 @@ The desired state is not a definitive canon. It is a working map that makes it e
 
 ## Active Product Order
 
-1. Explore several stronger index/introduction demos before replacing production pages.
-2. Review the quiz items for difficulty, fun, accessibility, and measurement validity; many items currently feel too technical for the desired audience.
-3. Incorporate useful external suggestions into the questionnaire and product design after review.
-4. Decide the backend/data collection plan before collecting real responses, including whether IP addresses are stored raw, hashed, reduced to coarse location, or left only in server logs.
-5. Design server deployment for both mainland China and overseas access before purchase/configuration.
-6. Simplify the share layer around screenshot-first sharing rather than complex generated share pages.
-7. After these decisions, stabilize `/cn/` and `/en/` as the pilot pages and run 10-20 friendly pilot responses.
+1. Review the new English ultra-minimal personal mother-site shell and decide whether the root domain should be `linenyu.com` or another custom domain.
+2. Replace placeholder Blog, Projects, and Post entries with real public content links.
+3. Keep AI Persona reachable from the mother site via `/en/` by default, with `/cn/` preserved as the Chinese version.
+4. Review the quiz items for difficulty, fun, accessibility, and measurement validity; many items currently feel too technical for the desired audience.
+5. Incorporate useful external suggestions into the questionnaire and product design after review.
+6. Decide the backend/data collection plan before collecting real responses, including whether IP addresses are stored raw, hashed, reduced to coarse location, or left only in server logs.
+7. Design server deployment for both mainland China and overseas access before purchase/configuration.
+8. Simplify the share layer around screenshot-first sharing rather than complex generated share pages.
 
 ## 2026-06-07 Product Feedback Update
 
@@ -101,6 +107,12 @@ The current priority is project completeness and pilot-readiness, not immediate 
 - `ch/index.html`
 - `en/index.html`
 - `index.html`
+- `site.css`
+- `blog/index.html`
+- `projects/index.html`
+- `posts/index.html`
+- `.github/workflows/deploy-pages.yml`
+- `CNAME`
 - `ai-governance-spectrum.html`
 - `ai-governance-spectrum-en.html`
 - `ai-personality-profiles.html`
