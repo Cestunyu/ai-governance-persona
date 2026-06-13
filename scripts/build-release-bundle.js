@@ -5,6 +5,10 @@ import { extractQuiz, questionSummary, readJson, stable } from "./quiz-source.js
 const target = process.argv[2] || "/tmp/ai-persona-edgeone-dist";
 const publicEntries = [
   "index.html",
+  "site.css",
+  "blog",
+  "projects",
+  "posts",
   "ch",
   "cn",
   "en",
