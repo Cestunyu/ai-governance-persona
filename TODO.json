@@ -322,9 +322,9 @@
     {
       "id": "DEPLOY-028",
       "title": "Confirm obsolete external EdgeOne cloud projects are disabled",
-      "status": "todo",
+      "status": "done",
       "priority": "P0",
-      "source": "2026-06-24 user request to stop EdgeOne after DNS cutover",
+      "source": "2026-06-24 user request to stop EdgeOne after DNS cutover; user confirmed deletion on 2026-06-25",
       "links": [
         "docs/secrets.md"
       ]

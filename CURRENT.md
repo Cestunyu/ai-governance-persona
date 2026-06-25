@@ -27,6 +27,7 @@ Last updated: 2026-06-25
 - 2026-06-25: Committed `3cb86c1` to clarify Vercel as the default route and make quiz edits data-first.
 - 2026-06-25: Split the personal homepage into `/Users/yuun/Documents/GitHub/linenyu-site`.
 - 2026-06-25: Removed personal homepage assets and old EdgeOne/GitHub Pages deployment files from this app repo.
+- 2026-06-25: User confirmed the two obsolete Tencent Cloud / EdgeOne projects were deleted externally.
 
 ## Active Product Order
 
