@@ -17,10 +17,6 @@
     "vercel:verify:live": "node scripts/verify-vercel-live.js",
     "release:check": "npm run quiz:check && npm run vercel:check",
     "release:bundle": "npm run release:bundle:vercel",
-    "release:bundle:edgeone": "node scripts/build-release-bundle.js",
     "release:bundle:vercel": "node scripts/build-vercel-dynamic-bundle.js"
-  },
-  "dependencies": {
-    "@edgeone/pages-blob": "0.0.8"
   }
 }

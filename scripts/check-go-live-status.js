@@ -4,18 +4,15 @@ import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 
-const base = (process.argv.find((arg) => arg.startsWith("--base=")) || "--base=https://linenyu-site.vercel.app")
+const base = (process.argv.find((arg) => arg.startsWith("--base=")) || "--base=https://ai-persona.linenyu.com")
   .slice("--base=".length)
   .replace(/\/+$/, "");
 const strict = process.argv.includes("--strict");
-const vercelApexIps = ["216.198.79.1", "64.29.17.1"];
 const vercelDnsCname = "33236d9ab28d641f.vercel-dns-017.com";
 const dnsTargets = [
-  { domain: "linenyu.com", host: "@", expectedA: vercelApexIps },
-  { domain: "www.linenyu.com", host: "www", expectedCname: vercelDnsCname },
   { domain: "ai-persona.linenyu.com", host: "ai-persona", expectedCname: vercelDnsCname }
 ];
-const vercelProject = "linenyu-site";
+const vercelProject = "ai-governance-persona";
 const dnsResolvers = [
   { name: "local", servers: [] },
   { name: "cloudflare", servers: ["1.1.1.1"] },
@@ -66,7 +63,7 @@ async function checkLiveHealth() {
     return body;
   } catch (error) {
     addCheck("Vercel dynamic health", false, error.message);
-    addAction("Check that the Vercel default deployment is reachable.");
+    addAction("Check that the Vercel app deployment is reachable.");
     return {};
   }
 }
@@ -94,39 +91,19 @@ async function checkStorageRead(health) {
 }
 
 async function checkCustomDomainHttps() {
-  const checks = [
-    {
-      name: "Custom-domain HTTPS linenyu.com",
-      url: "https://linenyu.com/",
-      expectedText: "<title>Linen Yu</title>"
-    },
-    {
-      name: "Custom-domain HTTPS www.linenyu.com",
-      url: "https://www.linenyu.com/",
-      expectedText: "<title>Linen Yu</title>"
-    },
-    {
-      name: "Custom-domain HTTPS ai-persona.linenyu.com/en/",
-      url: "https://ai-persona.linenyu.com/en/",
-      expectedText: "1 usage item plus 15 scored questions"
-    }
-  ];
-
   let allOk = true;
 
-  for (const check of checks) {
-    try {
-      const response = await fetch(check.url, { cache: "no-store" });
-      const text = await response.text();
-      const ok = response.ok && text.includes(check.expectedText);
-      addCheck(check.name, ok, ok ? `${response.status}, Vercel HTTPS ok` : `${response.status}, expected content not found`);
-      allOk = allOk && ok;
-      if (!ok) addAction("Issue or refresh the Vercel certificate and verify the custom-domain routing.");
-    } catch (error) {
-      addCheck(check.name, false, error.message);
-      allOk = false;
-      addAction("Issue or refresh the Vercel certificate and verify the custom-domain routing.");
-    }
+  try {
+    const response = await fetch("https://ai-persona.linenyu.com/en/", { cache: "no-store" });
+    const text = await response.text();
+    const ok = response.ok && text.includes("1 usage item plus 15 scored questions");
+    addCheck("Custom-domain HTTPS ai-persona.linenyu.com/en/", ok, ok ? `${response.status}, Vercel HTTPS ok` : `${response.status}, expected quiz content not found`);
+    allOk = allOk && ok;
+    if (!ok) addAction("Issue or refresh the Vercel certificate and verify the ai-persona custom-domain routing.");
+  } catch (error) {
+    addCheck("Custom-domain HTTPS ai-persona.linenyu.com/en/", false, error.message);
+    allOk = false;
+    addAction("Issue or refresh the Vercel certificate and verify the ai-persona custom-domain routing.");
   }
 
   try {
@@ -142,7 +119,7 @@ async function checkCustomDomainHttps() {
   } catch (error) {
     addCheck("Custom-domain HTTPS ai-persona root redirect", false, error.message);
     allOk = false;
-    addAction("Issue or refresh the Vercel certificate and verify the custom-domain routing.");
+    addAction("Issue or refresh the Vercel certificate and verify the ai-persona custom-domain routing.");
   }
 
   customDomainHttpsReady = allOk;
@@ -150,11 +127,7 @@ async function checkCustomDomainHttps() {
 
 async function checkDns() {
   const nameservers = await dns.resolveNs("linenyu.com").catch(() => []);
-  addCheck(
-    "DNS provider",
-    nameservers.length > 0,
-    nameservers.length ? nameservers.join(",") : "nameservers unresolved"
-  );
+  addCheck("DNS provider", nameservers.length > 0, nameservers.length ? nameservers.join(",") : "nameservers unresolved");
 
   for (const target of dnsTargets) {
     const localResult = await resolveDnsTarget(target);
@@ -169,21 +142,13 @@ async function checkDns() {
       addAction(`In Spaceship DNS, delete CNAME ${target.host} -> ${cname}.`);
     }
     if (!ok && customDomainHttpsReady && staleCnames.length === 0) {
-      addAction("If Spaceship already shows the recommended Vercel records, wait for DNS cache to expire and rerun npm run vercel:go-live:status.");
-    } else {
-      if (target.expectedCname && !hasExpectedCname(cnames, target.expectedCname)) {
-        addAction(`In Spaceship DNS, add CNAME ${target.host} -> ${target.expectedCname}.`);
-      }
-      if (target.expectedA && !hasExpectedA(addresses, target.expectedA)) {
-        addAction(`In Spaceship DNS, add A ${target.host} -> ${target.expectedA.join(" and ")}.`);
-      }
-      const oldAddresses = target.expectedA ? addresses.filter((address) => !target.expectedA.includes(address)) : addresses;
-      if (oldAddresses.length && !target.expectedCname) {
-        addAction(`In Spaceship DNS, remove old A ${target.host} -> ${oldAddresses.join(", ")}.`);
-      }
-      if (target.expectedCname && addresses.includes("76.76.21.21") && !cnames.length) {
-        addAction(`In Spaceship DNS, replace A ${target.host} -> 76.76.21.21 with CNAME ${target.host} -> ${target.expectedCname}.`);
-      }
+      addAction("If Spaceship already shows the recommended Vercel record, wait for DNS cache to expire and rerun npm run vercel:go-live:status.");
+    } else if (!hasExpectedCname(cnames, target.expectedCname)) {
+      addAction(`In Spaceship DNS, add CNAME ${target.host} -> ${target.expectedCname}.`);
+    }
+
+    if (addresses.includes("76.76.21.21") && !cnames.length) {
+      addAction(`In Spaceship DNS, replace A ${target.host} -> 76.76.21.21 with CNAME ${target.host} -> ${target.expectedCname}.`);
     }
 
     const resolverResults = await Promise.all(dnsResolvers.map((resolver) => resolveDnsTarget(target, resolver)));
@@ -257,18 +222,8 @@ async function resolveDnsTarget(target, resolver = dnsResolvers[0]) {
     resolverName: resolver.name,
     addresses,
     cnames,
-    ok: dnsTargetOk(target, addresses, cnames) && staleCnames.length === 0
+    ok: hasExpectedCname(cnames, target.expectedCname) && staleCnames.length === 0
   };
-}
-
-function dnsTargetOk(target, addresses, cnames) {
-  if (target.expectedCname) return hasExpectedCname(cnames, target.expectedCname);
-  if (target.expectedA) return hasExpectedA(addresses, target.expectedA);
-  return false;
-}
-
-function hasExpectedA(addresses, expected) {
-  return expected.every((address) => addresses.includes(address));
 }
 
 function hasExpectedCname(cnames, expected) {
@@ -280,8 +235,7 @@ function normalizeHostname(hostname) {
 }
 
 function describeDnsTarget(target) {
-  if (target.expectedCname) return `${target.host} CNAME ${target.expectedCname}`;
-  return `${target.host} A ${target.expectedA.join(" and ")}`;
+  return `${target.host} CNAME ${target.expectedCname}`;
 }
 
 async function checkVercelEnvList() {
@@ -340,12 +294,10 @@ async function main() {
     console.log("\nNext actions:");
     for (const action of actions) console.log(`- ${action}`);
   } else {
-    console.log("\nNext actions: none.");
+    console.log("\nNext actions: none");
   }
 
-  if (strict && checks.some((check) => !check.ok)) {
-    process.exit(1);
-  }
+  if (strict && checks.some((check) => !check.ok)) process.exit(1);
 }
 
 await main();

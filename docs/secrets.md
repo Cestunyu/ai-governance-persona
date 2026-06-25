@@ -24,7 +24,7 @@ Expected result: Git reports a `.gitignore` rule for `.env.local`.
 
 Store production tokens in the hosting provider's environment variables or secret manager, not in Git.
 
-The current deployment target is Vercel. Store production secrets in Vercel project environment variables for `linenyu-site`.
+The current deployment target is Vercel. Store production secrets in Vercel project environment variables for the AI Governance Persona app project.
 
 Use the go-live checklist for the full setup:
 
@@ -50,7 +50,7 @@ Create the Supabase table by running:
 
 in the Supabase SQL Editor.
 
-The older EdgeOne Pages Blob deployment used the namespace `ai-ideology-results`, and `edge-functions/api/export.csv.js` read `EXPORT_TOKEN` or `RESULTS_EXPORT_TOKEN`. Keep those files as legacy deployment reference only; the active Vercel API routes live under `api/`.
+The old EdgeOne Pages Blob route has been removed from this repository. The active Vercel API routes live under `api/`.
 
 Locally, use `REMOTE_DATABASE_TOKEN`. It should contain the same secret value as the deployed `EXPORT_TOKEN`, but agents and scripts should refer to the local name:
 
@@ -62,13 +62,13 @@ npm run data:export
 The deployed export endpoint is:
 
 ```text
-https://linenyu-site.vercel.app/api/export.csv
+https://ai-persona.linenyu.com/api/export.csv
 ```
 
 The deployed browser viewer is:
 
 ```text
-https://linenyu-site.vercel.app/admin/
+https://ai-persona.linenyu.com/admin/
 ```
 
 Use the same `EXPORT_TOKEN` or `RESULTS_EXPORT_TOKEN` value in the viewer's token field. The viewer calls `/api/results` for table rows and `/api/export.csv` for downloads.
@@ -76,7 +76,7 @@ Use the same `EXPORT_TOKEN` or `RESULTS_EXPORT_TOKEN` value in the viewer's toke
 The deployed dynamic health endpoint is:
 
 ```text
-https://linenyu-site.vercel.app/api/health
+https://ai-persona.linenyu.com/api/health
 ```
 
 To set Vercel production variables without printing secret values:

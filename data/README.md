@@ -36,11 +36,11 @@ npm run release:check
 
 Do not put raw identifiable respondent data in this repository.
 
-The active Vercel pilot stores completed responses in Supabase when Vercel has `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and an export token configured. The older EdgeOne Pages Blob path is legacy reference only. Server records wrap each payload as:
+The active Vercel pilot stores completed responses in Supabase when Vercel has `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and an export token configured. Server records wrap each payload as:
 
 - `id`: random result id generated server-side
 - `created_at`: server timestamp
-- `source`: `edgeone-pages`
+- `source`: `vercel`
 - `schema_version`: backend schema date
 - `anti_abuse`: active backend controls
 - `payload`: sanitized quiz result payload

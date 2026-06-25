@@ -9,7 +9,6 @@ const requiredFiles = [
   "api/storage-health.js",
   "api/export.csv.js",
   "api/submit-result.js",
-  "assets/cv/linen-yu-cv.pdf",
   "lib/result-storage.js",
   "scripts/build-vercel-dynamic-bundle.js",
   "scripts/deploy-vercel-dynamic.sh",
@@ -50,7 +49,6 @@ const requiredContent = [
   ["scripts/verify-vercel-live.js", "verifyAuthenticatedDataAccess"],
   ["scripts/verify-vercel-live.js", "verifyCustomDomains"],
   ["scripts/verify-vercel-live.js", "/api/storage-health"],
-  ["scripts/verify-vercel-live.js", "https://www.linenyu.com/"],
   ["scripts/verify-vercel-live.js", "https://ai-persona.linenyu.com/en/"],
   ["scripts/verify-vercel-live.js", "REMOTE_DATABASE_TOKEN"],
   ["scripts/check-go-live-status.js", "Go-live status"],
@@ -78,8 +76,7 @@ const requiredContent = [
   ["lib/result-storage.js", "SUPABASE_URL"],
   ["lib/result-storage.js", "SUPABASE_SERVICE_ROLE_KEY"],
   ["supabase/quiz-results-schema.sql", "create table if not exists public.quiz_results"],
-  ["vercel.json", "\"type\": \"host\""],
-  ["vercel.json", "ai-persona.linenyu.com"]
+  ["vercel.json", "\"destination\": \"/en/\""]
 ];
 
 const failures = [];
@@ -99,10 +96,6 @@ for (const file of requiredFiles) {
 for (const file of ["scripts/deploy-vercel-dynamic.sh", "scripts/set-vercel-production-env.sh", "scripts/watch-go-live-status.sh"]) {
   if (!fs.existsSync(file)) continue;
   assert((fs.statSync(file).mode & 0o111) !== 0, `${file} must be executable.`);
-}
-
-if (fs.existsSync("assets/cv/linen-yu-cv.pdf")) {
-  assert(fs.statSync("assets/cv/linen-yu-cv.pdf").size > 0, "assets/cv/linen-yu-cv.pdf must not be empty.");
 }
 
 for (const [file, needle] of [...requiredScriptEntries, ...requiredContent]) {

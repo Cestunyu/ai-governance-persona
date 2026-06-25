@@ -1,9 +1,12 @@
 import dns from "node:dns/promises";
 
-const base = (process.argv.find((arg) => arg.startsWith("--base=")) || "--base=https://linenyu-site.vercel.app").slice("--base=".length).replace(/\/+$/, "");
+const base = (process.argv.find((arg) => arg.startsWith("--base=")) || "--base=https://ai-persona.linenyu.com")
+  .slice("--base=".length)
+  .replace(/\/+$/, "");
 const requireConfigured = process.argv.includes("--require-configured");
 const submitCheck = process.argv.includes("--submit");
 const exportToken = process.env.REMOTE_DATABASE_TOKEN || process.env.EXPORT_TOKEN || process.env.RESULTS_EXPORT_TOKEN || "";
+const expectedCname = "33236d9ab28d641f.vercel-dns-017.com";
 
 const failures = [];
 const notes = [];
@@ -13,7 +16,7 @@ function assert(condition, message) {
 }
 
 async function fetchText(path, expectedNeedle) {
-  const response = await fetch(`${base}${path}`);
+  const response = await fetch(`${base}${path}`, { cache: "no-store" });
   const text = await response.text();
   assert(response.ok, `${path} returned ${response.status}.`);
   if (expectedNeedle) assert(text.includes(expectedNeedle), `${path} did not include ${JSON.stringify(expectedNeedle)}.`);
@@ -21,13 +24,10 @@ async function fetchText(path, expectedNeedle) {
 }
 
 async function verifyPages() {
-  await fetchText("/", "<title>Linen Yu</title>");
+  await fetchText("/", "1 usage item plus 15 scored questions");
   await fetchText("/en/", "1 usage item plus 15 scored questions");
   await fetchText("/cn/", "1 道使用情况题 + 15 道计分题");
   await fetchText("/admin/", "AI Persona Results");
-
-  const cv = await fetch(`${base}/assets/cv/linen-yu-cv.pdf`, { method: "HEAD" });
-  assert(cv.ok, `/assets/cv/linen-yu-cv.pdf returned ${cv.status}.`);
 }
 
 async function verifyHealth() {
@@ -96,7 +96,6 @@ async function verifySubmitEndpoint(health) {
   assert(response.ok, `/api/submit-result returned ${response.status}.`);
   if (health.storage?.configured) {
     assert(body.stored === true, "/api/submit-result must return stored:true when storage is configured.");
-    return body;
   } else {
     assert(body.stored === false, "/api/submit-result must return stored:false before storage is configured.");
     assert(body.backend === "vercel-dynamic-unconfigured-storage", "/api/submit-result must report the dynamic unconfigured-storage backend.");
@@ -148,40 +147,15 @@ async function verifyAuthenticatedDataAccess(health, submittedResult) {
 }
 
 async function verifyDns() {
-  const checks = [
-    {
-      hostname: "linenyu.com",
-      expectedA: ["216.198.79.1", "64.29.17.1"]
-    },
-    {
-      hostname: "www.linenyu.com",
-      expectedCname: "33236d9ab28d641f.vercel-dns-017.com"
-    },
-    {
-      hostname: "ai-persona.linenyu.com",
-      expectedCname: "33236d9ab28d641f.vercel-dns-017.com"
-    }
-  ];
-
-  for (const check of checks) {
-    const { hostname } = check;
-    const addresses = await dns.resolve4(hostname).catch(() => []);
-    const cnames = await dns.resolveCname(hostname).catch(() => []);
-    notes.push(`${hostname}=${addresses.join(",") || "unresolved"}${cnames.length ? ` cname:${cnames.join(",")}` : ""}`);
-    if (requireConfigured) {
-      if (check.expectedA) {
-        assert(
-          check.expectedA.every((address) => addresses.includes(address)),
-          `${hostname} must resolve to ${check.expectedA.join(" and ")}. Current: ${addresses.join(",") || "unresolved"}.`
-        );
-      }
-      if (check.expectedCname) {
-        assert(
-          cnames.map(normalizeHostname).includes(normalizeHostname(check.expectedCname)),
-          `${hostname} must resolve with CNAME ${check.expectedCname}. Current: ${cnames.join(",") || "none"}.`
-        );
-      }
-    }
+  const hostname = "ai-persona.linenyu.com";
+  const addresses = await dns.resolve4(hostname).catch(() => []);
+  const cnames = await dns.resolveCname(hostname).catch(() => []);
+  notes.push(`${hostname}=${addresses.join(",") || "unresolved"}${cnames.length ? ` cname:${cnames.join(",")}` : ""}`);
+  if (requireConfigured) {
+    assert(
+      cnames.map(normalizeHostname).includes(normalizeHostname(expectedCname)),
+      `${hostname} must resolve with CNAME ${expectedCname}. Current: ${cnames.join(",") || "none"}.`
+    );
   }
 }
 
@@ -192,40 +166,25 @@ function normalizeHostname(hostname) {
 async function verifyCustomDomains() {
   if (!requireConfigured) return;
 
-  const rootResponse = await fetch("https://linenyu.com/", { cache: "no-store" });
-  const rootText = await rootResponse.text();
-  assert(rootResponse.ok, `https://linenyu.com/ returned ${rootResponse.status}.`);
-  assert(rootText.includes("<title>Linen Yu</title>"), "https://linenyu.com/ must serve the personal mother site.");
-
-  const wwwResponse = await fetch("https://www.linenyu.com/", {
+  const rootResponse = await fetch("https://ai-persona.linenyu.com/", {
     cache: "no-store",
     redirect: "manual"
   });
-  const wwwLocation = wwwResponse.headers.get("location") || "";
+  const rootLocation = rootResponse.headers.get("location") || "";
   assert(
-    wwwResponse.status >= 300 && wwwResponse.status < 400 && wwwLocation.startsWith("https://linenyu.com/"),
-    `https://www.linenyu.com/ must redirect to https://linenyu.com/; got ${wwwResponse.status} ${wwwLocation || "(no location)"}.`
+    rootResponse.status >= 300 && rootResponse.status < 400 && rootLocation.includes("/en/"),
+    `https://ai-persona.linenyu.com/ must redirect to /en/; got ${rootResponse.status} ${rootLocation || "(no location)"}.`
   );
 
-  const aiPersonaResponse = await fetch("https://ai-persona.linenyu.com/", {
-    cache: "no-store",
-    redirect: "manual"
-  });
-  const aiPersonaLocation = aiPersonaResponse.headers.get("location") || "";
+  const englishResponse = await fetch("https://ai-persona.linenyu.com/en/", { cache: "no-store" });
+  const englishText = await englishResponse.text();
+  assert(englishResponse.ok, `https://ai-persona.linenyu.com/en/ returned ${englishResponse.status}.`);
   assert(
-    aiPersonaResponse.status >= 300 && aiPersonaResponse.status < 400 && aiPersonaLocation.includes("/en/"),
-    `https://ai-persona.linenyu.com/ must redirect to /en/; got ${aiPersonaResponse.status} ${aiPersonaLocation || "(no location)"}.`
-  );
-
-  const aiPersonaEnglishResponse = await fetch("https://ai-persona.linenyu.com/en/", { cache: "no-store" });
-  const aiPersonaEnglishText = await aiPersonaEnglishResponse.text();
-  assert(aiPersonaEnglishResponse.ok, `https://ai-persona.linenyu.com/en/ returned ${aiPersonaEnglishResponse.status}.`);
-  assert(
-    aiPersonaEnglishText.includes("1 usage item plus 15 scored questions"),
+    englishText.includes("1 usage item plus 15 scored questions"),
     "https://ai-persona.linenyu.com/en/ must serve the English AI Persona quiz."
   );
 
-  notes.push("custom domains=https ok");
+  notes.push("custom domain=https ok");
 }
 
 await verifyPages();

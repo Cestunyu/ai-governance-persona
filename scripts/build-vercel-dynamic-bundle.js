@@ -5,11 +5,7 @@ import { extractQuiz, questionSummary, readJson, stable } from "./quiz-source.js
 const target = process.argv[2] || "/tmp/ai-persona-vercel-dynamic-dist";
 const publicEntries = [
   "index.html",
-  "site.css",
   "admin",
-  "blog",
-  "projects",
-  "posts",
   "ch",
   "cn",
   "en",
@@ -59,6 +55,10 @@ for (const forbidden of [
   ".edgeone",
   "edge-functions",
   "edgeone.json",
+  "site.css",
+  "blog",
+  "projects",
+  "posts",
   "node_modules",
   "README.md",
   "CURRENT.md",

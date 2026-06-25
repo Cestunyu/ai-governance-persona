@@ -5,23 +5,24 @@
   "tasks": [
     {
       "id": "DEPLOY-001",
-      "title": "Decide whether the personal mother site should move off EdgeOne",
+      "title": "Decide whether the personal mother site should move off the old mixed deployment",
       "status": "done",
       "priority": "P0",
       "source": "2026-06-21 user decision to move to Vercel Hobby",
       "links": [
-        "planning/2026-06-20-site-deployment-cleanup.md"
+        "docs/vercel-supabase-go-live.md"
       ]
     },
     {
       "id": "DEPLOY-002",
       "title": "Separate the personal-site deployment path from the AI Persona app deployment path",
-      "status": "partial",
+      "status": "done",
       "priority": "P0",
-      "source": "2026-06-20 deployment cleanup",
+      "source": "2026-06-20 deployment cleanup; completed by 2026-06-25 repository split",
       "links": [
-        "planning/2026-06-20-site-deployment-cleanup.md",
-        "tasks/task-2026-06-09-edgeone-pages-blob-deployment.json"
+        "README.md",
+        "CURRENT.md",
+        "/Users/yuun/Documents/GitHub/linenyu-site"
       ]
     },
     {
@@ -31,7 +32,7 @@
       "priority": "P0",
       "source": "2026-06-20 deployment cleanup; completed by 2026-06-25 Vercel checkpoint",
       "links": [
-        "assets/cv/linen-yu-cv.pdf"
+        "/Users/yuun/Documents/GitHub/linenyu-site/cv/linen-yu-cv.pdf"
       ]
     },
     {
@@ -41,20 +42,20 @@
       "priority": "P1",
       "source": "2026-06-20 deployment cleanup",
       "links": [
-        "planning/2026-06-20-site-deployment-cleanup.md"
+        "scripts/verify-vercel-live.js"
       ]
     },
     {
       "id": "DEPLOY-006",
-      "title": "Deploy the latest local quiz bundle after choosing the replacement host or final EdgeOne target",
+      "title": "Deploy the latest local quiz bundle through the Vercel app route",
       "status": "done",
       "priority": "P0",
-      "source": "2026-06-21 user report that EdgeOne live version is stale",
+      "source": "2026-06-21 user report that the live version was stale",
       "links": [
         "cn/index.html",
         "en/index.html",
-        "scripts/build-release-bundle.js",
-        "planning/2026-06-20-site-deployment-cleanup.md"
+        "scripts/build-vercel-dynamic-bundle.js",
+        "docs/vercel-supabase-go-live.md"
       ]
     },
     {
@@ -76,12 +77,11 @@
     },
     {
       "id": "DEPLOY-009",
-      "title": "Configure Vercel custom domains and update DNS away from EdgeOne",
+      "title": "Configure Vercel custom domain and update DNS to Vercel",
       "status": "done",
       "priority": "P0",
       "source": "2026-06-21 Vercel production deployment",
       "links": [
-        "planning/2026-06-20-site-deployment-cleanup.md",
         "vercel.json"
       ]
     },
@@ -171,14 +171,13 @@
     },
     {
       "id": "DEPLOY-016",
-      "title": "Harden go-live checks for required env values and public CV asset",
+      "title": "Harden go-live checks for required Vercel env values",
       "status": "done",
       "priority": "P0",
       "source": "2026-06-21 go-live robustness pass",
       "links": [
         "scripts/set-vercel-production-env.sh",
-        "scripts/check-vercel-dynamic-release.js",
-        "assets/cv/linen-yu-cv.pdf"
+        "scripts/check-vercel-dynamic-release.js"
       ]
     },
     {
@@ -322,13 +321,12 @@
     },
     {
       "id": "DEPLOY-028",
-      "title": "Disable or delete obsolete EdgeOne projects after Vercel DNS cutover",
+      "title": "Confirm obsolete external EdgeOne cloud projects are disabled",
       "status": "todo",
       "priority": "P0",
       "source": "2026-06-24 user request to stop EdgeOne after DNS cutover",
       "links": [
-        ".edgeone/project.json",
-        "edgeone.json"
+        "docs/secrets.md"
       ]
     },
     {
@@ -363,8 +361,7 @@
       "source": "2026-06-21 online/local comparison",
       "links": [
         "cn/index.html",
-        "en/index.html",
-        "planning/2026-06-20-site-deployment-cleanup.md"
+        "en/index.html"
       ]
     },
     {
@@ -374,10 +371,7 @@
       "priority": "P1",
       "source": "2026-06-20 deployment cleanup",
       "links": [
-        "index.html",
-        "blog/index.html",
-        "posts/index.html",
-        "projects/index.html"
+        "/Users/yuun/Documents/GitHub/linenyu-site"
       ]
     },
     {
@@ -388,7 +382,7 @@
       "source": "2026-06-20 deployment cleanup",
       "links": [
         "scripts/check-quiz-sync.js",
-        "planning/2026-06-20-site-deployment-cleanup.md"
+        "index.html"
       ]
     },
     {
@@ -408,16 +402,14 @@
     },
     {
       "id": "STRUCTURE-002",
-      "title": "Make Vercel the default deployment path and mark EdgeOne/GitHub Pages as legacy",
+      "title": "Make Vercel the default deployment path",
       "status": "done",
       "priority": "P0",
       "source": "2026-06-25 project cleanup",
       "links": [
         "README.md",
         "AGENTS.md",
-        "package.json",
-        ".github/workflows/deploy-pages.yml",
-        "archive/README.md"
+        "package.json"
       ]
     },
     {
@@ -437,12 +429,61 @@
     {
       "id": "STRUCTURE-004",
       "title": "Split the personal mother site and AI Persona app into separate repos or deployment projects when stable",
-      "status": "todo",
-      "priority": "P2",
-      "source": "2026-06-25 project cleanup",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-25 user request to split into two Git repositories",
       "links": [
         "README.md",
+        "CURRENT.md",
+        "/Users/yuun/Documents/GitHub/linenyu-site"
+      ]
+    },
+    {
+      "id": "STRUCTURE-005",
+      "title": "Remove personal homepage files from the AI Persona app repo",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-25 repository split",
+      "links": [
+        "index.html",
+        "README.md",
         "CURRENT.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-030",
+      "title": "Remove the old local EdgeOne deployment route from the app repo",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-25 user request to delete the old EdgeOne route",
+      "links": [
+        "package.json",
+        "vercel.json",
+        "scripts/build-vercel-dynamic-bundle.js",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "FRONTEND-001",
+      "title": "Modularize the quiz frontend out of monolithic locale HTML files",
+      "status": "todo",
+      "priority": "P1",
+      "source": "2026-06-25 user next-work list",
+      "links": [
+        "cn/index.html",
+        "en/index.html",
+        "data/quiz.zh.json",
+        "data/quiz.en.json"
+      ]
+    },
+    {
+      "id": "HOMEPAGE-001",
+      "title": "Continue personal homepage work in the split linenyu-site repo",
+      "status": "todo",
+      "priority": "P1",
+      "source": "2026-06-25 user next-work list",
+      "links": [
+        "/Users/yuun/Documents/GitHub/linenyu-site"
       ]
     },
     {
@@ -450,9 +491,9 @@
       "title": "Finish the basic anti-abuse gate for quiz result submissions",
       "status": "partial",
       "priority": "P0",
-      "source": "EdgeOne deployment task E3",
+      "source": "2026-06-09 deployment anti-abuse follow-up",
       "links": [
-        "tasks/task-2026-06-09-edgeone-pages-blob-deployment.json"
+        "api/submit-result.js"
       ]
     }
   ]
