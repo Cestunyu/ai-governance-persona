@@ -2,6 +2,8 @@
 
 Date: 2026-06-20
 
+Current status as of 2026-06-25: active deployment is Vercel dynamic project `linenyu-site`. EdgeOne and GitHub Pages are legacy/reference paths unless explicitly reactivated. The repository remains a single deployment repo for both the lightweight `linenyu.com` personal shell and the AI Persona app at `/en/` and `/cn/`.
+
 ## Diagnosis
 
 The deployment state is still muddled because the repository is doing two jobs at once:
@@ -30,12 +32,14 @@ The historical deployment task records `ai-persona.linenyu.com` as the primary A
 - Local `/en/` and `/cn/` were cleaned on 2026-06-21 to use one consistent framing: `1 usage item plus 15 scored questions` / `1 道使用情况题 + 15 道计分题`; progress remains `0/15` because it intentionally tracks scored questions only.
 - `npm run release:check` passed after the progress-copy cleanup, and `scripts/build-release-bundle.js /tmp/ai-persona-progress-cleanup-dist` produced a deployable bundle containing the cleaned `/en/` and `/cn/` pages.
 
-## Recommended Split
+## Historical Recommended Split
 
 1. Treat `linenyu.com` as a static personal mother site.
 2. Treat `ai-persona.linenyu.com` as the app domain for the quiz/backend.
-3. Keep EdgeOne only for the app while Pages Functions/Blob are still needed.
+3. At that point, keep EdgeOne only for the app while Pages Functions/Blob are still needed.
 4. Move or repoint the static mother site to a simpler static host after deciding the domain target.
+
+The current short-term decision is to keep a single Vercel project while making Vercel the only active deployment route. A later split into separate personal-site and AI Persona repos/deployment projects remains a low-priority cleanup task.
 
 ## Next Decision
 

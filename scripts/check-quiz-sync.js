@@ -31,7 +31,8 @@ try {
 if (failures.length) {
   console.error("Quiz release check failed:");
   for (const failure of failures) console.error(`- ${failure}`);
-  console.error("\nIf the HTML is intentionally newer, run: npm run quiz:canonicalize");
+  console.error("\nThis project is data-first. Edit data/quiz.*.json, then run: npm run quiz:sync-html");
+  console.error("Only recover JSON from HTML with: npm run quiz:extract-html");
   process.exit(1);
 }
 

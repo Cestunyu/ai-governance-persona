@@ -25,12 +25,13 @@ export function writeJson(file, value) {
   fs.writeFileSync(file, `${stable(value)}\n`);
 }
 
-export function findConst(source, name) {
+export function findConstRange(source, name) {
   const marker = `const ${name} =`;
   const start = source.indexOf(marker);
   if (start < 0) throw new Error(`missing ${name}`);
   let i = start + marker.length;
   while (/\s/.test(source[i])) i += 1;
+  const valueStart = i;
   const first = source[i];
   if (first === "\"" || first === "'") {
     const quote = first;
@@ -46,7 +47,7 @@ export function findConst(source, name) {
       if (char !== "\\") escaped = false;
       i += 1;
     }
-    return source.slice(start + marker.length, i).trim();
+    return { start, valueStart, valueEnd: i, text: source.slice(valueStart, i).trim() };
   }
   const closeFor = { "[": "]", "{": "}" };
   const stack = [closeFor[first]];
@@ -69,7 +70,11 @@ export function findConst(source, name) {
     i += 1;
   }
   if (stack.length) throw new Error(`unclosed initializer for ${name}`);
-  return source.slice(start + marker.length, i).trim();
+  return { start, valueStart, valueEnd: i, text: source.slice(valueStart, i).trim() };
+}
+
+export function findConst(source, name) {
+  return findConstRange(source, name).text;
 }
 
 export function readConst(source, name) {

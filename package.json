@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "data:export": "scripts/export-remote-results.sh",
-    "quiz:canonicalize": "node scripts/sync-canonical-quiz.js",
+    "quiz:sync-html": "node scripts/sync-html-from-canonical.js",
+    "quiz:extract-html": "node scripts/sync-canonical-quiz.js --allow-html-source",
     "quiz:check": "node scripts/check-quiz-sync.js",
     "vercel:check": "node scripts/check-vercel-dynamic-release.js",
     "vercel:deploy": "scripts/deploy-vercel-dynamic.sh",
@@ -15,7 +16,8 @@
     "vercel:supabase:check": "node scripts/check-supabase-ready.js",
     "vercel:verify:live": "node scripts/verify-vercel-live.js",
     "release:check": "npm run quiz:check && npm run vercel:check",
-    "release:bundle": "node scripts/build-release-bundle.js",
+    "release:bundle": "npm run release:bundle:vercel",
+    "release:bundle:edgeone": "node scripts/build-release-bundle.js",
     "release:bundle:vercel": "node scripts/build-vercel-dynamic-bundle.js"
   },
   "dependencies": {

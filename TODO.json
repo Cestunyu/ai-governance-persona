@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1",
   "project_id": "ai-governance-persona",
-  "last_updated": "2026-06-24",
+  "last_updated": "2026-06-25",
   "tasks": [
     {
       "id": "DEPLOY-001",
@@ -27,9 +27,9 @@
     {
       "id": "DEPLOY-003",
       "title": "Commit or deliberately exclude the public CV PDF asset",
-      "status": "todo",
+      "status": "done",
       "priority": "P0",
-      "source": "2026-06-20 deployment cleanup",
+      "source": "2026-06-20 deployment cleanup; completed by 2026-06-25 Vercel checkpoint",
       "links": [
         "assets/cv/linen-yu-cv.pdf"
       ]
@@ -389,6 +389,60 @@
       "links": [
         "scripts/check-quiz-sync.js",
         "planning/2026-06-20-site-deployment-cleanup.md"
+      ]
+    },
+    {
+      "id": "STRUCTURE-001",
+      "title": "Create a Git checkpoint for the current Vercel dynamic deployment state",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-25 project cleanup",
+      "links": [
+        "api/",
+        "admin/",
+        "lib/result-storage.js",
+        "vercel.json",
+        "supabase/quiz-results-schema.sql",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "STRUCTURE-002",
+      "title": "Make Vercel the default deployment path and mark EdgeOne/GitHub Pages as legacy",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-25 project cleanup",
+      "links": [
+        "README.md",
+        "AGENTS.md",
+        "package.json",
+        ".github/workflows/deploy-pages.yml",
+        "archive/README.md"
+      ]
+    },
+    {
+      "id": "STRUCTURE-003",
+      "title": "Add a data-first quiz sync workflow so canonical JSON drives embedded HTML",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-25 project cleanup",
+      "links": [
+        "data/quiz.zh.json",
+        "data/quiz.en.json",
+        "scripts/sync-html-from-canonical.js",
+        "scripts/sync-canonical-quiz.js",
+        "scripts/check-quiz-sync.js"
+      ]
+    },
+    {
+      "id": "STRUCTURE-004",
+      "title": "Split the personal mother site and AI Persona app into separate repos or deployment projects when stable",
+      "status": "todo",
+      "priority": "P2",
+      "source": "2026-06-25 project cleanup",
+      "links": [
+        "README.md",
+        "CURRENT.md"
       ]
     },
     {

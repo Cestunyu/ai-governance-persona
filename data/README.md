@@ -23,19 +23,20 @@ npm run release:check
 npm run release:bundle
 ```
 
-If a production HTML page intentionally contains newer questionnaire text than the canonical JSON, first run:
+For quiz wording or scoring changes, edit the canonical JSON first:
 
 ```bash
-npm run quiz:canonicalize
+npm run quiz:sync-html
+npm run release:check
 ```
 
-Then inspect the JSON diff before building a release bundle.
+`npm run quiz:extract-html` is an emergency recovery command for intentionally extracting JSON from production HTML. Do not use it for normal copy edits.
 
 ## Response Data Rule
 
 Do not put raw identifiable respondent data in this repository.
 
-The EdgeOne Pages pilot stores completed responses in the configured Blob store, not in git. The server record wraps each payload as:
+The active Vercel pilot stores completed responses in Supabase when Vercel has `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and an export token configured. The older EdgeOne Pages Blob path is legacy reference only. Server records wrap each payload as:
 
 - `id`: random result id generated server-side
 - `created_at`: server timestamp

@@ -1,6 +1,6 @@
 # Current AI Social Thought Spectrum State
 
-Last updated: 2026-06-24
+Last updated: 2026-06-25
 
 ## Active Cycle
 
@@ -25,6 +25,10 @@ The desired state is not a definitive canon. It is a working map that makes it e
 ## Current Deliverable
 
 - `index.html` is now the first-pass English personal mother site for Linen Yu, with links to Blog, Projects, Posts, and AI Persona. Site-level AI Persona links default to `/en/`.
+- 2026-06-25: Created cleanup branch `codex/structure-cleanup` and committed checkpoint `fc87938` for the current Vercel dynamic deployment state before further restructuring.
+- 2026-06-25: Clarified the repository boundary: this is currently one Vercel project for `linenyu.com` and `ai-persona.linenyu.com`; AI Governance Persona is the primary app, and the root personal site is a lightweight shell.
+- 2026-06-25: Made Vercel the default bundle/deploy route. EdgeOne and GitHub Pages are now legacy/reference paths unless explicitly reactivated.
+- 2026-06-25: Added a data-first quiz workflow. Edit `data/quiz.zh.json` / `data/quiz.en.json`, then run `npm run quiz:sync-html`; the old HTML-to-JSON extraction path now requires explicit recovery intent.
 - 2026-06-14: Added the current no-profile standard CV to the homepage navigation and CV section. Stable public PDF path: `assets/cv/linen-yu-cv.pdf`.
 - 2026-06-14: Cleaned the Projects index by removing the standalone `AI Persona Chinese` entry and pointing `AI Governance Spectrum` to the English spectrum page.
 - 2026-06-14: Deployed the cleaned personal-site bundle to EdgeOne Makers project `ai-persona-overseas`; production deployment id `dp5gxowr4l8t`.
@@ -58,8 +62,8 @@ The desired state is not a definitive canon. It is a working map that makes it e
 - 2026-06-24: Started EdgeOne retirement after the Vercel DNS cutover. The active local EdgeOne binding is `ai-persona-overseas` (`makers-gcrdy5xwhnuw`), and the historical EdgeOne project is `ai-persona` (`pages-esxansdhquzd`). The EdgeOne CLI exposes deploy/link/env commands but no delete/disable command, so cloud cleanup needs the Tencent Cloud / EdgeOne console after login.
 - `blog/`, `projects/`, and `posts/` provide simple English static section indexes for the personal site.
 - `site.css` provides the shared ultra-minimal visual style for the personal site pages.
-- `.github/workflows/deploy-pages.yml` deploys the static repository to GitHub Pages on pushes to `main`.
-- `CNAME` is not committed for the preview deploy because `linenyu.com` is currently served by EdgeOne Pages. Add it back only when DNS is ready to point the mother site at GitHub Pages.
+- `.github/workflows/deploy-pages.yml` is now a manual-only legacy GitHub Pages preview path, not the active deployment route.
+- `CNAME` is not committed. Custom-domain routing is handled by Vercel plus DNS records.
 - 2026-06-14: Deployed the same personal-site bundle to EdgeOne Makers projects `ai-persona` (`dp9t04h63o6b`) and `ai-persona-overseas` (`dp08bq48tnqe`); `http://linenyu.com/` now serves the English personal homepage.
 - `/cn/` is the Chinese production quiz/result/share page.
 - `/en/` is the English production quiz/result/share page.
@@ -85,12 +89,13 @@ The desired state is not a definitive canon. It is a working map that makes it e
 1. Finish retiring the old EdgeOne cloud projects after Tencent Cloud login, limited to exact project names `ai-persona-overseas` and `ai-persona`.
 2. Create the Supabase `quiz_results` table and run `scripts/set-vercel-production-env.sh production` to set Vercel environment variables for persistent result storage, `/admin/` viewing, and CSV export.
 3. Run final strict Vercel verification after Supabase env vars are configured, proving `stored:true` submissions, protected JSON/CSV export, and `/admin/` row display.
-4. Commit or deliberately exclude the public CV PDF asset so deployments are reproducible; release checks now at least require the local public PDF to exist and be non-empty.
+4. Keep Vercel as the default deployment route; use EdgeOne only for legacy recovery.
 5. Replace placeholder Blog, Projects, and Post entries with real public content links.
 6. Keep AI Persona reachable from the mother site via `/en/` by default, with `/cn/` preserved as the Chinese version.
 7. Review the quiz items for difficulty, fun, accessibility, and measurement validity; many items currently feel too technical for the desired audience.
 8. Incorporate useful external suggestions into the questionnaire and product design after review.
 9. Simplify the share layer around screenshot-first sharing rather than complex generated share pages.
+10. Later, split the personal mother site and AI Persona app into separate repositories or deployment projects when the product boundary stabilizes.
 
 ## 2026-06-07 Product Feedback Update
 
@@ -159,9 +164,10 @@ The current priority is project completeness and pilot-readiness, not immediate 
 1. After Tencent Cloud login, disable or delete the obsolete EdgeOne projects named `ai-persona-overseas` and `ai-persona`, then rerun `npm run vercel:go-live:status` to confirm Vercel remains clean.
 2. Run `supabase/quiz-results-schema.sql`, verify Supabase with `npm run vercel:supabase:check` if local Supabase env vars are injected, run `scripts/set-vercel-production-env.sh production`, confirm with `npm run vercel:env:check`, set local `REMOTE_DATABASE_TOKEN` to the export token value, then run `npm run vercel:go-live:status` followed by `npm run vercel:deploy -- --strict`.
 3. Confirm the custom domains still pass Vercel DNS checks after Supabase env setup; DNS was cut over to Vercel on 2026-06-24.
-4. Create several index/introduction demo directions for user review.
-5. Review the current item set for technical difficulty, fun, and audience fit.
-6. Propose a screenshot-first sharing/result layout.
+4. For quiz wording changes, edit `data/quiz.*.json`, run `npm run quiz:sync-html`, then run `npm run release:check`.
+5. Create several index/introduction demo directions for user review.
+6. Review the current item set for technical difficulty, fun, and audience fit.
+7. Propose a screenshot-first sharing/result layout.
 
 ## Open Questions
 

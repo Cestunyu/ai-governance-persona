@@ -2,6 +2,8 @@
 
 Date: 2026-06-09
 
+Status: legacy reference. As of 2026-06-25, the active deployment path is Vercel dynamic project `linenyu-site`; use `npm run release:bundle` / `npm run release:bundle:vercel` for active bundles. Use this runbook only for historical audit or emergency EdgeOne recovery.
+
 ## Current Decision
 
 Use EdgeOne Pages + Pages Functions + Pages Blob for the first public pilot. Use the default free EdgeOne Pages URL first. Do not buy a VPS or custom domain until the default URL can serve the quiz, record completed results, and export CSV reliably.
@@ -118,7 +120,7 @@ Use the EdgeOne preview/production URL after deploy:
 ## 2026-06-11 Repository Cleanup
 
 - Current production quiz/result/share entry points are `/cn/` and `/en/`.
-- Root `index.html` and legacy `/ch/` are now lightweight redirects to `/cn/`.
+- Legacy note from the EdgeOne phase: root `index.html` and `/ch/` were lightweight redirects to `/cn/` at that time. The current root page is the English personal mother site.
 - Old standalone quiz and spectrum experiments were moved to `archive/old-pages/`.
 - Share-card demo files and generated demo images were moved to `archive/old-demos/`.
 - Local state file `STATE.json` is ignored and should not be committed.
@@ -134,8 +136,8 @@ Use the EdgeOne preview/production URL after deploy:
 - Pre-release check:
   - `npm run release:check`
 - Bundle command:
-  - `npm run release:bundle`
-- If production HTML intentionally contains newer question text, run `npm run quiz:canonicalize`, inspect the JSON diff, then rerun `npm run release:check`.
+- `npm run release:bundle:edgeone`
+- For quiz wording changes, edit `data/quiz.*.json`, run `npm run quiz:sync-html`, inspect the HTML diff, then rerun `npm run release:check`.
 
 ## 2026-06-11 Production Launch
 
