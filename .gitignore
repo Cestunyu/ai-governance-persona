@@ -7,7 +7,9 @@ data/remote-results.csv
 *.local.*
 node_modules/
 STATE.json
+.vercel/
 
 # Tencent Cloud EdgeOne
 .edgeone/*
 .tef_dist/*
+.vercel

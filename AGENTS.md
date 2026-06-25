@@ -6,10 +6,12 @@ This repository contains the AI Ideology Quiz and its underlying AI Social Thoug
 
 - Treat `data/quiz.zh.json` and `data/quiz.en.json` as the canonical quiz/questionnaire data.
 - Treat `/cn/` and `/en/` as the production pilot pages.
-- Treat `/ch/` and `/` as redirects to `/cn/`.
+- Treat `/ch/` as a redirect to `/cn/`.
+- Treat `/` as the English personal mother site for `linenyu.com`, not as a quiz redirect.
 - Do not edit archived quiz pages as production surfaces.
 - Before building or deploying, run `npm run release:check`.
 - Build public upload bundles with `npm run release:bundle`; do not upload the whole repository.
+- For Vercel dynamic deployments, build the upload bundle with `npm run release:bundle:vercel`; it includes static pages plus Vercel Functions under `api/`.
 - Keep respondent data out of git unless it is explicitly anonymized, documented, and small enough to inspect.
 - Do not read or commit `.env` files.
 - Keep the quiz usable as standalone static HTML unless a backend is deliberately introduced.

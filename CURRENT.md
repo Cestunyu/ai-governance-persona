@@ -1,6 +1,6 @@
 # Current AI Social Thought Spectrum State
 
-Last updated: 2026-06-13
+Last updated: 2026-06-24
 
 ## Active Cycle
 
@@ -25,6 +25,37 @@ The desired state is not a definitive canon. It is a working map that makes it e
 ## Current Deliverable
 
 - `index.html` is now the first-pass English personal mother site for Linen Yu, with links to Blog, Projects, Posts, and AI Persona. Site-level AI Persona links default to `/en/`.
+- 2026-06-14: Added the current no-profile standard CV to the homepage navigation and CV section. Stable public PDF path: `assets/cv/linen-yu-cv.pdf`.
+- 2026-06-14: Cleaned the Projects index by removing the standalone `AI Persona Chinese` entry and pointing `AI Governance Spectrum` to the English spectrum page.
+- 2026-06-14: Deployed the cleaned personal-site bundle to EdgeOne Makers project `ai-persona-overseas`; production deployment id `dp5gxowr4l8t`.
+- 2026-06-14: Replaced the root homepage Contact placeholder with email and GitHub links.
+- 2026-06-14: Deployed the Contact-link update to EdgeOne Makers project `ai-persona-overseas`; production deployment id `dphpzte7bis5`.
+- 2026-06-20: Opened a deployment-cleanup track because the personal mother site, AI Persona quiz, custom domains, and EdgeOne deployments are still mixed in one repo and one active EdgeOne binding. See `planning/2026-06-20-site-deployment-cleanup.md` and `TODO.json`.
+- 2026-06-20: Removed placeholder links from the personal-site Blog/Posts indexes, corrected the homepage writing date, and made the CV nav link consistent across personal-site pages.
+- 2026-06-21: Switched deployment direction to Vercel Hobby. Added a Vercel dynamic bundle with static pages plus Vercel Functions under `api/`.
+- 2026-06-21: Deployed the latest dynamic bundle to Vercel production project `linenyu-site`. Public Vercel URL: `https://linenyu-site.vercel.app`; latest production deployment id: `dpl_2BX5neQQXVHrm47wQ1exnXM9i6KM`. Live checks passed for root `/`, `/en/`, `/cn/`, `/admin/`, `/api/health`, the CV PDF, and `/api/submit-result`.
+- 2026-06-21: Added `linenyu.com`, `www.linenyu.com`, and `ai-persona.linenyu.com` to the Vercel project. DNS still resolves to EdgeOne/Tencent (`43.174.246.100` / `43.174.247.100` and `pages.dnsoe*.com` CNAMEs). The current nameservers are `launch1.spaceship.net` and `launch2.spaceship.net`; update those DNS records to `A ... 76.76.21.21` or move nameservers to Vercel before the custom domains are fully live.
+- 2026-06-24: Cut over Spaceship DNS for `linenyu.com`, `www.linenyu.com`, and `ai-persona.linenyu.com` away from EdgeOne. The first cutover used `A 76.76.21.21`, but real HTTPS custom-domain access failed because Vercel had no certificate entry yet and later recommended newer DNS records.
+- 2026-06-24: Issued a Vercel certificate for `linenyu.com`, `www.linenyu.com`, and `ai-persona.linenyu.com`, then updated Spaceship DNS to Vercel's current recommended records: `@ A 216.198.79.1`, `@ A 64.29.17.1`, `www CNAME 33236d9ab28d641f.vercel-dns-017.com`, and `ai-persona CNAME 33236d9ab28d641f.vercel-dns-017.com`. Vercel now reports all three domains as configured correctly, and `https://ai-persona.linenyu.com/en/` returns 200. The remaining go-live blockers are missing Vercel `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `EXPORT_TOKEN` / `RESULTS_EXPORT_TOKEN`.
+- 2026-06-21: Replaced the Vercel unconfigured-storage fallback with Supabase-ready routes. `/api/submit-result` writes to Supabase when `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are configured, otherwise it explicitly returns `stored: false`. `/api/results` returns protected JSON rows, `/api/export.csv` downloads protected CSV, `/api/health` reports dynamic backend/storage status, `/api/storage-health` verifies the Supabase table is readable with the export token, and `/admin/` provides a token-protected results viewer. Schema: `supabase/quiz-results-schema.sql`.
+- 2026-06-21: Hardened the release gate so `npm run release:check` now runs both the canonical quiz sync check and `scripts/check-vercel-dynamic-release.js`, which verifies the Vercel dynamic APIs, Supabase-ready behavior, host-routing config, and `/admin/` results viewer.
+- 2026-06-21: Added `npm run vercel:verify:live` for live checks and updated `/admin/` so it shows Dynamic API, Storage, and Viewer Token status from `/api/health`, then calls `/api/storage-health` to confirm the database is actually readable when the token and Supabase env vars are configured.
+- 2026-06-21: Added `scripts/set-vercel-production-env.sh` and `docs/vercel-supabase-go-live.md` so Supabase/Vercel production env setup can be completed without printing secret values.
+- 2026-06-21: Added `npm run vercel:deploy`, which runs release checks, builds the Vercel dynamic bundle, deploys to production, and runs live verification. Use `npm run vercel:deploy -- --strict` after DNS and Supabase env are configured.
+- 2026-06-21: Hardened go-live checks: `scripts/set-vercel-production-env.sh` now fails on missing required values, validates `SUPABASE_URL` and `SUPABASE_RESULTS_TABLE`, and `scripts/check-vercel-dynamic-release.js` requires `assets/cv/linen-yu-cv.pdf` to exist and be non-empty.
+- 2026-06-21: Hardened strict live verification so final go-live requires a local `REMOTE_DATABASE_TOKEN`, `EXPORT_TOKEN`, or `RESULTS_EXPORT_TOKEN`, then verifies authenticated `/api/results` and `/api/export.csv` access and checks that the submitted verification row is visible.
+- 2026-06-21: Compared live AI Persona pages against local HTML and cleaned the question-count/progress wording. The quiz now says `1 usage item plus 15 scored questions` / `1 道使用情况题 + 15 道计分题`, while progress remains `0/15` for scored questions only.
+- 2026-06-21: Redeployed the protected storage-read check to Vercel production. `/api/storage-health` is live and currently reports missing `EXPORT_TOKEN` until Vercel env vars are configured; `/api/health` still reports `storage.configured=false` and `export.configured=false`. DNS recheck still shows all custom domains resolving to EdgeOne/Tencent.
+- 2026-06-21: Added `npm run vercel:go-live:status`, a non-secret status command that checks Vercel dynamic health, Supabase/export-token configuration, protected storage-read readiness, current DNS records, and Vercel env-var names. It currently reports the exact remaining blockers: missing Vercel Supabase/export env vars and three custom domains still pointing to EdgeOne.
+- 2026-06-21: Added `npm run vercel:supabase:check`, a non-secret Supabase readiness check for local shells with `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` injected. It verifies table readability, writes one temporary test row, deletes it, and fails cleanly when env vars are missing.
+- 2026-06-21: Improved `npm run vercel:go-live:status` so DNS checks are now Spaceship-record specific. On 2026-06-24, the expected records were updated to Vercel's current recommendation: `@ A 216.198.79.1`, `@ A 64.29.17.1`, `www CNAME 33236d9ab28d641f.vercel-dns-017.com`, and `ai-persona CNAME 33236d9ab28d641f.vercel-dns-017.com`.
+- 2026-06-21: Extended `npm run vercel:go-live:status` with DNS propagation checks across the local resolver, Cloudflare, Google, and Quad9. Current propagation checks all still resolve the custom domains to EdgeOne records, so the issue is authoritative DNS configuration rather than local cache.
+- 2026-06-21: Hardened `npm run vercel:go-live:status` so Vercel environment variable checks read `vercel env ls --format json` instead of parsing display text. Current Vercel project env remains empty.
+- 2026-06-21: Added Vercel domain-inspection checks to `npm run vercel:go-live:status`. Vercel confirms `linenyu.com`, `www.linenyu.com`, and `ai-persona.linenyu.com` are bound to project `linenyu-site`; after the 2026-06-24 DNS and certificate fix, Vercel reports each domain as configured correctly.
+- 2026-06-21: Added `npm run vercel:env:check` and wired it into `npm run vercel:deploy -- --strict` as a preflight. Strict deploy now fails before redeploy if Vercel production is missing `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and an export token name; the check reads env names only and does not print values.
+- 2026-06-21: Strengthened strict live verification so final go-live now proves custom-domain HTTPS behavior too: `linenyu.com` serves the mother site, `www.linenyu.com` redirects to `linenyu.com`, and `ai-persona.linenyu.com` redirects to `/en/` and serves the English quiz.
+- 2026-06-21: Added `npm run vercel:go-live:watch`, which polls the strict go-live status every 60 seconds and exits when all checks pass. `GO_LIVE_WATCH_MAX_ITERATIONS=1` runs a single automation-friendly poll.
+- 2026-06-24: Started EdgeOne retirement after the Vercel DNS cutover. The active local EdgeOne binding is `ai-persona-overseas` (`makers-gcrdy5xwhnuw`), and the historical EdgeOne project is `ai-persona` (`pages-esxansdhquzd`). The EdgeOne CLI exposes deploy/link/env commands but no delete/disable command, so cloud cleanup needs the Tencent Cloud / EdgeOne console after login.
 - `blog/`, `projects/`, and `posts/` provide simple English static section indexes for the personal site.
 - `site.css` provides the shared ultra-minimal visual style for the personal site pages.
 - `.github/workflows/deploy-pages.yml` deploys the static repository to GitHub Pages on pushes to `main`.
@@ -51,14 +82,15 @@ The desired state is not a definitive canon. It is a working map that makes it e
 
 ## Active Product Order
 
-1. Review the new English ultra-minimal personal mother-site shell on GitHub Pages preview, then decide whether the root domain should move from EdgeOne Pages to GitHub Pages.
-2. Replace placeholder Blog, Projects, and Post entries with real public content links.
-3. Keep AI Persona reachable from the mother site via `/en/` by default, with `/cn/` preserved as the Chinese version.
-4. Review the quiz items for difficulty, fun, accessibility, and measurement validity; many items currently feel too technical for the desired audience.
-5. Incorporate useful external suggestions into the questionnaire and product design after review.
-6. Decide the backend/data collection plan before collecting real responses, including whether IP addresses are stored raw, hashed, reduced to coarse location, or left only in server logs.
-7. Design server deployment for both mainland China and overseas access before purchase/configuration.
-8. Simplify the share layer around screenshot-first sharing rather than complex generated share pages.
+1. Finish retiring the old EdgeOne cloud projects after Tencent Cloud login, limited to exact project names `ai-persona-overseas` and `ai-persona`.
+2. Create the Supabase `quiz_results` table and run `scripts/set-vercel-production-env.sh production` to set Vercel environment variables for persistent result storage, `/admin/` viewing, and CSV export.
+3. Run final strict Vercel verification after Supabase env vars are configured, proving `stored:true` submissions, protected JSON/CSV export, and `/admin/` row display.
+4. Commit or deliberately exclude the public CV PDF asset so deployments are reproducible; release checks now at least require the local public PDF to exist and be non-empty.
+5. Replace placeholder Blog, Projects, and Post entries with real public content links.
+6. Keep AI Persona reachable from the mother site via `/en/` by default, with `/cn/` preserved as the Chinese version.
+7. Review the quiz items for difficulty, fun, accessibility, and measurement validity; many items currently feel too technical for the desired audience.
+8. Incorporate useful external suggestions into the questionnaire and product design after review.
+9. Simplify the share layer around screenshot-first sharing rather than complex generated share pages.
 
 ## 2026-06-07 Product Feedback Update
 
@@ -124,11 +156,12 @@ The current priority is project completeness and pilot-readiness, not immediate 
 
 ## Next Session
 
-1. Create several index/introduction demo directions for user review.
-2. Review the current item set for technical difficulty, fun, and audience fit.
-3. Draft backend options for CSV-only, lightweight database, and hosted/server deployment.
-4. Propose a screenshot-first sharing/result layout.
-5. Only after user confirmation, implement the selected index/introduction and backend direction.
+1. After Tencent Cloud login, disable or delete the obsolete EdgeOne projects named `ai-persona-overseas` and `ai-persona`, then rerun `npm run vercel:go-live:status` to confirm Vercel remains clean.
+2. Run `supabase/quiz-results-schema.sql`, verify Supabase with `npm run vercel:supabase:check` if local Supabase env vars are injected, run `scripts/set-vercel-production-env.sh production`, confirm with `npm run vercel:env:check`, set local `REMOTE_DATABASE_TOKEN` to the export token value, then run `npm run vercel:go-live:status` followed by `npm run vercel:deploy -- --strict`.
+3. Confirm the custom domains still pass Vercel DNS checks after Supabase env setup; DNS was cut over to Vercel on 2026-06-24.
+4. Create several index/introduction demo directions for user review.
+5. Review the current item set for technical difficulty, fun, and audience fit.
+6. Propose a screenshot-first sharing/result layout.
 
 ## Open Questions
 

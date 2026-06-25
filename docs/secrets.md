@@ -24,7 +24,33 @@ Expected result: Git reports a `.gitignore` rule for `.env.local`.
 
 Store production tokens in the hosting provider's environment variables or secret manager, not in Git.
 
-For this project, the remote data store is EdgeOne Pages Blob, not a traditional database URL. The deployed namespace is `ai-ideology-results`, and `edge-functions/api/export.csv.js` reads the production secret as `EXPORT_TOKEN` or `RESULTS_EXPORT_TOKEN`.
+The current deployment target is Vercel. Store production secrets in Vercel project environment variables for `linenyu-site`.
+
+Use the go-live checklist for the full setup:
+
+```text
+docs/vercel-supabase-go-live.md
+```
+
+Required for persistent result storage:
+
+- `SUPABASE_URL`: Supabase project URL.
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service-role key used only by Vercel serverless functions.
+- `SUPABASE_RESULTS_TABLE`: optional; defaults to `quiz_results`.
+
+Required for CSV export and protected admin reads:
+
+- `EXPORT_TOKEN` or `RESULTS_EXPORT_TOKEN`: bearer/query token for `/api/export.csv` and bearer token for `/api/results` and `/api/storage-health`.
+
+Create the Supabase table by running:
+
+```sql
+-- supabase/quiz-results-schema.sql
+```
+
+in the Supabase SQL Editor.
+
+The older EdgeOne Pages Blob deployment used the namespace `ai-ideology-results`, and `edge-functions/api/export.csv.js` read `EXPORT_TOKEN` or `RESULTS_EXPORT_TOKEN`. Keep those files as legacy deployment reference only; the active Vercel API routes live under `api/`.
 
 Locally, use `REMOTE_DATABASE_TOKEN`. It should contain the same secret value as the deployed `EXPORT_TOKEN`, but agents and scripts should refer to the local name:
 
@@ -36,8 +62,44 @@ npm run data:export
 The deployed export endpoint is:
 
 ```text
-https://ai-persona-qxad5fjx.edgeone.cool/api/export.csv
+https://linenyu-site.vercel.app/api/export.csv
 ```
+
+The deployed browser viewer is:
+
+```text
+https://linenyu-site.vercel.app/admin/
+```
+
+Use the same `EXPORT_TOKEN` or `RESULTS_EXPORT_TOKEN` value in the viewer's token field. The viewer calls `/api/results` for table rows and `/api/export.csv` for downloads.
+
+The deployed dynamic health endpoint is:
+
+```text
+https://linenyu-site.vercel.app/api/health
+```
+
+To set Vercel production variables without printing secret values:
+
+```sh
+scripts/set-vercel-production-env.sh production
+npm run vercel:env:check
+```
+
+After setting variables and updating DNS, redeploy and run strict verification:
+
+```sh
+export REMOTE_DATABASE_TOKEN="<same value as EXPORT_TOKEN>"
+npm run vercel:deploy -- --strict
+```
+
+If Supabase values are injected locally, verify the table and service-role key without printing secret values:
+
+```sh
+npm run vercel:supabase:check
+```
+
+The strict verifier uses the local `REMOTE_DATABASE_TOKEN`, `EXPORT_TOKEN`, or `RESULTS_EXPORT_TOKEN` only as a bearer token for `/api/results` and `/api/export.csv`; it does not print the token.
 
 ## Working With Codex
 

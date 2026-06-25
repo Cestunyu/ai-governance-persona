@@ -7,8 +7,16 @@
     "data:export": "scripts/export-remote-results.sh",
     "quiz:canonicalize": "node scripts/sync-canonical-quiz.js",
     "quiz:check": "node scripts/check-quiz-sync.js",
-    "release:check": "npm run quiz:check",
-    "release:bundle": "node scripts/build-release-bundle.js"
+    "vercel:check": "node scripts/check-vercel-dynamic-release.js",
+    "vercel:deploy": "scripts/deploy-vercel-dynamic.sh",
+    "vercel:env:check": "node scripts/check-vercel-env-ready.js production",
+    "vercel:go-live:status": "node scripts/check-go-live-status.js",
+    "vercel:go-live:watch": "scripts/watch-go-live-status.sh",
+    "vercel:supabase:check": "node scripts/check-supabase-ready.js",
+    "vercel:verify:live": "node scripts/verify-vercel-live.js",
+    "release:check": "npm run quiz:check && npm run vercel:check",
+    "release:bundle": "node scripts/build-release-bundle.js",
+    "release:bundle:vercel": "node scripts/build-vercel-dynamic-bundle.js"
   },
   "dependencies": {
     "@edgeone/pages-blob": "0.0.8"

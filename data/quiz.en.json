@@ -262,27 +262,27 @@
       "dimension": "c",
       "direction": 1,
       "facet": "source of deployment evidence",
-      "text": "What should an AI system prove before its use is expanded?",
+      "text": "What condition should an AI system meet before its use is expanded?",
       "options": [
         [
           "1",
           "A",
-          "Strict internal tests should come first; if a system fails key safety standards, access should not expand."
+          "It should first pass strict internal tests; if it does not meet key safety requirements, its use should not expand."
         ],
         [
           "2.33",
           "B",
-          "Start with small pilots, and expand only when the system can be monitored, stopped, and rolled back."
+          "It should first go through small pilots, with monitoring, shutdown, and rollback in place before gradual expansion."
         ],
         [
           "3.67",
           "C",
-          "The priority should be whether affected people can appeal, and whether outside review finds social harm."
+          "The priority should be confirming whether affected people can appeal, and whether outside review finds clear social harm."
         ],
         [
           "5",
           "D",
-          "Put the system into real use quickly and iterate; wider use exposes problems sooner and helps fix them."
+          "It should enter real-world iteration quickly; wider use exposes problems sooner and helps fix them."
         ]
       ]
     },
@@ -419,7 +419,7 @@
     "Advanced AI should not be treated as ordinary software; before broad deployment, it must remain controllable and accountable to humans.",
     "The biggest AI problem is not a distant future; people are already being affected, watched, or excluded.",
     "AI is an important but normal technology: useful, fallible, and best governed by context.",
-    "Many AI narratives package ordinary systems as magic; cut through hype and overclaiming.",
+    "First, debunk hype and exaggerated claims about AI capabilities.",
     "Scaling, search, data, and compute are the deepest lessons; human intuition should be discounted.",
     "AI should reach the real world faster because it can help many people.",
     "AI is not merely a tool; it is a path toward the singularity, human-machine merger, or civilizational upgrade.",

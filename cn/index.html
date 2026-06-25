@@ -205,7 +205,20 @@
     }
 
     .panel-head small {
-      display: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+      min-height: 28px;
+      margin-left: auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 820;
+      line-height: 1;
     }
 
     .panel-body {
@@ -1413,7 +1426,7 @@
       }
 
       .panel-head small {
-        display: none;
+        display: inline-flex;
       }
 
       .panel-head .btn {
@@ -1561,7 +1574,7 @@
     <div class="topbar-inner">
       <div class="brand">
         <strong class="brand-title">AI 人格测试</strong>
-        <span>16 个问题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
+        <span>1 道使用情况题 + 15 道计分题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
       </div>
       <div class="topbar-actions">
         <a class="lang-link active" href="/cn/">CN</a>
@@ -1583,7 +1596,7 @@
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/16</div>
+            <div class="progress-text" id="progressText">0/15</div>
           </div>
 
           <article class="page-card">
@@ -1611,7 +1624,7 @@
           <div class="code" id="profileCode">----</div>
         </div>
         <div class="profile-body">
-          <p class="profile-lead" id="profileRoast">完成使用情况题和 11 道核心判断后，结果会更稳。</p>
+          <p class="profile-lead" id="profileRoast">完成使用情况题和 15 道计分题后，结果会更稳。</p>
           <p class="profile-sublead" id="profileExplanation">--</p>
           <div class="share-actions" aria-label="分享结果">
             <button class="btn primary" id="shareBtn" type="button">分享结果</button>
@@ -1838,12 +1851,12 @@
         dimension: "c",
         direction: 1,
         facet: "部署证据来源",
-        text: "一个 AI 系统在扩大使用前，最需要证明什么？",
+        text: "一个 AI 系统在扩大使用前，最需要先满足什么条件？",
         options: [
-          ["1", "A", "应先完成严格内部测试；如果系统没有通过关键安全标准，就不应扩大使用。"],
+          ["1", "A", "应先通过严格内部测试；如果没有达到关键安全要求，就不应扩大使用。"],
           ["2.33", "B", "应先做小范围试点，并确保系统可以被监测、叫停和回滚，再逐步扩大。"],
-          ["3.67", "C", "应重点看受影响的人能否申诉，以及外部审查是否发现社会伤害。"],
-          ["5", "D", "应尽快放到真实环境中迭代；使用者越多，问题越容易暴露和修正。"]
+          ["3.67", "C", "应重点确认受影响的人能否申诉，以及外部审查是否发现明显社会伤害。"],
+          ["5", "D", "应尽快进入真实环境迭代；使用者越多，问题越容易暴露和修正。"]
         ]
       },
       {
@@ -1912,7 +1925,7 @@
       "先进 AI 不能当作普通软件放任发布；在广泛部署前，必须先能被人类控制和问责。",
       "AI 的核心问题是当下的社会伤害、权力集中、劳动、偏见和剥削。",
       "AI 是一种重要但普通的技术：有用、会出错，应按具体场景治理。",
-      "很多 AI 叙事把普通系统包装成魔法，应该拆穿炒作和夸大能力。",
+      "应先拆穿炒作和夸大能力的说法。",
       "真正的教训是：规模、搜索、数据和算力比人类直觉更可靠，也更能推动进步。",
       "AI 应该被建设和部署，因为它能创造巨大的丰裕。",
       "AI 不只是工具，更像通往奇点、人机融合或文明升级的路径。",
@@ -1928,6 +1941,7 @@
       "先进 AI 不能当作普通软件放任发布；在广泛部署前，必须先能被人类控制和问责。": "2",
       "AI 的核心问题是当下的社会伤害、权力集中、劳动、偏见和剥削。": "3",
       "AI 是一种重要但普通的技术：有用、会出错，应按具体场景治理。": "4",
+      "应先拆穿炒作和夸大能力的说法。": "5",
       "很多 AI 叙事把普通系统包装成魔法，应该拆穿炒作和夸大能力。": "5",
       "真正的教训是：规模、搜索、数据和算力比人类直觉更可靠，也更能推动进步。": "6",
       "AI 应该被建设和部署，因为它能创造巨大的丰裕。": "7",
@@ -1939,6 +1953,7 @@
       "Advanced AI should not be treated as ordinary software; before broad deployment, it must remain controllable and accountable to humans.": "2",
       "The biggest AI problem is not a distant future; people are already being affected, watched, or excluded.": "3",
       "AI is an important but normal technology: useful, fallible, and best governed by context.": "4",
+      "First, debunk hype and exaggerated claims about AI capabilities.": "5",
       "Many AI narratives package ordinary systems as magic; cut through hype and overclaiming.": "5",
       "Scaling, search, data, and compute are the deepest lessons; human intuition should be discounted.": "6",
       "AI should reach the real world faster because it can help many people.": "7",
@@ -2590,6 +2605,7 @@
         exclusiveValue: statementValues[statementValues.length - 1]
       }
     ];
+    const formalQuestionCount = pages.filter((page) => page.kind !== "intro" && page.id !== "U01").length;
 
     let currentIndex = 0;
     let answers = {};
@@ -3027,22 +3043,32 @@
       return pages.filter((page) => page.kind !== "intro" && hasAnswer(page)).length;
     }
 
+    function answeredFormalPages() {
+      return pages.filter((page) => page.kind !== "intro" && page.id !== "U01" && hasAnswer(page)).length;
+    }
+
+    function currentFormalProgress() {
+      const page = pages[currentIndex];
+      if (!page || page.kind === "intro" || page.id === "U01") return 0;
+      return Math.min(Math.max(currentIndex - 1, 1), formalQuestionCount);
+    }
+
     function currentPageAnswered() {
       const page = pages[currentIndex];
       return page ? hasAnswer(page) : true;
     }
 
     function updatePagerControls() {
-      const done = answeredPages();
+      const done = answeredFormalPages();
       const page = pages[currentIndex];
       const isIntro = Boolean(page && page.kind === "intro");
       const isMulti = Boolean(page && page.multiple);
       const answered = currentPageAnswered();
       const isLast = currentIndex === pages.length - 1;
-      const answerPageCount = pages.length - 1;
+      const answerPageCount = formalQuestionCount;
       progressFill.style.width = `${Math.round((done / answerPageCount) * 100)}%`;
       progressText.textContent = `${done}/${answerPageCount}`;
-      if (brandProgress) brandProgress.textContent = isIntro ? "开始" : `第 ${currentIndex} / ${pages.length - 1} 题`;
+      if (brandProgress) brandProgress.textContent = `计分题 ${currentFormalProgress()}/${formalQuestionCount}`;
       if (pagerActions) pagerActions.hidden = !(isIntro || isMulti);
       prevBtn.disabled = currentIndex === 0;
       if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
@@ -3172,7 +3198,7 @@
         quizPager.hidden = true;
         if (introResourceLinks) introResourceLinks.hidden = true;
         resultPanel.hidden = false;
-        if (brandProgress) brandProgress.textContent = `完成度 ${answeredPages()}/${pages.length - 1}`;
+        if (brandProgress) brandProgress.textContent = `计分题 ${formalQuestionCount}/${formalQuestionCount}`;
         update();
         if (shouldScroll) scrollToElement(resultPanel);
         return;
@@ -3186,7 +3212,7 @@
         introResourceLinks.innerHTML = "";
       }
       resultPanel.hidden = true;
-      pageCount.textContent = page.kind === "intro" ? "开始前" : `第 ${currentIndex} / ${pages.length - 1} 题`;
+      pageCount.textContent = `${currentFormalProgress()}/${formalQuestionCount}`;
       pageTag.textContent = page.kind === "intro" ? page.tag : page.multiple ? `${page.tag} · 多选` : page.tag;
       pageInstruction.textContent = page.instruction;
       pageInstruction.hidden = !page.instruction;
@@ -3656,7 +3682,10 @@
           keepalive: true
         });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        submitStatus.textContent = "结果已记录。";
+        const result = await response.json().catch(() => ({}));
+        submitStatus.textContent = result.stored === false
+          ? "结果已生成。云端存储尚未配置。"
+          : "结果已记录。";
       } catch (error) {
         submitStatus.textContent = "结果记录失败，不影响查看结果。";
       }
@@ -3715,7 +3744,7 @@
       }
       profileCode.textContent = complete ? displayCode : "----";
       profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "等待生成画像";
-      profileRoast.textContent = complete ? profile[1] : "完成使用情况题和 11 道核心判断后，结果会更稳。";
+      profileRoast.textContent = complete ? profile[1] : "完成使用情况题和 15 道计分题后，结果会更稳。";
       if (profileExplanation) profileExplanation.textContent = complete ? profile[4] : "--";
       profileTexts.innerHTML = complete ? renderProfileTexts(profile[2]) : "--";
       profileTell.textContent = complete ? profile[3] : "--";
@@ -4018,7 +4047,7 @@
       const displayCode = displayProfileCode(code);
       const nearest = nearestReferenceFor(result, code);
       const avatarImage = await loadImage(profileAvatarFor(code));
-      const qrImage = await loadImage("https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona-qxad5fjx.edgeone.cool%2Fcn%2F");
+      const qrImage = await loadImage("https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona.linenyu.com%2Fcn%2F");
       const canvas = document.createElement("canvas");
       const width = 410;
       const height = 820;

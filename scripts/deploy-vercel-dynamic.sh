@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+target="${VERCEL_DYNAMIC_DIST:-/tmp/ai-persona-vercel-dynamic-dist}"
+project="${VERCEL_PROJECT_NAME:-linenyu-site}"
+strict="${1:-}"
+
+if [ "$strict" = "--strict" ] && \
+  [ -z "${REMOTE_DATABASE_TOKEN:-}" ] && \
+  [ -z "${EXPORT_TOKEN:-}" ] && \
+  [ -z "${RESULTS_EXPORT_TOKEN:-}" ]; then
+  echo "Strict verification requires REMOTE_DATABASE_TOKEN, EXPORT_TOKEN, or RESULTS_EXPORT_TOKEN in the local shell." >&2
+  exit 2
+fi
+
+if [ "$strict" = "--strict" ]; then
+  echo "Checking Vercel production environment variable names..."
+  npm run vercel:env:check
+fi
+
+echo "Running release checks..."
+npm run release:check
+
+echo "Building Vercel dynamic bundle at $target..."
+npm run release:bundle:vercel -- "$target"
+
+echo "Deploying $target to Vercel project $project..."
+npx vercel "$target" --prod --yes --project "$project"
+
+if [ "$strict" = "--strict" ]; then
+  echo "Running strict live verification. This writes one test result row."
+  npm run vercel:verify:live -- --require-configured --submit
+else
+  echo "Running default live verification."
+  npm run vercel:verify:live
+  echo "For final go-live after DNS and Supabase env are configured, run:"
+  echo "  scripts/deploy-vercel-dynamic.sh --strict"
+fi

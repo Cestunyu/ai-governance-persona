@@ -1,0 +1,405 @@
+{
+  "schema_version": "0.1",
+  "project_id": "ai-governance-persona",
+  "last_updated": "2026-06-24",
+  "tasks": [
+    {
+      "id": "DEPLOY-001",
+      "title": "Decide whether the personal mother site should move off EdgeOne",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 user decision to move to Vercel Hobby",
+      "links": [
+        "planning/2026-06-20-site-deployment-cleanup.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-002",
+      "title": "Separate the personal-site deployment path from the AI Persona app deployment path",
+      "status": "partial",
+      "priority": "P0",
+      "source": "2026-06-20 deployment cleanup",
+      "links": [
+        "planning/2026-06-20-site-deployment-cleanup.md",
+        "tasks/task-2026-06-09-edgeone-pages-blob-deployment.json"
+      ]
+    },
+    {
+      "id": "DEPLOY-003",
+      "title": "Commit or deliberately exclude the public CV PDF asset",
+      "status": "todo",
+      "priority": "P0",
+      "source": "2026-06-20 deployment cleanup",
+      "links": [
+        "assets/cv/linen-yu-cv.pdf"
+      ]
+    },
+    {
+      "id": "DEPLOY-004",
+      "title": "Create a live smoke-test method that is not blocked by the current local network",
+      "status": "done",
+      "priority": "P1",
+      "source": "2026-06-20 deployment cleanup",
+      "links": [
+        "planning/2026-06-20-site-deployment-cleanup.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-006",
+      "title": "Deploy the latest local quiz bundle after choosing the replacement host or final EdgeOne target",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 user report that EdgeOne live version is stale",
+      "links": [
+        "cn/index.html",
+        "en/index.html",
+        "scripts/build-release-bundle.js",
+        "planning/2026-06-20-site-deployment-cleanup.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-007",
+      "title": "Deploy the Vercel dynamic bundle to production after Vercel device authorization completes",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 Vercel migration",
+      "links": [
+        "scripts/build-vercel-dynamic-bundle.js",
+        "vercel.json",
+        "api/submit-result.js",
+        "api/export.csv.js",
+        "api/results.js",
+        "api/health.js",
+        "lib/result-storage.js",
+        "admin/index.html"
+      ]
+    },
+    {
+      "id": "DEPLOY-009",
+      "title": "Configure Vercel custom domains and update DNS away from EdgeOne",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 Vercel production deployment",
+      "links": [
+        "planning/2026-06-20-site-deployment-cleanup.md",
+        "vercel.json"
+      ]
+    },
+    {
+      "id": "DEPLOY-008",
+      "title": "Replace the Vercel unconfigured-storage fallback with persistent Supabase storage",
+      "status": "partial",
+      "priority": "P0",
+      "source": "2026-06-21 Vercel migration",
+      "links": [
+        "api/submit-result.js",
+        "api/export.csv.js",
+        "api/results.js",
+        "lib/result-storage.js",
+        "supabase/quiz-results-schema.sql",
+        "docs/secrets.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-011",
+      "title": "Add a protected results viewer for stored quiz submissions",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 user request for a place to store and view data",
+      "links": [
+        "admin/index.html",
+        "api/results.js",
+        "api/export.csv.js",
+        "api/storage-health.js",
+        "api/health.js",
+        "lib/result-storage.js"
+      ]
+    },
+    {
+      "id": "DEPLOY-012",
+      "title": "Add a release check for Vercel dynamic APIs and the results viewer",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 dynamic deployment hardening",
+      "links": [
+        "scripts/check-vercel-dynamic-release.js",
+        "package.json",
+        "api/health.js",
+        "api/results.js",
+        "api/submit-result.js",
+        "admin/index.html"
+      ]
+    },
+    {
+      "id": "DEPLOY-013",
+      "title": "Add live Vercel verification and admin configuration status",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 deployment maintainability pass",
+      "links": [
+        "scripts/verify-vercel-live.js",
+        "admin/index.html",
+        "api/health.js",
+        "package.json"
+      ]
+    },
+    {
+      "id": "DEPLOY-014",
+      "title": "Add safe go-live tooling for Vercel env setup and final verification",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 external configuration handoff",
+      "links": [
+        "scripts/set-vercel-production-env.sh",
+        "scripts/verify-vercel-live.js",
+        "docs/vercel-supabase-go-live.md",
+        "docs/secrets.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-015",
+      "title": "Add one-command Vercel dynamic deploy and strict verification flow",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 go-live automation",
+      "links": [
+        "scripts/deploy-vercel-dynamic.sh",
+        "package.json",
+        "docs/vercel-supabase-go-live.md",
+        "docs/secrets.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-016",
+      "title": "Harden go-live checks for required env values and public CV asset",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 go-live robustness pass",
+      "links": [
+        "scripts/set-vercel-production-env.sh",
+        "scripts/check-vercel-dynamic-release.js",
+        "assets/cv/linen-yu-cv.pdf"
+      ]
+    },
+    {
+      "id": "DEPLOY-017",
+      "title": "Make strict live verification prove authenticated results and CSV access",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 final go-live verification hardening",
+      "links": [
+        "scripts/verify-vercel-live.js",
+        "scripts/deploy-vercel-dynamic.sh",
+        "docs/vercel-supabase-go-live.md",
+        "docs/secrets.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-018",
+      "title": "Add protected Supabase read health check for the results viewer",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 user request for a place to store and view data",
+      "links": [
+        "api/storage-health.js",
+        "admin/index.html",
+        "lib/result-storage.js",
+        "scripts/verify-vercel-live.js",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-019",
+      "title": "Add non-secret go-live status checker for DNS, Vercel env, and storage readiness",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/check-go-live-status.js",
+        "package.json",
+        "scripts/check-vercel-dynamic-release.js",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-020",
+      "title": "Add local Supabase readiness check for table and service-role permissions",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/check-supabase-ready.js",
+        "package.json",
+        "scripts/check-vercel-dynamic-release.js",
+        "docs/vercel-supabase-go-live.md",
+        "docs/secrets.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-021",
+      "title": "Make go-live DNS checker report exact Spaceship records to delete and add",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/check-go-live-status.js",
+        "scripts/check-vercel-dynamic-release.js",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-022",
+      "title": "Add DNS propagation checks across local, Cloudflare, Google, and Quad9 resolvers",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/check-go-live-status.js",
+        "scripts/check-vercel-dynamic-release.js",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-023",
+      "title": "Make go-live status parse Vercel environment variables from JSON output",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/check-go-live-status.js",
+        "scripts/check-vercel-dynamic-release.js"
+      ]
+    },
+    {
+      "id": "DEPLOY-024",
+      "title": "Add Vercel custom-domain binding and configuration checks to go-live status",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/check-go-live-status.js",
+        "scripts/check-vercel-dynamic-release.js"
+      ]
+    },
+    {
+      "id": "DEPLOY-025",
+      "title": "Add Vercel production env-name preflight to strict deploy",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/check-vercel-env-ready.js",
+        "scripts/deploy-vercel-dynamic.sh",
+        "package.json",
+        "docs/vercel-supabase-go-live.md",
+        "docs/secrets.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-026",
+      "title": "Make strict live verification prove custom-domain HTTPS and redirects",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/verify-vercel-live.js",
+        "scripts/check-vercel-dynamic-release.js",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-027",
+      "title": "Add polling watcher for go-live status after DNS and env changes",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 active Vercel completion goal",
+      "links": [
+        "scripts/watch-go-live-status.sh",
+        "package.json",
+        "scripts/check-vercel-dynamic-release.js",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-028",
+      "title": "Disable or delete obsolete EdgeOne projects after Vercel DNS cutover",
+      "status": "todo",
+      "priority": "P0",
+      "source": "2026-06-24 user request to stop EdgeOne after DNS cutover",
+      "links": [
+        ".edgeone/project.json",
+        "edgeone.json"
+      ]
+    },
+    {
+      "id": "DEPLOY-029",
+      "title": "Fix Vercel custom-domain HTTPS after DNS cutover",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-24 user report that https://ai-persona.linenyu.com/en/ would not open",
+      "links": [
+        "scripts/check-go-live-status.js",
+        "scripts/verify-vercel-live.js",
+        "docs/vercel-supabase-go-live.md"
+      ]
+    },
+    {
+      "id": "DEPLOY-010",
+      "title": "Create Supabase quiz_results table and set Vercel storage/export environment variables",
+      "status": "todo",
+      "priority": "P0",
+      "source": "2026-06-21 Supabase-ready Vercel API deployment",
+      "links": [
+        "supabase/quiz-results-schema.sql",
+        "docs/secrets.md",
+        ".env.example"
+      ]
+    },
+    {
+      "id": "COPY-001",
+      "title": "Unify AI Persona question-count and scored-progress wording",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-21 online/local comparison",
+      "links": [
+        "cn/index.html",
+        "en/index.html",
+        "planning/2026-06-20-site-deployment-cleanup.md"
+      ]
+    },
+    {
+      "id": "CONTENT-001",
+      "title": "Remove placeholder links from personal-site indexes",
+      "status": "done",
+      "priority": "P1",
+      "source": "2026-06-20 deployment cleanup",
+      "links": [
+        "index.html",
+        "blog/index.html",
+        "posts/index.html",
+        "projects/index.html"
+      ]
+    },
+    {
+      "id": "DEPLOY-005",
+      "title": "Align release checks with the personal-site root homepage decision",
+      "status": "done",
+      "priority": "P1",
+      "source": "2026-06-20 deployment cleanup",
+      "links": [
+        "scripts/check-quiz-sync.js",
+        "planning/2026-06-20-site-deployment-cleanup.md"
+      ]
+    },
+    {
+      "id": "APP-001",
+      "title": "Finish the basic anti-abuse gate for quiz result submissions",
+      "status": "partial",
+      "priority": "P0",
+      "source": "EdgeOne deployment task E3",
+      "links": [
+        "tasks/task-2026-06-09-edgeone-pages-blob-deployment.json"
+      ]
+    }
+  ]
+}

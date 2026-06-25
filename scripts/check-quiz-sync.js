@@ -23,7 +23,6 @@ for (const check of checks) {
 }
 
 try {
-  assertRedirect("index.html", "/cn/");
   assertRedirect("ch/index.html", "/cn/");
 } catch (error) {
   failures.push(error.message);

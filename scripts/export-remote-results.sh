@@ -15,7 +15,7 @@ if [ -z "${REMOTE_DATABASE_TOKEN:-}" ]; then
   exit 2
 fi
 
-endpoint="${REMOTE_DATABASE_URL:-https://ai-persona-qxad5fjx.edgeone.cool/api/export.csv}"
+endpoint="${REMOTE_DATABASE_URL:-https://linenyu-site.vercel.app/api/export.csv}"
 output="${REMOTE_DATABASE_EXPORT_PATH:-data/remote-results.csv}"
 
 mkdir -p "$(dirname "$output")"

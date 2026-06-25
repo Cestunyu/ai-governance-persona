@@ -205,7 +205,20 @@
     }
 
     .panel-head small {
-      display: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+      min-height: 28px;
+      margin-left: auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 820;
+      line-height: 1;
     }
 
     .panel-body {
@@ -1414,7 +1427,7 @@
       }
 
       .panel-head small {
-        display: none;
+        display: inline-flex;
       }
 
       .panel-head .btn {
@@ -1562,7 +1575,7 @@
     <div class="topbar-inner">
       <div class="brand">
         <strong class="brand-title">AI Governance Persona</strong>
-        <span>16 questions to see where you stand on AI risk, governance, openness, and human control.</span>
+        <span>1 usage item plus 15 scored questions on AI risk, governance, openness, and human control.</span>
       </div>
       <div class="topbar-actions">
         <a class="lang-link" href="/cn/">CN</a>
@@ -1584,7 +1597,7 @@
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/16</div>
+            <div class="progress-text" id="progressText">0/15</div>
           </div>
 
           <article class="page-card">
@@ -1612,7 +1625,7 @@
           <div class="code" id="profileCode">----</div>
         </div>
         <div class="profile-body">
-          <p class="profile-lead" id="profileRoast">Complete the usage item and 11 core judgments for a stable result.</p>
+          <p class="profile-lead" id="profileRoast">Complete the usage item and 15 scored questions for a stable result.</p>
           <p class="profile-sublead" id="profileExplanation">--</p>
           <div class="share-actions" aria-label="Share result">
             <button class="btn primary" id="shareBtn" type="button">Share result</button>
@@ -1701,6 +1714,7 @@
 
       <div class="result-actions">
         <button class="btn" id="editLastBtn" type="button">Edit Last Answer</button>
+        <button class="btn" id="restartBtn" type="button">Start Over</button>
       </div>
       <div class="submit-status" id="submitStatus" aria-live="polite"></div>
     </section>
@@ -1838,12 +1852,12 @@
         dimension: "c",
         direction: 1,
         facet: "source of deployment evidence",
-        text: "What should an AI system prove before its use is expanded?",
+        text: "What condition should an AI system meet before its use is expanded?",
         options: [
-          ["1", "A", "Strict internal tests should come first; if a system fails key safety standards, access should not expand."],
-          ["2.33", "B", "Start with small pilots, and expand only when the system can be monitored, stopped, and rolled back."],
-          ["3.67", "C", "The priority should be whether affected people can appeal, and whether outside review finds social harm."],
-          ["5", "D", "Put the system into real use quickly and iterate; wider use exposes problems sooner and helps fix them."]
+          ["1", "A", "It should first pass strict internal tests; if it does not meet key safety requirements, its use should not expand."],
+          ["2.33", "B", "It should first go through small pilots, with monitoring, shutdown, and rollback in place before gradual expansion."],
+          ["3.67", "C", "The priority should be confirming whether affected people can appeal, and whether outside review finds clear social harm."],
+          ["5", "D", "It should enter real-world iteration quickly; wider use exposes problems sooner and helps fix them."]
         ]
       },
       {
@@ -1912,7 +1926,7 @@
       "Advanced AI should not be treated as ordinary software; before broad deployment, it must remain controllable and accountable to humans.",
       "The biggest AI problem is not a distant future; people are already being affected, watched, or excluded.",
       "AI is an important but normal technology: useful, fallible, and best governed by context.",
-      "Many AI narratives package ordinary systems as magic; cut through hype and overclaiming.",
+      "First, debunk hype and exaggerated claims about AI capabilities.",
       "Scaling, search, data, and compute are the deepest lessons; human intuition should be discounted.",
       "AI should reach the real world faster because it can help many people.",
       "AI is not merely a tool; it is a path toward the singularity, human-machine merger, or civilizational upgrade.",
@@ -1928,6 +1942,7 @@
       "先进 AI 不能当作普通软件放任发布；在广泛部署前，必须先能被人类控制和问责。": "2",
       "AI 的核心问题是当下的社会伤害、权力集中、劳动、偏见和剥削。": "3",
       "AI 是一种重要但普通的技术：有用、会出错，应按具体场景治理。": "4",
+      "应先拆穿炒作和夸大能力的说法。": "5",
       "很多 AI 叙事把普通系统包装成魔法，应该拆穿炒作和夸大能力。": "5",
       "真正的教训是：规模、搜索、数据和算力比人类直觉更可靠，也更能推动进步。": "6",
       "AI 应该被建设和部署，因为它能创造巨大的丰裕。": "7",
@@ -1939,6 +1954,7 @@
       "Advanced AI should not be treated as ordinary software; before broad deployment, it must remain controllable and accountable to humans.": "2",
       "The biggest AI problem is not a distant future; people are already being affected, watched, or excluded.": "3",
       "AI is an important but normal technology: useful, fallible, and best governed by context.": "4",
+      "First, debunk hype and exaggerated claims about AI capabilities.": "5",
       "Many AI narratives package ordinary systems as magic; cut through hype and overclaiming.": "5",
       "Scaling, search, data, and compute are the deepest lessons; human intuition should be discounted.": "6",
       "AI should reach the real world faster because it can help many people.": "7",
@@ -1970,7 +1986,7 @@
       AUDT: ["Algorithm Auditor", "First ask who benefits and who gets monitored.", "On the Dangers of Stochastic Parrots, Atlas of AI", "When others ask whether it can be built, you ask who benefits and who gets monitored.", "You focus on the power, labor, bias, environmental costs, and people governed by AI systems."],
       NORM: ["Sober Product Manager", "Use Case, Metric, Owner.", "AI as Normal Technology", "Your words are use case, metric, boundary, launch condition.", "You treat AI as a product: define the use case, metric, owner, boundary, and failure mode."],
       SKEP: ["AI Demystifier", "Stop saying awakening. It will break soon enough.", "AI Snake Oil, Rebooting AI", "Often says hype, snake oil, benchmark, overclaim, premature.", "You are skeptical of near-AGI narratives and want baselines, test sets, and reproducible evidence."],
-      GPUC: ["Scale Believer", "Scale beats priors.", "The Bitter Lesson", "When others say common sense and expert priors, you say scale, compute, search, learning.", "You believe general methods, search, learning, and compute will beat hand-coded knowledge and expert intuition."],
+      GPUC: ["Scale Cultist", "Scale beats priors.", "The Bitter Lesson", "When others say common sense and expert priors, you say scale, compute, search, learning.", "You believe general methods, search, learning, and compute will beat hand-coded knowledge and expert intuition."],
       BOOM: ["Abundance Builder", "Deploy it where life gets better.", "Machines of Loving Grace, AI is the New Electricity", "High-frequency words: productivity, health, education, deployment.", "You believe AI's main value comes from real deployment in health, education, productivity, and science."],
       SING: ["Cyber Ascender", "Not a tool. A civilization jump.", "The Singularity Is Near, The Intelligence Age", "Often talks about abundance, longevity, human-machine merger.", "You see AI as a path to civilizational transition, longevity, abundance, and human-machine merger."],
       EACC: ["Accelerationist Builder", "While steering is debated, press the accelerator.", "Effective Accelerationism manifestos", "Often says accelerate, permissionless, build, decentralize.", "You lean toward openness, building, acceleration, and fewer permissions, seeing stagnation as its own risk."],
@@ -2590,6 +2606,7 @@
         exclusiveValue: statementValues[statementValues.length - 1]
       }
     ];
+    const formalQuestionCount = pages.filter((page) => page.kind !== "intro" && page.id !== "U01").length;
 
     let currentIndex = 0;
     let answers = {};
@@ -3027,22 +3044,32 @@
       return pages.filter((page) => page.kind !== "intro" && hasAnswer(page)).length;
     }
 
+    function answeredFormalPages() {
+      return pages.filter((page) => page.kind !== "intro" && page.id !== "U01" && hasAnswer(page)).length;
+    }
+
+    function currentFormalProgress() {
+      const page = pages[currentIndex];
+      if (!page || page.kind === "intro" || page.id === "U01") return 0;
+      return Math.min(Math.max(currentIndex - 1, 1), formalQuestionCount);
+    }
+
     function currentPageAnswered() {
       const page = pages[currentIndex];
       return page ? hasAnswer(page) : true;
     }
 
     function updatePagerControls() {
-      const done = answeredPages();
+      const done = answeredFormalPages();
       const page = pages[currentIndex];
       const isIntro = Boolean(page && page.kind === "intro");
       const isMulti = Boolean(page && page.multiple);
       const answered = currentPageAnswered();
       const isLast = currentIndex === pages.length - 1;
-      const answerPageCount = pages.length - 1;
+      const answerPageCount = formalQuestionCount;
       progressFill.style.width = `${Math.round((done / answerPageCount) * 100)}%`;
       progressText.textContent = `${done}/${answerPageCount}`;
-      if (brandProgress) brandProgress.textContent = isIntro ? "Start" : `Question ${currentIndex} / ${pages.length - 1}`;
+      if (brandProgress) brandProgress.textContent = `Scored ${currentFormalProgress()}/${formalQuestionCount}`;
       if (pagerActions) pagerActions.hidden = !(isIntro || isMulti);
       prevBtn.disabled = currentIndex === 0;
       if (prevTopBtn) prevTopBtn.disabled = currentIndex === 0;
@@ -3172,7 +3199,7 @@
         quizPager.hidden = true;
         if (introResourceLinks) introResourceLinks.hidden = true;
         resultPanel.hidden = false;
-        if (brandProgress) brandProgress.textContent = `Complete ${answeredPages()}/${pages.length - 1}`;
+        if (brandProgress) brandProgress.textContent = `Scored ${formalQuestionCount}/${formalQuestionCount}`;
         update();
         if (shouldScroll) scrollToElement(resultPanel);
         return;
@@ -3186,7 +3213,7 @@
         introResourceLinks.innerHTML = "";
       }
       resultPanel.hidden = true;
-      pageCount.textContent = page.kind === "intro" ? "Before you begin" : `Question ${currentIndex} / ${pages.length - 1}`;
+      pageCount.textContent = `${currentFormalProgress()}/${formalQuestionCount}`;
       pageTag.textContent = page.kind === "intro" ? page.tag : page.multiple ? `${page.tag} · MULTI` : page.tag;
       pageInstruction.textContent = page.instruction;
       pageInstruction.hidden = !page.instruction;
@@ -3656,7 +3683,10 @@
           keepalive: true
         });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        submitStatus.textContent = "Result recorded.";
+        const result = await response.json().catch(() => ({}));
+        submitStatus.textContent = result.stored === false
+          ? "Result ready. Cloud storage is not configured yet."
+          : "Result recorded.";
       } catch (error) {
         submitStatus.textContent = "Result recording failed. Your result is still available here.";
       }
@@ -3715,7 +3745,7 @@
       }
       profileCode.textContent = complete ? displayCode : "----";
       profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "Waiting for profile";
-      profileRoast.textContent = complete ? profile[1] : "Complete the usage item and 11 core judgments for a stable result.";
+      profileRoast.textContent = complete ? profile[1] : "Complete the usage item and 15 scored questions for a stable result.";
       if (profileExplanation) profileExplanation.textContent = complete ? profile[4] : "--";
       profileTexts.innerHTML = complete ? renderProfileTexts(profile[2]) : "--";
       profileTell.textContent = complete ? profile[3] : "--";
@@ -4018,7 +4048,7 @@
       const displayCode = displayProfileCode(code);
       const nearest = nearestReferenceFor(result, code);
       const avatarImage = await loadImage(profileAvatarFor(code));
-      const qrImage = await loadImage("https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona-qxad5fjx.edgeone.cool%2Fen%2F");
+      const qrImage = await loadImage("https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona.linenyu.com%2Fen%2F");
       const canvas = document.createElement("canvas");
       const width = 410;
       const height = 820;
