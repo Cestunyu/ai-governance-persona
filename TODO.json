@@ -464,6 +464,20 @@
       ]
     },
     {
+      "id": "DEPLOY-031",
+      "title": "Add GitHub Actions release gate with manual and opt-in push production deployment",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-28 user chose GitHub Actions deployment automation",
+      "links": [
+        ".github/workflows/ai-persona-release.yml",
+        "scripts/deploy-vercel-dynamic.sh",
+        "scripts/check-go-live-status.js",
+        "docs/vercel-supabase-go-live.md",
+        "docs/secrets.md"
+      ]
+    },
+    {
       "id": "FRONTEND-001",
       "title": "Modularize the quiz frontend out of monolithic locale HTML files",
       "status": "todo",

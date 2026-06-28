@@ -65,6 +65,14 @@ npm run vercel:env:check
 
 ## 3. Redeploy Vercel
 
+The deployment scripts default to the current Vercel project:
+
+```sh
+export VERCEL_PROJECT_NAME="${VERCEL_PROJECT_NAME:-linenyu-site}"
+```
+
+If the AI Persona app is moved to a separate Vercel project later, set `VERCEL_PROJECT_NAME` to that project name before running local deploys or GitHub Actions.
+
 ```sh
 npm run vercel:deploy
 ```
@@ -150,3 +158,46 @@ The strict final check must prove:
 - `/api/submit-result` returns `stored: true` for a test row.
 - `/api/results` and `/api/export.csv` are protected and usable with the export token.
 - `/admin/` can display stored rows with the export token.
+
+## 6. GitHub Actions Deployment
+
+The repository has a GitHub Actions workflow at:
+
+```text
+.github/workflows/ai-persona-release.yml
+```
+
+Pushes and pull requests to `main` run the release gate and build the curated Vercel bundle. Production deployment is manual by default.
+
+Production deployment is available through the workflow's manual `workflow_dispatch` button. Run it from `main` with:
+
+- `deploy_production`: `true`
+- `strict_verify`: `false` until Supabase storage and export tokens are configured
+- `strict_verify`: `true` after `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and an export token are configured
+
+Required GitHub repository secret:
+
+```text
+VERCEL_TOKEN
+```
+
+Optional GitHub repository variables:
+
+```text
+VERCEL_PROJECT_NAME=linenyu-site
+VERCEL_SCOPE=<Vercel team or user slug>
+AUTO_DEPLOY_PRODUCTION=true
+STRICT_VERIFY_PRODUCTION=true
+```
+
+Leave `AUTO_DEPLOY_PRODUCTION` unset until you want every push to `main` to deploy production. Leave `STRICT_VERIFY_PRODUCTION` unset until Supabase storage and export tokens are configured.
+
+Optional GitHub repository secrets for strict verification:
+
+```text
+REMOTE_DATABASE_TOKEN
+EXPORT_TOKEN
+RESULTS_EXPORT_TOKEN
+```
+
+Use only one export-token value if possible; the workflow supports all three names because the local verifier already does.

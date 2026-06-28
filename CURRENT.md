@@ -22,6 +22,7 @@ Last updated: 2026-06-25
 
 ## Recent Checkpoints
 
+- 2026-06-28: Added GitHub Actions release automation: push/PR runs release gate plus bundle build; production deploy is available through a manual workflow using `VERCEL_TOKEN`, with opt-in push-to-prod via `AUTO_DEPLOY_PRODUCTION=true`.
 - 2026-06-25: Created branch `codex/structure-cleanup`.
 - 2026-06-25: Committed checkpoint `fc87938` for the working Vercel dynamic state before restructuring.
 - 2026-06-25: Committed `3cb86c1` to clarify Vercel as the default route and make quiz edits data-first.
@@ -63,7 +64,8 @@ Last updated: 2026-06-25
 
 1. Start frontend modularization from the current `/en/` and `/cn/` pages.
 2. In the personal-site repo, decide the first homepage improvement pass.
-3. If production storage is still needed, run the Supabase schema and set Vercel env vars using `docs/vercel-supabase-go-live.md`.
+3. Add `VERCEL_TOKEN` to GitHub repository secrets, then use the manual GitHub Actions production deploy when ready.
+4. If production storage is still needed, run the Supabase schema and set Vercel env vars using `docs/vercel-supabase-go-live.md`.
 
 ## Open Questions
 

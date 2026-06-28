@@ -1,0 +1,113 @@
+name: AI Persona Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      deploy_production:
+        description: Deploy the current main ref to Vercel production after the release gate.
+        required: true
+        type: boolean
+        default: false
+      strict_verify:
+        description: Run strict live verification after deploy. Requires Supabase env and an export token.
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-persona-release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "20"
+  VERCEL_PROJECT_NAME: ${{ vars.VERCEL_PROJECT_NAME || 'linenyu-site' }}
+  VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE }}
+
+jobs:
+  release-gate:
+    name: Release gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run release checks
+        run: npm run release:check
+
+      - name: Build Vercel dynamic bundle
+        run: npm run release:bundle:vercel -- "$RUNNER_TEMP/ai-persona-vercel-dynamic-dist"
+
+      - name: Package bundle artifact
+        run: tar -czf "$RUNNER_TEMP/ai-persona-vercel-dynamic-dist.tar.gz" -C "$RUNNER_TEMP/ai-persona-vercel-dynamic-dist" .
+
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-persona-vercel-dynamic-dist
+          path: ${{ runner.temp }}/ai-persona-vercel-dynamic-dist.tar.gz
+          retention-days: 7
+
+  deploy-production:
+    name: Deploy production
+    runs-on: ubuntu-latest
+    needs: release-gate
+    if: (github.event_name == 'workflow_dispatch' && inputs.deploy_production) || (github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.AUTO_DEPLOY_PRODUCTION == 'true')
+    environment: production
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      REMOTE_DATABASE_TOKEN: ${{ secrets.REMOTE_DATABASE_TOKEN }}
+      EXPORT_TOKEN: ${{ secrets.EXPORT_TOKEN }}
+      RESULTS_EXPORT_TOKEN: ${{ secrets.RESULTS_EXPORT_TOKEN }}
+      STRICT_VERIFY: ${{ (github.event_name == 'workflow_dispatch' && inputs.strict_verify) || (github.event_name == 'push' && vars.STRICT_VERIFY_PRODUCTION == 'true') }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Require main branch for production deploy
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "Production deploys must be run from main. Current ref: $GITHUB_REF" >&2
+            exit 1
+          fi
+
+      - name: Require Vercel token
+        run: |
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "Missing GitHub secret VERCEL_TOKEN." >&2
+            exit 1
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy Vercel dynamic bundle
+        run: |
+          if [ "$STRICT_VERIFY" = "true" ]; then
+            scripts/deploy-vercel-dynamic.sh --strict
+          else
+            scripts/deploy-vercel-dynamic.sh
+          fi

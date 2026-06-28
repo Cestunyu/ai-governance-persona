@@ -101,6 +101,29 @@ npm run vercel:supabase:check
 
 The strict verifier uses the local `REMOTE_DATABASE_TOKEN`, `EXPORT_TOKEN`, or `RESULTS_EXPORT_TOKEN` only as a bearer token for `/api/results` and `/api/export.csv`; it does not print the token.
 
+## GitHub Actions
+
+The release workflow uses GitHub secrets and variables rather than committed configuration files.
+
+Required secret for manual production deploy:
+
+- `VERCEL_TOKEN`: Vercel access token used by `scripts/deploy-vercel-dynamic.sh`.
+
+Optional variables:
+
+- `VERCEL_PROJECT_NAME`: Vercel project to deploy to. Defaults to `linenyu-site`.
+- `VERCEL_SCOPE`: Vercel team or user slug, if the token has access to multiple scopes.
+- `AUTO_DEPLOY_PRODUCTION`: set to `true` only when pushes to `main` should deploy production automatically.
+- `STRICT_VERIFY_PRODUCTION`: set to `true` only after Supabase storage and export tokens are configured.
+
+Optional secrets for strict verification:
+
+- `REMOTE_DATABASE_TOKEN`
+- `EXPORT_TOKEN`
+- `RESULTS_EXPORT_TOKEN`
+
+Use `REMOTE_DATABASE_TOKEN` as the preferred Actions secret for strict verification when it has the same value as the production export token.
+
 ## Working With Codex
 
 Codex should not read `.env`, `.env.*`, or other files containing real tokens. If Codex needs to access the remote database, start the relevant command or dev server from a shell where the token is already injected. Codex can run the command and observe non-secret outputs, but it should not inspect the token file or print environment values.

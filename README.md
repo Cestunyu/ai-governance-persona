@@ -79,6 +79,8 @@ npm run vercel:deploy -- --strict
 
 See `docs/vercel-supabase-go-live.md` for the full setup checklist.
 
+GitHub Actions now runs the release gate and builds the curated Vercel bundle on pushes and pull requests to `main`. Production deploy is available as a manual workflow action after adding the `VERCEL_TOKEN` repository secret, and can later be switched to push-to-production with `AUTO_DEPLOY_PRODUCTION=true`.
+
 ## Structure
 
 - `cn/`, `en/`, `ch/`: public quiz pages and locale routing.

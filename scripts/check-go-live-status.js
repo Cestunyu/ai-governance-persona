@@ -12,7 +12,7 @@ const vercelDnsCname = "33236d9ab28d641f.vercel-dns-017.com";
 const dnsTargets = [
   { domain: "ai-persona.linenyu.com", host: "ai-persona", expectedCname: vercelDnsCname }
 ];
-const vercelProject = "ai-governance-persona";
+const vercelProject = process.env.VERCEL_PROJECT_NAME || "linenyu-site";
 const dnsResolvers = [
   { name: "local", servers: [] },
   { name: "cloudflare", servers: ["1.1.1.1"] },

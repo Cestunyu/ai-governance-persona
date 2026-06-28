@@ -25,7 +25,14 @@ echo "Building Vercel dynamic bundle at $target..."
 npm run release:bundle:vercel -- "$target"
 
 echo "Deploying $target to Vercel project $project..."
-npx vercel "$target" --prod --yes --project "$project"
+vercel_args=("$target" "--prod" "--yes" "--project" "$project")
+if [ -n "${VERCEL_TOKEN:-}" ]; then
+  vercel_args+=("--token" "$VERCEL_TOKEN")
+fi
+if [ -n "${VERCEL_SCOPE:-}" ]; then
+  vercel_args+=("--scope" "$VERCEL_SCOPE")
+fi
+npx vercel "${vercel_args[@]}"
 
 if [ "$strict" = "--strict" ]; then
   echo "Running strict live verification. This writes one test result row."
