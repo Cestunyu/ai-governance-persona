@@ -478,6 +478,20 @@
       ]
     },
     {
+      "id": "FUN-001",
+      "title": "Promote the fun persona quiz into a public version consistent with the main app shell",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-28 user direction to make the worktree version consistent with the current product style rather than a demo",
+      "links": [
+        "fun/index.html",
+        "demos/fun-persona-quiz-gate.json",
+        "scripts/run-fun-persona-gate.mjs",
+        "scripts/build-vercel-dynamic-bundle.js",
+        "scripts/check-vercel-dynamic-release.js"
+      ]
+    },
+    {
       "id": "FRONTEND-001",
       "title": "Modularize the quiz frontend out of monolithic locale HTML files",
       "status": "todo",

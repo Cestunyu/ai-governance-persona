@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "data:export": "scripts/export-remote-results.sh",
+    "fun:gate": "node scripts/run-fun-persona-gate.mjs",
     "quiz:sync-html": "node scripts/sync-html-from-canonical.js",
     "quiz:extract-html": "node scripts/sync-canonical-quiz.js --allow-html-source",
     "quiz:check": "node scripts/check-quiz-sync.js",
@@ -15,7 +16,7 @@
     "vercel:go-live:watch": "scripts/watch-go-live-status.sh",
     "vercel:supabase:check": "node scripts/check-supabase-ready.js",
     "vercel:verify:live": "node scripts/verify-vercel-live.js",
-    "release:check": "npm run quiz:check && npm run vercel:check",
+    "release:check": "npm run quiz:check && npm run fun:gate && npm run vercel:check",
     "release:bundle": "npm run release:bundle:vercel",
     "release:bundle:vercel": "node scripts/build-vercel-dynamic-bundle.js"
   }

@@ -26,6 +26,7 @@ Public relationship:
 - `/`: redirect/fallback page for `/en/`.
 - `/en/`: English production quiz/result/share page.
 - `/cn/`: Chinese production quiz/result/share page.
+- `/fun/`: Chinese lightweight persona version with separate questions and scoring, using the same public app shell.
 - `/ch/`: legacy redirect to `/cn/`.
 - `/admin/`: protected results viewer shell.
 - `/api/`: Vercel dynamic API routes for submit, health, results, CSV export, and storage-health.
@@ -83,7 +84,7 @@ GitHub Actions now runs the release gate and builds the curated Vercel bundle on
 
 ## Structure
 
-- `cn/`, `en/`, `ch/`: public quiz pages and locale routing.
+- `cn/`, `en/`, `fun/`, `ch/`: public quiz pages and locale routing.
 - `data/`: canonical quiz JSON plus public spectrum/reference data.
 - `api/`: Vercel Functions for result submit, health, export, and admin reads.
 - `lib/`: shared server-side storage and export logic.

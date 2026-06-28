@@ -9,6 +9,7 @@ const publicEntries = [
   "ch",
   "cn",
   "en",
+  "fun",
   "assets",
   "data",
   "api",

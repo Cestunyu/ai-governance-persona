@@ -9,6 +9,7 @@ const requiredFiles = [
   "api/storage-health.js",
   "api/export.csv.js",
   "api/submit-result.js",
+  "fun/index.html",
   "lib/result-storage.js",
   "scripts/build-vercel-dynamic-bundle.js",
   "scripts/deploy-vercel-dynamic.sh",
@@ -32,7 +33,8 @@ const requiredScriptEntries = [
   ["package.json", "\"vercel:go-live:watch\": \"scripts/watch-go-live-status.sh\""],
   ["package.json", "\"vercel:supabase:check\": \"node scripts/check-supabase-ready.js\""],
   ["package.json", "\"vercel:verify:live\": \"node scripts/verify-vercel-live.js\""],
-  ["package.json", "\"release:check\": \"npm run quiz:check && npm run vercel:check\""]
+  ["package.json", "\"fun:gate\": \"node scripts/run-fun-persona-gate.mjs\""],
+  ["package.json", "\"release:check\": \"npm run quiz:check && npm run fun:gate && npm run vercel:check\""]
 ];
 
 const requiredContent = [
@@ -41,6 +43,8 @@ const requiredContent = [
   ["admin/index.html", "/api/export.csv"],
   ["admin/index.html", "/api/health"],
   ["admin/index.html", "AI Persona Results"],
+  ["fun/index.html", "AI 人格测试 · 轻松版"],
+  ["fun/index.html", "轻松版结果不会写入正式问卷数据库"],
   ["admin/index.html", "Storage"],
   ["docs/vercel-supabase-go-live.md", "scripts/set-vercel-production-env.sh production"],
   ["docs/vercel-supabase-go-live.md", "npm run vercel:verify:live -- --require-configured --submit"],
