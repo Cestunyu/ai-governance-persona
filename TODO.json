@@ -479,10 +479,10 @@
     },
     {
       "id": "FUN-001",
-      "title": "Promote the fun persona quiz into a public version consistent with the main app shell",
+      "title": "Promote the fun persona quiz into an independent public lightweight version",
       "status": "done",
       "priority": "P0",
-      "source": "2026-06-28 user direction to make the worktree version consistent with the current product style rather than a demo",
+      "source": "2026-06-28 user direction to make the worktree version a non-demo lightweight quiz with separate questions/scoring and no formal-version switching",
       "links": [
         "fun/index.html",
         "demos/fun-persona-quiz-gate.json",

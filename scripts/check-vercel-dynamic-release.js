@@ -44,7 +44,8 @@ const requiredContent = [
   ["admin/index.html", "/api/health"],
   ["admin/index.html", "AI Persona Results"],
   ["fun/index.html", "AI 人格测试 · 轻松版"],
-  ["fun/index.html", "轻松版结果不会写入正式问卷数据库"],
+  ["fun/index.html", "轻松版结果仅在本页生成，不提交数据库"],
+  ["fun/index.html", "scheduleAutoAdvance"],
   ["admin/index.html", "Storage"],
   ["docs/vercel-supabase-go-live.md", "scripts/set-vercel-production-env.sh production"],
   ["docs/vercel-supabase-go-live.md", "npm run vercel:verify:live -- --require-configured --submit"],
@@ -83,6 +84,13 @@ const requiredContent = [
   ["vercel.json", "\"destination\": \"/en/\""]
 ];
 
+const forbiddenContent = [
+  ["fun/index.html", "正式版"],
+  ["fun/index.html", "正式问卷"],
+  ["fun/index.html", "demo"],
+  ["fun/index.html", "Demo"]
+];
+
 const failures = [];
 
 function read(file) {
@@ -105,6 +113,11 @@ for (const file of ["scripts/deploy-vercel-dynamic.sh", "scripts/set-vercel-prod
 for (const [file, needle] of [...requiredScriptEntries, ...requiredContent]) {
   if (!fs.existsSync(file)) continue;
   assert(read(file).includes(needle), `${file} must include ${JSON.stringify(needle)}.`);
+}
+
+for (const [file, needle] of forbiddenContent) {
+  if (!fs.existsSync(file)) continue;
+  assert(!read(file).includes(needle), `${file} must not include ${JSON.stringify(needle)}.`);
 }
 
 function mockReq(method, url, body = "", headers = {}) {

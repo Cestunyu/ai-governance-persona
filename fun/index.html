@@ -581,12 +581,10 @@
     <div class="topbar-inner">
       <div class="brand">
         <strong class="brand-title">AI 人格测试 · 轻松版</strong>
-        <span>18 道短题，使用同一套结果页和使用逻辑，题目更轻松。</span>
+        <span>18 道短题，轻松生成你的 AI 人格画像。</span>
         <strong class="brand-progress" id="brandProgress">0/18</strong>
       </div>
       <div class="topbar-actions">
-        <a class="lang-link" href="/cn/">正式版</a>
-        <a class="lang-link active" href="/fun/">轻松版</a>
         <button class="btn" id="resetBtn" type="button">重置</button>
       </div>
     </div>
@@ -629,7 +627,7 @@
         </div>
         <div class="profile-body">
           <p class="profile-lead" id="profileRoast">完成 18 道题后，结果会显示在这里。</p>
-          <p class="profile-sublead" id="profileExplanation">轻松版使用单独题目和 persona 加权，不影响正式问卷数据。</p>
+          <p class="profile-sublead" id="profileExplanation">完成后会在本页生成画像和立场图。</p>
           <div class="share-actions" aria-label="分享结果">
             <button class="btn primary" id="shareBtn" type="button">分享结果</button>
           </div>
@@ -819,6 +817,7 @@
 
     const profileOrder = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST"];
     const state = { page: 0, answers: new Array(questions.length).fill(null) };
+    let autoAdvanceTimer = 0;
 
     const quizPager = document.querySelector("#quizPager");
     const resultPanel = document.querySelector("#resultPanel");
@@ -884,6 +883,12 @@
       try {
         window.localStorage.removeItem(DRAFT_STORAGE_KEY);
       } catch {}
+    }
+
+    function clearAutoAdvance() {
+      if (!autoAdvanceTimer) return;
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = 0;
     }
 
     function renderQuestion() {
@@ -990,17 +995,32 @@
       abilitySpectrumMarker.style.left = markerLeft(position.x * 0.35 - position.y * 0.35);
       governanceSpectrumMarker.style.left = markerLeft(position.x);
       valueSpectrumMarker.style.left = markerLeft(-position.y);
-      submitStatus.textContent = "轻松版结果不会写入正式问卷数据库。";
+      submitStatus.textContent = "轻松版结果仅在本页生成，不提交数据库。";
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function go(delta) {
+      clearAutoAdvance();
       state.page = clamp(state.page + delta, 0, questions.length - 1);
       saveDraft();
       renderQuestion();
     }
 
+    function scheduleAutoAdvance(pageIndex) {
+      clearAutoAdvance();
+      autoAdvanceTimer = window.setTimeout(() => {
+        autoAdvanceTimer = 0;
+        if (state.page !== pageIndex || state.answers[pageIndex] === null) return;
+        if (pageIndex === questions.length - 1) {
+          showResult();
+          return;
+        }
+        go(1);
+      }, 180);
+    }
+
     function resetQuiz() {
+      clearAutoAdvance();
       state.page = 0;
       state.answers.fill(null);
       clearDraft();
@@ -1030,11 +1050,25 @@
     }
 
     pageOptions.addEventListener("change", (event) => {
+      const answeredPage = state.page;
       state.answers[state.page] = Number(event.target.value);
       saveDraft();
       renderQuestion();
+      scheduleAutoAdvance(answeredPage);
+    });
+    pageOptions.addEventListener("click", (event) => {
+      const label = event.target.closest(".single-option");
+      const input = label ? label.querySelector("input[type='radio']") : null;
+      const clickedPage = state.page;
+      if (!input) return;
+      window.setTimeout(() => {
+        if (state.page === clickedPage && input.checked && state.answers[clickedPage] === Number(input.value)) {
+          scheduleAutoAdvance(clickedPage);
+        }
+      }, 0);
     });
     nextBtn.addEventListener("click", () => {
+      clearAutoAdvance();
       if (state.answers[state.page] === null) return;
       if (state.page === questions.length - 1) return showResult();
       go(1);
@@ -1044,6 +1078,7 @@
     document.querySelector("#resetBtn").addEventListener("click", resetQuiz);
     document.querySelector("#restartBtn").addEventListener("click", resetQuiz);
     document.querySelector("#editLastBtn").addEventListener("click", () => {
+      clearAutoAdvance();
       resultPanel.hidden = true;
       shareCard.hidden = true;
       quizPager.hidden = false;
