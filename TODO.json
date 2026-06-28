@@ -479,10 +479,10 @@
     },
     {
       "id": "FUN-001",
-      "title": "Promote the fun persona quiz into an independent public lightweight version",
+      "title": "Promote the fun persona quiz into a production-shell lightweight variant",
       "status": "done",
       "priority": "P0",
-      "source": "2026-06-28 user direction to make the worktree version a non-demo lightweight quiz with separate questions/scoring and no formal-version switching",
+      "source": "2026-06-28 user direction that everything except question text, scoring rules, and question count should match the formal Chinese index",
       "links": [
         "fun/index.html",
         "demos/fun-persona-quiz-gate.json",

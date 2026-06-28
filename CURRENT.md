@@ -15,7 +15,7 @@ Last updated: 2026-06-25
 ## Current Deliverable
 
 - `/en/` and `/cn/` are the production quiz/result/share pages.
-- `/fun/` is an independent lightweight Chinese persona version with separate questions, scoring, and no navigation link to or from the production quiz.
+- `/fun/` reuses the Chinese production quiz shell/result/share UI, but swaps in the lightweight question set, persona weights, 18-question count, separate draft key, and no formal-quiz navigation link.
 - `data/quiz.en.json` and `data/quiz.zh.json` are the canonical quiz sources.
 - `npm run quiz:sync-html` pushes canonical JSON into the embedded page constants.
 - `api/`, `lib/`, `admin/`, and `supabase/` provide the Vercel + Supabase result-storage path.
@@ -23,6 +23,7 @@ Last updated: 2026-06-25
 
 ## Recent Checkpoints
 
+- 2026-06-28: Rebuilt `/fun/` from the Chinese production `index.html` shell so entry, pager, result page, map, nearest-person block, classification stability, share image, and save-image flow stay aligned; only the lightweight questions/count/scoring differ.
 - 2026-06-28: Made `/fun/` independent from the production quiz navigation and added automatic next-question advance after single-answer selection.
 - 2026-06-28: Promoted the fun persona quiz out of `demos/` into `/fun/` as a public lightweight version with its own question/scoring set, result flow, draft persistence, and release gates.
 - 2026-06-28: Added GitHub Actions release automation: push/PR runs release gate plus bundle build; production deploy is available through a manual workflow using `VERCEL_TOKEN`, with opt-in push-to-prod via `AUTO_DEPLOY_PRODUCTION=true`.

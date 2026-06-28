@@ -44,8 +44,12 @@ const requiredContent = [
   ["admin/index.html", "/api/health"],
   ["admin/index.html", "AI Persona Results"],
   ["fun/index.html", "AI 人格测试 · 轻松版"],
-  ["fun/index.html", "轻松版结果仅在本页生成，不提交数据库"],
+  ["fun/index.html", "funPersonaWeights"],
   ["fun/index.html", "scheduleAutoAdvance"],
+  ["fun/index.html", "分享图片生成后会显示在这里"],
+  ["fun/index.html", "保存图片"],
+  ["fun/index.html", "ai-persona-fun-"],
+  ["fun/index.html", "return false"],
   ["admin/index.html", "Storage"],
   ["docs/vercel-supabase-go-live.md", "scripts/set-vercel-production-env.sh production"],
   ["docs/vercel-supabase-go-live.md", "npm run vercel:verify:live -- --require-configured --submit"],
@@ -87,6 +91,7 @@ const requiredContent = [
 const forbiddenContent = [
   ["fun/index.html", "正式版"],
   ["fun/index.html", "正式问卷"],
+  ["fun/index.html", "href=\"/cn/\""],
   ["fun/index.html", "demo"],
   ["fun/index.html", "Demo"]
 ];

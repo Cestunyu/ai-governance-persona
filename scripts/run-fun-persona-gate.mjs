@@ -19,10 +19,16 @@ function extractConstLiteral(source, constName) {
   if (markerIndex === -1) {
     throw new Error(`Cannot find ${marker}`);
   }
-  const start = source.indexOf("[", markerIndex);
-  if (start === -1) {
-    throw new Error(`Cannot find array literal for ${constName}`);
+  let start = -1;
+  for (const opener of ["[", "{"]) {
+    const candidate = source.indexOf(opener, markerIndex);
+    if (candidate !== -1 && (start === -1 || candidate < start)) start = candidate;
   }
+  if (start === -1) {
+    throw new Error(`Cannot find literal for ${constName}`);
+  }
+  const opener = source[start];
+  const closer = opener === "[" ? "]" : "}";
 
   let depth = 0;
   let quote = null;
@@ -60,8 +66,8 @@ function extractConstLiteral(source, constName) {
       continue;
     }
 
-    if (char === "[") depth += 1;
-    if (char === "]") {
+    if (char === opener) depth += 1;
+    if (char === closer) {
       depth -= 1;
       if (depth === 0) {
         const literal = source.slice(start, index + 1);
@@ -72,10 +78,29 @@ function extractConstLiteral(source, constName) {
     if (prev === undefined && depth < 0) break;
   }
 
-  throw new Error(`Cannot parse array literal for ${constName}`);
+  throw new Error(`Cannot parse literal for ${constName}`);
 }
 
-const questions = extractConstLiteral(html, "questions");
+function tryExtractConstLiteral(source, constName) {
+  try {
+    return extractConstLiteral(source, constName);
+  } catch {
+    return null;
+  }
+}
+
+function normalizeQuestionShape(question, personaWeights) {
+  const weightsByValue = personaWeights?.[question.id] || null;
+  if (!weightsByValue) return question;
+  return {
+    ...question,
+    options: question.options.map(([value, key, label]) => [key, label, weightsByValue[value], value])
+  };
+}
+
+const rawQuestions = extractConstLiteral(html, "questions");
+const funPersonaWeights = tryExtractConstLiteral(html, "funPersonaWeights");
+const questions = rawQuestions.map((question) => normalizeQuestionShape(question, funPersonaWeights));
 const profileSet = new Set(gate.profiles);
 const failures = [];
 const warnings = [];
