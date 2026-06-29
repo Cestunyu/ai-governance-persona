@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "data:export": "scripts/export-remote-results.sh",
-    "fun:gate": "node scripts/run-fun-persona-gate.mjs",
+    "fun:gate": "node scripts/run-fun-persona-gate.mjs demos/fun-persona-quiz-gate.json && node scripts/run-fun-persona-gate.mjs demos/fun-persona-quiz-gate-en.json",
     "quiz:sync-html": "node scripts/sync-html-from-canonical.js",
     "quiz:extract-html": "node scripts/sync-canonical-quiz.js --allow-html-source",
     "quiz:check": "node scripts/check-quiz-sync.js",

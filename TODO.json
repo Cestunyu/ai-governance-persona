@@ -492,6 +492,23 @@
       ]
     },
     {
+      "id": "FUN-002",
+      "title": "Split the fun persona quiz into English and Chinese pilot routes",
+      "status": "done",
+      "priority": "P0",
+      "source": "2026-06-29 user request for /fun/en and /fun/cn plus fresh respondent-agent questionnaire improvement pass",
+      "links": [
+        "fun/index.html",
+        "fun/cn/index.html",
+        "fun/en/index.html",
+        "demos/fun-persona-quiz-gate.json",
+        "demos/fun-persona-quiz-gate-en.json",
+        "scripts/check-vercel-dynamic-release.js",
+        "data/quiz.zh.json",
+        "data/quiz.en.json"
+      ]
+    },
+    {
       "id": "FRONTEND-001",
       "title": "Modularize the quiz frontend out of monolithic locale HTML files",
       "status": "todo",

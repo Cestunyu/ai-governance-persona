@@ -10,6 +10,8 @@ const requiredFiles = [
   "api/export.csv.js",
   "api/submit-result.js",
   "fun/index.html",
+  "fun/cn/index.html",
+  "fun/en/index.html",
   "lib/result-storage.js",
   "scripts/build-vercel-dynamic-bundle.js",
   "scripts/deploy-vercel-dynamic.sh",
@@ -33,7 +35,7 @@ const requiredScriptEntries = [
   ["package.json", "\"vercel:go-live:watch\": \"scripts/watch-go-live-status.sh\""],
   ["package.json", "\"vercel:supabase:check\": \"node scripts/check-supabase-ready.js\""],
   ["package.json", "\"vercel:verify:live\": \"node scripts/verify-vercel-live.js\""],
-  ["package.json", "\"fun:gate\": \"node scripts/run-fun-persona-gate.mjs\""],
+  ["package.json", "\"fun:gate\": \"node scripts/run-fun-persona-gate.mjs demos/fun-persona-quiz-gate.json && node scripts/run-fun-persona-gate.mjs demos/fun-persona-quiz-gate-en.json\""],
   ["package.json", "\"release:check\": \"npm run quiz:check && npm run fun:gate && npm run vercel:check\""]
 ];
 
@@ -43,13 +45,22 @@ const requiredContent = [
   ["admin/index.html", "/api/export.csv"],
   ["admin/index.html", "/api/health"],
   ["admin/index.html", "AI Persona Results"],
-  ["fun/index.html", "AI 人格测试 · 轻松版"],
-  ["fun/index.html", "funPersonaWeights"],
-  ["fun/index.html", "scheduleAutoAdvance"],
-  ["fun/index.html", "分享图片生成后会显示在这里"],
-  ["fun/index.html", "保存图片"],
-  ["fun/index.html", "ai-persona-fun-"],
-  ["fun/index.html", "return false"],
+  ["fun/index.html", "/fun/en/"],
+  ["fun/index.html", "/fun/cn/"],
+  ["fun/cn/index.html", "AI 治理人格 · 轻松版"],
+  ["fun/cn/index.html", "funPersonaWeights"],
+  ["fun/cn/index.html", "scheduleAutoAdvance"],
+  ["fun/cn/index.html", "分享图片生成后会显示在这里"],
+  ["fun/cn/index.html", "保存图片"],
+  ["fun/cn/index.html", "ai-persona-fun-"],
+  ["fun/cn/index.html", "return false"],
+  ["fun/en/index.html", "AI Governance Persona · Fun Quiz"],
+  ["fun/en/index.html", "funPersonaWeights"],
+  ["fun/en/index.html", "scheduleAutoAdvance"],
+  ["fun/en/index.html", "Your share image will appear here"],
+  ["fun/en/index.html", "Save image"],
+  ["fun/en/index.html", "ai-persona-fun-"],
+  ["fun/en/index.html", "return false"],
   ["admin/index.html", "Storage"],
   ["docs/vercel-supabase-go-live.md", "scripts/set-vercel-production-env.sh production"],
   ["docs/vercel-supabase-go-live.md", "npm run vercel:verify:live -- --require-configured --submit"],
@@ -89,11 +100,14 @@ const requiredContent = [
 ];
 
 const forbiddenContent = [
-  ["fun/index.html", "正式版"],
-  ["fun/index.html", "正式问卷"],
-  ["fun/index.html", "href=\"/cn/\""],
-  ["fun/index.html", "demo"],
-  ["fun/index.html", "Demo"]
+  ["fun/cn/index.html", "正式版"],
+  ["fun/cn/index.html", "正式问卷"],
+  ["fun/cn/index.html", "href=\"/cn/\""],
+  ["fun/cn/index.html", "Demo"],
+  ["fun/en/index.html", "formal version"],
+  ["fun/en/index.html", "formal quiz"],
+  ["fun/en/index.html", "href=\"/en/\""],
+  ["fun/en/index.html", "Demo"]
 ];
 
 const failures = [];

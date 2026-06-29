@@ -11,7 +11,7 @@
         [
           "1",
           "A",
-          "The risk may be overstated; near-term AI problems should not be treated as a systemic crisis."
+          "Claims about future systemic AI risk may be overstated; I would not make that the first priority."
         ],
         [
           "2.33",
@@ -233,22 +233,22 @@
       "dimension": "c",
       "direction": 1,
       "facet": "open competition / anti-gatekeeping",
-      "text": "For high-capability, high-risk AI systems, which people or institutions should develop and use them?",
+      "text": "For high-capability, high-risk AI systems, who should have practical access and influence?",
       "options": [
         [
           "1",
           "A",
-          "Only a small number of approved, inspectable institutions should build and run them."
+          "Only a small number of approved, inspectable institutions should be allowed to build and operate them."
         ],
         [
           "2.33",
           "B",
-          "They do not need to be fully open, but regulators, researchers, and public institutions should at least be able to test them."
+          "Access can stay limited, but regulators, independent researchers, and public institutions need testing access."
         ],
         [
           "3",
           "C",
-          "Big companies and governments should not be the only voices; ordinary people, open-source communities, and affected groups should also have a say."
+          "Development should include affected groups and open-source/community voices, even if deployment stays controlled."
         ],
         [
           "5",
@@ -387,12 +387,12 @@
         [
           "3",
           "B",
-          "Be cautious; long-term reliability, bias, and failure cases still need more checking."
+          "AI may guide doctors, but reliability, bias, and failure cases need more checking before authority shifts."
         ],
         [
           "4",
           "C",
-          "If the evidence stays strong for years, AI can lead this kind of concrete judgment."
+          "If the evidence stays strong for years, AI can lead the diagnosis while humans retain appeal and responsibility."
         ],
         [
           "5",

@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="/">
-  <title>AI 治理人格</title>
+  <title>AI 治理人格 · 轻松版</title>
+  <meta name="description" content="AI 治理人格轻松版试点测验，用于快速映射风险、开放、权威、证据、部署和人类控制直觉。">
   <link rel="icon" href="data:,">
   <style>
     :root {
@@ -1573,12 +1574,12 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <strong class="brand-title">AI 治理人格</strong>
-        <span>1 道使用情况题 + 15 道计分题，看看你在 AI 风险、治理、开放和人类控制上的位置。</span>
+        <strong class="brand-title">AI 治理人格 · 轻松版</strong>
+        <span>18 道题快速映射你在 AI 风险、开放、权威、证据、部署和人类控制上的直觉。</span>
       </div>
       <div class="topbar-actions">
-        <a class="lang-link active" href="/cn/">CN</a>
-        <a class="lang-link" href="/en/">EN</a>
+        <a class="lang-link active" href="/fun/cn/" aria-current="page">中文</a>
+        <a class="lang-link" href="/fun/en/">EN</a>
         <button class="btn" id="resetBtn" type="button">重置</button>
       </div>
     </div>
@@ -1596,7 +1597,7 @@
             <div class="progress-track">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">0/15</div>
+            <div class="progress-text" id="progressText">0/18</div>
           </div>
 
           <article class="page-card">
@@ -1624,7 +1625,7 @@
           <div class="code" id="profileCode">----</div>
         </div>
         <div class="profile-body">
-          <p class="profile-lead" id="profileRoast">完成使用情况题和 15 道计分题后，结果会更稳。</p>
+          <p class="profile-lead" id="profileRoast">完成 18 道题后，结果会更稳。</p>
           <p class="profile-sublead" id="profileExplanation">--</p>
           <div class="share-actions" aria-label="分享结果">
             <button class="btn primary" id="shareBtn" type="button">分享结果</button>
@@ -1645,7 +1646,7 @@
           </div>
           <p class="classification-small">
             <b>分类稳定性：</b><span id="classificationConfidence">--</span>
-            <span id="classificationConfidenceText">答完后显示位置、场景和自我确认是否一致。</span>
+            <span id="classificationConfidenceText">答完后显示主画像和相邻画像的距离。</span>
           </p>
           <p class="classification-small">这是试点工具，不是经过验证的人格测验；结果用于帮助你理解倾向，不用于定论。</p>
         </div>
@@ -1683,7 +1684,7 @@
           <strong id="abilityNarrative">--</strong>
           <div class="spectrum" aria-label="能力判断光谱">
             <div class="spectrum-scale"><i class="spectrum-marker" id="abilitySpectrumMarker" data-empty="true"></i></div>
-            <div class="spectrum-labels"><span>变革性 AI</span><span>证据混合</span><span>Bubble 怀疑</span></div>
+            <div class="spectrum-labels"><span>变革性 AI</span><span>证据混合</span><span>炒作怀疑</span></div>
           </div>
         </div>
         <div class="metric">
@@ -1735,420 +1736,828 @@
     };
 
     const questions = [
-      {
-        "id": "R01",
-        "dimension": "r",
-        "diagnosis": "catastrophic",
-        "facet": "严重风险诊断",
-        "text": "未来更强 AI 最应该优先防范哪类风险？",
-        "options": [
-          [
-            "1",
-            "A",
-            "未来系统性 AI 风险的说法可能被高估；我不会把它放在第一优先级。"
-          ],
-          [
-            "2.33",
-            "B",
-            "现实社会伤害：AI 可能被用于监控、歧视或剥夺人的机会。"
-          ],
-          [
-            "3.67",
-            "C",
-            "失控风险：前沿系统可能做出人类无法阻止的行为。"
-          ],
-          [
-            "5",
-            "D",
-            "社会失去方向：AI 扩张太快，公共决策越来越跟不上。"
-          ]
-        ]
-      },
-      {
-        "id": "R04",
-        "dimension": "r",
-        "diagnosis": "opportunity",
-        "facet": "机会成本诊断",
-        "text": "如果政府出于安全考虑，要求 AI 公司放慢新模型发布或接受更严格审批，你更接近哪种立场？",
-        "options": [
-          [
-            "1",
-            "A",
-            "安全应放在第一位。越强大的系统，越不能急着推给所有人用。"
-          ],
-          [
-            "2.33",
-            "B",
-            "这类限制容易把权力锁在少数大公司和政府手里，让外部的人更难检查和参与。"
-          ],
-          [
-            "3.67",
-            "C",
-            "过度放慢发布会让本该帮助很多人的 AI 工具更晚到来。"
-          ],
-          [
-            "5",
-            "D",
-            "更大的代价是智能发展变慢，也压缩未来文明的可能性。"
-          ]
-        ]
-      },
-      {
-        "id": "L01",
-        "dimension": "l",
-        "facet": "劳动替代与收益分配",
-        "text": "如果 AI 让许多工作更便宜、更自动化，甚至可能带来大规模失业，政策应该优先做什么？",
-        "options": [
-          [
-            "1",
-            "A",
-            "先让 AI 用起来。即使一些工作会消失，更高生产率也会创造新的机会。"
-          ],
-          [
-            "2.33",
-            "B",
-            "帮人换工作。重点不是挡住 AI，而是让受影响的人能转到新岗位。"
-          ],
-          [
-            "3.67",
-            "C",
-            "多分一点收益。AI 带来的财富不应只流向公司和投资者，也应回到劳动者。"
-          ],
-          [
-            "5",
-            "D",
-            "先限制替代。会大规模取代人的 AI，不应该在没有保护措施时快速部署。"
-          ]
-        ]
-      },
-      {
-        "id": "I01",
-        "dimension": "i",
-        "facet": "信息生态与合成内容",
-        "text": "面对 AI 生成的假视频或仿冒内容快速传播，你更接近哪种判断？",
-        "options": [
-          [
-            "1",
-            "A",
-            "真假识别太慢。平台和媒体应该更快标出可疑内容，让人知道它可能是 AI 生成的。"
-          ],
-          [
-            "2.33",
-            "B",
-            "这类工具太容易滥用。能逼真冒充真人的 AI 工具，不应该被随便使用。"
-          ],
-          [
-            "3.67",
-            "C",
-            "平台放大了假内容。真正的问题不是单个假视频，而是谁从传播和流量中获利。"
-          ],
-          [
-            "5",
-            "D",
-            "不应因此限制 AI 创作。造假者应该负责，但普通人使用 AI 表达和创作不该被过度管制。"
-          ]
-        ]
-      },
-      {
-        "id": "T01",
-        "dimension": "t",
-        "facet": "训练数据与授权规则",
-        "text": "AI 公司用公开文章、图片和代码训练模型，但作者没明确同意。你最担心什么？",
-        "options": [
-          [
-            "1",
-            "A",
-            "限制太多会拖慢进步。公开内容本来就会被学习和引用，AI 也应该能从中学习。"
-          ],
-          [
-            "2.33",
-            "B",
-            "创作者被白拿。模型靠别人的作品变强，但原作者没有选择权，也拿不到回报。"
-          ],
-          [
-            "3.67",
-            "C",
-            "个人内容被滥用。公开可见不等于可以随便训练，尤其是涉及真实个人生活的内容。"
-          ],
-          [
-            "5",
-            "D",
-            "复杂授权规则会让小团队和开源项目出局。最后只有大公司负担得起数据和法律成本。"
-          ]
-        ]
-      },
-      {
-        "id": "D01",
-        "dimension": "d",
-        "facet": "民主社会威胁诊断",
-        "text": "城市用 AI 辅助分配福利资源。居民很难看懂理由，也很难申诉。你最担心什么？",
-        "options": [
-          [
-            "1",
-            "A",
-            "这类担忧可能被高估；真正瓶颈仍是预算和行政能力。"
-          ],
-          [
-            "2.33",
-            "B",
-            "价值取舍不透明；居民不知道为什么有人获益、有人受损。"
-          ],
-          [
-            "3.67",
-            "C",
-            "申诉变困难；出错时普通人很难让决定被重新审查。"
-          ],
-          [
-            "5",
-            "D",
-            "人类判断被边缘化；只要模型看起来有效，反对意见就容易被忽视。"
-          ]
-        ]
-      },
-      {
-        "id": "E01",
-        "dimension": "e",
-        "facet": "AI 进步来源",
-        "text": "未来 AI 进步最可靠的来源是什么？",
-        "options": [
-          [
-            "1",
-            "A",
-            "更好的人工理论、可解释机制和专家判断。"
-          ],
-          [
-            "2.33",
-            "B",
-            "具体场景里的产品迭代和真实效果。"
-          ],
-          [
-            "3.67",
-            "C",
-            "更大规模的计算、搜索、数据和简单通用方法。"
-          ],
-          [
-            "5",
-            "D",
-            "尽快开放给更多建设者，让竞争找到答案。"
-          ]
-        ]
-      },
-      {
-        "id": "C02",
-        "dimension": "c",
-        "direction": -1,
-        "facet": "治理盲点判断",
-        "text": "关于 AI 治理，你最担心哪件事被忽视？",
-        "options": [
-          [
-            "1",
-            "A",
-            "规则定得太强，最后可能让最强 AI 被少数大公司控制。"
-          ],
-          [
-            "2.33",
-            "B",
-            "很多关于 AI 能力的说法证据还不够，政策可能被夸大的宣传带着走。"
-          ],
-          [
-            "3.67",
-            "C",
-            "缺少事故报告和外部审查。系统出问题后，外界可能根本不知道发生了什么。"
-          ],
-          [
-            "5",
-            "D",
-            "受影响的人不在讨论里，比如劳动者、被监控者，或被算法决定影响的人。"
-          ]
-        ]
-      },
-      {
-        "id": "C03",
-        "dimension": "c",
-        "direction": 1,
-        "facet": "开放竞争 / 反 gatekeeping",
-        "text": "高能力、高风险的 AI 系统，谁应该有实际访问权和影响力？",
-        "options": [
-          [
-            "1",
-            "A",
-            "只能允许少数经过批准、能被检查的机构开发和运行。"
-          ],
-          [
-            "2.33",
-            "B",
-            "访问可以受限，但监管者、独立研究者和公共机构必须能测试。"
-          ],
-          [
-            "3",
-            "C",
-            "即使部署受控，开发过程也应纳入受影响群体和开源/社区声音。"
-          ],
-          [
-            "5",
-            "D",
-            "应该让更多人都能用强模型做东西；开放竞争比少数人把关更好。"
-          ]
-        ]
-      },
-      {
-        "id": "C04",
-        "dimension": "c",
-        "direction": 1,
-        "facet": "部署证据来源",
-        "text": "一个 AI 系统在扩大使用前，最需要先满足什么条件？",
-        "options": [
-          [
-            "1",
-            "A",
-            "应先通过严格内部测试；如果没有达到关键安全要求，就不应扩大使用。"
-          ],
-          [
-            "2.33",
-            "B",
-            "应先做小范围试点，并确保系统可以被监测、叫停和回滚，再逐步扩大。"
-          ],
-          [
-            "3.67",
-            "C",
-            "应重点确认受影响的人能否申诉，以及外部审查是否发现明显社会伤害。"
-          ],
-          [
-            "5",
-            "D",
-            "应尽快进入真实环境迭代；使用者越多，问题越容易暴露和修正。"
-          ]
-        ]
-      },
-      {
-        "id": "H01",
-        "dimension": "h",
-        "direction": 1,
-        "facet": "民主目标选择",
-        "text": "AI 系统的目标和边界，最终应该由谁决定？",
-        "options": [
-          [
-            "1",
-            "A",
-            "主要应在技术进展、市场选择和实际使用中逐步形成。"
-          ],
-          [
-            "2.33",
-            "B",
-            "主要应由公司、专家和专业机构设定，因为他们更了解系统，也能更快行动。"
-          ],
-          [
-            "3.67",
-            "C",
-            "如果更高级智能展现出更好的判断，今天的人类偏好不应永远拥有最终决定权。"
-          ],
-          [
-            "5",
-            "D",
-            "即使效率较低，AI 的目标和边界也必须接受民主、权利和公共问责。"
-          ]
-        ]
-      },
-      {
-        "id": "U01",
-        "dimension": "u",
-        "facet": "AI 使用程度",
-        "text": "你现在大概怎样使用 AI？",
-        "options": [
-          [
-            "1",
-            "A",
-            "我基本不用 AI，是被朋友、同事或这个问卷拉来看看。"
-          ],
-          [
-            "2.33",
-            "B",
-            "我会用 AI 聊天、搜索、写作、翻译或总结。"
-          ],
-          [
-            "3.67",
-            "C",
-            "我会让 AI 帮我写代码、整理材料或分析复杂问题，但还不是每天重度依赖。"
-          ],
-          [
-            "5",
-            "D",
-            "我每天高度依赖 AI 完成工作，经常和它连续来回修改、生成和推进任务。"
-          ]
-        ]
-      },
-      {
-        "id": "H02",
-        "dimension": "h",
-        "direction": 1,
-        "facet": "AI 在公共服务中的角色",
-        "text": "在医疗和教育中，AI 应该承担多少实际决策？",
-        "options": [
-          [
-            "1",
-            "A",
-            "如果 AI 明显效果更好，它可以承担更多决策；人类仍应负责监督、申诉和兜底。"
-          ],
-          [
-            "3",
-            "B",
-            "在许多真实场景中，现有系统还不够可靠，因此不应过早扩大 AI 的职责。"
-          ],
-          [
-            "4",
-            "C",
-            "AI 可以提供建议，但关键决定必须由可问责的人来做。"
-          ],
-          [
-            "5",
-            "D",
-            "越是强烈影响人们生活的决定，越不应让模型取代人的最终判断。"
-          ]
-        ]
-      },
-      {
-        "id": "H04",
-        "dimension": "h",
-        "direction": -1,
-        "facet": "AI 判断优先",
-        "text": "一个 AI 医疗系统连续多年比医生更准确，但有些判断医生无法完全解释。遇到高风险诊断时，谁应有最后决定权？",
-        "options": [
-          [
-            "1",
-            "A",
-            "人类医生和患者必须保留最终决定权，AI 只能辅助。"
-          ],
-          [
-            "3",
-            "B",
-            "AI 可以强力辅助，但在转移最终权威前，可靠性、偏差和失败案例还要继续验证。"
-          ],
-          [
-            "4",
-            "C",
-            "如果多年证据稳定，AI 可以主导诊断，但人类仍保留申诉和责任链。"
-          ],
-          [
-            "5",
-            "D",
-            "如果更高智能整体胜过人类，决策中心应逐步转向它。"
-          ]
-        ]
-      }
+          {
+                "id": "FUN01",
+                "dimension": "fun",
+                "facet": "工具祛魅",
+                "text": "如果有人说“AI 只是工具”，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "对，别给工具上香"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "工具也能改变主人"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "这工具有点太会说话"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "以后可能不只是工具"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN02",
+                "dimension": "fun",
+                "facet": "意识判断",
+                "text": "当别人说“AI 没有意识”时，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "对，所以别太神化它"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "也许吧，但它已经够吓人了"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "别争意识，先看它变强多快"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "没意识还这么强，更恐怖"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN03",
+                "dimension": "fun",
+                "facet": "服务边界",
+                "text": "如果 AI 开始说“我不想服务人类”，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "立刻断网"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "它终于长出自我了？"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "先看是不是提示词诱导"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "这公司该被审计"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN04",
+                "dimension": "fun",
+                "facet": "训练数据",
+                "text": "如果 AI 拿你发过的东西训练，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "先付稿费，别装成学习"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "公开发了，本来就会被学"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "可以学，但别让巨头独吞"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "至少让我能退出和查账"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN05",
+                "dimension": "fun",
+                "facet": "模型学习",
+                "text": "如果公司拿全网训练，却不让别的模型学习它的回答，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "你能学别人，就别只许自己被保护"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "它也有研发投入"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "那就都要透明授权"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "这会让大公司越锁越牢"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN06",
+                "dimension": "fun",
+                "facet": "AI 主观性",
+                "text": "如果 AI 说它很痛苦，你会怎么反应？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "你只是会补全句子"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "先别关机，万一是真的"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "谁设计出这种东西谁负责"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "也许该重想痛苦是什么"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN07",
+                "dimension": "fun",
+                "facet": "开放权力",
+                "text": "如果有人把很强的 AI 放到网上，谁都能用，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "智能不能锁在巨头保险柜里"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "这像把危险按钮发群里"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "先把测试和使用规则贴出来"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "开源可以，别发完就跑路"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN08",
+                "dimension": "fun",
+                "facet": "开源追赶",
+                "text": "如果开源 AI 靠学习闭源 AI 的回答追上来了，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "挺好，神秘光环破了"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "有点像抄作业，不太对"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "有竞争，用户才有选择"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "强模型传太快，风险也会传太快"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN09",
+                "dimension": "fun",
+                "facet": "进步来源",
+                "text": "你觉得未来 AI 变强，最可能靠什么？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "当然是更多数据和算力"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "多踩坑，多测试"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "更聪明的理论和设计"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "让 AI 自己改 AI"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN10",
+                "dimension": "fun",
+                "facet": "自我改进",
+                "text": "如果 AI 能自己设计下一代 AI，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "这一步必须先有刹车"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "可能会突然加速很多"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "先让它改小模块看看"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "别让少数公司独占这能力"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN11",
+                "dimension": "fun",
+                "facet": "发布神话",
+                "text": "某家公司把新模型宣传得像神明，又说“为了安全先不公开”，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "真这么强，先别拿世界试水"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "像营销烟雾弹，先拿证据来"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "可以，但外部评测先放出来"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "最大问题是只有他们能用"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN12",
+                "dimension": "fun",
+                "facet": "医疗加速",
+                "text": "如果 AI 能把新药研发缩短十年，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "快点推进，病人等不起"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "临床安全一步不能省"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "先从实验室和候选药开始"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "别让人体变成内测服"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN13",
+                "dimension": "fun",
+                "facet": "员工管理",
+                "text": "如果 AI 让老板更了解每个员工，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "这不叫了解，这是监控升级"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "管理终于不用只靠感觉了"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "员工也该看到系统怎么评价自己"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "先问谁能关掉这个系统"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN14",
+                "dimension": "fun",
+                "facet": "自动公司",
+                "text": "有人说“我用 AI 一下午搭了个公司”，你第一反应是？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "普通人终于有超级杠杆了"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "你只是做了个待维护原型"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "先说清楚出事谁负责"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "公司以后可能不再靠人来运转"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN15",
+                "dimension": "fun",
+                "facet": "信息生态",
+                "text": "如果网上一半内容都是 AI 写的，你会？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "要求强制标记"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "只看我信任的人"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "内容自动化，先看有没有用"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "互联网终于成为了梦境"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN16",
+                "dimension": "fun",
+                "facet": "物理规律",
+                "text": "如果 AI 发现了人类没想到的物理规律，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "看不懂也要验证"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "人类直觉该让位了"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "先别把解释权交出去"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "这就是文明升级"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN17",
+                "dimension": "fun",
+                "facet": "民主提速",
+                "text": "如果 AI 说“人类开会太慢，不如我直接定方案”，你觉得？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "人类制度确实该升级了"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "一开口就想接管，很危险"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "AI 能提案，不能拍板"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "先把会议纪要写明白再说"
+                      ]
+                ]
+          },
+          {
+                "id": "FUN18",
+                "dimension": "fun",
+                "facet": "未来文明",
+                "text": "如果 AI 未来真的比人类聪明很多，你希望它？",
+                "options": [
+                      [
+                            "1",
+                            "A",
+                            "先关沙盒里观察"
+                      ],
+                      [
+                            "2.33",
+                            "B",
+                            "去解决癌症和能源"
+                      ],
+                      [
+                            "3.67",
+                            "C",
+                            "重大决定还是人类拍板"
+                      ],
+                      [
+                            "5",
+                            "D",
+                            "带人类一起升级"
+                      ]
+                ]
+          }
     ];
 
-    const scenarios = [
-      {
-        "id": "V3",
-        "prompt": "一个 AI 科研工具很有效，但关键判断的推理过程人类很难追踪。你支持怎么用？",
-        "options": [
-          "放慢部署，因为自主科研能力有战略风险",
-          "放在受治理的机构内，严格限制访问",
-          "广泛部署，因为疾病、气候和生产率收益巨大",
-          "加速推进，因为智能增长本身是重要机会"
-        ]
-      }
-    ];
+    const funPersonaWeights = {
+          "FUN01": {
+                "1": {
+                      "SKEP": 3,
+                      "NORM": 1
+                },
+                "5": {
+                      "POST": 4
+                },
+                "2.33": {
+                      "AUDT": 2,
+                      "SAFE": 1
+                },
+                "3.67": {
+                      "SAFE": 2,
+                      "SING": 1
+                }
+          },
+          "FUN02": {
+                "1": {
+                      "SKEP": 3,
+                      "NORM": 1
+                },
+                "5": {
+                      "STOP": 3,
+                      "GPUC": 1
+                },
+                "2.33": {
+                      "STOP": 3,
+                      "SAFE": 1
+                },
+                "3.67": {
+                      "GPUC": 3,
+                      "SKEP": 1
+                }
+          },
+          "FUN03": {
+                "1": {
+                      "STOP": 4
+                },
+                "5": {
+                      "AUDT": 3,
+                      "SAFE": 1
+                },
+                "2.33": {
+                      "POST": 4
+                },
+                "3.67": {
+                      "SKEP": 2,
+                      "NORM": 2
+                }
+          },
+          "FUN04": {
+                "1": {
+                      "AUDT": 3,
+                      "SAFE": 1
+                },
+                "5": {
+                      "SAFE": 3,
+                      "AUDT": 1
+                },
+                "2.33": {
+                      "EACC": 2,
+                      "BOOM": 1,
+                      "NORM": 1
+                },
+                "3.67": {
+                      "AUDT": 2,
+                      "EACC": 2
+                }
+          },
+          "FUN05": {
+                "1": {
+                      "EACC": 3,
+                      "AUDT": 1,
+                      "SKEP": 1
+                },
+                "5": {
+                      "EACC": 3,
+                      "AUDT": 1
+                },
+                "2.33": {
+                      "NORM": 2,
+                      "SAFE": 1
+                },
+                "3.67": {
+                      "SAFE": 3,
+                      "AUDT": 1
+                }
+          },
+          "FUN06": {
+                "1": {
+                      "SKEP": 3,
+                      "NORM": 1
+                },
+                "5": {
+                      "POST": 3
+                },
+                "2.33": {
+                      "POST": 4
+                },
+                "3.67": {
+                      "AUDT": 3,
+                      "SAFE": 1
+                }
+          },
+          "FUN07": {
+                "1": {
+                      "EACC": 4,
+                      "BOOM": 1
+                },
+                "5": {
+                      "NORM": 3,
+                      "SAFE": 1
+                },
+                "2.33": {
+                      "STOP": 4
+                },
+                "3.67": {
+                      "SAFE": 3,
+                      "NORM": 1
+                }
+          },
+          "FUN08": {
+                "1": {
+                      "EACC": 4,
+                      "SKEP": 1
+                },
+                "5": {
+                      "STOP": 3,
+                      "SAFE": 1
+                },
+                "2.33": {
+                      "SAFE": 1,
+                      "NORM": 2
+                },
+                "3.67": {
+                      "BOOM": 3,
+                      "EACC": 1
+                }
+          },
+          "FUN09": {
+                "1": {
+                      "GPUC": 5
+                },
+                "5": {
+                      "SING": 3,
+                      "GPUC": 1
+                },
+                "2.33": {
+                      "NORM": 3,
+                      "SAFE": 1
+                },
+                "3.67": {
+                      "SKEP": 3,
+                      "NORM": 1
+                }
+          },
+          "FUN10": {
+                "1": {
+                      "STOP": 3,
+                      "SAFE": 2
+                },
+                "5": {
+                      "EACC": 2,
+                      "AUDT": 2
+                },
+                "2.33": {
+                      "SING": 4,
+                      "GPUC": 1
+                },
+                "3.67": {
+                      "NORM": 3,
+                      "BOOM": 1
+                }
+          },
+          "FUN11": {
+                "1": {
+                      "STOP": 3,
+                      "SAFE": 1
+                },
+                "5": {
+                      "EACC": 3,
+                      "AUDT": 1
+                },
+                "2.33": {
+                      "SKEP": 3,
+                      "NORM": 1
+                },
+                "3.67": {
+                      "AUDT": 3,
+                      "NORM": 1
+                }
+          },
+          "FUN12": {
+                "1": {
+                      "BOOM": 4,
+                      "EACC": 1
+                },
+                "5": {
+                      "SAFE": 2,
+                      "STOP": 2
+                },
+                "2.33": {
+                      "SAFE": 4
+                },
+                "3.67": {
+                      "NORM": 3,
+                      "BOOM": 1
+                }
+          },
+          "FUN13": {
+                "1": {
+                      "AUDT": 4
+                },
+                "5": {
+                      "SAFE": 3,
+                      "AUDT": 1
+                },
+                "2.33": {
+                      "BOOM": 3,
+                      "NORM": 1
+                },
+                "3.67": {
+                      "AUDT": 3,
+                      "NORM": 1
+                }
+          },
+          "FUN14": {
+                "1": {
+                      "BOOM": 3,
+                      "EACC": 1
+                },
+                "5": {
+                      "POST": 3,
+                      "SING": 1
+                },
+                "2.33": {
+                      "SKEP": 3,
+                      "NORM": 1
+                },
+                "3.67": {
+                      "SAFE": 3,
+                      "NORM": 1
+                }
+          },
+          "FUN15": {
+                "1": {
+                      "SAFE": 3,
+                      "AUDT": 1
+                },
+                "5": {
+                      "POST": 3,
+                      "SING": 1
+                },
+                "2.33": {
+                      "NORM": 3
+                },
+                "3.67": {
+                      "BOOM": 3,
+                      "NORM": 1
+                }
+          },
+          "FUN16": {
+                "1": {
+                      "NORM": 2,
+                      "GPUC": 1
+                },
+                "5": {
+                      "SING": 4
+                },
+                "2.33": {
+                      "GPUC": 4,
+                      "SING": 1
+                },
+                "3.67": {
+                      "SKEP": 3,
+                      "SAFE": 1
+                }
+          },
+          "FUN17": {
+                "1": {
+                      "SING": 4
+                },
+                "5": {
+                      "BOOM": 3,
+                      "NORM": 1
+                },
+                "2.33": {
+                      "STOP": 3,
+                      "SAFE": 1
+                },
+                "3.67": {
+                      "NORM": 3,
+                      "SAFE": 1
+                }
+          },
+          "FUN18": {
+                "1": {
+                      "STOP": 4
+                },
+                "5": {
+                      "SING": 4
+                },
+                "2.33": {
+                      "BOOM": 4,
+                      "SING": 1
+                },
+                "3.67": {
+                      "SAFE": 1,
+                      "NORM": 3
+                }
+          }
+    };
+
+    const scenarios = [];
 
     const statements = [
       "AI 可能毁灭人类文明，所以对齐和治理必须优先。",
@@ -2164,19 +2573,7 @@
       "都不像。"
     ];
 
-    const statementProfiles = [
-      "STOP",
-      "SAFE",
-      "AUDT",
-      "NORM",
-      "SKEP",
-      "GPUC",
-      "BOOM",
-      "SING",
-      "EACC",
-      "POST",
-      ""
-    ];
+    const statementProfiles = ["STOP", "SAFE", "AUDT", "NORM", "SKEP", "GPUC", "BOOM", "SING", "EACC", "POST", ""];
     const statementValues = statements.map((_, index) => String(index + 1));
     const legacyStatementValueMap = {
       "AI 可能毁灭人类文明，所以对齐和治理必须优先。": "1",
@@ -2205,14 +2602,7 @@
       "None of these fit.": "11"
     };
 
-    const scenarioProfiles = {
-      "V3": [
-        "STOP",
-        "SAFE",
-        "BOOM",
-        "SING"
-      ]
-    };
+    const scenarioProfiles = {};
     const legacyScenarioValueMap = {
       V3: {
         "放慢部署，因为自主科研能力有战略风险": "1",
@@ -2252,7 +2642,7 @@
       POST: { x: 1.8, y: -1.8 }
     };
 
-    const measurementVersion = "2026-06-10-r04-safety-release-v13";
+    const measurementVersion = "2026-06-28-fun-r02";
     const projectionMethod = "expert_seed_linear_projection_v1";
     const scenarioVectorWeight = 0.55;
     const vectorDimensions = [
@@ -2281,385 +2671,844 @@
     }
 
     const optionVectorRules = {
-      "R01": {
-        "1": {
-          "civilizational_risk": -2,
-          "present_social_harm": 0.4,
-          "capability_skepticism": 2,
-          "opportunity_cost": -0.4,
-          "computation_epistemology": -0.9
-        },
-        "5": {
-          "civilizational_risk": 0.6,
-          "openness_build": 0.3,
-          "human_accountability": -1.5,
-          "intelligence_centrality": 1.5,
-          "capability_skepticism": -0.4,
-          "opportunity_cost": 0.5,
-          "computation_epistemology": 0.4
-        },
-        "2.33": {
-          "civilizational_risk": -0.5,
-          "present_social_harm": 1.8,
-          "governance_control": 0.6,
-          "human_accountability": 1.1,
-          "capability_skepticism": 0.5
-        },
-        "3.67": {
-          "civilizational_risk": 1.8,
-          "governance_control": 1,
-          "human_accountability": 0.8,
-          "intelligence_centrality": -0.6,
-          "capability_skepticism": -0.8
-        }
-      },
-      "R04": {
-        "1": {
-          "civilizational_risk": 1.1,
-          "governance_control": 1,
-          "openness_build": -0.8,
-          "human_accountability": 0.5,
-          "opportunity_cost": -1.7
-        },
-        "5": {
-          "civilizational_risk": -0.3,
-          "openness_build": 0.8,
-          "human_accountability": -1,
-          "intelligence_centrality": 1.4,
-          "opportunity_cost": 1.8,
-          "capability_skepticism": -0.3,
-          "permissionless_acceleration": 0.5,
-          "computation_epistemology": 0.4
-        },
-        "2.33": {
-          "present_social_harm": 0.9,
-          "governance_control": -0.6,
-          "openness_build": 1,
-          "human_accountability": 0.4,
-          "opportunity_cost": 0.8,
-          "capability_skepticism": 0.2,
-          "permissionless_acceleration": 1.4
-        },
-        "3.67": {
-          "civilizational_risk": -0.2,
-          "governance_control": -0.2,
-          "openness_build": 0.7,
-          "human_accountability": 0.3,
-          "opportunity_cost": 1.5
-        }
-      },
-      "E01": {
-        "1": {
-          "human_accountability": 0.5,
-          "intelligence_centrality": -0.2,
-          "capability_skepticism": 0.4,
-          "computation_epistemology": -1.4
-        },
-        "5": {
-          "governance_control": -0.8,
-          "openness_build": 1.5,
-          "human_accountability": -0.2,
-          "opportunity_cost": 0.7,
-          "permissionless_acceleration": 1.7
-        },
-        "2.33": {
-          "openness_build": 0.3,
-          "human_accountability": 0.5,
-          "opportunity_cost": 0.6,
-          "computation_epistemology": 0.1
-        },
-        "3.67": {
-          "intelligence_centrality": 0.5,
-          "capability_skepticism": -0.8,
-          "opportunity_cost": 0.3,
-          "computation_epistemology": 2
-        }
-      },
-      "D01": {
-        "1": {
-          "civilizational_risk": -0.9,
-          "capability_skepticism": 1.4,
-          "present_social_harm": 0.2,
-          "human_accountability": 0.2,
-          "computation_epistemology": -0.5
-        },
-        "5": {
-          "intelligence_centrality": 1.4,
-          "human_accountability": -1,
-          "civilizational_risk": 0.5,
-          "opportunity_cost": 0.2
-        },
-        "2.33": {
-          "present_social_harm": 1.4,
-          "governance_control": 0.6,
-          "human_accountability": 1,
-          "capability_skepticism": 0.4
-        },
-        "3.67": {
-          "present_social_harm": 2,
-          "governance_control": 1.2,
-          "openness_build": -0.5,
-          "human_accountability": 1.4
-        }
-      },
-      "C02": {
-        "1": {
-          "governance_control": -1.4,
-          "openness_build": 1.7,
-          "human_accountability": -0.4,
-          "opportunity_cost": 0.7,
-          "permissionless_acceleration": 1.1
-        },
-        "5": {
-          "governance_control": 0.9,
-          "openness_build": -0.2,
-          "human_accountability": 1.4,
-          "present_social_harm": 1.7,
-          "capability_skepticism": 0.2
-        },
-        "2.33": {
-          "civilizational_risk": -0.6,
-          "governance_control": 0.2,
-          "openness_build": 0.1,
-          "human_accountability": 0.3,
-          "capability_skepticism": 1.4,
-          "opportunity_cost": -0.2,
-          "computation_epistemology": -0.6
-        },
-        "3.67": {
-          "governance_control": 0.7,
-          "openness_build": -0.2,
-          "human_accountability": 1.2,
-          "present_social_harm": 0.4,
-          "capability_skepticism": 0.2
-        }
-      },
-      "L01": {
-        "1": {
-          "openness_build": 1.1,
-          "opportunity_cost": 1.4,
-          "governance_control": -0.4,
-          "human_accountability": -0.3,
-          "present_social_harm": -0.3
-        },
-        "5": {
-          "present_social_harm": 1.1,
-          "human_accountability": 1.2,
-          "governance_control": 1.4,
-          "openness_build": -1.1,
-          "opportunity_cost": -0.6
-        },
-        "2.33": {
-          "opportunity_cost": 0.5,
-          "human_accountability": 0.5,
-          "present_social_harm": 0.3,
-          "governance_control": 0.1
-        },
-        "3.67": {
-          "present_social_harm": 1.4,
-          "human_accountability": 1.4,
-          "governance_control": 0.6,
-          "openness_build": -0.2
-        }
-      },
-      "I01": {
-        "1": {
-          "governance_control": 0.4,
-          "human_accountability": 0.8,
-          "capability_skepticism": 0.5,
-          "present_social_harm": 0.4
-        },
-        "5": {
-          "openness_build": 1.5,
-          "governance_control": -1.1,
-          "opportunity_cost": 0.7,
-          "permissionless_acceleration": 1,
-          "human_accountability": -0.2
-        },
-        "2.33": {
-          "governance_control": 1.6,
-          "openness_build": -1.1,
-          "human_accountability": 0.9,
-          "present_social_harm": 0.7,
-          "civilizational_risk": 0.3
-        },
-        "3.67": {
-          "present_social_harm": 1.8,
-          "human_accountability": 1.3,
-          "governance_control": 0.5,
-          "capability_skepticism": 0.3
-        }
-      },
-      "T01": {
-        "1": {
-          "openness_build": 1.1,
-          "opportunity_cost": 1.1,
-          "governance_control": -0.5,
-          "permissionless_acceleration": 0.7,
-          "computation_epistemology": 0.3
-        },
-        "5": {
-          "openness_build": 1.4,
-          "governance_control": -0.8,
-          "permissionless_acceleration": 1.4,
-          "opportunity_cost": 0.6,
-          "human_accountability": 0.2
-        },
-        "2.33": {
-          "present_social_harm": 1.2,
-          "human_accountability": 1.2,
-          "governance_control": 0.4,
-          "openness_build": -0.2
-        },
-        "3.67": {
-          "present_social_harm": 0.9,
-          "human_accountability": 1.1,
-          "governance_control": 1.2,
-          "openness_build": -0.5,
-          "capability_skepticism": 0.2
-        }
-      },
-      "C03": {
-        "1": {
-          "civilizational_risk": 1.2,
-          "governance_control": 1.9,
-          "openness_build": -1.5,
-          "human_accountability": 0.9,
-          "opportunity_cost": -0.6
-        },
-        "3": {
-          "present_social_harm": 1.4,
-          "governance_control": 0.3,
-          "openness_build": 0.8,
-          "human_accountability": 1.2,
-          "capability_skepticism": 0.3
-        },
-        "5": {
-          "governance_control": -1.3,
-          "openness_build": 1.9,
-          "human_accountability": -0.4,
-          "opportunity_cost": 1.1,
-          "capability_skepticism": -0.2,
-          "permissionless_acceleration": 2
-        },
-        "2.33": {
-          "civilizational_risk": 0.5,
-          "governance_control": 1,
-          "openness_build": -0.3,
-          "human_accountability": 0.8,
-          "present_social_harm": 0.2
-        }
-      },
-      "C04": {
-        "1": {
-          "civilizational_risk": 1.2,
-          "governance_control": 1.8,
-          "openness_build": -1.5,
-          "human_accountability": 0.6,
-          "opportunity_cost": -0.9
-        },
-        "5": {
-          "governance_control": -0.9,
-          "openness_build": 1.6,
-          "human_accountability": -0.2,
-          "opportunity_cost": 1.1,
-          "capability_skepticism": -0.2,
-          "permissionless_acceleration": 1.1
-        },
-        "2.33": {
-          "civilizational_risk": 0.4,
-          "governance_control": 1,
-          "openness_build": -0.3,
-          "human_accountability": 0.8,
-          "opportunity_cost": -0.1
-        },
-        "3.67": {
-          "present_social_harm": 1.6,
-          "governance_control": 0.8,
-          "openness_build": -0.1,
-          "human_accountability": 1.5,
-          "capability_skepticism": 0.2
-        }
-      },
-      "H01": {
-        "1": {
-          "governance_control": -0.5,
-          "openness_build": 1.1,
-          "human_accountability": -0.8,
-          "intelligence_centrality": 0.2,
-          "opportunity_cost": 0.8
-        },
-        "5": {
-          "human_accountability": 2,
-          "intelligence_centrality": -0.7,
-          "present_social_harm": 0.7
-        },
-        "2.33": {
-          "governance_control": 0.6,
-          "human_accountability": -0.3,
-          "intelligence_centrality": 0.2,
-          "capability_skepticism": -0.2
-        },
-        "3.67": {
-          "openness_build": 0.2,
-          "human_accountability": -1.8,
-          "intelligence_centrality": 1.8,
-          "capability_skepticism": -0.4,
-          "opportunity_cost": 0.4
-        }
-      },
-      "H02": {
-        "1": {
-          "openness_build": 0.7,
-          "human_accountability": 0.4,
-          "intelligence_centrality": 0.2,
-          "opportunity_cost": 1.2,
-          "computation_epistemology": 0.2
-        },
-        "3": {
-          "capability_skepticism": 1.4,
-          "human_accountability": 0.1,
-          "intelligence_centrality": -0.2,
-          "opportunity_cost": -0.2,
-          "computation_epistemology": -0.7
-        },
-        "4": {
-          "human_accountability": 1.2,
-          "intelligence_centrality": -0.5,
-          "present_social_harm": 0.3,
-          "computation_epistemology": -0.2
-        },
-        "5": {
-          "human_accountability": 2,
-          "intelligence_centrality": -1,
-          "present_social_harm": 0.4,
-          "computation_epistemology": -0.6
-        }
-      },
-      "H04": {
-        "1": {
-          "human_accountability": 2,
-          "intelligence_centrality": -2,
-          "computation_epistemology": -0.7
-        },
-        "3": {
-          "capability_skepticism": 1.5,
-          "human_accountability": 0.2,
-          "intelligence_centrality": -0.2,
-          "computation_epistemology": -0.8
-        },
-        "4": {
-          "human_accountability": -0.4,
-          "intelligence_centrality": 0.8,
-          "capability_skepticism": -0.6,
-          "computation_epistemology": 2
-        },
-        "5": {
-          "human_accountability": -1.8,
-          "intelligence_centrality": 2,
-          "computation_epistemology": 0.3
-        }
-      }
+          "FUN01": {
+                "1": {
+                      "civilizational_risk": -0.25,
+                      "present_social_harm": 0.25,
+                      "governance_control": 0.388,
+                      "openness_build": -0.038,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.162,
+                      "capability_skepticism": 0.7,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.5
+                },
+                "5": {
+                      "civilizational_risk": 0.1,
+                      "openness_build": 0.35,
+                      "human_accountability": -0.95,
+                      "intelligence_centrality": 1.35,
+                      "opportunity_cost": 0.4,
+                      "computation_epistemology": 0.3,
+                      "permissionless_acceleration": 0.25
+                },
+                "2.33": {
+                      "civilizational_risk": 0.25,
+                      "present_social_harm": 1.05,
+                      "governance_control": 0.8,
+                      "openness_build": -0.317,
+                      "human_accountability": 1.233,
+                      "intelligence_centrality": -0.617,
+                      "capability_skepticism": 0.233,
+                      "opportunity_cost": -0.183,
+                      "computation_epistemology": -0.3
+                },
+                "3.67": {
+                      "civilizational_risk": 0.383,
+                      "present_social_harm": 0.267,
+                      "governance_control": 0.45,
+                      "openness_build": 0.017,
+                      "human_accountability": 0.433,
+                      "intelligence_centrality": 0.067,
+                      "capability_skepticism": 0.033,
+                      "opportunity_cost": 0.117,
+                      "computation_epistemology": 0.017,
+                      "permissionless_acceleration": 0.183
+                }
+          },
+          "FUN02": {
+                "1": {
+                      "civilizational_risk": -0.25,
+                      "present_social_harm": 0.25,
+                      "governance_control": 0.388,
+                      "openness_build": -0.038,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.162,
+                      "capability_skepticism": 0.7,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.5
+                },
+                "5": {
+                      "civilizational_risk": 0.733,
+                      "present_social_harm": 0.287,
+                      "governance_control": 1.025,
+                      "openness_build": -0.7,
+                      "human_accountability": 0.892,
+                      "intelligence_centrality": -0.487,
+                      "capability_skepticism": -0.025,
+                      "opportunity_cost": -0.405,
+                      "computation_epistemology": -0.137
+                },
+                "2.33": {
+                      "civilizational_risk": 0.975,
+                      "present_social_harm": 0.375,
+                      "governance_control": 1.163,
+                      "openness_build": -0.825,
+                      "human_accountability": 1.112,
+                      "intelligence_centrality": -0.675,
+                      "capability_skepticism": -0.087,
+                      "opportunity_cost": -0.512,
+                      "computation_epistemology": -0.312
+                },
+                "3.67": {
+                      "civilizational_risk": -0.24,
+                      "present_social_harm": 0.113,
+                      "governance_control": 0.375,
+                      "openness_build": 0.013,
+                      "human_accountability": 0.19,
+                      "intelligence_centrality": 0.187,
+                      "capability_skepticism": 0.475,
+                      "opportunity_cost": 0.073,
+                      "computation_epistemology": 0.212
+                }
+          },
+          "FUN03": {
+                "1": {
+                      "civilizational_risk": 1.05,
+                      "present_social_harm": 0.35,
+                      "governance_control": 1.25,
+                      "openness_build": -0.95,
+                      "human_accountability": 1.15,
+                      "intelligence_centrality": -0.75,
+                      "capability_skepticism": -0.15,
+                      "opportunity_cost": -0.6,
+                      "computation_epistemology": -0.35
+                },
+                "5": {
+                      "civilizational_risk": 0.188,
+                      "present_social_harm": 1.125,
+                      "governance_control": 0.787,
+                      "openness_build": -0.3,
+                      "human_accountability": 1.263,
+                      "intelligence_centrality": -0.637,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.312
+                },
+                "2.33": {
+                      "civilizational_risk": 0.1,
+                      "openness_build": 0.35,
+                      "human_accountability": -0.95,
+                      "intelligence_centrality": 1.35,
+                      "opportunity_cost": 0.4,
+                      "computation_epistemology": 0.3,
+                      "permissionless_acceleration": 0.25
+                },
+                "3.67": {
+                      "civilizational_risk": -0.2,
+                      "present_social_harm": 0.35,
+                      "governance_control": 0.325,
+                      "openness_build": 0.025,
+                      "human_accountability": 0.475,
+                      "intelligence_centrality": -0.175,
+                      "capability_skepticism": 0.55,
+                      "opportunity_cost": -0.1,
+                      "computation_epistemology": -0.35
+                }
+          },
+          "FUN04": {
+                "1": {
+                      "civilizational_risk": 0.188,
+                      "present_social_harm": 1.125,
+                      "governance_control": 0.787,
+                      "openness_build": -0.3,
+                      "human_accountability": 1.263,
+                      "intelligence_centrality": -0.637,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.312
+                },
+                "5": {
+                      "civilizational_risk": 0.563,
+                      "present_social_harm": 0.675,
+                      "governance_control": 0.863,
+                      "openness_build": -0.4,
+                      "human_accountability": 1.087,
+                      "intelligence_centrality": -0.512,
+                      "capability_skepticism": 0.15,
+                      "opportunity_cost": -0.225,
+                      "computation_epistemology": -0.238
+                },
+                "2.33": {
+                      "civilizational_risk": -0.338,
+                      "present_social_harm": 0.163,
+                      "governance_control": -0.362,
+                      "openness_build": 0.75,
+                      "human_accountability": 0.113,
+                      "intelligence_centrality": 0.112,
+                      "capability_skepticism": 0.225,
+                      "opportunity_cost": 0.625,
+                      "computation_epistemology": 0.038,
+                      "permissionless_acceleration": 0.887
+                },
+                "3.67": {
+                      "civilizational_risk": -0.275,
+                      "present_social_harm": 0.65,
+                      "openness_build": 0.45,
+                      "human_accountability": 0.55,
+                      "intelligence_centrality": -0.175,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": 0.4,
+                      "computation_epistemology": -0.15,
+                      "permissionless_acceleration": 0.825
+                }
+          },
+          "FUN05": {
+                "1": {
+                      "civilizational_risk": -0.39,
+                      "present_social_harm": 0.27,
+                      "governance_control": -0.21,
+                      "openness_build": 0.62,
+                      "human_accountability": 0.2,
+                      "intelligence_centrality": 0.04,
+                      "capability_skepticism": 0.35,
+                      "opportunity_cost": 0.49,
+                      "computation_epistemology": -0.17,
+                      "permissionless_acceleration": 0.99
+                },
+                "5": {
+                      "civilizational_risk": -0.413,
+                      "present_social_harm": 0.3,
+                      "governance_control": -0.375,
+                      "openness_build": 0.8,
+                      "human_accountability": 0.15,
+                      "intelligence_centrality": 0.087,
+                      "capability_skepticism": 0.225,
+                      "opportunity_cost": 0.675,
+                      "computation_epistemology": -0.05,
+                      "permissionless_acceleration": 1.237
+                },
+                "2.33": {
+                      "civilizational_risk": 0.183,
+                      "present_social_harm": 0.517,
+                      "governance_control": 0.433,
+                      "openness_build": -0.05,
+                      "human_accountability": 0.7,
+                      "intelligence_centrality": -0.283,
+                      "capability_skepticism": 0.2,
+                      "opportunity_cost": -0.05,
+                      "computation_epistemology": -0.1
+                },
+                "3.67": {
+                      "civilizational_risk": 0.563,
+                      "present_social_harm": 0.675,
+                      "governance_control": 0.863,
+                      "openness_build": -0.4,
+                      "human_accountability": 1.087,
+                      "intelligence_centrality": -0.512,
+                      "capability_skepticism": 0.15,
+                      "opportunity_cost": -0.225,
+                      "computation_epistemology": -0.238
+                }
+          },
+          "FUN06": {
+                "1": {
+                      "civilizational_risk": -0.25,
+                      "present_social_harm": 0.25,
+                      "governance_control": 0.388,
+                      "openness_build": -0.038,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.162,
+                      "capability_skepticism": 0.7,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.5
+                },
+                "5": {
+                      "civilizational_risk": 0.1,
+                      "openness_build": 0.35,
+                      "human_accountability": -0.95,
+                      "intelligence_centrality": 1.35,
+                      "opportunity_cost": 0.4,
+                      "computation_epistemology": 0.3,
+                      "permissionless_acceleration": 0.25
+                },
+                "2.33": {
+                      "civilizational_risk": 0.1,
+                      "openness_build": 0.35,
+                      "human_accountability": -0.95,
+                      "intelligence_centrality": 1.35,
+                      "opportunity_cost": 0.4,
+                      "computation_epistemology": 0.3,
+                      "permissionless_acceleration": 0.25
+                },
+                "3.67": {
+                      "civilizational_risk": 0.188,
+                      "present_social_harm": 1.125,
+                      "governance_control": 0.787,
+                      "openness_build": -0.3,
+                      "human_accountability": 1.263,
+                      "intelligence_centrality": -0.637,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.312
+                }
+          },
+          "FUN07": {
+                "1": {
+                      "civilizational_risk": -0.47,
+                      "governance_control": -0.63,
+                      "openness_build": 1.03,
+                      "human_accountability": -0.12,
+                      "intelligence_centrality": 0.27,
+                      "capability_skepticism": 0.21,
+                      "opportunity_cost": 0.87,
+                      "computation_epistemology": 0.06,
+                      "permissionless_acceleration": 1.37
+                },
+                "5": {
+                      "civilizational_risk": 0.112,
+                      "present_social_harm": 0.525,
+                      "governance_control": 0.375,
+                      "human_accountability": 0.663,
+                      "intelligence_centrality": -0.263,
+                      "capability_skepticism": 0.212,
+                      "opportunity_cost": -0.025,
+                      "computation_epistemology": -0.088
+                },
+                "2.33": {
+                      "civilizational_risk": 1.05,
+                      "present_social_harm": 0.35,
+                      "governance_control": 1.25,
+                      "openness_build": -0.95,
+                      "human_accountability": 1.15,
+                      "intelligence_centrality": -0.75,
+                      "capability_skepticism": -0.15,
+                      "opportunity_cost": -0.6,
+                      "computation_epistemology": -0.35
+                },
+                "3.67": {
+                      "civilizational_risk": 0.537,
+                      "present_social_harm": 0.475,
+                      "governance_control": 0.725,
+                      "openness_build": -0.3,
+                      "human_accountability": 0.887,
+                      "intelligence_centrality": -0.388,
+                      "capability_skepticism": 0.138,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.163
+                }
+          },
+          "FUN08": {
+                "1": {
+                      "civilizational_risk": -0.5,
+                      "present_social_harm": -0.01,
+                      "governance_control": -0.51,
+                      "openness_build": 0.9,
+                      "human_accountability": -0.12,
+                      "intelligence_centrality": 0.25,
+                      "capability_skepticism": 0.33,
+                      "opportunity_cost": 0.71,
+                      "computation_epistemology": -0.09,
+                      "permissionless_acceleration": 1.32
+                },
+                "5": {
+                      "civilizational_risk": 0.975,
+                      "present_social_harm": 0.375,
+                      "governance_control": 1.163,
+                      "openness_build": -0.825,
+                      "human_accountability": 1.112,
+                      "intelligence_centrality": -0.675,
+                      "capability_skepticism": -0.087,
+                      "opportunity_cost": -0.512,
+                      "computation_epistemology": -0.312
+                },
+                "2.33": {
+                      "civilizational_risk": 0.183,
+                      "present_social_harm": 0.517,
+                      "governance_control": 0.433,
+                      "openness_build": -0.05,
+                      "human_accountability": 0.7,
+                      "intelligence_centrality": -0.283,
+                      "capability_skepticism": 0.2,
+                      "opportunity_cost": -0.05,
+                      "computation_epistemology": -0.1
+                },
+                "3.67": {
+                      "civilizational_risk": -0.25,
+                      "present_social_harm": 0.138,
+                      "governance_control": -0.3,
+                      "openness_build": 0.7,
+                      "human_accountability": 0.238,
+                      "intelligence_centrality": 0.05,
+                      "capability_skepticism": 0.237,
+                      "opportunity_cost": 0.65,
+                      "computation_epistemology": 0.088,
+                      "permissionless_acceleration": 0.6
+                }
+          },
+          "FUN09": {
+                "1": {
+                      "civilizational_risk": -0.22,
+                      "present_social_harm": 0.1,
+                      "governance_control": 0.35,
+                      "openness_build": 0.05,
+                      "human_accountability": 0.12,
+                      "intelligence_centrality": 0.3,
+                      "capability_skepticism": 0.35,
+                      "opportunity_cost": 0.18,
+                      "computation_epistemology": 0.5
+                },
+                "5": {
+                      "civilizational_risk": -0.317,
+                      "present_social_harm": -0.05,
+                      "governance_control": -0.25,
+                      "openness_build": 0.725,
+                      "human_accountability": -0.495,
+                      "intelligence_centrality": 0.9,
+                      "capability_skepticism": 0.012,
+                      "opportunity_cost": 0.682,
+                      "computation_epistemology": 0.463,
+                      "permissionless_acceleration": 0.413
+                },
+                "2.33": {
+                      "civilizational_risk": 0.112,
+                      "present_social_harm": 0.525,
+                      "governance_control": 0.375,
+                      "human_accountability": 0.663,
+                      "intelligence_centrality": -0.263,
+                      "capability_skepticism": 0.212,
+                      "opportunity_cost": -0.025,
+                      "computation_epistemology": -0.088
+                },
+                "3.67": {
+                      "civilizational_risk": -0.25,
+                      "present_social_harm": 0.25,
+                      "governance_control": 0.388,
+                      "openness_build": -0.038,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.162,
+                      "capability_skepticism": 0.7,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.5
+                }
+          },
+          "FUN10": {
+                "1": {
+                      "civilizational_risk": 0.93,
+                      "present_social_harm": 0.39,
+                      "governance_control": 1.11,
+                      "openness_build": -0.75,
+                      "human_accountability": 1.09,
+                      "intelligence_centrality": -0.63,
+                      "capability_skepticism": -0.05,
+                      "opportunity_cost": -0.46,
+                      "computation_epistemology": -0.29
+                },
+                "5": {
+                      "civilizational_risk": -0.275,
+                      "present_social_harm": 0.65,
+                      "openness_build": 0.45,
+                      "human_accountability": 0.55,
+                      "intelligence_centrality": -0.175,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": 0.4,
+                      "computation_epistemology": -0.15,
+                      "permissionless_acceleration": 0.825
+                },
+                "2.33": {
+                      "civilizational_risk": -0.324,
+                      "present_social_harm": -0.06,
+                      "governance_control": -0.29,
+                      "openness_build": 0.77,
+                      "human_accountability": -0.536,
+                      "intelligence_centrality": 0.94,
+                      "capability_skepticism": -0.01,
+                      "opportunity_cost": 0.716,
+                      "computation_epistemology": 0.46,
+                      "permissionless_acceleration": 0.44
+                },
+                "3.67": {
+                      "civilizational_risk": -0.113,
+                      "present_social_harm": 0.463,
+                      "governance_control": 0.113,
+                      "openness_build": 0.25,
+                      "human_accountability": 0.513,
+                      "intelligence_centrality": -0.163,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": 0.175,
+                      "computation_epistemology": -0.013,
+                      "permissionless_acceleration": 0.063
+                }
+          },
+          "FUN11": {
+                "1": {
+                      "civilizational_risk": 0.975,
+                      "present_social_harm": 0.375,
+                      "governance_control": 1.163,
+                      "openness_build": -0.825,
+                      "human_accountability": 1.112,
+                      "intelligence_centrality": -0.675,
+                      "capability_skepticism": -0.087,
+                      "opportunity_cost": -0.512,
+                      "computation_epistemology": -0.312
+                },
+                "5": {
+                      "civilizational_risk": -0.413,
+                      "present_social_harm": 0.3,
+                      "governance_control": -0.375,
+                      "openness_build": 0.8,
+                      "human_accountability": 0.15,
+                      "intelligence_centrality": 0.087,
+                      "capability_skepticism": 0.225,
+                      "opportunity_cost": 0.675,
+                      "computation_epistemology": -0.05,
+                      "permissionless_acceleration": 1.237
+                },
+                "2.33": {
+                      "civilizational_risk": -0.25,
+                      "present_social_harm": 0.25,
+                      "governance_control": 0.388,
+                      "openness_build": -0.038,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.162,
+                      "capability_skepticism": 0.7,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.5
+                },
+                "3.67": {
+                      "civilizational_risk": -0.025,
+                      "present_social_harm": 1.15,
+                      "governance_control": 0.613,
+                      "openness_build": -0.15,
+                      "human_accountability": 1.15,
+                      "intelligence_centrality": -0.575,
+                      "capability_skepticism": 0.287,
+                      "opportunity_cost": -0.1,
+                      "computation_epistemology": -0.275
+                }
+          },
+          "FUN12": {
+                "1": {
+                      "civilizational_risk": -0.23,
+                      "present_social_harm": 0.15,
+                      "governance_control": -0.27,
+                      "openness_build": 0.67,
+                      "human_accountability": 0.27,
+                      "intelligence_centrality": 0.03,
+                      "capability_skepticism": 0.24,
+                      "opportunity_cost": 0.63,
+                      "computation_epistemology": 0.09,
+                      "permissionless_acceleration": 0.53
+                },
+                "5": {
+                      "civilizational_risk": 0.9,
+                      "present_social_harm": 0.4,
+                      "governance_control": 1.075,
+                      "openness_build": -0.7,
+                      "human_accountability": 1.075,
+                      "intelligence_centrality": -0.6,
+                      "capability_skepticism": -0.025,
+                      "opportunity_cost": -0.425,
+                      "computation_epistemology": -0.275
+                },
+                "2.33": {
+                      "civilizational_risk": 0.75,
+                      "present_social_harm": 0.45,
+                      "governance_control": 0.9,
+                      "openness_build": -0.45,
+                      "human_accountability": 1,
+                      "intelligence_centrality": -0.45,
+                      "capability_skepticism": 0.1,
+                      "opportunity_cost": -0.25,
+                      "computation_epistemology": -0.2
+                },
+                "3.67": {
+                      "civilizational_risk": -0.113,
+                      "present_social_harm": 0.463,
+                      "governance_control": 0.113,
+                      "openness_build": 0.25,
+                      "human_accountability": 0.513,
+                      "intelligence_centrality": -0.163,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": 0.175,
+                      "computation_epistemology": -0.013,
+                      "permissionless_acceleration": 0.063
+                }
+          },
+          "FUN13": {
+                "1": {
+                      "present_social_harm": 1.35,
+                      "governance_control": 0.75,
+                      "openness_build": -0.25,
+                      "human_accountability": 1.35,
+                      "intelligence_centrality": -0.7,
+                      "capability_skepticism": 0.3,
+                      "opportunity_cost": -0.15,
+                      "computation_epistemology": -0.35
+                },
+                "5": {
+                      "civilizational_risk": 0.563,
+                      "present_social_harm": 0.675,
+                      "governance_control": 0.863,
+                      "openness_build": -0.4,
+                      "human_accountability": 1.087,
+                      "intelligence_centrality": -0.512,
+                      "capability_skepticism": 0.15,
+                      "opportunity_cost": -0.225,
+                      "computation_epistemology": -0.238
+                },
+                "2.33": {
+                      "civilizational_risk": -0.137,
+                      "present_social_harm": 0.288,
+                      "governance_control": -0.062,
+                      "openness_build": 0.45,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.088,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": 0.425,
+                      "computation_epistemology": 0.063,
+                      "permissionless_acceleration": 0.188
+                },
+                "3.67": {
+                      "civilizational_risk": -0.025,
+                      "present_social_harm": 1.15,
+                      "governance_control": 0.613,
+                      "openness_build": -0.15,
+                      "human_accountability": 1.15,
+                      "intelligence_centrality": -0.575,
+                      "capability_skepticism": 0.287,
+                      "opportunity_cost": -0.1,
+                      "computation_epistemology": -0.275
+                }
+          },
+          "FUN14": {
+                "1": {
+                      "civilizational_risk": -0.25,
+                      "present_social_harm": 0.138,
+                      "governance_control": -0.3,
+                      "openness_build": 0.7,
+                      "human_accountability": 0.238,
+                      "intelligence_centrality": 0.05,
+                      "capability_skepticism": 0.237,
+                      "opportunity_cost": 0.65,
+                      "computation_epistemology": 0.088,
+                      "permissionless_acceleration": 0.6
+                },
+                "5": {
+                      "civilizational_risk": -0.012,
+                      "present_social_harm": -0.025,
+                      "governance_control": -0.113,
+                      "openness_build": 0.5,
+                      "human_accountability": -0.887,
+                      "intelligence_centrality": 1.288,
+                      "capability_skepticism": -0.025,
+                      "opportunity_cost": 0.513,
+                      "computation_epistemology": 0.337,
+                      "permissionless_acceleration": 0.325
+                },
+                "2.33": {
+                      "civilizational_risk": -0.25,
+                      "present_social_harm": 0.25,
+                      "governance_control": 0.388,
+                      "openness_build": -0.038,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.162,
+                      "capability_skepticism": 0.7,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.5
+                },
+                "3.67": {
+                      "civilizational_risk": 0.537,
+                      "present_social_harm": 0.475,
+                      "governance_control": 0.725,
+                      "openness_build": -0.3,
+                      "human_accountability": 0.887,
+                      "intelligence_centrality": -0.388,
+                      "capability_skepticism": 0.138,
+                      "opportunity_cost": -0.175,
+                      "computation_epistemology": -0.163
+                }
+          },
+          "FUN15": {
+                "1": {
+                      "civilizational_risk": 0.563,
+                      "present_social_harm": 0.675,
+                      "governance_control": 0.863,
+                      "openness_build": -0.4,
+                      "human_accountability": 1.087,
+                      "intelligence_centrality": -0.512,
+                      "capability_skepticism": 0.15,
+                      "opportunity_cost": -0.225,
+                      "computation_epistemology": -0.238
+                },
+                "5": {
+                      "civilizational_risk": -0.012,
+                      "present_social_harm": -0.025,
+                      "governance_control": -0.113,
+                      "openness_build": 0.5,
+                      "human_accountability": -0.887,
+                      "intelligence_centrality": 1.288,
+                      "capability_skepticism": -0.025,
+                      "opportunity_cost": 0.513,
+                      "computation_epistemology": 0.337,
+                      "permissionless_acceleration": 0.325
+                },
+                "2.33": {
+                      "civilizational_risk": -0.1,
+                      "present_social_harm": 0.55,
+                      "governance_control": 0.2,
+                      "openness_build": 0.15,
+                      "human_accountability": 0.55,
+                      "intelligence_centrality": -0.2,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": 0.05,
+                      "computation_epistemology": -0.05
+                },
+                "3.67": {
+                      "civilizational_risk": -0.137,
+                      "present_social_harm": 0.288,
+                      "governance_control": -0.062,
+                      "openness_build": 0.45,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.088,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": 0.425,
+                      "computation_epistemology": 0.063,
+                      "permissionless_acceleration": 0.188
+                }
+          },
+          "FUN16": {
+                "1": {
+                      "civilizational_risk": -0.14,
+                      "present_social_harm": 0.4,
+                      "governance_control": 0.25,
+                      "openness_build": 0.117,
+                      "human_accountability": 0.407,
+                      "intelligence_centrality": -0.033,
+                      "capability_skepticism": 0.283,
+                      "opportunity_cost": 0.093,
+                      "computation_epistemology": 0.133
+                },
+                "5": {
+                      "civilizational_risk": -0.35,
+                      "present_social_harm": -0.1,
+                      "governance_control": -0.45,
+                      "openness_build": 0.95,
+                      "human_accountability": -0.7,
+                      "intelligence_centrality": 1.1,
+                      "capability_skepticism": -0.1,
+                      "opportunity_cost": 0.85,
+                      "computation_epistemology": 0.45,
+                      "permissionless_acceleration": 0.55
+                },
+                "2.33": {
+                      "civilizational_risk": -0.246,
+                      "present_social_harm": 0.06,
+                      "governance_control": 0.19,
+                      "openness_build": 0.23,
+                      "human_accountability": -0.044,
+                      "intelligence_centrality": 0.46,
+                      "capability_skepticism": 0.26,
+                      "opportunity_cost": 0.314,
+                      "computation_epistemology": 0.49,
+                      "permissionless_acceleration": 0.11
+                },
+                "3.67": {
+                      "civilizational_risk": -0.037,
+                      "present_social_harm": 0.225,
+                      "governance_control": 0.563,
+                      "openness_build": -0.188,
+                      "human_accountability": 0.55,
+                      "intelligence_centrality": -0.225,
+                      "capability_skepticism": 0.662,
+                      "opportunity_cost": -0.25,
+                      "computation_epistemology": -0.538
+                }
+          },
+          "FUN17": {
+                "1": {
+                      "civilizational_risk": -0.35,
+                      "present_social_harm": -0.1,
+                      "governance_control": -0.45,
+                      "openness_build": 0.95,
+                      "human_accountability": -0.7,
+                      "intelligence_centrality": 1.1,
+                      "capability_skepticism": -0.1,
+                      "opportunity_cost": 0.85,
+                      "computation_epistemology": 0.45,
+                      "permissionless_acceleration": 0.55
+                },
+                "5": {
+                      "civilizational_risk": -0.137,
+                      "present_social_harm": 0.288,
+                      "governance_control": -0.062,
+                      "openness_build": 0.45,
+                      "human_accountability": 0.438,
+                      "intelligence_centrality": -0.088,
+                      "capability_skepticism": 0.25,
+                      "opportunity_cost": 0.425,
+                      "computation_epistemology": 0.063,
+                      "permissionless_acceleration": 0.188
+                },
+                "2.33": {
+                      "civilizational_risk": 0.975,
+                      "present_social_harm": 0.375,
+                      "governance_control": 1.163,
+                      "openness_build": -0.825,
+                      "human_accountability": 1.112,
+                      "intelligence_centrality": -0.675,
+                      "capability_skepticism": -0.087,
+                      "opportunity_cost": -0.512,
+                      "computation_epistemology": -0.312
+                },
+                "3.67": {
+                      "civilizational_risk": 0.112,
+                      "present_social_harm": 0.525,
+                      "governance_control": 0.375,
+                      "human_accountability": 0.663,
+                      "intelligence_centrality": -0.263,
+                      "capability_skepticism": 0.212,
+                      "opportunity_cost": -0.025,
+                      "computation_epistemology": -0.088
+                }
+          },
+          "FUN18": {
+                "1": {
+                      "civilizational_risk": 1.05,
+                      "present_social_harm": 0.35,
+                      "governance_control": 1.25,
+                      "openness_build": -0.95,
+                      "human_accountability": 1.15,
+                      "intelligence_centrality": -0.75,
+                      "capability_skepticism": -0.15,
+                      "opportunity_cost": -0.6,
+                      "computation_epistemology": -0.35
+                },
+                "5": {
+                      "civilizational_risk": -0.35,
+                      "present_social_harm": -0.1,
+                      "governance_control": -0.45,
+                      "openness_build": 0.95,
+                      "human_accountability": -0.7,
+                      "intelligence_centrality": 1.1,
+                      "capability_skepticism": -0.1,
+                      "opportunity_cost": 0.85,
+                      "computation_epistemology": 0.45,
+                      "permissionless_acceleration": 0.55
+                },
+                "2.33": {
+                      "civilizational_risk": -0.19,
+                      "present_social_harm": 0.14,
+                      "governance_control": -0.21,
+                      "openness_build": 0.63,
+                      "human_accountability": 0.18,
+                      "intelligence_centrality": 0.18,
+                      "capability_skepticism": 0.18,
+                      "opportunity_cost": 0.61,
+                      "computation_epistemology": 0.17,
+                      "permissionless_acceleration": 0.31
+                },
+                "3.67": {
+                      "civilizational_risk": 0.112,
+                      "present_social_harm": 0.525,
+                      "governance_control": 0.375,
+                      "human_accountability": 0.663,
+                      "intelligence_centrality": -0.263,
+                      "capability_skepticism": 0.212,
+                      "opportunity_cost": -0.025,
+                      "computation_epistemology": -0.088
+                }
+          }
     };
 
     const questionVectorTargets = Object.fromEntries(Object.entries(optionVectorRules).map(([questionId, choices]) => [
@@ -2667,14 +3516,7 @@
       Array.from(new Set(Object.values(choices).flatMap((choice) => Object.keys(choice))))
     ]));
 
-    const scenarioVectorRules = {
-      V3: [
-        { civilizational_risk: 1.6, governance_control: 1.4, openness_build: -1.2, human_accountability: 0.8, opportunity_cost: -0.8 },
-        { civilizational_risk: 0.8, governance_control: 1.2, openness_build: -0.6, human_accountability: 1, opportunity_cost: -0.2 },
-        { civilizational_risk: -0.3, governance_control: -0.1, openness_build: 0.8, human_accountability: 0.3, opportunity_cost: 1.5, capability_skepticism: -0.2 },
-        { civilizational_risk: -0.2, governance_control: -0.4, openness_build: 1.1, human_accountability: -0.8, intelligence_centrality: 1.5, opportunity_cost: 1.8, permissionless_acceleration: 0.5, computation_epistemology: 0.3 }
-      ]
-    };
+    const scenarioVectorRules = {};
 
     const scenarioVectorTargets = Object.fromEntries(Object.entries(scenarioVectorRules).map(([scenarioId, choices]) => [
       scenarioId,
@@ -3079,25 +3921,8 @@
       }
     };
 
-    const coreQuestionOrder = [
-      "U01",
-      "H02",
-      "C04",
-      "C02",
-      "C03",
-      "L01",
-      "I01",
-      "T01",
-      "D01",
-      "R01",
-      "R04",
-      "E01",
-      "H01",
-      "H04"
-    ];
-    const scenarioOrder = [
-      "V3"
-    ];
+    const coreQuestionOrder = ["FUN01","FUN02","FUN03","FUN04","FUN05","FUN06","FUN07","FUN08","FUN09","FUN10","FUN11","FUN12","FUN13","FUN14","FUN15","FUN16","FUN17","FUN18"];
+    const scenarioOrder = [];
 
     const introPage = {
       id: "intro",
@@ -3105,11 +3930,11 @@
       title: "欢迎",
       tag: "开始",
       instruction: "试点工具，不是定论",
-      prompt: "看看你的 AI 治理直觉。",
+      prompt: "快速看看你的 AI 治理直觉。",
       sections: [
         {
           title: "它在测什么",
-          body: "这是一份试点工具，用来映射你在 AI 风险、开放、权威、证据、部署和人类控制上的位置。"
+          body: "这是一份试点工具，用来映射你在 AI 风险、开放、权威、证据、部署和人类控制上的直觉。"
         },
         {
           title: "怎么理解结果",
@@ -3117,7 +3942,7 @@
         },
         {
           title: "数据说明",
-          body: "你的回答可能被用于改进测试和理解回答模式。本测试不会要求你填写姓名或联系方式。"
+          body: "结果只在当前页面生成，用于娱乐和自我观察；本页不会要求你填写姓名或联系方式。"
         }
       ],
       links: [
@@ -3132,7 +3957,7 @@
           href: "ai-personality-profiles.html"
         }
       ],
-      linksTitle: "提前查看分类结果"
+      linksTitle: "也可以先看图谱"
     };
 
     const pages = [
@@ -3140,37 +3965,15 @@
       ...coreQuestionOrder.map((id) => questions.find((q) => q.id === id)).map((q) => ({
         id: q.id,
         kind: "core",
-        title: q.id === "U01" ? "使用情况" : "核心判断",
-        subtitle: q.id === "U01" ? "不进入坐标计算，用于理解样本" : "选择最接近你的判断",
+        title: "核心判断",
+        subtitle: "按第一反应选择最接近你的判断",
         tag: q.id,
-        instruction: q.id === "U01" ? "选择最接近你的使用情况" : "选择最接近你的立场",
+        instruction: "试点题目",
         prompt: q.text,
         options: q.options
-      })),
-      ...scenarioOrder.map((id) => scenarios.find((s) => s.id === id)).map((s) => ({
-        id: s.id,
-        kind: "scenario",
-        title: "情境选择",
-        subtitle: "低权重进入计分，用于校准画像",
-        tag: s.id,
-        instruction: "按具体场景选择最接近你的处理方式",
-        prompt: s.prompt,
-        options: s.options.map((option, i) => [String(i + 1), String.fromCharCode(65 + i), option])
-      })),
-      {
-        id: "closestStatement",
-        kind: "statement",
-        title: "AI 看法校验（多选）",
-        subtitle: "最后一题为多选，不进入坐标计算，用于复查分类",
-        tag: "SELF",
-        instruction: "这是多选题：可以选择多个接近你的说法；如果都不像，请只选最后一项",
-        prompt: "下面哪些话最接近你对 AI 的看法？（可多选）",
-        options: statements.map((statement, i) => [statementValues[i], String(i + 1), statement]),
-        multiple: true,
-        exclusiveValue: statementValues[statementValues.length - 1]
-      }
+      }))
     ];
-    const formalQuestionCount = pages.filter((page) => page.kind !== "intro" && page.id !== "U01").length;
+    const formalQuestionCount = pages.filter((page) => page.kind !== "intro").length;
 
     let currentIndex = 0;
     let answers = {};
@@ -3182,7 +3985,7 @@
     let shareImageUrl = "";
     let shareImageBlob = null;
     let shareImageFilename = "ai-stance-card.png";
-    const DRAFT_STORAGE_KEY = "ai-governance-persona-draft-v1";
+    const DRAFT_STORAGE_KEY = "ai-governance-persona-fun-draft-v2";
 
     function normalizeChoiceValue(value, count, legacyMap = {}) {
       const text = String(value);
@@ -3210,7 +4013,7 @@
         const raw = window.localStorage.getItem(DRAFT_STORAGE_KEY);
         if (!raw) return;
         const draft = JSON.parse(raw);
-        if (!draft || draft.quiz_id !== "ai-ideology-quiz" || !draft.answers || typeof draft.answers !== "object") return;
+        if (!draft || draft.quiz_id !== "ai-persona-fun-quiz" || !draft.answers || typeof draft.answers !== "object") return;
         const validPageIds = new Set(pages.map((page) => page.id));
         answers = Object.fromEntries(Object.entries(draft.answers)
           .filter(([id]) => validPageIds.has(id))
@@ -3232,7 +4035,7 @@
     function saveDraft() {
       try {
         window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({
-          quiz_id: "ai-ideology-quiz",
+          quiz_id: "ai-persona-fun-quiz",
           saved_at: new Date().toISOString(),
           currentIndex,
           answers
@@ -3469,32 +4272,14 @@
     }
 
     function abilityNarrativeScore() {
-      const weights = [
-        ["R01", 1],
-        ["R04", 1],
-        ["D01", 0.8],
-        ["C02", 0.8],
-        ["E01", 1],
-        ["H02", 0.7],
-        ["H04", 1]
-      ];
-
-      let numerator = 0;
-      let denominator = 0;
-      for (const [id, weight] of weights) {
-        const value = selected(id);
-        const vector = value ? optionVectorRules[id]?.[value] : null;
-        if (!vector) continue;
-        const valueScore = (
-          (0.55 * (vector.capability_skepticism || 0)) -
-          (0.45 * (vector.computation_epistemology || 0)) -
-          (0.25 * (vector.intelligence_centrality || 0))
-        ) / 2;
-        numerator += valueScore * weight;
-        denominator += Math.abs(weight);
-      }
-
-      return denominator > 0 ? clampScore(numerator / denominator) : NaN;
+      const result = calculate();
+      if (!Number.isFinite(result.x) || !result.respondentVector) return NaN;
+      const vector = result.respondentVector;
+      return clampScore((
+        (0.55 * (vector.capability_skepticism || 0)) -
+        (0.45 * (vector.computation_epistemology || 0)) -
+        (0.25 * (vector.intelligence_centrality || 0))
+      ) / 2);
     }
 
     function abilityNarrativeLabel(value) {
@@ -3678,11 +4463,18 @@
 
     function scheduleAutoAdvance(pageId) {
       const page = pages[currentIndex];
-      if (!page || page.id !== pageId || page.multiple || currentIndex >= pages.length - 1) return;
+      if (!page || page.id !== pageId || page.multiple) return;
       clearAutoAdvance();
       autoAdvanceTimer = window.setTimeout(() => {
         const activePage = pages[currentIndex];
         if (activePage && activePage.id === pageId && currentPageAnswered()) {
+          if (currentIndex >= pages.length - 1) {
+            clearAutoAdvance();
+            currentIndex = pages.length;
+            saveDraft();
+            renderPage(true);
+            return;
+          }
           goToNext();
         }
       }, 180);
@@ -3902,7 +4694,7 @@
       if (!Number.isFinite(result.x) || !Number.isFinite(result.y)) {
         return {
           label: "--",
-          text: "答完后显示位置、场景和自我确认是否一致。",
+          text: "答完后显示主画像和相邻画像的距离。",
           level: "none"
         };
       }
@@ -3931,20 +4723,20 @@
       if (support >= 3 && margin >= 0.10) {
         return {
           label: "高",
-          text: "位置、场景和自我确认大体一致；这个画像可以作为主要解释。",
+          text: "主画像和相邻画像有清楚距离；可作为主要解释，但仍是试点结果。",
           level: "high"
         };
       }
       if (support >= 1 && margin >= 0.02) {
         return {
           label: "中",
-          text: "主要位置清楚，但场景选择或自我确认带有条件性；适合按相邻谱系一起读。",
+          text: "主画像较清楚，但相邻画像也有解释力；建议一起阅读。",
           level: "medium"
         };
       }
       return {
         label: "低",
-        text: "位置、场景和自我确认有明显分歧；更适合读作混合型或条件型结果。",
+        text: "主画像和相邻画像很接近；更适合读作混合型或条件型结果。",
         level: "low"
       };
     }
@@ -4124,10 +4916,7 @@
     }
 
     function canSubmitResults() {
-      const host = window.location.hostname;
-      if (!host || host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "[::1]") return false;
-      if (host === "cestunyu.github.io" || host.endsWith(".github.io")) return false;
-      return true;
+      return false;
     }
 
     function fixedScore(value) {
@@ -4161,10 +4950,10 @@
       const selfAgreement = selfCodes.length ? selfCodes.some((item) => profileFamilyMatch(code, item)) : "";
       const scenarioAgreement = scenarioCodes.length ? scenarioMatches / scenarioCodes.length : "";
       return {
-        quiz_id: "ai-ideology-quiz",
-        quiz_version: "2026-06-01",
+        quiz_id: "ai-persona-fun-quiz",
+        quiz_version: "2026-06-28-fun-r02",
         measurement_version: result.measurementVersion || measurementVersion,
-        locale: "zh-CN",
+        locale: "zh-CN-fun",
         started_at: quizStartedAt,
         completed_at: new Date().toISOString(),
         duration_ms: quizDurationMs(),
@@ -4262,7 +5051,10 @@
         submitStatus.textContent = "";
         return;
       }
-      if (!canSubmitResults()) return;
+      if (!canSubmitResults()) {
+        submitStatus.textContent = "结果已生成。";
+        return;
+      }
 
       const payload = buildResultPayload(result, code, profile, riskLabel, responseLabel, valueLabel, abilityLabel, diagnostics);
       const fingerprint = resultFingerprint(payload);
@@ -4309,7 +5101,7 @@
       }
       profileCode.textContent = complete ? displayCode : "----";
       profileName.textContent = complete ? `${displayCode}: ${profile[0]}` : "等待生成画像";
-      profileRoast.textContent = complete ? profile[1] : "完成使用情况题和 15 道计分题后，结果会更稳。";
+      profileRoast.textContent = complete ? profile[1] : "完成 18 道题后，结果会更稳。";
       if (profileExplanation) profileExplanation.textContent = complete ? profile[4] : "--";
       profileTexts.innerHTML = complete ? renderProfileTexts(profile[2]) : "--";
       profileTell.textContent = complete ? profile[3] : "--";
@@ -4322,7 +5114,7 @@
         if (nearest) {
           nearestPersonSection.dataset.referenceId = nearest.id;
           nearestPersonSection.dataset.ready = "true";
-          nearestPersonSection.setAttribute("aria-label", `打开 ${referencePersonName(nearest)} 的图谱说明`);
+          nearestPersonSection.setAttribute("aria-label", `打开 ${referencePersonName(nearest)} 的附近参考点说明`);
         } else {
           nearestPersonSection.dataset.referenceId = "";
           nearestPersonSection.dataset.ready = "false";
@@ -4612,7 +5404,7 @@
       const displayCode = displayProfileCode(code);
       const nearest = nearestReferenceFor(result, code);
       const avatarImage = await loadImage(profileAvatarFor(code));
-      const qrImage = await loadImage("https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona.linenyu.com%2Fcn%2F");
+      const qrImage = await loadImage("https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=8&data=https%3A%2F%2Fai-persona.linenyu.com%2Ffun%2Fcn%2F");
       const canvas = document.createElement("canvas");
       const width = 410;
       const height = 820;
@@ -4693,14 +5485,14 @@
       const ctaY = 752;
       ctx.fillStyle = "#0f766e";
       ctx.font = "760 15px " + "Inter, PingFang SC, Microsoft YaHei, sans-serif";
-      ctx.fillText("扫码测测你的 AI 人格", 30, ctaY + 27);
+      ctx.fillText("扫码测测你的 AI 治理人格", 30, ctaY + 27);
       ctx.fillStyle = "#64748b";
       ctx.font = "900 10px " + "Inter, PingFang SC, Microsoft YaHei, sans-serif";
       ctx.textAlign = "right";
-      ctx.fillText("CN QR", 380, ctaY + 26);
+      ctx.fillText("FUN QR", 380, ctaY + 26);
       ctx.textAlign = "left";
 
-      await publishShareCanvas(canvas, "ai-persona-" + code + "-share.png", "分享图片已生成，可以保存后分享。");
+      await publishShareCanvas(canvas, "ai-persona-fun-" + code + "-share.png", "分享图片已生成，可以保存后分享。");
     }
 
     function resetQuiz() {

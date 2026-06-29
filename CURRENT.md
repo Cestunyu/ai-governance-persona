@@ -1,6 +1,6 @@
 # Current AI Governance Persona State
 
-Last updated: 2026-06-25
+Last updated: 2026-06-29
 
 ## Current Boundary
 
@@ -15,7 +15,7 @@ Last updated: 2026-06-25
 ## Current Deliverable
 
 - `/en/` and `/cn/` are the production quiz/result/share pages.
-- `/fun/` reuses the Chinese production quiz shell/result/share UI, but swaps in the lightweight question set, persona weights, 18-question count, separate draft key, and no formal-quiz navigation link.
+- `/fun/` is a language-aware lightweight entry route. `/fun/cn/` and `/fun/en/` use the production quiz/result/share shell with the lightweight question set, persona weights, 18-question count, separate draft keys, local-only result behavior, and no formal-quiz navigation link.
 - `data/quiz.en.json` and `data/quiz.zh.json` are the canonical quiz sources.
 - `npm run quiz:sync-html` pushes canonical JSON into the embedded page constants.
 - `api/`, `lib/`, `admin/`, and `supabase/` provide the Vercel + Supabase result-storage path.
@@ -23,6 +23,7 @@ Last updated: 2026-06-25
 
 ## Recent Checkpoints
 
+- 2026-06-29: Ran three fresh respondent-agent passes on `/en/`, `/cn/`, and `/fun/`; added explicit pilot/not-validated caveats on intro and result pages; softened “closest reference” to “nearby reference point”; clarified C03/R01/H04 canonical wording without changing scores; split the lightweight route into `/fun/en/` and `/fun/cn/`; updated fun gates and release checks for both locales.
 - 2026-06-28: Rebuilt `/fun/` from the Chinese production `index.html` shell so entry, pager, result page, map, nearest-person block, classification stability, share image, and save-image flow stay aligned; only the lightweight questions/count/scoring differ.
 - 2026-06-28: Made `/fun/` independent from the production quiz navigation and added automatic next-question advance after single-answer selection.
 - 2026-06-28: Promoted the fun persona quiz out of `demos/` into `/fun/` as a public lightweight version with its own question/scoring set, result flow, draft persistence, and release gates.
@@ -52,7 +53,10 @@ Last updated: 2026-06-25
 - `cn/index.html`
 - `en/index.html`
 - `fun/index.html`
+- `fun/cn/index.html`
+- `fun/en/index.html`
 - `demos/fun-persona-quiz-gate.json`
+- `demos/fun-persona-quiz-gate-en.json`
 - `scripts/run-fun-persona-gate.mjs`
 - `index.html`
 - `api/`
@@ -69,8 +73,8 @@ Last updated: 2026-06-25
 
 ## Next Session
 
-1. Start frontend modularization from the current `/en/` and `/cn/` pages.
-2. In the personal-site repo, decide the first homepage improvement pass.
+1. Run another fresh human or respondent-agent pass on `/fun/en/` and `/fun/cn/`, watching for unstable profile results and jargon in result/reference copy.
+2. Start frontend modularization from the current `/en/`, `/cn/`, and bilingual `/fun/` pages.
 3. Add `VERCEL_TOKEN` to GitHub repository secrets, then use the manual GitHub Actions production deploy when ready.
 4. If production storage is still needed, run the Supabase schema and set Vercel env vars using `docs/vercel-supabase-go-live.md`.
 
