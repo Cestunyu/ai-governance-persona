@@ -111,7 +111,7 @@ Required secret for manual production deploy:
 
 Optional variables:
 
-- `VERCEL_PROJECT_NAME`: Vercel project to deploy to. Defaults to `linenyu-site`.
+- `VERCEL_PROJECT_NAME`: Vercel project to deploy to. Defaults to `ai-governance-persona`.
 - `VERCEL_SCOPE`: Vercel team or user slug, if the token has access to multiple scopes.
 - `AUTO_DEPLOY_PRODUCTION`: set to `true` only when pushes to `main` should deploy production automatically.
 - `STRICT_VERIFY_PRODUCTION`: set to `true` only after Supabase storage and export tokens are configured.

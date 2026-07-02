@@ -18,6 +18,8 @@ Public relationship:
 - This repo owns the quiz, profile pages, spectrum pages, Vercel API routes, Supabase schema, and admin viewer.
 - This repo does not own the personal homepage, blog index, project index, posts index, site CSS, or CV PDF.
 - Vercel is the only active deployment route in this repo.
+- The Vercel project for this repo should be named `ai-governance-persona`.
+  Do not deploy this app to the personal-site project `linenyu-site`.
 - EdgeOne and GitHub Pages deployment files have been removed from the active app repo.
 - Root `/` redirects to `/en/`; it is not a personal homepage.
 

@@ -29,7 +29,7 @@ concurrency:
 
 env:
   NODE_VERSION: "20"
-  VERCEL_PROJECT_NAME: ${{ vars.VERCEL_PROJECT_NAME || 'linenyu-site' }}
+  VERCEL_PROJECT_NAME: ${{ vars.VERCEL_PROJECT_NAME || 'ai-governance-persona' }}
   VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE }}
 
 jobs:

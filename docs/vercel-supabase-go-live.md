@@ -11,6 +11,8 @@ This checklist finishes the AI Governance Persona dynamic deployment after the c
 - Dynamic health: `https://ai-persona.linenyu.com/api/health`
 
 The personal homepage is handled by the separate `linenyu-site` repository.
+The Vercel project for this app should be `ai-governance-persona`, not the
+personal-site project.
 
 ## 1. Create Supabase Storage
 
@@ -65,13 +67,16 @@ npm run vercel:env:check
 
 ## 3. Redeploy Vercel
 
-The deployment scripts default to the current Vercel project:
+The deployment scripts default to the separate AI Persona Vercel project:
 
 ```sh
-export VERCEL_PROJECT_NAME="${VERCEL_PROJECT_NAME:-linenyu-site}"
+export VERCEL_PROJECT_NAME="${VERCEL_PROJECT_NAME:-ai-governance-persona}"
 ```
 
-If the AI Persona app is moved to a separate Vercel project later, set `VERCEL_PROJECT_NAME` to that project name before running local deploys or GitHub Actions.
+If a local `.vercel/project.json` still points to `linenyu-site`, relink the
+directory to the AI Persona project before using raw `npx vercel` commands.
+The repository deploy script passes `--project` explicitly and refuses
+`linenyu-site` unless an intentional migration override is set.
 
 ```sh
 npm run vercel:deploy
@@ -184,7 +189,7 @@ VERCEL_TOKEN
 Optional GitHub repository variables:
 
 ```text
-VERCEL_PROJECT_NAME=linenyu-site
+VERCEL_PROJECT_NAME=ai-governance-persona
 VERCEL_SCOPE=<Vercel team or user slug>
 AUTO_DEPLOY_PRODUCTION=true
 STRICT_VERIFY_PRODUCTION=true

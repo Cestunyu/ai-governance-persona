@@ -120,4 +120,4 @@ add_env SUPABASE_RESULTS_TABLE "$results_table" regular
 add_env EXPORT_TOKEN "$export_token" sensitive
 
 echo "Vercel $environment environment variable setup complete."
-echo "Redeploy with: npm run release:check && npm run release:bundle:vercel -- /tmp/ai-persona-vercel-dynamic-dist && npx vercel /tmp/ai-persona-vercel-dynamic-dist --prod --yes --project linenyu-site"
+echo "Redeploy with: npm run vercel:deploy"

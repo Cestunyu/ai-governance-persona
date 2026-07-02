@@ -11,6 +11,8 @@ This repository contains the AI Governance Persona app and its underlying AI Soc
 - Treat `/` as an app redirect/fallback to `/en/`, not as a personal homepage.
 - Keep personal-site work in `/Users/yuun/Documents/GitHub/linenyu-site`.
 - Treat Vercel as the active deployment path for this repo.
+- Use `ai-governance-persona` as the Vercel project name for this repo.
+  `linenyu-site` is reserved for the separate personal website.
 - Do not reintroduce EdgeOne or GitHub Pages deployment files unless the user explicitly asks for a new migration path.
 - Do not edit archived quiz pages as production surfaces.
 - Before building or deploying, run `npm run release:check`.

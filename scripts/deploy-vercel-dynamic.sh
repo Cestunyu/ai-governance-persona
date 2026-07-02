@@ -2,8 +2,14 @@
 set -euo pipefail
 
 target="${VERCEL_DYNAMIC_DIST:-/tmp/ai-persona-vercel-dynamic-dist}"
-project="${VERCEL_PROJECT_NAME:-linenyu-site}"
+project="${VERCEL_PROJECT_NAME:-ai-governance-persona}"
 strict="${1:-}"
+
+if [ "$project" = "linenyu-site" ] && [ "${ALLOW_PERSONAL_SITE_PROJECT_DEPLOY:-}" != "1" ]; then
+  echo "Refusing to deploy AI Persona to Vercel project 'linenyu-site'." >&2
+  echo "Use the separate AI Persona Vercel project, or set ALLOW_PERSONAL_SITE_PROJECT_DEPLOY=1 only for an intentional migration." >&2
+  exit 2
+fi
 
 if [ "$strict" = "--strict" ] && \
   [ -z "${REMOTE_DATABASE_TOKEN:-}" ] && \
